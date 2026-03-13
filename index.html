@@ -311,6 +311,14 @@ h1, h2, h3, h4, h5, h6 {
   max-width: 50ch;
 }
 
+.form-intro .form-blurb {
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  max-width: 55ch;
+  margin-bottom: var(--space-3);
+}
+
 /* Question Sections */
 .question-section {
   margin-bottom: var(--space-6);
@@ -869,6 +877,25 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration-color: #76B900;
 }
 
+.tool-link {
+  color: #4FC3F7;
+  text-decoration: underline;
+  text-decoration-color: rgba(79, 195, 247, 0.4);
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s ease;
+  font-weight: 500;
+}
+.tool-link:hover {
+  text-decoration-color: #4FC3F7;
+}
+[data-theme="light"] .tool-link {
+  color: #0277BD;
+  text-decoration-color: rgba(2, 119, 189, 0.4);
+}
+[data-theme="light"] .tool-link:hover {
+  text-decoration-color: #0277BD;
+}
+
 /* ============================================
    CAUTION ZONE
    ============================================ */
@@ -1274,6 +1301,16 @@ h1, h2, h3, h4, h5, h6 {
   gap: var(--space-5);
 }
 
+.feedback-form-embed {
+  margin-top: var(--space-3);
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.feedback-form-embed iframe {
+  display: block;
+}
+
 .fb-field {
   display: flex;
   flex-direction: column;
@@ -1651,6 +1688,7 @@ h1, h2, h3, h4, h5, h6 {
   <div id="screen-form" class="screen active">
     <div class="form-intro">
       <h1>Find Your AI Opportunities</h1>
+      <p class="form-blurb">Cut through the AI noise. Get honest, practical recommendations for your specific role and project. Built by a veteran game dev who got tired of the hype.</p>
       <p>Answer 6 questions about your role and project. Get personalized, honest AI workflow recommendations.</p>
     </div>
 
@@ -1800,58 +1838,11 @@ h1, h2, h3, h4, h5, h6 {
       </button>
       <h1 class="feedback-title">Send Feedback</h1>
     </div>
-    <p class="feedback-intro">Your input helps improve this tool. All fields except message are optional. Feedback is sent via email to the tool's creator.</p>
+    <p class="feedback-intro">Your input helps improve this tool. All feedback is anonymous unless you choose to leave your contact info. No email or sign-in required.</p>
 
-    <form class="feedback-form" id="feedback-form">
-      <div class="fb-field">
-        <label for="fb-name">Name <span class="fb-optional">(optional)</span></label>
-        <input type="text" id="fb-name" placeholder="Your name" autocomplete="name">
-      </div>
-
-      <div class="fb-field">
-        <label for="fb-email">Email <span class="fb-optional">(optional)</span></label>
-        <input type="email" id="fb-email" placeholder="you@example.com" autocomplete="email">
-      </div>
-
-      <div class="fb-field">
-        <label>How useful was this tool?</label>
-        <div class="fb-rating-group">
-          <div class="fb-rating-option">
-            <input type="radio" name="fb-rating" id="fb-rating-1" value="Not useful">
-            <label for="fb-rating-1">Not useful</label>
-          </div>
-          <div class="fb-rating-option">
-            <input type="radio" name="fb-rating" id="fb-rating-2" value="Somewhat useful">
-            <label for="fb-rating-2">Somewhat useful</label>
-          </div>
-          <div class="fb-rating-option">
-            <input type="radio" name="fb-rating" id="fb-rating-3" value="Very useful">
-            <label for="fb-rating-3">Very useful</label>
-          </div>
-        </div>
-      </div>
-
-      <div class="fb-field">
-        <label for="fb-message">Message</label>
-        <textarea id="fb-message" placeholder="What worked well? What could be better? Any features you'd like to see?" required></textarea>
-      </div>
-
-      <div class="fb-field" id="fb-profile-field" style="display:none;">
-        <label>Your profile (auto-filled)</label>
-        <input type="text" id="fb-profile" readonly style="color:var(--color-text-muted);">
-      </div>
-
-      <div class="fb-submit-section">
-        <button type="submit" class="btn-primary" id="fb-send-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          Send
-        </button>
-      </div>
-
-      <div class="fb-success-msg" id="fb-success">
-        Thanks for your feedback. Your message has been prepared — your email app should open with the details. If it didn't, you can <a id="fb-mailto-link" href="#" style="color:var(--color-primary);">click here to send manually</a>.
-      </div>
-    </form>
+    <div class="feedback-form-embed">
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeAi4OVB7vPV3BLtbvr8tuYPR7gbfIU2BXneFDFpKRa9bpQdg/viewform?embedded=true" width="100%" height="1100" frameborder="0" marginheight="0" marginwidth="0" style="border:none; border-radius: 8px;">Loading form…</iframe>
+    </div>
   </div>
 
   <!-- FOOTER -->
@@ -2364,7 +2355,9 @@ function showResults(selections) {
 
   // Add expand/collapse handlers
   cardsContainer.querySelectorAll('.rec-card-header').forEach(header => {
-    header.addEventListener('click', () => {
+    header.addEventListener('click', (e) => {
+      // If user clicked a tool/nvidia link, let the link open instead of toggling
+      if (e.target.closest('a')) return;
       const card = header.closest('.rec-card');
       card.classList.toggle('expanded');
     });
@@ -2453,9 +2446,64 @@ function renderCard(rec, rank) {
     return result;
   }
 
+  // Non-NVIDIA AI tool URL map
+  const TOOL_URLS = {
+    'Copilot': 'https://github.com/features/copilot',
+    'Cursor': 'https://cursor.com',
+    'modl.ai': 'https://modl.ai',
+    'Applitools': 'https://applitools.com',
+    'ElevenLabs': 'https://elevenlabs.io',
+    'Cascadeur': 'https://cascadeur.com',
+    'RADiCAL': 'https://radicalmotion.com',
+    'Midjourney': 'https://www.midjourney.com',
+    'Stable Diffusion': 'https://stability.ai',
+    'Meshy': 'https://www.meshy.ai',
+    'Tripo': 'https://www.tripo3d.ai',
+    'DeepL': 'https://www.deepl.com',
+    'Gridly': 'https://www.gridly.com',
+    'Ludo.ai': 'https://ludo.ai',
+    'Otter.ai': 'https://otter.ai',
+    'Fireflies': 'https://fireflies.ai',
+    'GameAnalytics': 'https://www.gameanalytics.com',
+    'Amplitude': 'https://amplitude.com',
+    'GGWP': 'https://www.ggwp.com',
+    'ToxMod': 'https://www.modulate.ai',
+    'Promethean AI': 'https://www.prometheanai.com',
+    'ReportPortal': 'https://reportportal.io',
+    'Galileo AI': 'https://galileo.ai',
+    'Uizard': 'https://uizard.io',
+    'v0.dev': 'https://v0.app',
+    'Percy': 'https://www.browserstack.com/percy',
+    'BackstopJS': 'https://github.com/garris/BackstopJS',
+    'Zigpoll': 'https://www.zigpoll.com',
+    'Notion AI': 'https://www.notion.com/product/ai',
+    'Mixpanel': 'https://mixpanel.com',
+    'Medallia': 'https://www.medallia.com',
+    'Qualtrics': 'https://www.qualtrics.com',
+    'MetaHuman Animator': 'https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-animator',
+    'ChatGPT': 'https://chat.openai.com',
+    'Claude': 'https://claude.ai',
+    'Perplexity': 'https://www.perplexity.ai'
+  };
+
+  function linkifyTools(text) {
+    const keys = Object.keys(TOOL_URLS).sort((a, b) => b.length - a.length);
+    let result = text;
+    for (const key of keys) {
+      const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const parts = result.split(/(<a[^>]*>.*?<\/a>)/gi);
+      result = parts.map(part => {
+        if (part.startsWith('<a ')) return part;
+        return part.replace(new RegExp(`\\b${escaped}`, 'g'),
+          `<a href="${TOOL_URLS[key]}" target="_blank" rel="noopener noreferrer" class="tool-link">$&</a>`);
+      }).join('');
+    }
+    return result;
+  }
+
   let nvidiaHTML = '';
   if (rec.nvidia) {
-    const linkedNvidia = linkifyNvidia(rec.nvidia);
+    const linkedNvidia = linkifyTools(linkifyNvidia(rec.nvidia));
     nvidiaHTML = `
       <div class="detail-row">
         <div class="detail-label">NVIDIA Relevance</div>
@@ -2468,12 +2516,19 @@ function renderCard(rec, rank) {
       </div>`;
   }
 
+  // Linkify tool names in text fields
+  const linkedOpportunity = linkifyTools(rec.opportunity);
+  const linkedBenefit = linkifyTools(rec.benefit);
+  const linkedDifficulty = linkifyTools(rec.difficulty);
+  const linkedCaveats = linkifyTools(rec.caveats);
+  const linkedNextStep = linkifyTools(rec.nextStep);
+
   return `
     <div class="rec-card">
       <div class="rec-card-header" role="button" tabindex="0" aria-expanded="false">
         <div class="rec-card-top">
           <span class="rec-card-rank">${rank}</span>
-          <span class="rec-card-title">${rec.opportunity}</span>
+          <span class="rec-card-title">${linkedOpportunity}</span>
           <svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
         <div class="rec-card-badges">
@@ -2487,7 +2542,7 @@ function renderCard(rec, rank) {
         <div class="rec-card-body">
           <div class="detail-row">
             <div class="detail-label">Expected Benefit</div>
-            <div class="detail-value">${rec.benefit}</div>
+            <div class="detail-value">${linkedBenefit}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">Estimated Time Saved</div>
@@ -2495,16 +2550,16 @@ function renderCard(rec, rank) {
           </div>
           <div class="detail-row">
             <div class="detail-label">Implementation Difficulty</div>
-            <div class="detail-value">${rec.difficulty}</div>
+            <div class="detail-value">${linkedDifficulty}</div>
           </div>
           ${nvidiaHTML}
           <div class="detail-row">
             <div class="detail-label">Risks / Caveats</div>
-            <div class="detail-value caveat">${rec.caveats}</div>
+            <div class="detail-value caveat">${linkedCaveats}</div>
           </div>
           <div class="detail-row">
             <div class="detail-label">Suggested Next Step</div>
-            <div class="detail-value next-step">${rec.nextStep}</div>
+            <div class="detail-value next-step">${linkedNextStep}</div>
           </div>
         </div>
       </div>
@@ -2760,22 +2815,6 @@ function renderPhaseTimeline(selectedPhase) {
    ============================================ */
 // Navigate to feedback screen
 document.getElementById('feedback-btn').addEventListener('click', () => {
-  // Pre-fill the profile context
-  const sel = window._lastSelections;
-  if (sel) {
-    const profileStr = `${sel.discipline} / ${sel.engine} / ${sel.team} / ${sel.phase} / ${sel.pain}`;
-    document.getElementById('fb-profile').value = profileStr;
-    document.getElementById('fb-profile-field').style.display = 'flex';
-  }
-
-  // Reset form state but keep profile
-  document.getElementById('fb-name').value = '';
-  document.getElementById('fb-email').value = '';
-  document.getElementById('fb-message').value = '';
-  document.querySelectorAll('input[name="fb-rating"]').forEach(r => r.checked = false);
-  document.getElementById('fb-success').classList.remove('visible');
-  document.getElementById('fb-send-btn').disabled = false;
-
   // Switch screens
   document.getElementById('screen-results').classList.remove('active');
   document.getElementById('screen-feedback').classList.add('active');
@@ -2789,40 +2828,7 @@ document.getElementById('feedback-back-btn').addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Handle feedback submission
-document.getElementById('feedback-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const name = document.getElementById('fb-name').value.trim();
-  const email = document.getElementById('fb-email').value.trim();
-  const ratingEl = document.querySelector('input[name="fb-rating"]:checked');
-  const rating = ratingEl ? ratingEl.value : 'No rating';
-  const message = document.getElementById('fb-message').value.trim();
-  const profile = document.getElementById('fb-profile').value;
-
-  if (!message) return;
-
-  // Build email body
-  let body = '';
-  if (message) body += message + '\n\n';
-  body += '--- Details ---\n';
-  if (name) body += 'Name: ' + name + '\n';
-  if (email) body += 'Email: ' + email + '\n';
-  body += 'Rating: ' + rating + '\n';
-  if (profile) body += 'Profile: ' + profile + '\n';
-
-  const mailtoUrl = `mailto:joehalper@happymanic.com?subject=${encodeURIComponent('Game Dev AI Guide Feedback')}&body=${encodeURIComponent(body)}`;
-
-  // Set the fallback link
-  document.getElementById('fb-mailto-link').href = mailtoUrl;
-
-  // Open email client
-  window.location.href = mailtoUrl;
-
-  // Show success message
-  document.getElementById('fb-success').classList.add('visible');
-  document.getElementById('fb-send-btn').disabled = true;
-});
+// Feedback form is now handled by embedded Google Form — no JS submission needed
 
 /* ============================================
    START OVER
