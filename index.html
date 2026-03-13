@@ -615,6 +615,128 @@ h1, h2, h3, h4, h5, h6 {
   height: 10px;
 }
 
+/* Step-by-Step Wizard */
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  padding: 0 var(--space-1);
+}
+
+.wizard-progress-step {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: background var(--transition-fast);
+}
+
+.wizard-progress-step.active {
+  background: var(--color-primary);
+}
+
+.wizard-progress-step.completed {
+  background: var(--color-primary);
+  opacity: 0.6;
+}
+
+.wizard-step-counter {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-4);
+  font-weight: 500;
+}
+
+.wizard-step {
+  display: none;
+  animation: wizardFadeIn 0.25s ease-out;
+}
+
+.wizard-step.active {
+  display: block;
+}
+
+@keyframes wizardFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-6);
+  gap: var(--space-3);
+}
+
+.wizard-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.wizard-nav-back:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text);
+}
+
+.wizard-nav-back.hidden {
+  visibility: hidden;
+}
+
+.wizard-nav-next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.wizard-nav-next:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.wizard-nav-next:active {
+  transform: translateY(0);
+}
+
+.wizard-nav-next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Wizard makes questions bigger since there's only one at a time */
+.wizard-step .question-label {
+  margin-bottom: var(--space-4);
+}
+
+.wizard-step .question-text {
+  font-size: var(--text-lg);
+}
+
 /* Submit */
 .submit-section {
   margin-top: var(--space-8);
@@ -1845,7 +1967,7 @@ h1, h2, h3, h4, h5, h6 {
     <div class="form-intro">
       <h1>Find Your AI Opportunities</h1>
       <p class="form-blurb">Cut through the AI noise. Get honest, practical recommendations for your specific role and project. Built by a veteran game dev who got tired of the hype.</p>
-      <p>Answer 6 questions about your role and project. Get personalized, honest AI workflow recommendations.</p>
+      <p>Answer a few quick questions about your role and project. Get personalized, honest AI workflow recommendations.</p>
       <div class="creator-line">
         <span>Created by Joe Halper</span>
         <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">
@@ -1868,78 +1990,100 @@ h1, h2, h3, h4, h5, h6 {
     </div>
 
     <form id="intake-form" novalidate>
-      <!-- Q1: Discipline -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">01</span>
-          <span class="question-text">Your Discipline</span>
+      <!-- Wizard Progress Bar -->
+      <div class="wizard-progress" id="wizard-progress">
+        <div class="wizard-progress-step active"></div>
+        <div class="wizard-progress-step"></div>
+        <div class="wizard-progress-step"></div>
+        <div class="wizard-progress-step"></div>
+        <div class="wizard-progress-step"></div>
+        <div class="wizard-progress-step"></div>
+      </div>
+      <div class="wizard-step-counter" id="wizard-counter">Step 1 of 6</div>
+
+      <!-- Step 1: Discipline -->
+      <div class="wizard-step active" data-step="1" data-field="discipline">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">What's your discipline?</span>
+          </div>
+          <div class="option-grid" id="q-discipline">
+            <!-- Filled by JS -->
+          </div>
+          <div class="validation-msg" id="val-discipline">Select your discipline</div>
         </div>
-        <div class="option-grid" id="q-discipline">
-          <!-- Filled by JS -->
-        </div>
-        <div class="validation-msg" id="val-discipline">Select your discipline</div>
       </div>
 
-      <!-- Q2: Engine -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">02</span>
-          <span class="question-text">Engine</span>
+      <!-- Step 2: Engine -->
+      <div class="wizard-step" data-step="2" data-field="engine">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">Which engine?</span>
+          </div>
+          <div class="option-grid cols-3" id="q-engine">
+          </div>
+          <div class="validation-msg" id="val-engine">Select your engine</div>
         </div>
-        <div class="option-grid cols-3" id="q-engine">
-        </div>
-        <div class="validation-msg" id="val-engine">Select your engine</div>
       </div>
 
-      <!-- Q3: Team Size -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">03</span>
-          <span class="question-text">Team Size</span>
+      <!-- Step 3: Team Size -->
+      <div class="wizard-step" data-step="3" data-field="team">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">How big is your team?</span>
+          </div>
+          <div class="option-grid" id="q-team">
+          </div>
+          <div class="validation-msg" id="val-team">Select your team size</div>
         </div>
-        <div class="option-grid" id="q-team">
-        </div>
-        <div class="validation-msg" id="val-team">Select your team size</div>
       </div>
 
-      <!-- Q4: Development Phase -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">04</span>
-          <span class="question-text">Development Phase</span>
+      <!-- Step 4: Development Phase -->
+      <div class="wizard-step" data-step="4" data-field="phase">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">What development phase?</span>
+          </div>
+          <div class="phase-picker" id="q-phase">
+            <!-- Populated by JS: horizontal timeline + Not Sure below -->
+          </div>
+          <div class="validation-msg" id="val-phase">Select your development phase</div>
         </div>
-        <div class="phase-picker" id="q-phase">
-          <!-- Populated by JS: horizontal timeline + Not Sure below -->
-        </div>
-        <div class="validation-msg" id="val-phase">Select your development phase</div>
       </div>
 
-      <!-- Q5: Biggest Pain Point -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">05</span>
-          <span class="question-text">Biggest Pain Point</span>
+      <!-- Step 5: Biggest Pain Point -->
+      <div class="wizard-step" data-step="5" data-field="pain">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">Top pain points? <span style="font-weight:400;color:var(--color-text-muted);font-size:var(--text-xs);">(up to 3)</span></span>
+          </div>
+          <div class="option-grid" id="q-pain">
+          </div>
+          <div class="validation-msg" id="val-pain">Select up to 3 pain points, or choose "Not Sure"</div>
         </div>
-        <div class="option-grid" id="q-pain">
-        </div>
-        <div class="validation-msg" id="val-pain">Select a pain point, or choose "Not Sure" for suggestions</div>
       </div>
 
-      <!-- Q6: AI Openness -->
-      <div class="question-section">
-        <div class="question-label">
-          <span class="question-number">06</span>
-          <span class="question-text">AI Openness <span style="font-weight:400;color:var(--color-text-muted);font-size:var(--text-xs);">(select all that apply)</span></span>
+      <!-- Step 6: AI Openness -->
+      <div class="wizard-step" data-step="6" data-field="openness">
+        <div class="question-section">
+          <div class="question-label">
+            <span class="question-text">What AI categories interest you? <span style="font-weight:400;color:var(--color-text-muted);font-size:var(--text-xs);">(select all that apply)</span></span>
+          </div>
+          <div class="option-grid" id="q-openness">
+          </div>
+          <div class="validation-msg" id="val-openness">Select at least one category</div>
         </div>
-        <div class="option-grid" id="q-openness">
-        </div>
-        <div class="validation-msg" id="val-openness">Select at least one category</div>
       </div>
 
-      <div class="submit-section">
-        <button type="submit" class="btn-primary" id="submit-btn">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          Get Recommendations
+      <!-- Wizard Navigation -->
+      <div class="wizard-nav" id="wizard-nav">
+        <button type="button" class="wizard-nav-back hidden" id="wizard-back">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          Back
+        </button>
+        <button type="button" class="wizard-nav-next" id="wizard-next" disabled>
+          Next
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
         </button>
       </div>
     </form>
@@ -1950,8 +2094,6 @@ h1, h2, h3, h4, h5, h6 {
     <div class="results-header">
       <h1 id="results-title"></h1>
       <p class="results-summary" id="results-summary"></p>
-      <div class="results-meta" id="results-meta"></div>
-      <div class="phase-timeline" id="phase-timeline"></div>
     </div>
 
     <div id="results-cards"></div>
@@ -2054,6 +2196,9 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now allows up to 3 selections instead of just one — gives broader, more relevant results.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Redesigned intake form as a step-by-step wizard — one question per screen with auto-advance, replacing the single-page wall of questions.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Streamlined results page — removed redundant meta-tag badges, phase timeline, and duplicate time-saved rows for a cleaner read.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added 10 Myth vs. Reality tips that address common AI misconceptions — mixed into the existing tip rotation with distinct amber styling.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added clickable tool links across all recommendations — every referenced AI tool now links directly to its product page.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added "About the Creator" line with LinkedIn link.' },
@@ -2401,7 +2546,46 @@ renderRadioGroup('q-team', 'team', TEAM_SIZES);
     selectPhase('Not Sure');
   });
 })();
-renderRadioGroup('q-pain', 'pain', PAIN_POINTS);
+// Pain points as checkboxes (up to 3)
+(function renderPainCheckboxes() {
+  const painOptions = PAIN_POINTS.filter(p => p !== 'Not Sure');
+  renderCheckboxGroup('q-pain', 'pain', painOptions);
+
+  // Add "Not Sure" option
+  const container = document.getElementById('q-pain');
+  const notSureDiv = document.createElement('div');
+  notSureDiv.className = 'option-item pain-notsure-item';
+  notSureDiv.innerHTML = `
+    <input type="checkbox" name="pain-notsure" id="pain-notsure" value="Not Sure">
+    <label for="pain-notsure">
+      <span class="check-box"><svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg></span>
+      Not Sure — suggest for me
+    </label>
+  `;
+  container.appendChild(notSureDiv);
+
+  const notSureCheckbox = document.getElementById('pain-notsure');
+  const allPainCheckboxes = () => container.querySelectorAll('input[name="pain"]');
+
+  // "Not Sure" clears others, and vice versa
+  notSureCheckbox.addEventListener('change', () => {
+    if (notSureCheckbox.checked) {
+      allPainCheckboxes().forEach(cb => { cb.checked = false; });
+    }
+  });
+
+  container.addEventListener('change', (e) => {
+    if (e.target.name === 'pain') {
+      // Uncheck "Not Sure" when selecting specific pain
+      notSureCheckbox.checked = false;
+      // Enforce max 3
+      const checked = [...allPainCheckboxes()].filter(cb => cb.checked);
+      if (checked.length > 3) {
+        e.target.checked = false;
+      }
+    }
+  });
+})();
 renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
 
 // Add "Not Sure" toggle for AI Openness that selects/deselects all
@@ -2439,6 +2623,128 @@ renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
 })();
 
 /* ============================================
+   WIZARD NAVIGATION
+   ============================================ */
+(function initWizard() {
+  const TOTAL_STEPS = 6;
+  let currentStep = 1;
+
+  const steps = document.querySelectorAll('.wizard-step');
+  const progressSteps = document.querySelectorAll('.wizard-progress-step');
+  const counter = document.getElementById('wizard-counter');
+  const backBtn = document.getElementById('wizard-back');
+  const nextBtn = document.getElementById('wizard-next');
+
+  function getFieldForStep(step) {
+    const stepEl = document.querySelector(`.wizard-step[data-step="${step}"]`);
+    return stepEl ? stepEl.dataset.field : null;
+  }
+
+  function isStepValid(step) {
+    const field = getFieldForStep(step);
+    if (!field) return false;
+    if (field === 'openness') {
+      return document.querySelectorAll('input[name="openness"]:checked').length > 0;
+    }
+    if (field === 'pain') {
+      return document.querySelectorAll('input[name="pain"]:checked').length > 0
+        || document.getElementById('pain-notsure')?.checked;
+    }
+    return !!document.querySelector(`input[name="${field}"]:checked`);
+  }
+
+  function updateWizard() {
+    steps.forEach(s => s.classList.remove('active'));
+    const activeStep = document.querySelector(`.wizard-step[data-step="${currentStep}"]`);
+    if (activeStep) activeStep.classList.add('active');
+
+    // Progress bar
+    progressSteps.forEach((p, i) => {
+      p.classList.remove('active', 'completed');
+      if (i + 1 === currentStep) p.classList.add('active');
+      else if (i + 1 < currentStep) p.classList.add('completed');
+    });
+
+    // Counter
+    counter.textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+
+    // Back button
+    backBtn.classList.toggle('hidden', currentStep === 1);
+
+    // Next button — becomes "Get Recommendations" on last step
+    if (currentStep === TOTAL_STEPS) {
+      nextBtn.innerHTML = 'Get Recommendations <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+    } else {
+      nextBtn.innerHTML = 'Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
+    }
+
+    // Enable/disable next based on validation
+    nextBtn.disabled = !isStepValid(currentStep);
+  }
+
+  function goToStep(step) {
+    if (step < 1 || step > TOTAL_STEPS) return;
+    currentStep = step;
+    updateWizard();
+  }
+
+  backBtn.addEventListener('click', () => goToStep(currentStep - 1));
+
+  nextBtn.addEventListener('click', () => {
+    if (!isStepValid(currentStep)) return;
+    if (currentStep === TOTAL_STEPS) {
+      // Submit the form
+      document.getElementById('intake-form').dispatchEvent(new Event('submit', { cancelable: true }));
+    } else {
+      goToStep(currentStep + 1);
+    }
+  });
+
+  // Auto-advance on radio selection (steps 1-5) with brief delay for visual feedback
+  document.getElementById('intake-form').addEventListener('change', (e) => {
+    if (e.target.type === 'radio') {
+      // Update next button state immediately
+      nextBtn.disabled = !isStepValid(currentStep);
+      // Auto-advance after short delay (radio-only steps, not multi-select)
+      const field = getFieldForStep(currentStep);
+      if (field !== 'openness' && field !== 'pain') {
+        setTimeout(() => {
+          if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
+        }, 250);
+      }
+    }
+    if (e.target.type === 'checkbox') {
+      nextBtn.disabled = !isStepValid(currentStep);
+    }
+  });
+
+  // Also listen for phase picker clicks (they use hidden radios)
+  const phaseObserver = new MutationObserver(() => {
+    nextBtn.disabled = !isStepValid(currentStep);
+  });
+  const phaseContainer = document.getElementById('q-phase');
+  if (phaseContainer) {
+    phaseContainer.addEventListener('click', () => {
+      setTimeout(() => {
+        nextBtn.disabled = !isStepValid(currentStep);
+        // Auto-advance for phase picker too
+        if (isStepValid(currentStep) && currentStep < TOTAL_STEPS) {
+          setTimeout(() => goToStep(currentStep + 1), 250);
+        }
+      }, 50);
+    });
+  }
+
+  // Expose for start-over reset
+  window._wizardReset = () => {
+    currentStep = 1;
+    updateWizard();
+  };
+
+  updateWizard();
+})();
+
+/* ============================================
    FORM HANDLING
    ============================================ */
 const form = document.getElementById('intake-form');
@@ -2450,24 +2756,13 @@ form.addEventListener('submit', (e) => {
   const engine = getRadioValue('engine');
   const team = getRadioValue('team');
   const phase = getRadioValue('phase');
-  const pain = getRadioValue('pain');
+  const painChecked = getCheckboxValues('pain');
+  const painNotSure = document.getElementById('pain-notsure')?.checked;
+  const pain = painNotSure ? ['Not Sure'] : painChecked;
   const openness = getCheckboxValues('openness');
 
-  // Validation
-  let valid = true;
-  valid = validateField('discipline', discipline) && valid;
-  valid = validateField('engine', engine) && valid;
-  valid = validateField('team', team) && valid;
-  valid = validateField('phase', phase) && valid;
-  valid = validateField('pain', pain) && valid;
-  valid = validateField('openness', openness.length > 0) && valid;
-
-  if (!valid) {
-    // Scroll to first error
-    const firstError = document.querySelector('.validation-msg.visible');
-    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
+  // All validation is handled by the wizard (next button disabled until valid)
+  if (!discipline || !engine || !team || !phase || pain.length === 0 || openness.length === 0) return;
 
   showResults({ discipline, engine, team, phase, pain, openness });
 });
@@ -2532,8 +2827,8 @@ function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
     score -= 10;
   }
 
-  // Pain point boost — "Not Sure" treats all pain points as matching with moderate weight
-  if (pain === 'Not Sure') {
+  // Pain point boost — pain is now an array (up to 3 selections)
+  if (pain.includes('Not Sure')) {
     // Check if rec matches any suggested pain points for this discipline
     const suggested = PAIN_SUGGESTIONS[discipline] || [];
     if (suggested.some(sp => rec.painPoints.includes(sp))) {
@@ -2541,8 +2836,12 @@ function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
     } else {
       score += 10; // Still a baseline boost
     }
-  } else if (rec.painPoints.includes(pain)) {
-    score += 25;
+  } else {
+    // Count how many selected pains match this recommendation
+    const matchCount = pain.filter(p => rec.painPoints.includes(p)).length;
+    if (matchCount > 0) {
+      score += 15 + (matchCount * 10); // 25 for 1 match, 35 for 2, 45 for 3
+    }
   }
 
   // Confidence boost
@@ -2577,19 +2876,7 @@ function showResults(selections) {
       ? `Found ${scored.length} recommendation${scored.length > 1 ? 's' : ''} matching your profile. Tap each card for details.`
       : 'No strong matches found for your exact profile. Try broadening your AI openness categories.';
 
-  // Meta tags (engine tag includes its icon)
-  const engineIconSvg = ENGINE_ICONS[selections.engine] || '';
-  const metaTags = [
-    selections.discipline,
-    selections.engine,
-    selections.team,
-    selections.phase !== 'Not Sure' ? selections.phase : 'All Phases',
-    selections.pain !== 'Not Sure' ? selections.pain : 'Suggested Pain Points'
-  ];
-  document.getElementById('results-meta').innerHTML = metaTags.map(t => {
-    const isEngine = (t === selections.engine && engineIconSvg);
-    return `<span class="meta-tag">${isEngine ? '<span class="meta-engine-icon">' + engineIconSvg + '</span>' : ''}${t}</span>`;
-  }).join('');
+
 
   // Cards
   const cardsContainer = document.getElementById('results-cards');
@@ -2631,8 +2918,6 @@ function showResults(selections) {
   // Store selections for feedback form
   window._lastSelections = selections;
 
-  // Phase timeline strip
-  renderPhaseTimeline(selections.phase);
 
   // Switch screens first (so canvas has layout dimensions)
   document.getElementById('screen-form').classList.remove('active');
@@ -2786,10 +3071,7 @@ function renderCard(rec, rank) {
             <div class="detail-label">Expected Benefit</div>
             <div class="detail-value">${linkedBenefit}</div>
           </div>
-          <div class="detail-row">
-            <div class="detail-label">Estimated Time Saved</div>
-            <div class="detail-value">${rec.savings} <span class="${confidenceClass}">(${rec.confidence} confidence)</span></div>
-          </div>
+
           <div class="detail-row">
             <div class="detail-label">Implementation Difficulty</div>
             <div class="detail-value">${linkedDifficulty}</div>
@@ -2835,10 +3117,10 @@ function renderHeatmap(selections, scored) {
       let weight = 1;
       if (selections.phase === 'Not Sure' || rec.phase.includes(selections.phase)) weight += 1;
       if (rec.teamFit.includes(selections.team)) weight += 1;
-      if (selections.pain === 'Not Sure') {
+      if (selections.pain.includes('Not Sure')) {
         const suggested = PAIN_SUGGESTIONS[selections.discipline] || [];
         if (suggested.some(sp => rec.painPoints.includes(sp))) weight += 1;
-      } else if (rec.painPoints.includes(selections.pain)) {
+      } else if (selections.pain.some(p => rec.painPoints.includes(p))) {
         weight += 1;
       }
       catScores[rec.category] = (catScores[rec.category] || 0) + weight;
@@ -3097,6 +3379,8 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
   pp.classList.remove('all-selected');
   // Clear all validation messages
   document.querySelectorAll('.validation-msg').forEach(m => m.classList.remove('visible'));
+  // Reset wizard to step 1
+  if (window._wizardReset) window._wizardReset();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
