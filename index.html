@@ -344,6 +344,119 @@ h1, h2, h3, h4, h5, h6 {
   flex-shrink: 0;
 }
 
+/* What's New Changelog */
+.changelog-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-4);
+  padding: 6px 12px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.changelog-toggle:hover {
+  background: rgba(79, 152, 163, 0.12);
+  border-color: var(--color-primary);
+}
+.changelog-toggle svg {
+  transition: transform 0.2s ease;
+}
+.changelog-toggle.open svg {
+  transform: rotate(180deg);
+}
+.changelog-toggle .changelog-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 9px;
+}
+
+.changelog-panel {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+  margin-top: 0;
+}
+.changelog-panel.open {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: var(--space-3);
+}
+
+.changelog-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.changelog-entry {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-divider);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+.changelog-entry:last-child {
+  border-bottom: none;
+}
+.changelog-date {
+  flex-shrink: 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-faint);
+  white-space: nowrap;
+  min-width: 70px;
+  padding-top: 1px;
+}
+.changelog-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.changelog-tag.tag-new {
+  color: var(--color-success);
+  background: var(--color-success-bg);
+}
+.changelog-tag.tag-updated {
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+.changelog-tag.tag-removed {
+  color: var(--color-danger);
+  background: var(--color-danger-bg);
+}
+.changelog-tag.tag-adjusted {
+  color: var(--color-warning);
+  background: var(--color-warning-bg);
+}
+.changelog-text {
+  color: var(--color-text-muted);
+}
+
 /* Question Sections */
 .question-section {
   margin-bottom: var(--space-6);
@@ -1675,7 +1788,7 @@ h1, h2, h3, h4, h5, h6 {
           <li>Personalized recommendations with expected time savings, implementation difficulty, and confidence levels</li>
           <li>Honest risks and caveats for each recommendation — not just hype</li>
           <li>A concrete next step you can act on immediately</li>
-          <li>NVIDIA-specific tool callouts where relevant (DLSS, ACE, Nsight, RTX Remix)</li>
+          <li>GPU vendor tool callouts where relevant (upscalers, profilers, AI frameworks)</li>
           <li>A Caution Zone flagging where AI is unreliable or controversial for your discipline</li>
           <li>A heat map showing AI opportunity density across categories</li>
         </ul>
@@ -1739,6 +1852,18 @@ h1, h2, h3, h4, h5, h6 {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           LinkedIn
         </a>
+      </div>
+
+      <button type="button" class="changelog-toggle" id="changelog-toggle">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        What's New
+        <span class="changelog-badge" id="changelog-badge"></span>
+      </button>
+
+      <div class="changelog-panel" id="changelog-panel">
+        <ul class="changelog-list" id="changelog-list">
+          <!-- Filled by JS from CHANGELOG array -->
+        </ul>
       </div>
     </div>
 
@@ -1924,6 +2049,51 @@ h1, h2, h3, h4, h5, h6 {
       : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
   }
 })();
+
+/* ============================================
+   CHANGELOG
+   ============================================ */
+const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'new', text: 'Added 10 Myth vs. Reality tips that address common AI misconceptions — mixed into the existing tip rotation with distinct amber styling.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added clickable tool links across all recommendations — every referenced AI tool now links directly to its product page.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added "About the Creator" line with LinkedIn link.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added "Tell Me More" and "Next Tip" buttons to the tip box for browsing all tips on demand.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added introductory blurb explaining the tool\'s no-hype philosophy.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added Google Form feedback integration for anonymous user input.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now offers "Not Sure" with smart suggestions based on your selected discipline.' },
+  { date: 'Mar 2026', tag: 'adjusted', text: 'Neural rendering upscaler confidence raised to High — engine plugins now mature with documented 30-60% performance gains across major engines.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Initial release — 36 recommendations across 14 disciplines, 24 practical AI tips, caution zones, and radar chart scoring.' }
+];
+
+function renderChangelog() {
+  const list = document.getElementById('changelog-list');
+  const badge = document.getElementById('changelog-badge');
+  const TAG_LABELS = { 'new': 'New', 'updated': 'Updated', 'removed': 'Removed', 'adjusted': 'Adjusted' };
+
+  list.innerHTML = CHANGELOG.map(entry => `
+    <li class="changelog-entry">
+      <span class="changelog-date">${entry.date}</span>
+      <span class="changelog-text">
+        <span class="changelog-tag tag-${entry.tag}">${TAG_LABELS[entry.tag]}</span>${entry.text}
+      </span>
+    </li>
+  `).join('');
+
+  // Badge shows count of entries from the most recent date
+  const latestDate = CHANGELOG[0]?.date;
+  const recentCount = CHANGELOG.filter(e => e.date === latestDate).length;
+  badge.textContent = recentCount;
+}
+
+document.getElementById('changelog-toggle').addEventListener('click', function() {
+  const panel = document.getElementById('changelog-panel');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  this.classList.toggle('open');
+  this.setAttribute('aria-expanded', !isOpen);
+});
+
+renderChangelog();
 
 /* ============================================
    DATA
