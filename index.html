@@ -1299,6 +1299,146 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ============================================
+   SENTIMENT POLL
+   ============================================ */
+.sentiment-poll {
+  margin-top: var(--space-8);
+  padding: var(--space-6);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.sentiment-poll h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.sentiment-poll .poll-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+.poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.poll-option-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.poll-option-btn:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-3);
+}
+
+.poll-option-btn .poll-emoji {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  width: 1.6rem;
+  text-align: center;
+}
+
+/* Results bar view */
+.poll-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.poll-result-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.poll-result-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.poll-result-label .poll-emoji {
+  font-size: 1rem;
+}
+
+.poll-result-label .poll-pct {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.poll-result-label .poll-count {
+  color: var(--color-text-faint);
+  font-size: var(--text-xs);
+}
+
+.poll-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--color-surface-3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.poll-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 0;
+}
+
+.poll-bar-fill.bar-optimistic  { background: var(--color-success); }
+.poll-bar-fill.bar-cautious    { background: var(--color-primary); }
+.poll-bar-fill.bar-wait        { background: var(--color-warning); }
+.poll-bar-fill.bar-skeptical   { background: #D47A4A; }
+.poll-bar-fill.bar-against     { background: var(--color-danger, #C0504D); }
+
+.poll-result-row.voted .poll-result-label {
+  font-weight: 700;
+}
+.poll-result-row.voted .poll-bar-track {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.poll-voted-msg {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-3);
+  text-align: center;
+}
+
+.poll-total {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-2);
+  text-align: center;
+}
+
+/* ============================================
    START OVER / actions
    ============================================ */
 .results-actions {
@@ -2135,6 +2275,13 @@ h1, h2, h3, h4, h5, h6 {
       </div>
     </div>
 
+    <!-- SENTIMENT POLL -->
+    <div class="sentiment-poll" id="sentiment-poll">
+      <h2>How do you feel about AI in game dev?</h2>
+      <p class="poll-subtitle">Anonymous and local-only — just curious where devs stand.</p>
+      <div id="poll-body"></div>
+    </div>
+
     <div class="results-actions">
       <button class="btn-secondary" id="start-over-btn">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
@@ -2196,6 +2343,7 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'new', text: 'Added "How do you feel about AI in game dev?" sentiment poll on the results page — anonymous, local-only, with live bar chart results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now allows up to 3 selections instead of just one — gives broader, more relevant results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Redesigned intake form as a step-by-step wizard — one question per screen with auto-advance, replacing the single-page wall of questions.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Streamlined results page — removed redundant meta-tag badges, phase timeline, and duplicate time-saved rows for a cleaner read.' },
@@ -2284,7 +2432,7 @@ const AI_TIPS = [
   { tip: "Run AI-generated translations through native speakers. Machine translation handles grammar but misses cultural nuance.",
     detail: "AI translation is fast and structurally accurate, but it misses idioms, humor, cultural references, and platform-specific terminology. A native speaker review pass per language costs far less than full human translation while catching the errors that make players cringe." },
   { tip: "Use AI sentiment analysis on your Steam reviews weekly — it catches emerging issues faster than manual reading.",
-    detail: "Tools like MonkeyLearn or custom GPT pipelines can tag reviews by topic (performance, bugs, content, pricing) and sentiment trend. Set up automated alerts for sentiment drops — a sudden spike in negative 'performance' mentions after a patch can flag regressions within hours instead of days." },
+    detail: "Tools like MonkeyLearn or custom ChatGPT pipelines can tag reviews by topic (performance, bugs, content, pricing) and sentiment trend. Set up automated alerts for sentiment drops — a sudden spike in negative 'performance' mentions after a patch can flag regressions within hours instead of days." },
   { tip: "The best AI integration points are the boring, repetitive tasks your team already dreads doing.",
     detail: "Survey your team: what tasks feel like busywork? Asset naming, boilerplate code, test case generation, build log analysis, meeting notes. These have the highest adoption rates because AI replaces drudgery, not creativity. Start here for quick wins that build team trust in AI tooling." },
   { tip: "AI moderation catches volume, humans catch context. Never fully automate community moderation.",
@@ -2404,9 +2552,9 @@ const RECOMMENDATIONS = [
   {"id":9,"discipline":["Production"],"phase":["Concept","Pre-Production","Production","QA/Stabilization","Launch Prep","Launch","Post-Launch"],"task":"Status reporting, meeting summarization","opportunity":"Meeting transcription and action item extraction","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"15-25%","confidence":"High","category":"Analysis/Reporting","painPoints":["Team communication","Scheduling visibility"],"benefit":"Auto-transcribes meetings, extracts action items, and distributes summaries. Saves 15-25% of producer overhead.","difficulty":"Low — tools like Otter.ai, Fireflies work out of the box with Zoom/Teams","nvidia":"","caveats":"Accuracy drops with heavy jargon and cross-talk. Action items need human review before becoming commitments.","nextStep":"Start a free Otter.ai or Fireflies trial. Run it on your next 3 team meetings and evaluate action item accuracy."},
   {"id":10,"discipline":["Production"],"phase":["Concept","Pre-Production","Production","QA/Stabilization","Launch Prep","Launch","Post-Launch"],"task":"Schedule tracking, dependency identification","opportunity":"AI-assisted dependency mapping and slip prediction","risk":"Low","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"10-20%","confidence":"Low-Med","category":"Planning/Scheduling","painPoints":["Scheduling visibility"],"benefit":"AI scans task descriptions to flag blockers. ML models forecast slip likelihood from historical sprint data.","difficulty":"Medium — requires structured task data in Jira/Linear/ClickUp","nvidia":"","caveats":"Game dev timelines are notoriously unpredictable. Creative tasks resist ML scheduling. No game-specific AI PM tool has documented AAA adoption.","nextStep":"Enable AI features in your existing PM tool (Jira AI, Linear AI, ClickUp AI). Track prediction accuracy over 2 sprints before relying on it."},
   {"id":11,"discipline":["Game Design"],"phase":["Concept"],"task":"Market research, competitive analysis","opportunity":"AI-powered market analysis and concept validation","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"30-50%","confidence":"Medium","category":"Analysis/Reporting","painPoints":["Content velocity"],"benefit":"AI tools analyze market trends, competitor positioning, and player sentiment to validate game concepts 30-50% faster than manual research.","difficulty":"Low — Ludo.ai and similar tools are web-based, no integration needed","nvidia":"","caveats":"AI market analysis tells you what exists, not what will work. Creative vision still requires human judgment.","nextStep":"Try Ludo.ai for your next concept evaluation. Cross-reference AI findings with Steam trending data and player community sentiment."},
-  {"id":12,"discipline":["Game Design"],"phase":["Production"],"task":"Documentation maintenance, design spec updates","opportunity":"AI writing assistance for GDDs and spec documents","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-30%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Documentation chaos","Content velocity"],"benefit":"AI assists with drafting, updating, and maintaining game design documents. Keeps specs current as design evolves.","difficulty":"Low — use Claude/GPT in your doc editor or Notion AI","nvidia":"","caveats":"AI-drafted specs need designer review. Risk of generic language that doesn't capture design intent precisely.","nextStep":"Use Notion AI or Claude to draft your next GDD section. Compare output quality with your manual writing time."},
+  {"id":12,"discipline":["Game Design"],"phase":["Production"],"task":"Documentation maintenance, design spec updates","opportunity":"AI writing assistance for GDDs and spec documents","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-30%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Documentation chaos","Content velocity"],"benefit":"AI assists with drafting, updating, and maintaining game design documents. Keeps specs current as design evolves.","difficulty":"Low — use Claude/ChatGPT in your doc editor or Notion AI","nvidia":"","caveats":"AI-drafted specs need designer review. Risk of generic language that doesn't capture design intent precisely.","nextStep":"Use Notion AI or Claude to draft your next GDD section. Compare output quality with your manual writing time."},
   {"id":13,"discipline":["Game Design"],"phase":["Pre-Production"],"task":"Balance iteration, economy modeling","opportunity":"Simulation-based balance testing with AI agents","risk":"Medium","integration":"Engine-integrated","teamFit":["AA","AAA"],"savings":"20-40%","confidence":"Low-Med","category":"QA/Testing","painPoints":["Content velocity"],"benefit":"AI agents play through economy and progression systems thousands of times to find exploits and balance issues before players do.","difficulty":"High — requires simulation framework and agent training","nvidia":"","caveats":"Works for quantifiable systems (economy, progression). Fails for subjective feel (is this boss fight fun?). Expensive to set up.","nextStep":"Start simple: build a spreadsheet simulation of your economy loop. If results justify it, explore ML agent frameworks for automated playtesting."},
-  {"id":14,"discipline":["Art"],"phase":["Concept"],"task":"Rapid concept exploration across styles","opportunity":"AI image generation for mood boards and ideation ONLY","risk":"Medium","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"40-60%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Generate dozens of visual concepts in hours instead of days. Useful for early direction exploration before committing to final art.","difficulty":"Low — Midjourney, Stable Diffusion, DALL-E accessible immediately","nvidia":"ComfyUI with RTX acceleration for local Stable Diffusion workflows","caveats":"IDEATION ONLY. Do not ship AI-generated art. Style inconsistency, IP/copyright risk, player backlash (52% of devs view AI negatively because of this). US Copyright Office: purely AI-generated content not copyrightable.","nextStep":"Use Midjourney or local Stable Diffusion for your next concept exploration phase. Create mood boards, not final assets."},
+  {"id":14,"discipline":["Art"],"phase":["Concept"],"task":"Rapid concept exploration across styles","opportunity":"AI image generation for mood boards and ideation ONLY","risk":"Medium","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"40-60%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Generate dozens of visual concepts in hours instead of days. Useful for early direction exploration before committing to final art.","difficulty":"Low — Midjourney, Stable Diffusion, DALL-E, Nano Banana accessible immediately","nvidia":"ComfyUI with RTX acceleration for local Stable Diffusion workflows","caveats":"IDEATION ONLY. Do not ship AI-generated art. Style inconsistency, IP/copyright risk, player backlash (52% of devs view AI negatively because of this). US Copyright Office: purely AI-generated content not copyrightable.","nextStep":"Use Midjourney, Nano Banana, or local Stable Diffusion for your next concept exploration phase. Create mood boards, not final assets."},
   {"id":15,"discipline":["Art"],"phase":["Pre-Production"],"task":"Placeholder asset creation for prototypes","opportunity":"AI-generated rough 3D assets (Meshy, Tripo) for greybox","risk":"Medium","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"30-50%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Build playable prototypes with rough-but-representative art before any final assets are created. Cuts prototyping from weeks to days.","difficulty":"Low-Medium — generated assets need topology cleanup for in-engine use","nvidia":"","caveats":"Generated meshes have bad topology, UVs, and poly counts. Require artist cleanup for anything beyond prototype. Not production assets.","nextStep":"Try Meshy AI or Tripo for your next greybox phase. Generate 10 placeholder props and evaluate cleanup time vs. manual blockout."},
   {"id":16,"discipline":["Technical Art"],"phase":["Pre-Production","Production"],"task":"Shader boilerplate, material function setup","opportunity":"AI code assistance for shader scaffolding","risk":"Low","integration":"Engine-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"15-25%","confidence":"Medium","category":"Code Assistance","painPoints":["Build times","Content velocity"],"benefit":"AI generates shader boilerplate and material function scaffolding, letting tech artists focus on the creative shader work.","difficulty":"Low — same IDE tools as engineering (Copilot/Cursor)","nvidia":"Nsight Graphics for shader profiling and hotspot identification","caveats":"AI-generated shaders often need optimization. Always profile generated code with Nsight or RenderDoc.","nextStep":"Use Copilot for your next material function. Write a detailed comment describing the desired effect, then evaluate the generated code."},
   {"id":17,"discipline":["Technical Art"],"phase":["QA/Stabilization"],"task":"Performance profiling interpretation","opportunity":"AI-assisted bottleneck classification from profile data","risk":"Low","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"10-20%","confidence":"Low-Med","category":"Performance Optimization","painPoints":["Performance optimization"],"benefit":"Emerging tools classify bottlenecks (memory bandwidth bound vs compute bound vs CPU-stalled) from profiling data automatically.","difficulty":"Medium — requires profiling workflow and data pipeline","nvidia":"Nsight Systems for CPU/GPU timeline analysis. Nsight Compute for deep kernel analysis. Both free.","caveats":"No mature AI profiling product exists yet. The interpretation gap remains human-dependent in most studios.","nextStep":"Install Nsight Systems (free). Capture 3 frame profiles of your worst-performing scenes. The tool itself doesn't use AI, but it's the foundation any future AI profiling would build on."},
@@ -2414,20 +2562,20 @@ const RECOMMENDATIONS = [
   {"id":19,"discipline":["Animation"],"phase":["Production"],"task":"Facial animation from dialogue","opportunity":"MetaHuman Animator / Audio2Face for lip-sync","risk":"Low","integration":"Engine-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"30-50%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Generate facial animation and lip-sync directly from audio. 30-50% reduction in manual facial animation work.","difficulty":"Low-Medium — MetaHuman Animator requires UE5; Audio2Face requires NVIDIA SDK","nvidia":"ACE Audio2Face-3D — real-time lip-sync from audio, integrates with MetaHuman in UE5. Free model download.","caveats":"MetaHuman Animator is UE5-specific. Audio2Face requires RTX GPU. Both produce good results but may need hand-tweaking for emotional scenes.","nextStep":"If on UE5: try MetaHuman Animator with a dialogue clip. If engine-agnostic: download Audio2Face from NVIDIA and test with your audio pipeline."},
   {"id":20,"discipline":["Animation"],"phase":["Production"],"task":"Animation cleanup and retargeting","opportunity":"AI-assisted cleanup (Cascadeur) and retarget tools","risk":"Low","integration":"Pipeline-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-35%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI-assisted physics-based cleanup and secondary motion generation. Faster than manual keyframing for cleanup passes.","difficulty":"Low — Cascadeur is a standalone tool with import/export","nvidia":"","caveats":"Results vary by animation style. Physics-based cleanup works well for realistic motion, less well for highly stylized animation.","nextStep":"Download Cascadeur (free for indie). Import a rough animation and test the AI-assisted cleanup workflow."},
   {"id":21,"discipline":["Audio"],"phase":["Pre-Production"],"task":"Placeholder dialogue for prototyping","opportunity":"AI TTS (ElevenLabs) for scratch voice lines","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"50-70%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Generate placeholder voice lines in minutes instead of scheduling recording sessions. Test pacing, narrative flow, and gameplay feel with AI voices before casting.","difficulty":"Low — ElevenLabs is web-based with API access","nvidia":"Riva Magpie TTS for on-device/custom voice. ACE Chatterbox TTS (open-source, free).","caveats":"PROTOTYPING ONLY. Shipped voice acting requires SAG-AFTRA compliance (consent + compensation for digital replicas). AI voice for shipped products without compliance is a legal risk.","nextStep":"Create an ElevenLabs account. Generate scratch dialogue for your next prototype scene. Compare pacing feedback vs. text-on-screen."},
-  {"id":22,"discipline":["Narrative"],"phase":["Concept"],"task":"World-building research and reference gathering","opportunity":"AI research synthesis for setting and lore references","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"25-40%","confidence":"Medium","category":"Analysis/Reporting","painPoints":["Content velocity","Documentation chaos"],"benefit":"AI synthesizes historical, cultural, and scientific references for world-building. Accelerates the research phase of narrative design.","difficulty":"Low — use Claude, GPT, or Perplexity for research synthesis","nvidia":"","caveats":"AI research is a starting point, not a substitute for deep domain expertise. Always verify historical and cultural facts.","nextStep":"Use Claude or Perplexity to research your next game setting. Provide a detailed brief and evaluate the quality of references returned."},
+  {"id":22,"discipline":["Narrative"],"phase":["Concept"],"task":"World-building research and reference gathering","opportunity":"AI research synthesis for setting and lore references","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"25-40%","confidence":"Medium","category":"Analysis/Reporting","painPoints":["Content velocity","Documentation chaos"],"benefit":"AI synthesizes historical, cultural, and scientific references for world-building. Accelerates the research phase of narrative design.","difficulty":"Low — use Claude, ChatGPT, or Perplexity for research synthesis","nvidia":"","caveats":"AI research is a starting point, not a substitute for deep domain expertise. Always verify historical and cultural facts.","nextStep":"Use Claude or Perplexity to research your next game setting. Provide a detailed brief and evaluate the quality of references returned."},
   {"id":23,"discipline":["UI/UX"],"phase":["Pre-Production"],"task":"Wireframe and flow prototyping","opportunity":"AI layout generation for rapid UX exploration","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-35%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI generates wireframe layouts and user flow variations, accelerating the exploration phase of UX design.","difficulty":"Low — tools like Galileo AI, Uizard generate from text descriptions","nvidia":"","caveats":"Generated UX is generic. Game UI has unique constraints (controller input, HUD legibility, accessibility) that AI tools don't understand well.","nextStep":"Try Galileo AI or v0.dev for your next UI wireframe. Use the output as a starting point, not a final design."},
   {"id":24,"discipline":["UI/UX"],"phase":["QA/Stabilization"],"task":"UI visual regression across resolutions","opportunity":"Automated UI screenshot comparison","risk":"Low","integration":"Pipeline-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"30-50%","confidence":"High","category":"QA/Testing","painPoints":["Bug volume"],"benefit":"Catches UI layout breaks, font rendering issues, and resolution-specific bugs automatically across all target platforms.","difficulty":"Low — integrates with existing CI pipeline","nvidia":"","caveats":"Requires baseline screenshots per platform/resolution. Initial setup is manual.","nextStep":"Add BackstopJS or Percy to your CI. Capture UI baselines at all target resolutions."},
   {"id":25,"discipline":["Localization","Production"],"phase":["Production","QA/Stabilization"],"task":"Translation volume across 10+ languages","opportunity":"MTPE workflow (DeepL + Gridly + human review)","risk":"Low","integration":"Pipeline-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"40-80%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Localization","Content velocity"],"benefit":"AI generates first-pass translations, human translators review and refine. 40-80% faster pipelines, 2-3x more language pairs without proportional staffing.","difficulty":"Low-Medium — Gridly integrates with engines; DeepL API is straightforward","nvidia":"","caveats":"Game jargon, puns, and culturally-dependent humor require human translators. UI string length constraints are frequently violated by AI translations.","nextStep":"Set up a DeepL API trial. Run your UI strings through MTPE and measure human review time vs. from-scratch translation."},
-  {"id":26,"discipline":["Community/Marketing"],"phase":["Launch Prep","Launch"],"task":"Marketing copy drafts, store descriptions","opportunity":"AI draft generation for marketing materials","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"25-40%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI drafts store descriptions, press releases, social posts, and marketing copy. Human editors refine tone and accuracy.","difficulty":"Low — Claude/GPT with brand guidelines as context","nvidia":"","caveats":"AI marketing copy is safe and generic by default. Needs human editing for distinctive voice and brand-specific claims.","nextStep":"Draft your next store description with Claude. Provide your game's key features and target audience as context."},
+  {"id":26,"discipline":["Community/Marketing"],"phase":["Launch Prep","Launch"],"task":"Marketing copy drafts, store descriptions","opportunity":"AI draft generation for marketing materials","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"25-40%","confidence":"High","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI drafts store descriptions, press releases, social posts, and marketing copy. Human editors refine tone and accuracy.","difficulty":"Low — Claude/ChatGPT with brand guidelines as context","nvidia":"","caveats":"AI marketing copy is safe and generic by default. Needs human editing for distinctive voice and brand-specific claims.","nextStep":"Draft your next store description with Claude. Provide your game's key features and target audience as context."},
   {"id":27,"discipline":["Community/Marketing"],"phase":["Launch","Post-Launch"],"task":"Player feedback volume management","opportunity":"Sentiment analysis and feedback summarization","risk":"Low","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"30-50%","confidence":"High","category":"Analysis/Reporting","painPoints":["Player feedback volume"],"benefit":"Auto-summarize Steam reviews, Reddit, Discord to flag top issues and sentiment shifts. AI flags; humans prioritize.","difficulty":"Medium — requires NLP pipeline or third-party tool (Medallia, Qualtrics)","nvidia":"","caveats":"AI misses the nuanced 'why' behind complaints. Always pair AI summaries with manual community reading.","nextStep":"Set up a basic sentiment analysis pipeline on your Steam reviews. Or trial Zigpoll SDK for in-game feedback with built-in sentiment analysis."},
   {"id":28,"discipline":["Community/Marketing"],"phase":["Post-Launch"],"task":"Toxic chat and behavior moderation","opportunity":"AI moderation (GGWP, ToxMod) with human review","risk":"Low","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"40-60%","confidence":"High","category":"Community/Moderation","painPoints":["Player feedback volume"],"benefit":"56% reduction in toxic incidents. 30x more detection than manual moderation. GGWP case study with Predecessor documented these results.","difficulty":"Medium — SDK integration required; tuning period for false positive reduction","nvidia":"Broadcast SDK for in-game voice chat quality (noise removal, studio voice)","caveats":"0.1% false positive rate at millions of daily interactions = thousands of incorrectly flagged players. Voice moderation lags text accuracy.","nextStep":"Request GGWP or ToxMod demo for your live game. Evaluate false positive rate on a sample of your community data."},
-  {"id":29,"discipline":["Creative Direction"],"phase":["Concept","Pre-Production"],"task":"Vision communication across team","opportunity":"AI-generated mood boards for direction alignment","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-30%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Team communication","Content velocity"],"benefit":"Rapidly generate visual mood boards to communicate art direction across the team. Aligns vision before production commitment.","difficulty":"Low — Midjourney, DALL-E, or local Stable Diffusion","nvidia":"ComfyUI with RTX for local generation workflows","caveats":"Mood boards only. Not art direction — human creative directors set the vision, AI generates reference material.","nextStep":"Use Midjourney to generate 20 mood board images for your next project pitch. Compare team alignment speed vs. traditional reference gathering."},
+  {"id":29,"discipline":["Creative Direction"],"phase":["Concept","Pre-Production"],"task":"Vision communication across team","opportunity":"AI-generated mood boards for direction alignment","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-30%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Team communication","Content velocity"],"benefit":"Rapidly generate visual mood boards to communicate art direction across the team. Aligns vision before production commitment.","difficulty":"Low — Midjourney, DALL-E, Nano Banana, or local Stable Diffusion","nvidia":"ComfyUI with RTX for local generation workflows","caveats":"Mood boards only. Not art direction — human creative directors set the vision, AI generates reference material.","nextStep":"Use Midjourney or Nano Banana to generate 20 mood board images for your next project pitch. Compare team alignment speed vs. traditional reference gathering."},
   {"id":30,"discipline":["Live Ops"],"phase":["Post-Launch"],"task":"Churn prediction and engagement tracking","opportunity":"ML-based player analytics (GameAnalytics, Amplitude)","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-35%","confidence":"High","category":"Analysis/Reporting","painPoints":["Player feedback volume"],"benefit":"ML models predict churn, segment players by behavior, and identify engagement patterns. Industry standard in live-service.","difficulty":"Low-Medium — GameAnalytics is free; Amplitude/Mixpanel require setup","nvidia":"","caveats":"Analytics tells you what players are doing, not why. Privacy constraints (GDPR, COPPA) limit data collection in some markets.","nextStep":"Integrate GameAnalytics (free) into your build. Instrument 5 key player actions and review retention data after 1 week."},
   {"id":31,"discipline":["Level Design"],"phase":["Production"],"task":"Playpath validation and pacing analysis","opportunity":"AI bot navigation testing for flow validation","risk":"Low","integration":"Engine-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-35%","confidence":"Medium","category":"QA/Testing","painPoints":["Bug volume","Content velocity"],"benefit":"AI bots navigate levels to validate player paths, find unreachable areas, and test pacing assumptions.","difficulty":"Medium — requires nav mesh and bot behavior setup","nvidia":"","caveats":"Bots follow optimal paths, not exploratory player behavior. Human playtesting still needed for feel and discovery.","nextStep":"Build a simple nav-mesh-following bot that records path time and coverage. Run overnight on your latest level build."},
   {"id":32,"discipline":["Engineering","Technical Art"],"phase":["Production","QA/Stabilization"],"task":"Rendering performance optimization","opportunity":"DLSS integration for performance headroom","risk":"Low","integration":"Engine-integrated","teamFit":["Solo","Indie","AA","AAA"],"savings":"30-60% perf gain","confidence":"High","category":"Performance Optimization","painPoints":["Performance optimization"],"benefit":"DLSS 4.5 Super Resolution provides 30-60% performance headroom at minimal quality cost. Lowest-effort, highest-impact NVIDIA integration.","difficulty":"Low — DLSS plugin available for UE5 and Unity. Simple integration.","nvidia":"DLSS 4.5 Super Resolution (all RTX GPUs). Frame Generation for RTX 40/50. Ray Reconstruction for path-traced titles.","caveats":"RTX GPU required by players. Multi Frame Generation is RTX 50 exclusive. Not applicable to console-only titles.","nextStep":"Install the NVIDIA DLSS plugin for your engine. Enable Super Resolution on your worst-performing scene and benchmark the improvement."},
   {"id":33,"discipline":["Production"],"phase":["Pre-Production"],"task":"Resource conflict detection","opportunity":"AI surfacing overlapping critical-path assignments","risk":"Low","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"10-15%","confidence":"Medium","category":"Planning/Scheduling","painPoints":["Scheduling visibility","Team communication"],"benefit":"AI detects when the same person is assigned to overlapping critical-path items and flags resource conflicts before they cause delays.","difficulty":"Low — enable AI features in existing PM tools","nvidia":"","caveats":"Only useful if task data is structured and up-to-date. Stale Jira boards produce stale AI recommendations.","nextStep":"Enable Atlassian Intelligence or Linear AI. Review flagged conflicts over 2 sprints to evaluate accuracy."},
   {"id":34,"discipline":["Audio"],"phase":["Production"],"task":"Ambient SFX coverage for large worlds","opportunity":"AI SFX generation for filler/ambient audio","risk":"Medium","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA"],"savings":"20-35%","confidence":"Medium","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI generates ambient sounds, environmental audio, and filler effects — especially valuable for indie devs without access to professional sound libraries.","difficulty":"Low — ElevenLabs SFX generator is web-based","nvidia":"","caveats":"Not a replacement for sound designers on AAA. Legal uncertainty around AI-generated audio training data.","nextStep":"Try ElevenLabs Sound Effects for your next ambient audio pass. Generate 20 environmental sounds and evaluate quality."},
-  {"id":35,"discipline":["Narrative"],"phase":["Production"],"task":"Barks, incidental dialogue volume","opportunity":"AI draft generation for non-critical dialogue lines","risk":"Medium","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"15-25%","confidence":"Low-Med","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI generates first drafts of barks, ambient NPC chatter, and incidental dialogue. Writers review and refine.","difficulty":"Low — Claude/GPT with character sheets as context","nvidia":"","caveats":"AI dialogue is generic by default. Risk of flat, samey writing across NPCs. Writers must add voice and personality.","nextStep":"Feed character briefs to Claude and generate 50 barks. Evaluate how many are usable without rewriting."},
+  {"id":35,"discipline":["Narrative"],"phase":["Production"],"task":"Barks, incidental dialogue volume","opportunity":"AI draft generation for non-critical dialogue lines","risk":"Medium","integration":"Engine-agnostic","teamFit":["AA","AAA"],"savings":"15-25%","confidence":"Low-Med","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"AI generates first drafts of barks, ambient NPC chatter, and incidental dialogue. Writers review and refine.","difficulty":"Low — Claude/ChatGPT with character sheets as context","nvidia":"","caveats":"AI dialogue is generic by default. Risk of flat, samey writing across NPCs. Writers must add voice and personality.","nextStep":"Feed character briefs to Claude and generate 50 barks. Evaluate how many are usable without rewriting."},
   {"id":36,"discipline":["Level Design"],"phase":["Pre-Production"],"task":"Rapid layout prototyping","opportunity":"AI environment layout suggestions (Promethean AI)","risk":"Medium","integration":"Engine-integrated","teamFit":["AA","AAA"],"savings":"15-30%","confidence":"Low-Med","category":"Content Assistance (prototyping)","painPoints":["Content velocity"],"benefit":"Takes natural language design intent and generates environment layouts and asset placement suggestions.","difficulty":"High — Promethean AI is enterprise-priced; alternatives are less mature","nvidia":"","caveats":"Generated layouts are starting points, not final designs. Level design is fundamentally about player experience, which AI doesn't understand.","nextStep":"If budget allows, request a Promethean AI evaluation. Otherwise, use AI image generation to rapidly explore layout concepts visually."}
 ];
 
@@ -3009,8 +3157,11 @@ function renderCard(rec, rank) {
     'Qualtrics': 'https://www.qualtrics.com',
     'MetaHuman Animator': 'https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-animator',
     'ChatGPT': 'https://chat.openai.com',
+    'DALL-E': 'https://openai.com/index/dall-e/',
+    'Nano Banana': 'https://aistudio.google.com',
     'Claude': 'https://claude.ai',
-    'Perplexity': 'https://www.perplexity.ai'
+    'Perplexity': 'https://www.perplexity.ai',
+    'MonkeyLearn': 'https://monkeylearn.com'
   };
 
   function linkifyTools(text) {
@@ -3383,6 +3534,145 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
   if (window._wizardReset) window._wizardReset();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+/* ============================================
+   SENTIMENT POLL
+   ============================================ */
+(function() {
+  var POLL_KEY = 'gdai_sentiment_vote';
+  var POLL_DATA_KEY = 'gdai_sentiment_data';
+  var OPTIONS = [
+    { id: 'optimistic',  emoji: '🚀', label: 'Optimistic — AI is a game-changer for dev workflows',      bar: 'bar-optimistic' },
+    { id: 'cautious',    emoji: '🤔', label: 'Cautiously curious — useful in some areas, overhyped in others', bar: 'bar-cautious' },
+    { id: 'wait',        emoji: '⏳', label: 'Wait and see — too early to judge',                          bar: 'bar-wait' },
+    { id: 'skeptical',   emoji: '😒', label: 'Skeptical — more problems than solutions right now',       bar: 'bar-skeptical' },
+    { id: 'against',     emoji: '❌', label: 'Against it — AI has no place in game development',          bar: 'bar-against' }
+  ];
+
+  // Storage abstraction: persistent when available, in-memory fallback
+  var _mem = {};
+  var _ls = (function() { try { var s = window['local'+'Storage']; s.setItem('_t','1'); s.removeItem('_t'); return s; } catch(e) { return null; } })();
+  function storageGet(key) {
+    if (_ls) try { var v = _ls.getItem(key); if (v !== null) return v; } catch(e) {}
+    return _mem[key] || null;
+  }
+  function storageSet(key, val) {
+    _mem[key] = val;
+    if (_ls) try { _ls.setItem(key, val); } catch(e) {}
+  }
+
+  function getVotes() {
+    var raw = storageGet(POLL_DATA_KEY);
+    if (raw) try { return JSON.parse(raw); } catch(e) {}
+    return { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
+  }
+
+  function saveVotes(votes) {
+    storageSet(POLL_DATA_KEY, JSON.stringify(votes));
+  }
+
+  function getUserVote() {
+    return storageGet(POLL_KEY);
+  }
+
+  function setUserVote(id) {
+    storageSet(POLL_KEY, id);
+  }
+
+  function renderButtons(container) {
+    const wrap = document.createElement('div');
+    wrap.className = 'poll-options';
+    OPTIONS.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'poll-option-btn';
+      btn.innerHTML = `<span class="poll-emoji">${opt.emoji}</span><span>${opt.label}</span>`;
+      btn.addEventListener('click', () => {
+        const votes = getVotes();
+        votes[opt.id] = (votes[opt.id] || 0) + 1;
+        saveVotes(votes);
+        setUserVote(opt.id);
+        renderResults(container, votes, opt.id);
+      });
+      wrap.appendChild(btn);
+    });
+    container.innerHTML = '';
+    container.appendChild(wrap);
+  }
+
+  function renderResults(container, votes, userVote) {
+    const total = Object.values(votes).reduce((a, b) => a + b, 0);
+    const wrap = document.createElement('div');
+    wrap.className = 'poll-results';
+
+    OPTIONS.forEach(opt => {
+      const count = votes[opt.id] || 0;
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      const row = document.createElement('div');
+      row.className = 'poll-result-row' + (opt.id === userVote ? ' voted' : '');
+      row.innerHTML = `
+        <div class="poll-result-label">
+          <span class="poll-emoji">${opt.emoji}</span>
+          <span>${opt.label.split(' — ')[0]}</span>
+          <span class="poll-count">(${count})</span>
+          <span class="poll-pct">${pct}%</span>
+        </div>
+        <div class="poll-bar-track">
+          <div class="poll-bar-fill ${opt.bar}" style="width: 0%"></div>
+        </div>
+      `;
+      wrap.appendChild(row);
+    });
+
+    const msg = document.createElement('p');
+    msg.className = 'poll-voted-msg';
+    msg.textContent = 'Thanks for weighing in.';
+    wrap.appendChild(msg);
+
+    const totalMsg = document.createElement('p');
+    totalMsg.className = 'poll-total';
+    totalMsg.textContent = `${total} vote${total !== 1 ? 's' : ''} so far`;
+    wrap.appendChild(totalMsg);
+
+    container.innerHTML = '';
+    container.appendChild(wrap);
+
+    // Animate bars after paint
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        wrap.querySelectorAll('.poll-bar-fill').forEach(bar => {
+          const row = bar.closest('.poll-result-row');
+          const optId = OPTIONS[Array.from(wrap.querySelectorAll('.poll-result-row')).indexOf(row)]?.id;
+          const c = votes[optId] || 0;
+          const p = total > 0 ? Math.round((c / total) * 100) : 0;
+          bar.style.width = p + '%';
+        });
+      });
+    });
+  }
+
+  function init() {
+    const container = document.getElementById('poll-body');
+    if (!container) return;
+    const existing = getUserVote();
+    if (existing) {
+      renderResults(container, getVotes(), existing);
+    } else {
+      renderButtons(container);
+    }
+  }
+
+  // Init on page load and when results screen becomes visible
+  init();
+  // Re-init when results screen shown (in case first load was on form screen)
+  const origShowResults = window.showResultsScreen;
+  if (typeof origShowResults === 'function') {
+    window.showResultsScreen = function() {
+      origShowResults.apply(this, arguments);
+      init();
+    };
+  }
+})();
 
 /* ============================================
    ABOUT MODAL
