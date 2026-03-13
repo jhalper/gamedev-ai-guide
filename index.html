@@ -319,6 +319,31 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-3);
 }
 
+.creator-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.creator-line a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.15s ease;
+}
+.creator-line a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+.creator-line svg {
+  flex-shrink: 0;
+}
+
 /* Question Sections */
 .question-section {
   margin-bottom: var(--space-6);
@@ -615,6 +640,24 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
   color: var(--color-primary);
   margin-bottom: var(--space-2);
+}
+
+.tip-header.myth-header {
+  color: #E8912D;
+}
+
+.tip-box:has(.myth-header) {
+  border-left-color: #E8912D;
+  background: rgba(232, 145, 45, 0.06);
+}
+
+[data-theme="light"] .tip-header.myth-header {
+  color: #C47A1E;
+}
+
+[data-theme="light"] .tip-box:has(.myth-header) {
+  border-left-color: #C47A1E;
+  background: rgba(196, 122, 30, 0.07);
 }
 
 .tip-box p {
@@ -1690,6 +1733,13 @@ h1, h2, h3, h4, h5, h6 {
       <h1>Find Your AI Opportunities</h1>
       <p class="form-blurb">Cut through the AI noise. Get honest, practical recommendations for your specific role and project. Built by a veteran game dev who got tired of the hype.</p>
       <p>Answer 6 questions about your role and project. Get personalized, honest AI workflow recommendations.</p>
+      <div class="creator-line">
+        <span>Created by Joe Halper</span>
+        <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
     </div>
 
     <form id="intake-form" novalidate>
@@ -1951,7 +2001,29 @@ const AI_TIPS = [
   { tip: "Test AI bot playtesting on your simplest level first. Complex open worlds expose navigation edge cases.",
     detail: "AI playtest bots (like NVIDIA's ACE-based testers) navigate best in constrained environments. Start with a tutorial level or linear corridor to validate the tool works. Open world, verticality, and physics-based traversal create edge cases that require extensive configuration." },
   { tip: "AI-assisted balance testing works for math-driven systems. Fun and feel still require human playtesting.",
-    detail: "AI can simulate thousands of combat encounters, economy loops, and progression curves to find mathematical imbalances. But it can't tell you if a weapon 'feels' satisfying, if a jump is fun, or if a difficulty spike is frustrating. Use AI for numbers, humans for feel." }
+    detail: "AI can simulate thousands of combat encounters, economy loops, and progression curves to find mathematical imbalances. But it can't tell you if a weapon 'feels' satisfying, if a jump is fun, or if a difficulty spike is frustrating. Use AI for numbers, humans for feel." },
+
+  // — Myth vs. Reality tips —
+  { tip: "Myth vs. Reality: 'AI will replace game artists.' → AI generates volume, not vision. Art directors and artists are more essential than ever.",
+    detail: "AI can flood a folder with variations, but it can't define a game's visual identity, maintain style consistency across thousands of assets, or make intentional creative choices. Studios using AI art effectively have artists directing the AI — not the other way around. The role shifts from production to curation and art direction, which requires more skill, not less." },
+  { tip: "Myth vs. Reality: 'AI can write production-ready game code.' → AI writes plausible code, not reliable code. Every line still needs human review.",
+    detail: "AI code assistants produce syntactically correct code that often references hallucinated APIs, ignores engine-specific constraints, and introduces subtle bugs that pass basic tests. In production, AI-generated code has a higher rate of logic errors in edge cases. It's a powerful drafting tool, but treating AI output as production-ready without review is how you ship bugs." },
+  { tip: "Myth vs. Reality: 'AI saves time on everything.' → AI saves time on specific, well-defined tasks. On open-ended work, it can cost you time.",
+    detail: "AI excels at bounded tasks: boilerplate code, format conversion, placeholder assets, data summarization. On creative or architectural decisions — level design, system design, narrative structure — AI suggestions often lead teams down paths they have to backtrack from. The time spent evaluating, correcting, and reworking bad AI output can exceed doing it manually." },
+  { tip: "Myth vs. Reality: 'AI-generated content is basically shippable.' → AI content is a rough draft at best. The gap between 'looks okay' and 'ships' is where the real work lives.",
+    detail: "AI textures tile poorly. AI dialogue sounds generic. AI animations lack weight and follow-through. AI music loops awkwardly. The last 20% of quality that separates prototype from shippable product is exactly the part AI can't do. Studios that ship AI content without a human polish pass get reviews that say 'something feels off' — because players notice even if they can't articulate why." },
+  { tip: "Myth vs. Reality: 'You need to adopt AI now or fall behind.' → Premature adoption wastes more time than strategic patience.",
+    detail: "The AI tool landscape changes every 3-6 months. Teams that rushed to build pipelines around early tools like specific Stable Diffusion versions or early Copilot had to rebuild when those tools changed. Waiting for a tool to prove itself over 2-3 update cycles before integrating it into your pipeline is not falling behind — it's avoiding rework." },
+  { tip: "Myth vs. Reality: 'AI makes small teams as capable as big studios.' → AI amplifies capability, but it doesn't eliminate the need for specialized expertise.",
+    detail: "A solo dev with AI tools can produce more prototype content than ever. But shipping a polished game still requires deep expertise in optimization, platform requirements, accessibility, QA, and player psychology. AI helps a 5-person team do the work of 8, not 50. Overpromising what small teams can deliver with AI leads to burnout and cut corners." },
+  { tip: "Myth vs. Reality: 'AI understands game design.' → AI pattern-matches from training data. It has no concept of player experience, pacing, or fun.",
+    detail: "When you ask AI for game design suggestions, it remixes ideas from its training data — which skews toward popular documented designs. It can't playtest, can't feel tension, can't judge pacing, and doesn't understand why a mechanic is fun vs. frustrating. AI game design suggestions sound reasonable on paper and fall apart in playtesting." },
+  { tip: "Myth vs. Reality: 'AI will make game development cheaper.' → AI shifts costs, it doesn't eliminate them. New costs include integration, review, and rework.",
+    detail: "AI reduces some production costs but introduces new ones: tool licensing, prompt engineering time, output review and cleanup, pipeline integration, retraining when tools change, and the engineering overhead of maintaining AI-dependent workflows. Net savings exist, but they're typically 15-30% on specific tasks — not the 80% reduction some vendors promise." },
+  { tip: "Myth vs. Reality: 'AI-powered NPCs will revolutionize games.' → Real-time AI dialogue is impressive in demos and unreliable in production at scale.",
+    detail: "AI NPC demos look great with cherry-picked interactions. In production, you get latency issues, inconsistent character voice, lore-breaking responses, inappropriate content, and server costs that scale with player count. Shipping AI NPCs requires extensive guardrails, fallback systems, and content filtering — the 'magic' demo hides months of engineering work." },
+  { tip: "Myth vs. Reality: 'AI training on game assets is free and easy.' → Training custom models requires clean data, compute budget, and iteration time most studios underestimate.",
+    detail: "Fine-tuning a model on your game's art style or codebase isn't plug-and-play. You need curated, labeled datasets (not just a dump of your asset folder), GPU compute time that costs real money, and multiple training runs to get usable results. Most studios that attempt custom training spend 2-4x their initial time estimate before getting production-quality output." }
 ];
 
 const DISCIPLINES = [
@@ -2755,6 +2827,16 @@ function showRandomTip() {
   currentTipIndex = (currentTipIndex + 1) % tipShuffleOrder.length;
   const tipObj = AI_TIPS[tipShuffleOrder[currentTipIndex]];
   document.getElementById('tip-text').textContent = tipObj.tip;
+  // Update header label based on tip type
+  const isMyth = tipObj.tip.startsWith('Myth vs. Reality');
+  const headerEl = document.querySelector('.tip-header');
+  if (isMyth) {
+    headerEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4m0 4h.01M5.07 19H18.93a2 2 0 0 0 1.73-3L13.73 4a2 2 0 0 0-3.46 0L3.34 16a2 2 0 0 0 1.73 3z"/></svg> Myth vs. Reality';
+    headerEl.classList.add('myth-header');
+  } else {
+    headerEl.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 12 18.469c-.258 0-1.118-.14-1.339-.673L9.534 16.59z"/></svg> Quick Tip';
+    headerEl.classList.remove('myth-header');
+  }
   // Reset detail state
   const detailEl = document.getElementById('tip-detail');
   detailEl.textContent = tipObj.detail;
