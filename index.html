@@ -3201,6 +3201,14 @@ function generateWriteup(selections, scored) {
     lines.push('Most can be implemented quickly with low engineering overhead.');
   }
 
+  // Legal awareness note — fires when results touch content generation, creative output, or community moderation
+  const hasContentAssist = contentAssistCount > 0;
+  const hasModerationCard = scored.some(r => r.category === 'Community/Moderation');
+  const hasMedHighRisk = scored.some(r => r.risk === 'Medium' || r.risk === 'High');
+  if (hasContentAssist || hasModerationCard) {
+    lines.push('Note on legal landscape: IP ownership of AI-generated content, labor obligations (SAG-AFTRA for voice, WGA for writing), and training-data liability are all actively evolving. Rules differ by jurisdiction and change frequently. Check the caveats on each card for specifics, and consult legal counsel before shipping AI-generated output or deploying AI moderation at scale.');
+  }
+
   return lines.join(' ');
 }
 
