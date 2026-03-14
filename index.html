@@ -1091,11 +1091,7 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid var(--color-primary-border);
 }
 
-.badge-nvidia {
-  background: rgba(118, 185, 0, 0.12);
-  color: #76B900;
-  border: 1px solid rgba(118, 185, 0, 0.25);
-}
+/* badge-nvidia removed — NVIDIA tools shown inline like all other vendors */
 
 .badge-difficulty {
   background: var(--color-surface-2);
@@ -1184,29 +1180,20 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-primary);
 }
 
-.nvidia-detail {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-2);
+.vendor-tools-detail {
+  font-size: var(--text-sm);
+  line-height: 1.5;
 }
 
-.nvidia-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  margin-top: 2px;
-  color: #76B900;
-}
-
-.nvidia-link {
-  color: #76B900;
+.vendor-tools-detail a {
+  color: var(--color-primary);
   text-decoration: underline;
-  text-decoration-color: rgba(118, 185, 0, 0.4);
+  text-decoration-color: var(--color-primary-border);
   text-underline-offset: 2px;
   transition: text-decoration-color 0.15s ease;
 }
-.nvidia-link:hover {
-  text-decoration-color: #76B900;
+.vendor-tools-detail a:hover {
+  text-decoration-color: var(--color-primary);
 }
 
 .tool-link {
@@ -2408,7 +2395,9 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
-  { date: 'Mar 2026', tag: 'new', text: 'Added pattern summary writeup above result cards — a personalized brief covering risk profile, confidence level, difficulty, and NVIDIA tool availability based on your matches.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Pattern summary now includes a creative-sensitivity notice for Art, Animation, Audio, Narrative, and Creative Direction when results include content generation recommendations. Acknowledges authorship, IP, and industry trust concerns.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Rebalanced tool presentation — NVIDIA tools now shown alongside all other vendor tools with identical styling. Removed branded badges, icons, and callouts for a neutral, vendor-agnostic view.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added pattern summary writeup above result cards — a personalized brief covering risk profile, confidence level, and difficulty based on your matches.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Phase picker now allows selecting up to 3 development phases (toggle style) for broader, more relevant results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Replaced percentage-based savings badges with qualitative labels (Minor/Moderate/Significant potential). Specific ranges moved into expanded card details with "approximate" qualifier.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Replaced radar chart with honest horizontal bar breakdown showing matched vs. total recommendations per category.' },
@@ -3142,6 +3131,11 @@ function generateWriteup(selections, scored) {
   scored.forEach(r => { catCounts[r.category] = (catCounts[r.category] || 0) + 1; });
   const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
 
+  // Creative discipline detection
+  const CREATIVE_DISCIPLINES = ['Art', '3D / Environment Art', 'Animation', 'Audio', 'Narrative', 'Creative Direction'];
+  const isCreativeDiscipline = CREATIVE_DISCIPLINES.includes(selections.discipline);
+  const contentAssistCount = scored.filter(r => r.category === 'Content Assistance (prototyping)').length;
+
   // Opening: profile context
   const teamLabel = selections.team === 'Solo' ? 'a solo developer'
     : selections.team === 'Indie' ? 'an indie team'
@@ -3151,6 +3145,11 @@ function generateWriteup(selections, scored) {
     : selections.phase.length === 1 ? 'during ' + selections.phase[0]
     : 'across ' + selections.phase.join(' and ');
   lines.push(`As ${teamLabel} in ${selections.discipline} ${phaseText}, your top ${scored.length} matches lean toward ${topCat ? topCat[0].replace(' (prototyping)', '') : 'general'} opportunities.`);
+
+  // Creative context warning (when creative discipline + content assistance results)
+  if (isCreativeDiscipline && contentAssistCount > 0) {
+    lines.push('These recommendations are scoped to prototyping and internal workflows, not shipped creative output. AI-generated content in creative disciplines carries real concerns around authorship, IP, and industry trust that vary by studio and project. Read the caveats on each card.');
+  }
 
   // Risk sentence
   if (lowRisk === scored.length) {
@@ -3170,12 +3169,6 @@ function generateWriteup(selections, scored) {
 
   if (lowDiff >= 3) {
     lines.push('Most can be implemented quickly with low engineering overhead.');
-  }
-
-  // NVIDIA callout
-  const nvidiaCount = scored.filter(r => r.nvidia).length;
-  if (nvidiaCount >= 2) {
-    lines.push(nvidiaCount + ' of your top results have relevant NVIDIA tool integrations. Expand those cards for specifics.');
   }
 
   return lines.join(' ');
@@ -3224,7 +3217,7 @@ function showResults(selections) {
   // Add expand/collapse handlers
   cardsContainer.querySelectorAll('.rec-card-header').forEach(header => {
     header.addEventListener('click', (e) => {
-      // If user clicked a tool/nvidia link, let the link open instead of toggling
+      // If user clicked a tool link, let the link open instead of toggling
       if (e.target.closest('a')) return;
       const card = header.closest('.rec-card');
       const wasExpanded = card.classList.contains('expanded');
@@ -3290,7 +3283,7 @@ function renderCard(rec, rank) {
   // First sentence of caveats for preview
   const caveatPreview = rec.caveats.split(/\. /)[0] + '.';
 
-  // NVIDIA tool URL map
+  // NVIDIA-specific tool URLs (rendered same as all other vendor tools)
   const NVIDIA_URLS = {
     'ACE': 'https://developer.nvidia.com/ace-for-games',
     'Audio2Face': 'https://developer.nvidia.com/ace-for-games',
@@ -3323,13 +3316,13 @@ function renderCard(rec, rank) {
       result = parts.map(part => {
         if (part.startsWith('<a ')) return part; // already a link, skip
         return part.replace(new RegExp(`\\b${escaped}\\b`, 'g'),
-          `<a href="${NVIDIA_URLS[key]}" target="_blank" rel="noopener noreferrer" class="nvidia-link">$&</a>`);
+          `<a href="${NVIDIA_URLS[key]}" target="_blank" rel="noopener noreferrer">$&</a>`);
       }).join('');
     }
     return result;
   }
 
-  // Non-NVIDIA AI tool URL map
+  // General AI tool URL map
   const TOOL_URLS = {
     'Copilot': 'https://github.com/features/copilot',
     'Cursor': 'https://cursor.com',
@@ -3387,17 +3380,14 @@ function renderCard(rec, rank) {
     return result;
   }
 
-  let nvidiaHTML = '';
+  let vendorToolsHTML = '';
   if (rec.nvidia) {
-    const linkedNvidia = linkifyTools(linkifyNvidia(rec.nvidia));
-    nvidiaHTML = `
+    const linkedVendorTools = linkifyTools(linkifyNvidia(rec.nvidia));
+    vendorToolsHTML = `
       <div class="detail-row">
-        <div class="detail-label">NVIDIA Relevance</div>
+        <div class="detail-label">Related Tools</div>
         <div class="detail-value">
-          <div class="nvidia-detail">
-            <svg class="nvidia-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M8.948 8.798v-1.43a6.7 6.7 0 0 1 .424-.018c3.922-.124 6.298 3.298 6.298 3.298s-2.588 3.702-5.3 3.702c-.522 0-1.01-.112-1.422-.312v-4.39c1.362.168 1.636.876 2.448 2.456l1.818-1.536s-1.404-1.832-3.466-1.832c-.272 0-.536.024-.8.062zM8.948 5.478v1.89a8.1 8.1 0 0 1 .424-.024c5.096-.166 8.152 4.326 8.152 4.326s-3.528 4.902-7.176 4.902c-.5 0-.97-.072-1.4-.2v1.37c.396.074.808.118 1.232.118 3.42 0 5.94-1.736 8.36-3.748.398.318 2.028 1.1 2.362 1.44-2.254 1.892-7.476 3.856-10.626 3.856-.462 0-.9-.04-1.328-.114v1.334l-1.834-.002V4.672h1.834v.806zm0 9.762v1.1c.43.16.906.25 1.422.25 2.498 0 4.306-2.218 4.306-2.218s-1.846-2.466-4.1-2.466c-.6 0-1.134.164-1.628.434v2.064c.084-.018 1.092-.424 1.96.596l-1.96 1.636zm-1.834.012V4.672l-1.834-.002v14.656h1.834v-1.334a6.87 6.87 0 0 1-1.332-.902c-2.148-1.736-2.416-4.84-2.416-4.84s1.964-3.326 3.748-3.39v-1.89C4.756 7.256 2 11.268 2 11.268s1.466 5.38 5.114 7.482v-3.498z"/></svg>
-            ${linkedNvidia}
-          </div>
+          <div class="vendor-tools-detail">${linkedVendorTools}</div>
         </div>
       </div>`;
   }
@@ -3421,7 +3411,7 @@ function renderCard(rec, rank) {
           <span class="badge ${riskClass}">${rec.risk} Risk</span>
           <span class="badge badge-savings">${savingsLabel}</span>
           <span class="badge badge-difficulty">${difficultyShort} Difficulty</span>
-          ${rec.nvidia ? '<span class="badge badge-nvidia">NVIDIA</span>' : ''}
+
         </div>
         <div class="caveat-preview">${caveatPreview}</div>
       </div>
@@ -3440,7 +3430,7 @@ function renderCard(rec, rank) {
             <div class="detail-label">Implementation Difficulty</div>
             <div class="detail-value">${linkedDifficulty}</div>
           </div>
-          ${nvidiaHTML}
+          ${vendorToolsHTML}
           <div class="detail-row">
             <div class="detail-label">Risks / Caveats</div>
             <div class="detail-value caveat">${linkedCaveats}</div>
