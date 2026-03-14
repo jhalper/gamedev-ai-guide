@@ -39,7 +39,11 @@
     measurementId: "G-ZBGDRYKQXB"
   };
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
+  var _ga = firebase.analytics();
+  // Helper: log a custom event (anonymous, no user data)
+  window.gaEvent = function(name, params) {
+    try { _ga.logEvent(name, params || {}); } catch(e) {}
+  };
 </script>
 
 <!-- Fonts from Fontshare -->
@@ -2850,9 +2854,11 @@ renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
     nextBtn.disabled = !isStepValid(currentStep);
   }
 
+  const STEP_NAMES = ['','discipline','engine','team','phase','pain','openness'];
   function goToStep(step) {
     if (step < 1 || step > TOTAL_STEPS) return;
     currentStep = step;
+    gaEvent('wizard_step', { step: step, step_name: STEP_NAMES[step] });
     updateWizard();
   }
 
@@ -2932,6 +2938,14 @@ form.addEventListener('submit', (e) => {
   // All validation is handled by the wizard (next button disabled until valid)
   if (!discipline || !engine || !team || !phase || pain.length === 0 || openness.length === 0) return;
 
+  gaEvent('form_submit', {
+    discipline: discipline,
+    engine: engine,
+    team: team,
+    phase: phase,
+    pain: pain.join(','),
+    openness: openness.join(',')
+  });
   showResults({ discipline, engine, team, phase, pain, openness });
 });
 
@@ -3056,7 +3070,12 @@ function showResults(selections) {
       // If user clicked a tool/nvidia link, let the link open instead of toggling
       if (e.target.closest('a')) return;
       const card = header.closest('.rec-card');
+      const wasExpanded = card.classList.contains('expanded');
       card.classList.toggle('expanded');
+      if (!wasExpanded) {
+        const title = card.querySelector('.rec-card-title');
+        gaEvent('card_expand', { card_title: title ? title.textContent.trim() : '' });
+      }
     });
   });
 
@@ -3473,12 +3492,18 @@ function showRandomTip() {
 
 document.getElementById('tip-next-btn').addEventListener('click', () => {
   showRandomTip();
+  var tipText = document.getElementById('tip-text');
+  gaEvent('tip_next', { tip: tipText ? tipText.textContent.substring(0, 80) : '' });
 });
 
 document.getElementById('tip-more-btn').addEventListener('click', () => {
   const detailEl = document.getElementById('tip-detail');
   const moreBtn = document.getElementById('tip-more-btn');
   const isVisible = detailEl.classList.contains('visible');
+  if (!isVisible) {
+    var tipText = document.getElementById('tip-text');
+    gaEvent('tip_more', { tip: tipText ? tipText.textContent.substring(0, 80) : '' });
+  }
   if (isVisible) {
     detailEl.classList.remove('visible');
     moreBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg> Tell Me More';
