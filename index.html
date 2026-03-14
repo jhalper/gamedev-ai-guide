@@ -1149,6 +1149,26 @@ h1, h2, h3, h4, h5, h6 {
   font-style: italic;
 }
 
+.caveat-preview {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: var(--space-2);
+  line-height: 1.4;
+  padding: 0 var(--space-2);
+}
+
+.results-disclaimer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  line-height: 1.5;
+}
+
 .detail-value.next-step {
   color: var(--color-primary);
 }
@@ -1261,45 +1281,54 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--space-4);
 }
 
-.radar-wrapper {
+.relevance-breakdown {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-3);
 }
 
-.radar-canvas-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
-  aspect-ratio: 1;
-}
-
-.radar-canvas-wrap canvas {
-  width: 100%;
-  height: 100%;
-}
-
-.radar-legend {
+.relevance-row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-2) var(--space-4);
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.relevance-label {
+  flex: 0 0 110px;
   font-size: var(--text-xs);
   color: var(--color-text-muted);
+  text-align: right;
 }
 
-.radar-legend-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
+@media (max-width: 480px) {
+  .relevance-label {
+    flex: 0 0 80px;
+  }
 }
 
-.radar-legend-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.relevance-bar-track {
+  flex: 1;
+  height: 20px;
+  background: var(--color-surface-alt);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.relevance-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: width 0.5s ease;
+  min-width: 2px;
+}
+
+.relevance-count {
+  flex: 0 0 60px;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ============================================
@@ -2070,7 +2099,7 @@ h1, h2, h3, h4, h5, h6 {
       <div class="modal-section">
         <h3>What you get</h3>
         <ul>
-          <li>Personalized recommendations with expected time savings, implementation difficulty, and confidence levels</li>
+          <li>Personalized recommendations with implementation difficulty, risk levels, and key caveats surfaced upfront</li>
           <li>Honest risks and caveats for each recommendation — not just hype</li>
           <li>A concrete next step you can act on immediately</li>
           <li>GPU vendor tool callouts where relevant (upscalers, profilers, AI frameworks)</li>
@@ -2259,6 +2288,7 @@ h1, h2, h3, h4, h5, h6 {
       <p class="results-summary" id="results-summary"></p>
     </div>
 
+    <div class="results-disclaimer" id="results-disclaimer">These are starting points for exploration, not guarantees. Time estimates are approximate and vary significantly by project, team, and implementation. Verify against current sources before making production decisions.</div>
     <div id="results-cards"></div>
 
     <div id="caution-zone" class="caution-zone" style="display:none;">
@@ -2289,13 +2319,8 @@ h1, h2, h3, h4, h5, h6 {
     </div>
 
     <div id="heatmap-section" class="heatmap-section">
-      <h2>AI Opportunity Score by Category</h2>
-      <div class="radar-wrapper">
-        <div class="radar-canvas-wrap">
-          <canvas id="radar-canvas"></canvas>
-        </div>
-        <div class="radar-legend" id="radar-legend"></div>
-      </div>
+      <h2>Matched Recommendations by Category</h2>
+      <div class="relevance-breakdown" id="relevance-breakdown"></div>
     </div>
 
     <!-- SENTIMENT POLL -->
@@ -2366,6 +2391,9 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'updated', text: 'Replaced percentage-based savings badges with qualitative labels (Minor/Moderate/Significant potential). Specific ranges moved into expanded card details with "approximate" qualifier.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Replaced radar chart with honest horizontal bar breakdown showing matched vs. total recommendations per category.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added caveat preview on collapsed cards so key risks are visible without expanding. Added global disclaimer above results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Sentiment poll now uses Firebase — votes are shared across all visitors in real time, with Google Analytics for visit tracking.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added "How do you feel about AI in game dev?" sentiment poll on the results page — anonymous with live bar chart results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now allows up to 3 selections instead of just one — gives broader, more relevant results.' },
@@ -2379,7 +2407,7 @@ const CHANGELOG = [
   { date: 'Mar 2026', tag: 'new', text: 'Added Google Form feedback integration for anonymous user input.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now offers "Not Sure" with smart suggestions based on your selected discipline.' },
   { date: 'Mar 2026', tag: 'adjusted', text: 'Neural rendering upscaler confidence raised to High — engine plugins now mature with documented 30-60% performance gains across major engines.' },
-  { date: 'Mar 2026', tag: 'new', text: 'Initial release — 36 recommendations across 14 disciplines, 24 practical AI tips, caution zones, and radar chart scoring.' }
+  { date: 'Mar 2026', tag: 'new', text: 'Initial release — 36 recommendations across 14 disciplines, 24 practical AI tips, caution zones, and category breakdown.' }
 ];
 
 function renderChangelog() {
@@ -3115,11 +3143,23 @@ function showResults(selections) {
   requestAnimationFrame(() => renderHeatmap(selections, scored));
 }
 
+function savingsToLabel(raw) {
+  // Parse first number from strings like "20-40%", "30-60% perf gain", "10-15%"
+  const m = raw.match(/(\d+)/);
+  if (!m) return 'Potential savings';
+  const lo = parseInt(m[1], 10);
+  if (lo >= 40) return 'Significant potential';
+  if (lo >= 20) return 'Moderate potential';
+  return 'Minor potential';
+}
+
 function renderCard(rec, rank) {
   const riskClass = rec.risk === 'Low' ? 'badge-risk-low' : rec.risk === 'Medium' ? 'badge-risk-medium' : 'badge-risk-high';
-  const confidenceClass = rec.confidence === 'High' ? 'confidence-high' : rec.confidence === 'Medium' ? 'confidence-medium' : 'confidence-low';
 
   const difficultyShort = rec.difficulty.split('—')[0].trim();
+  const savingsLabel = savingsToLabel(rec.savings);
+  // First sentence of caveats for preview
+  const caveatPreview = rec.caveats.split(/\. /)[0] + '.';
 
   // NVIDIA tool URL map
   const NVIDIA_URLS = {
@@ -3250,16 +3290,21 @@ function renderCard(rec, rank) {
         </div>
         <div class="rec-card-badges">
           <span class="badge ${riskClass}">${rec.risk} Risk</span>
-          <span class="badge badge-savings">${rec.savings} saved</span>
+          <span class="badge badge-savings">${savingsLabel}</span>
           <span class="badge badge-difficulty">${difficultyShort} Difficulty</span>
           ${rec.nvidia ? '<span class="badge badge-nvidia">NVIDIA</span>' : ''}
         </div>
+        <div class="caveat-preview">${caveatPreview}</div>
       </div>
       <div class="rec-card-details">
         <div class="rec-card-body">
           <div class="detail-row">
             <div class="detail-label">Expected Benefit</div>
             <div class="detail-value">${linkedBenefit}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Estimated Range</div>
+            <div class="detail-value" style="font-style:italic;color:var(--color-text-muted)">${rec.savings} (approximate, varies by project)</div>
           </div>
 
           <div class="detail-row">
@@ -3298,155 +3343,44 @@ function renderHeatmap(selections, scored) {
     .replace('Performance Optimization', 'Perf Opt')
     .replace('Community/Moderation', 'Community'));
 
-  // Count matches per category
-  const catScores = {};
-  categories.forEach(cat => { catScores[cat] = 0; });
+  // Count raw matches per category (not weighted)
+  const catCounts = {};
+  const totalPerCat = {};
+  categories.forEach(cat => { catCounts[cat] = 0; totalPerCat[cat] = 0; });
 
   RECOMMENDATIONS.forEach(rec => {
+    // Total possible for this discipline
     if (rec.discipline.includes(selections.discipline)) {
-      let weight = 1;
-      if (selections.phase === 'Not Sure' || rec.phase.includes(selections.phase)) weight += 1;
-      if (rec.teamFit.includes(selections.team)) weight += 1;
-      if (selections.pain.includes('Not Sure')) {
-        const suggested = PAIN_SUGGESTIONS[selections.discipline] || [];
-        if (suggested.some(sp => rec.painPoints.includes(sp))) weight += 1;
-      } else if (selections.pain.some(p => rec.painPoints.includes(p))) {
-        weight += 1;
-      }
-      catScores[rec.category] = (catScores[rec.category] || 0) + weight;
+      totalPerCat[rec.category] = (totalPerCat[rec.category] || 0) + 1;
     }
   });
 
-  const maxScore = Math.max(...Object.values(catScores), 1);
-  const values = categories.map(cat => (catScores[cat] || 0) / maxScore);
-
-  // Radar chart colors
-  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
-  const fillColor = isDark ? 'rgba(79, 152, 163, 0.25)' : 'rgba(1, 105, 111, 0.18)';
-  const strokeColor = isDark ? 'rgba(79, 152, 163, 0.9)' : 'rgba(1, 105, 111, 0.85)';
-  const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  const axisColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.12)';
-  const labelColor = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.55)';
-  const dotColor = isDark ? '#4F98A3' : '#01696F';
-
-  // Canvas setup
-  const canvas = document.getElementById('radar-canvas');
-  const dpr = window.devicePixelRatio || 1;
-  const cssSize = canvas.parentElement.clientWidth;
-  canvas.width = cssSize * dpr;
-  canvas.height = cssSize * dpr;
-  canvas.style.width = cssSize + 'px';
-  canvas.style.height = cssSize + 'px';
-  const ctx = canvas.getContext('2d');
-  ctx.scale(dpr, dpr);
-
-  const cx = cssSize / 2;
-  const cy = cssSize / 2;
-  const labelPad = cssSize < 320 ? 52 : 72;
-  const radius = (cssSize / 2) - labelPad;
-  const n = categories.length;
-  const angleStep = (2 * Math.PI) / n;
-  const startAngle = -Math.PI / 2;
-
-  function getPoint(i, r) {
-    const angle = startAngle + i * angleStep;
-    return { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
-  }
-
-  // Clear
-  ctx.clearRect(0, 0, cssSize, cssSize);
-
-  // Draw concentric rings
-  const rings = [0.25, 0.5, 0.75, 1.0];
-  rings.forEach(pct => {
-    ctx.beginPath();
-    for (let i = 0; i <= n; i++) {
-      const p = getPoint(i % n, radius * pct);
-      i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-    }
-    ctx.closePath();
-    ctx.strokeStyle = gridColor;
-    ctx.lineWidth = 1;
-    ctx.stroke();
+  // Count how many matched (appeared in scored results)
+  scored.forEach(rec => {
+    catCounts[rec.category] = (catCounts[rec.category] || 0) + 1;
   });
 
-  // Draw axis lines
-  for (let i = 0; i < n; i++) {
-    const p = getPoint(i, radius);
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(p.x, p.y);
-    ctx.strokeStyle = axisColor;
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  }
+  const totalMatched = scored.length;
+  const totalInDiscipline = Object.values(totalPerCat).reduce((a, b) => a + b, 0);
+  const maxCount = Math.max(...Object.values(totalPerCat), 1);
 
-  // Draw data polygon
-  ctx.beginPath();
-  for (let i = 0; i < n; i++) {
-    const v = Math.max(values[i], 0.05); // minimum visible
-    const p = getPoint(i, radius * v);
-    i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-  }
-  ctx.closePath();
-  ctx.fillStyle = fillColor;
-  ctx.fill();
-  ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 2;
-  ctx.stroke();
+  // Build rows sorted by match count descending, then by total descending
+  const rows = categories
+    .map((cat, i) => ({ cat, label: shortLabels[i], matched: catCounts[cat], total: totalPerCat[cat] }))
+    .filter(r => r.total > 0)
+    .sort((a, b) => b.matched - a.matched || b.total - a.total);
 
-  // Draw data dots
-  for (let i = 0; i < n; i++) {
-    const v = Math.max(values[i], 0.05);
-    const p = getPoint(i, radius * v);
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
-    ctx.fillStyle = dotColor;
-    ctx.fill();
-    ctx.strokeStyle = isDark ? '#0F1923' : '#FFFFFF';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-  }
-
-  // Draw labels
-  ctx.font = `500 ${cssSize < 320 ? 9 : 10.5}px 'General Sans', sans-serif`;
-  ctx.fillStyle = labelColor;
-  ctx.textBaseline = 'middle';
-  for (let i = 0; i < n; i++) {
-    const labelDist = radius + (cssSize < 320 ? 12 : 16);
-    const p = getPoint(i, labelDist);
-    const angle = startAngle + i * angleStep;
-    // cos tells us left vs right of center
-    const cosA = Math.cos(angle);
-    const sinA = Math.sin(angle);
-
-    if (Math.abs(cosA) < 0.15) {
-      ctx.textAlign = 'center';
-    } else if (cosA < 0) {
-      ctx.textAlign = 'right';
-    } else {
-      ctx.textAlign = 'left';
-    }
-
-    // Nudge vertically for top/bottom labels
-    let yOff = 0;
-    if (sinA < -0.8) yOff = -5;
-    else if (sinA > 0.8) yOff = 5;
-
-    ctx.fillText(shortLabels[i], p.x, p.y + yOff);
-  }
-
-  // Legend
-  const legend = document.getElementById('radar-legend');
-  const levelLabels = [
-    { color: dotColor, label: 'Score dot' },
-    { color: fillColor.replace('0.25', '0.6').replace('0.18', '0.5'), label: 'Coverage area' }
-  ];
-  legend.innerHTML = `
-    <span class="radar-legend-item">
-      <span class="radar-legend-dot" style="background:${dotColor}"></span>
-      Higher = stronger AI opportunity
-    </span>`;
+  const container = document.getElementById('relevance-breakdown');
+  container.innerHTML = rows.map(r => {
+    const pct = Math.round((r.matched / maxCount) * 100);
+    return `<div class="relevance-row">
+      <span class="relevance-label">${r.label}</span>
+      <div class="relevance-bar-track">
+        <div class="relevance-bar-fill" style="width:${pct}%"></div>
+      </div>
+      <span class="relevance-count">${r.matched} of ${r.total}</span>
+    </div>`;
+  }).join('') + `<div style="text-align:center;font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">${totalMatched} of ${totalInDiscipline} recommendations in ${selections.discipline} matched your profile</div>`;
 }
 
 /* ============================================
