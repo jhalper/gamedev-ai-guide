@@ -3622,13 +3622,37 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
     var container = document.getElementById('poll-body');
     if (!container) return;
 
+    // Show loading state with timeout fallback
+    container.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);font-size:var(--text-sm)">Loading poll data...</p>';
+    var loadTimeout = setTimeout(function() {
+      // If Firebase hasn't responded in 5s, show fallback
+      var userVote = getUserVote();
+      if (userVote) {
+        container.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);font-size:var(--text-sm)">Thanks for weighing in. Live results are temporarily unavailable.</p>';
+      } else {
+        renderButtons(container);
+      }
+    }, 5000);
+
     // Listen for real-time vote updates from Firebase
     votesRef.on('value', function(snapshot) {
+      clearTimeout(loadTimeout);
       var votes = snapshot.val() || { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
       var userVote = getUserVote();
       if (userVote) {
         renderResults(container, votes, userVote);
       } else {
+        renderButtons(container);
+      }
+    }, function(error) {
+      clearTimeout(loadTimeout);
+      // Firebase read failed (rules, network, etc.) — fall back gracefully
+      var userVote = getUserVote();
+      if (userVote) {
+        // Already voted but can't load results — show thank-you message
+        container.innerHTML = '<p style="text-align:center;color:var(--color-text-muted);font-size:var(--text-sm)">Thanks for weighing in. Live results are temporarily unavailable.</p>';
+      } else {
+        // Haven't voted — show buttons that work offline (store locally, skip Firebase)
         renderButtons(container);
       }
     });
