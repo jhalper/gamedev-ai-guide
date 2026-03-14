@@ -23,6 +23,25 @@
 <title>Game Dev AI Guide by HALP — Find Your Best AI Workflow Opportunities</title>
 <meta name="description" content="An interactive tool for game developers to find the best AI-assisted workflow opportunities for their specific discipline, engine, team size, and development phase.">
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
+    authDomain: "gamedev-ai-guide.firebaseapp.com",
+    databaseURL: "https://gamedev-ai-guide-default-rtdb.firebaseio.com",
+    projectId: "gamedev-ai-guide",
+    storageBucket: "gamedev-ai-guide.firebasestorage.app",
+    messagingSenderId: "256487705979",
+    appId: "1:256487705979:web:6ff552e046926bd59141de",
+    measurementId: "G-ZBGDRYKQXB"
+  };
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+
 <!-- Fonts from Fontshare -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
@@ -2068,7 +2087,7 @@ h1, h2, h3, h4, h5, h6 {
 
       <div class="modal-section">
         <h3>Privacy</h3>
-        <p>Everything runs locally in your browser. No data is collected, stored, or sent anywhere. There is no server, no analytics, and no tracking.</p>
+        <p>Your intake answers are processed entirely in your browser and are never sent anywhere. The sentiment poll stores anonymous vote counts (no personal data) via Firebase so results can be shared across visitors. Basic page analytics (visit count, referral source) are collected via Google Analytics to help improve the tool. No sign-up, no cookies, no personal data.</p>
       </div>
 
       <div class="modal-section modal-disclaimer">
@@ -2278,7 +2297,7 @@ h1, h2, h3, h4, h5, h6 {
     <!-- SENTIMENT POLL -->
     <div class="sentiment-poll" id="sentiment-poll">
       <h2>How do you feel about AI in game dev?</h2>
-      <p class="poll-subtitle">Anonymous and local-only — just curious where devs stand.</p>
+      <p class="poll-subtitle">Anonymous, one vote per visitor — results are shared across everyone.</p>
       <div id="poll-body"></div>
     </div>
 
@@ -2343,7 +2362,8 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
-  { date: 'Mar 2026', tag: 'new', text: 'Added "How do you feel about AI in game dev?" sentiment poll on the results page — anonymous, local-only, with live bar chart results.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Sentiment poll now uses Firebase — votes are shared across all visitors in real time, with Google Analytics for visit tracking.' },
+  { date: 'Mar 2026', tag: 'new', text: 'Added "How do you feel about AI in game dev?" sentiment poll on the results page — anonymous with live bar chart results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now allows up to 3 selections instead of just one — gives broader, more relevant results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Redesigned intake form as a step-by-step wizard — one question per screen with auto-advance, replacing the single-page wall of questions.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Streamlined results page — removed redundant meta-tag badges, phase timeline, and duplicate time-saved rows for a cleaner read.' },
@@ -3536,11 +3556,12 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
 });
 
 /* ============================================
-   SENTIMENT POLL
+   SENTIMENT POLL (Firebase-backed)
    ============================================ */
 (function() {
-  var POLL_KEY = 'gdai_sentiment_vote';
-  var POLL_DATA_KEY = 'gdai_sentiment_data';
+  var POLL_VOTE_KEY = 'gdai_sentiment_vote';
+  var db = firebase.database();
+  var votesRef = db.ref('poll/votes');
   var OPTIONS = [
     { id: 'optimistic',  emoji: '🚀', label: 'Optimistic — AI is a game-changer for dev workflows',      bar: 'bar-optimistic' },
     { id: 'cautious',    emoji: '🤔', label: 'Cautiously curious — useful in some areas, overhyped in others', bar: 'bar-cautious' },
@@ -3549,50 +3570,38 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
     { id: 'against',     emoji: '❌', label: 'Against it — AI has no place in game development',          bar: 'bar-against' }
   ];
 
-  // Storage abstraction: persistent when available, in-memory fallback
+  // Local vote memory (browser storage with fallback)
   var _mem = {};
   var _ls = (function() { try { var s = window['local'+'Storage']; s.setItem('_t','1'); s.removeItem('_t'); return s; } catch(e) { return null; } })();
-  function storageGet(key) {
-    if (_ls) try { var v = _ls.getItem(key); if (v !== null) return v; } catch(e) {}
-    return _mem[key] || null;
-  }
-  function storageSet(key, val) {
-    _mem[key] = val;
-    if (_ls) try { _ls.setItem(key, val); } catch(e) {}
-  }
-
-  function getVotes() {
-    var raw = storageGet(POLL_DATA_KEY);
-    if (raw) try { return JSON.parse(raw); } catch(e) {}
-    return { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
-  }
-
-  function saveVotes(votes) {
-    storageSet(POLL_DATA_KEY, JSON.stringify(votes));
-  }
-
   function getUserVote() {
-    return storageGet(POLL_KEY);
+    if (_ls) try { var v = _ls.getItem(POLL_VOTE_KEY); if (v !== null) return v; } catch(e) {}
+    return _mem[POLL_VOTE_KEY] || null;
   }
-
   function setUserVote(id) {
-    storageSet(POLL_KEY, id);
+    _mem[POLL_VOTE_KEY] = id;
+    if (_ls) try { _ls.setItem(POLL_VOTE_KEY, id); } catch(e) {}
   }
 
   function renderButtons(container) {
-    const wrap = document.createElement('div');
+    var wrap = document.createElement('div');
     wrap.className = 'poll-options';
-    OPTIONS.forEach(opt => {
-      const btn = document.createElement('button');
+    OPTIONS.forEach(function(opt) {
+      var btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'poll-option-btn';
-      btn.innerHTML = `<span class="poll-emoji">${opt.emoji}</span><span>${opt.label}</span>`;
-      btn.addEventListener('click', () => {
-        const votes = getVotes();
-        votes[opt.id] = (votes[opt.id] || 0) + 1;
-        saveVotes(votes);
-        setUserVote(opt.id);
-        renderResults(container, votes, opt.id);
+      btn.innerHTML = '<span class="poll-emoji">' + opt.emoji + '</span><span>' + opt.label + '</span>';
+      btn.addEventListener('click', function() {
+        // Disable all buttons immediately
+        container.querySelectorAll('.poll-option-btn').forEach(function(b) { b.disabled = true; b.style.opacity = '0.5'; });
+        // Increment vote in Firebase using transaction
+        votesRef.child(opt.id).transaction(function(current) {
+          return (current || 0) + 1;
+        }, function(error) {
+          if (!error) {
+            setUserVote(opt.id);
+            // Firebase onValue listener will handle rendering results
+          }
+        });
       });
       wrap.appendChild(btn);
     });
@@ -3601,77 +3610,72 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
   }
 
   function renderResults(container, votes, userVote) {
-    const total = Object.values(votes).reduce((a, b) => a + b, 0);
-    const wrap = document.createElement('div');
+    var total = 0;
+    OPTIONS.forEach(function(opt) { total += (votes[opt.id] || 0); });
+    var wrap = document.createElement('div');
     wrap.className = 'poll-results';
 
-    OPTIONS.forEach(opt => {
-      const count = votes[opt.id] || 0;
-      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
-      const row = document.createElement('div');
+    OPTIONS.forEach(function(opt) {
+      var count = votes[opt.id] || 0;
+      var pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      var row = document.createElement('div');
       row.className = 'poll-result-row' + (opt.id === userVote ? ' voted' : '');
-      row.innerHTML = `
-        <div class="poll-result-label">
-          <span class="poll-emoji">${opt.emoji}</span>
-          <span>${opt.label.split(' — ')[0]}</span>
-          <span class="poll-count">(${count})</span>
-          <span class="poll-pct">${pct}%</span>
-        </div>
-        <div class="poll-bar-track">
-          <div class="poll-bar-fill ${opt.bar}" style="width: 0%"></div>
-        </div>
-      `;
+      row.innerHTML = '<div class="poll-result-label">' +
+          '<span class="poll-emoji">' + opt.emoji + '</span>' +
+          '<span>' + opt.label.split(' \u2014 ')[0] + '</span>' +
+          '<span class="poll-count">(' + count + ')</span>' +
+          '<span class="poll-pct">' + pct + '%</span>' +
+        '</div>' +
+        '<div class="poll-bar-track">' +
+          '<div class="poll-bar-fill ' + opt.bar + '" style="width: 0%"></div>' +
+        '</div>';
       wrap.appendChild(row);
     });
 
-    const msg = document.createElement('p');
+    var msg = document.createElement('p');
     msg.className = 'poll-voted-msg';
     msg.textContent = 'Thanks for weighing in.';
     wrap.appendChild(msg);
 
-    const totalMsg = document.createElement('p');
+    var totalMsg = document.createElement('p');
     totalMsg.className = 'poll-total';
-    totalMsg.textContent = `${total} vote${total !== 1 ? 's' : ''} so far`;
+    totalMsg.textContent = total + ' vote' + (total !== 1 ? 's' : '') + ' so far';
     wrap.appendChild(totalMsg);
 
     container.innerHTML = '';
     container.appendChild(wrap);
 
     // Animate bars after paint
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        wrap.querySelectorAll('.poll-bar-fill').forEach(bar => {
-          const row = bar.closest('.poll-result-row');
-          const optId = OPTIONS[Array.from(wrap.querySelectorAll('.poll-result-row')).indexOf(row)]?.id;
-          const c = votes[optId] || 0;
-          const p = total > 0 ? Math.round((c / total) * 100) : 0;
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        var rows = wrap.querySelectorAll('.poll-result-row');
+        for (var i = 0; i < rows.length; i++) {
+          var bar = rows[i].querySelector('.poll-bar-fill');
+          var c = votes[OPTIONS[i].id] || 0;
+          var p = total > 0 ? Math.round((c / total) * 100) : 0;
           bar.style.width = p + '%';
-        });
+        }
       });
     });
   }
 
   function init() {
-    const container = document.getElementById('poll-body');
+    var container = document.getElementById('poll-body');
     if (!container) return;
-    const existing = getUserVote();
-    if (existing) {
-      renderResults(container, getVotes(), existing);
-    } else {
-      renderButtons(container);
-    }
+
+    // Listen for real-time vote updates from Firebase
+    votesRef.on('value', function(snapshot) {
+      var votes = snapshot.val() || { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
+      var userVote = getUserVote();
+      if (userVote) {
+        renderResults(container, votes, userVote);
+      } else {
+        renderButtons(container);
+      }
+    });
   }
 
-  // Init on page load and when results screen becomes visible
   init();
-  // Re-init when results screen shown (in case first load was on form screen)
-  const origShowResults = window.showResultsScreen;
-  if (typeof origShowResults === 'function') {
-    window.showResultsScreen = function() {
-      origShowResults.apply(this, arguments);
-      init();
-    };
-  }
 })();
 
 /* ============================================
