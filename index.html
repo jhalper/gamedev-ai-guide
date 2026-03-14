@@ -1158,6 +1158,17 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 var(--space-2);
 }
 
+.results-summary-writeup {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-surface-2);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-primary);
+}
+
 .results-disclaimer {
   font-size: var(--text-xs);
   color: var(--color-text-muted);
@@ -1712,13 +1723,18 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.4;
 }
 
-/* Hidden radio stays in DOM for form validation */
-.phase-picker input[type="radio"] {
+/* Hidden checkbox stays in DOM for form validation */
+.phase-picker input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
-  pointer-events: none;
+}
+
+.phase-picker-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
 }
 
 /* ============================================
@@ -2288,6 +2304,7 @@ h1, h2, h3, h4, h5, h6 {
       <p class="results-summary" id="results-summary"></p>
     </div>
 
+    <div class="results-summary-writeup" id="results-writeup"></div>
     <div class="results-disclaimer" id="results-disclaimer">These are starting points for exploration, not guarantees. Time estimates are approximate and vary significantly by project, team, and implementation. Verify against current sources before making production decisions.</div>
     <div id="results-cards"></div>
 
@@ -2391,6 +2408,8 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'new', text: 'Added pattern summary writeup above result cards — a personalized brief covering risk profile, confidence level, difficulty, and NVIDIA tool availability based on your matches.' },
+  { date: 'Mar 2026', tag: 'updated', text: 'Phase picker now allows selecting up to 3 development phases (toggle style) for broader, more relevant results.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Replaced percentage-based savings badges with qualitative labels (Minor/Moderate/Significant potential). Specific ranges moved into expanded card details with "approximate" qualifier.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Replaced radar chart with honest horizontal bar breakdown showing matched vs. total recommendations per category.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added caveat preview on collapsed cards so key risks are visible without expanding. Added global disclaimer above results.' },
@@ -2688,10 +2707,11 @@ renderRadioGroup('q-team', 'team', TEAM_SIZES);
 (function renderPhasePicker() {
   const container = document.getElementById('q-phase');
   const realPhases = PHASES.filter(p => p !== 'Not Sure');
+  const MAX_PHASES = 3;
 
-  // Build hidden radio inputs (for form validation)
-  let radiosHtml = PHASES.map((p, i) => 
-    `<input type="radio" name="phase" id="phase-${i}" value="${p}">`
+  // Build hidden checkbox inputs (for form validation)
+  let checkboxHtml = PHASES.map((p, i) => 
+    `<input type="checkbox" name="phase" id="phase-${i}" value="${p}">`
   ).join('');
 
   // Build the visual timeline track
@@ -2707,44 +2727,80 @@ renderRadioGroup('q-team', 'team', TEAM_SIZES);
   });
   trackHtml += '</div>';
 
+  let hintHtml = '<div class="phase-picker-hint" id="phase-hint">Select up to 3 phases</div>';
+
   // "Not Sure" button below
   let notSureHtml = `<div class="phase-picker-notsure" data-phase="Not Sure">`;
   notSureHtml += `<span class="radio-dot"></span> Not Sure &mdash; show all phases`;
   notSureHtml += `</div>`;
 
-  container.innerHTML = radiosHtml + trackHtml + notSureHtml;
+  container.innerHTML = checkboxHtml + trackHtml + hintHtml + notSureHtml;
 
-  // Click handlers
-  function selectPhase(value) {
-    // Check the hidden radio
-    const radio = container.querySelector(`input[value="${value}"]`);
-    if (radio) radio.checked = true;
+  function getSelectedPhases() {
+    return Array.from(container.querySelectorAll('input[name="phase"]:checked')).map(el => el.value);
+  }
 
-    // Update visual states
-    container.querySelectorAll('.phase-picker-node').forEach(n => n.classList.remove('selected'));
-    container.querySelector('.phase-picker-notsure').classList.remove('selected');
-    container.classList.remove('all-selected');
+  function updateVisuals() {
+    const selected = getSelectedPhases();
+    const isNotSure = selected.includes('Not Sure');
 
-    if (value === 'Not Sure') {
-      container.classList.add('all-selected');
-      container.querySelector('.phase-picker-notsure').classList.add('selected');
+    container.querySelectorAll('.phase-picker-node').forEach(n => {
+      n.classList.toggle('selected', selected.includes(n.dataset.phase));
+    });
+    container.querySelector('.phase-picker-notsure').classList.toggle('selected', isNotSure);
+    container.classList.toggle('all-selected', isNotSure);
+
+    // Update hint
+    const hint = document.getElementById('phase-hint');
+    if (isNotSure) {
+      hint.textContent = 'Showing all phases';
+    } else if (selected.length >= MAX_PHASES) {
+      hint.textContent = selected.length + ' of ' + MAX_PHASES + ' selected (max)';
+    } else if (selected.length > 0) {
+      hint.textContent = selected.length + ' of ' + MAX_PHASES + ' selected';
     } else {
-      const node = container.querySelector(`.phase-picker-node[data-phase="${value}"]`);
-      if (node) node.classList.add('selected');
+      hint.textContent = 'Select up to ' + MAX_PHASES + ' phases';
     }
 
     // Clear validation
     const valMsg = document.getElementById('val-phase');
-    if (valMsg) valMsg.style.display = 'none';
+    if (valMsg && selected.length > 0) valMsg.style.display = 'none';
+  }
+
+  function togglePhase(value) {
+    if (value === 'Not Sure') {
+      // Not Sure is exclusive: uncheck everything else, toggle Not Sure
+      const notSureCb = container.querySelector('input[value="Not Sure"]');
+      const wasChecked = notSureCb.checked;
+      container.querySelectorAll('input[name="phase"]').forEach(cb => { cb.checked = false; });
+      notSureCb.checked = !wasChecked;
+    } else {
+      // Uncheck Not Sure if selecting a specific phase
+      const notSureCb = container.querySelector('input[value="Not Sure"]');
+      if (notSureCb) notSureCb.checked = false;
+
+      const cb = container.querySelector(`input[value="${value}"]`);
+      if (cb.checked) {
+        cb.checked = false; // Deselect
+      } else {
+        // Check if at max
+        const currentCount = getSelectedPhases().length;
+        if (currentCount >= MAX_PHASES) return; // Already at max
+        cb.checked = true;
+      }
+    }
+    updateVisuals();
   }
 
   container.querySelectorAll('.phase-picker-node').forEach(node => {
-    node.addEventListener('click', () => selectPhase(node.dataset.phase));
+    node.addEventListener('click', () => togglePhase(node.dataset.phase));
   });
 
   container.querySelector('.phase-picker-notsure').addEventListener('click', () => {
-    selectPhase('Not Sure');
+    togglePhase('Not Sure');
   });
+
+  updateVisuals();
 })();
 // Pain points as checkboxes (up to 3)
 (function renderPainCheckboxes() {
@@ -2850,6 +2906,9 @@ renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
       return document.querySelectorAll('input[name="pain"]:checked').length > 0
         || document.getElementById('pain-notsure')?.checked;
     }
+    if (field === 'phase') {
+      return document.querySelectorAll('input[name="phase"]:checked').length > 0;
+    }
     return !!document.querySelector(`input[name="${field}"]:checked`);
   }
 
@@ -2909,7 +2968,7 @@ renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
       nextBtn.disabled = !isStepValid(currentStep);
       // Auto-advance after short delay (radio-only steps, not multi-select)
       const field = getFieldForStep(currentStep);
-      if (field !== 'openness' && field !== 'pain') {
+      if (field !== 'openness' && field !== 'pain' && field !== 'phase') {
         setTimeout(() => {
           if (currentStep < TOTAL_STEPS) goToStep(currentStep + 1);
         }, 250);
@@ -2920,19 +2979,12 @@ renderCheckboxGroup('q-openness', 'openness', AI_CATEGORIES);
     }
   });
 
-  // Also listen for phase picker clicks (they use hidden radios)
-  const phaseObserver = new MutationObserver(() => {
-    nextBtn.disabled = !isStepValid(currentStep);
-  });
+  // Listen for phase picker clicks (multi-select, no auto-advance)
   const phaseContainer = document.getElementById('q-phase');
   if (phaseContainer) {
     phaseContainer.addEventListener('click', () => {
       setTimeout(() => {
         nextBtn.disabled = !isStepValid(currentStep);
-        // Auto-advance for phase picker too
-        if (isStepValid(currentStep) && currentStep < TOTAL_STEPS) {
-          setTimeout(() => goToStep(currentStep + 1), 250);
-        }
       }, 50);
     });
   }
@@ -2957,20 +3009,20 @@ form.addEventListener('submit', (e) => {
   const discipline = getRadioValue('discipline');
   const engine = getRadioValue('engine');
   const team = getRadioValue('team');
-  const phase = getRadioValue('phase');
+  const phase = getCheckboxValues('phase');
   const painChecked = getCheckboxValues('pain');
   const painNotSure = document.getElementById('pain-notsure')?.checked;
   const pain = painNotSure ? ['Not Sure'] : painChecked;
   const openness = getCheckboxValues('openness');
 
   // All validation is handled by the wizard (next button disabled until valid)
-  if (!discipline || !engine || !team || !phase || pain.length === 0 || openness.length === 0) return;
+  if (!discipline || !engine || !team || phase.length === 0 || pain.length === 0 || openness.length === 0) return;
 
   gaEvent('form_submit', {
     discipline: discipline,
     engine: engine,
     team: team,
-    phase: phase,
+    phase: phase.join(','),
     pain: pain.join(','),
     openness: openness.join(',')
   });
@@ -3021,13 +3073,16 @@ function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
     score -= 10; // Slight penalty but still eligible
   }
 
-  // Phase match (strong boost) — "Not Sure" skips phase filtering entirely
-  if (phase === 'Not Sure') {
+  // Phase match (strong boost) — phase is now an array
+  if (phase.includes('Not Sure')) {
     score += 15; // Moderate baseline — no penalty, no strong boost
-  } else if (rec.phase.includes(phase)) {
-    score += 30;
   } else {
-    score -= 5; // Slight penalty, still eligible
+    const phaseMatchCount = phase.filter(p => rec.phase.includes(p)).length;
+    if (phaseMatchCount > 0) {
+      score += 20 + (phaseMatchCount * 10); // 30 for 1, 40 for 2, 50 for 3
+    } else {
+      score -= 5; // Slight penalty, still eligible
+    }
   }
 
   // Team fit
@@ -3065,6 +3120,68 @@ function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
 }
 
 /* ============================================
+   PATTERN SUMMARY
+   ============================================ */
+function generateWriteup(selections, scored) {
+  const lines = [];
+
+  // Risk profile
+  const lowRisk = scored.filter(r => r.risk === 'Low').length;
+  const medRisk = scored.filter(r => r.risk === 'Medium').length;
+  const highRisk = scored.filter(r => r.risk === 'High').length;
+
+  // Confidence profile
+  const highConf = scored.filter(r => r.confidence === 'High').length;
+  const medConf = scored.filter(r => r.confidence === 'Medium').length;
+
+  // Difficulty profile
+  const lowDiff = scored.filter(r => r.difficulty.startsWith('Low')).length;
+
+  // Category breakdown
+  const catCounts = {};
+  scored.forEach(r => { catCounts[r.category] = (catCounts[r.category] || 0) + 1; });
+  const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
+
+  // Opening: profile context
+  const teamLabel = selections.team === 'Solo' ? 'a solo developer'
+    : selections.team === 'Indie' ? 'an indie team'
+    : selections.team === 'AA' ? 'a mid-size team'
+    : 'a large team';
+  const phaseText = selections.phase.includes('Not Sure') ? 'across all phases'
+    : selections.phase.length === 1 ? 'during ' + selections.phase[0]
+    : 'across ' + selections.phase.join(' and ');
+  lines.push(`As ${teamLabel} in ${selections.discipline} ${phaseText}, your top ${scored.length} matches lean toward ${topCat ? topCat[0].replace(' (prototyping)', '') : 'general'} opportunities.`);
+
+  // Risk sentence
+  if (lowRisk === scored.length) {
+    lines.push('All of these are low-risk starting points you can try without major commitment.');
+  } else if (lowRisk >= scored.length - 1) {
+    lines.push('Nearly all are low-risk, with one recommendation that carries more uncertainty.');
+  } else if (medRisk + highRisk > lowRisk) {
+    lines.push('Several of these carry medium or higher risk and should be evaluated carefully before committing resources.');
+  }
+
+  // Confidence/difficulty
+  if (highConf >= 3) {
+    lines.push('The majority have documented, high-confidence results from real studio adoption.');
+  } else if (highConf === 0) {
+    lines.push('These are mostly emerging practices without extensive track records yet. Treat them as experiments.');
+  }
+
+  if (lowDiff >= 3) {
+    lines.push('Most can be implemented quickly with low engineering overhead.');
+  }
+
+  // NVIDIA callout
+  const nvidiaCount = scored.filter(r => r.nvidia).length;
+  if (nvidiaCount >= 2) {
+    lines.push(nvidiaCount + ' of your top results have relevant NVIDIA tool integrations. Expand those cards for specifics.');
+  }
+
+  return lines.join(' ');
+}
+
+/* ============================================
    RESULTS RENDERING
    ============================================ */
 function showResults(selections) {
@@ -3077,9 +3194,12 @@ function showResults(selections) {
     .slice(0, 5);
 
   // Header
-  document.getElementById('results-title').textContent = selections.phase === 'Not Sure'
-    ? `Top AI Opportunities for ${selections.discipline}`
-    : `Top AI Opportunities for ${selections.discipline} in ${selections.phase}`;
+  const phaseLabel = selections.phase.includes('Not Sure')
+    ? ''
+    : selections.phase.length === 1
+      ? ' in ' + selections.phase[0]
+      : ' in ' + selections.phase.slice(0, -1).join(', ') + ' & ' + selections.phase[selections.phase.length - 1];
+  document.getElementById('results-title').textContent = `Top AI Opportunities for ${selections.discipline}${phaseLabel}`;
 
   document.getElementById('results-summary').textContent =
     scored.length > 0
@@ -3087,6 +3207,15 @@ function showResults(selections) {
       : 'No strong matches found for your exact profile. Try broadening your AI openness categories.';
 
 
+
+  // Pattern summary writeup
+  const writeupEl = document.getElementById('results-writeup');
+  if (scored.length > 0) {
+    writeupEl.innerHTML = generateWriteup(selections, scored);
+    writeupEl.style.display = 'block';
+  } else {
+    writeupEl.style.display = 'none';
+  }
 
   // Cards
   const cardsContainer = document.getElementById('results-cards');
@@ -3450,11 +3579,11 @@ document.getElementById('tip-more-btn').addEventListener('click', () => {
 /* ============================================
    PHASE TIMELINE
    ============================================ */
-function renderPhaseTimeline(selectedPhase) {
+function renderPhaseTimeline(selectedPhases) {
   const container = document.getElementById('phase-timeline');
-  // Exclude "Not Sure" from timeline display phases
+  if (!container) return;
   const timelinePhases = PHASES.filter(p => p !== 'Not Sure');
-  const isNotSure = (selectedPhase === 'Not Sure');
+  const isNotSure = selectedPhases.includes('Not Sure');
 
   const checkSvg = '<svg class="phase-check" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6l3 3 5-5"/></svg>';
 
@@ -3462,7 +3591,7 @@ function renderPhaseTimeline(selectedPhase) {
   html += '<div class="phase-timeline-track">';
 
   timelinePhases.forEach((phase, i) => {
-    const isActive = isNotSure ? true : (phase === selectedPhase);
+    const isActive = isNotSure ? true : selectedPhases.includes(phase);
     const nodeClass = isNotSure ? 'phase-node all-phases' : (isActive ? 'phase-node active' : 'phase-node');
     html += `<div class="phase-step">`;
     html += `<div class="${nodeClass}">${isActive && !isNotSure ? checkSvg : ''}${phase}</div>`;
@@ -3555,10 +3684,17 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
         // Increment vote in Firebase using transaction
         votesRef.child(opt.id).transaction(function(current) {
           return (current || 0) + 1;
-        }, function(error) {
-          if (!error) {
+        }, function(error, committed, snapshot) {
+          if (!error && committed) {
             setUserVote(opt.id);
-            // Firebase onValue listener will handle rendering results
+            // Read latest totals and render results immediately
+            votesRef.once('value', function(snap) {
+              var votes = snap.val() || { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
+              renderResults(container, votes, opt.id);
+            });
+          } else {
+            // Re-enable buttons on failure
+            container.querySelectorAll('.poll-option-btn').forEach(function(b) { b.disabled = false; b.style.opacity = '1'; });
           }
         });
       });
