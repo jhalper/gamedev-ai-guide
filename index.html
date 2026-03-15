@@ -1180,6 +1180,46 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-primary);
 }
 
+.results-guidance {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 8px;
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-6);
+}
+.results-guidance-title {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+  color: var(--color-text);
+}
+.results-guidance-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.results-guidance-list li {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.5;
+}
+.results-guidance-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--color-primary);
+}
+
 .real-world-detail {
   font-size: var(--text-sm);
   color: var(--color-text-muted);
@@ -2191,7 +2231,7 @@ h1, h2, h3, h4, h5, h6 {
     <div class="form-intro">
       <h1>Find Your AI Opportunities</h1>
       <p class="form-blurb">Cut through the AI noise. Get honest, practical recommendations for your specific role and project. Built by a veteran game dev who got tired of the hype.</p>
-      <p>Answer a few quick questions about your role and project. Get personalized, honest AI workflow recommendations.</p>
+      <p>Answer a few quick questions about your role and project. You'll get a shortlist of AI opportunities ranked for your situation, with difficulty ratings, risks, and concrete next steps you can act on this week.</p>
       <div class="creator-line">
         <span>Created by HALP (<a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>)</span>
       </div>
@@ -2317,6 +2357,15 @@ h1, h2, h3, h4, h5, h6 {
     </div>
 
     <div class="results-summary-writeup" id="results-writeup"></div>
+    <div class="results-guidance" id="results-guidance">
+      <div class="results-guidance-title">How to use these results</div>
+      <ul class="results-guidance-list">
+        <li>Pick one recommendation to pilot first, ideally the lowest-difficulty one that addresses your biggest pain point</li>
+        <li>Read the caveats and risks before committing; share the card with your lead or team for a quick sanity check</li>
+        <li>Use the "Next Step" on each card as your literal to-do item this week</li>
+        <li>Revisit with different inputs as your project moves between phases</li>
+      </ul>
+    </div>
     <div class="results-disclaimer" id="results-disclaimer">These are starting points for exploration, not guarantees. Time estimates are approximate and vary significantly by project, team, and implementation. Verify against current sources before making production decisions.</div>
     <div id="results-cards"></div>
 
@@ -2420,6 +2469,7 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'new', text: 'Added usage guidance on the form intro and results page, so new visitors know what to do with their recommendations.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added "Shipped Example" field to recommendation cards with verified real-world AI use cases from published games (EA Sports FC, PUBG, Roblox, Call of Duty, Predecessor, and others). Shows where these tools have actually shipped, not just vendor claims.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pattern summary now includes a creative-sensitivity notice for Art, Animation, Audio, Narrative, and Creative Direction when results include content generation recommendations. Acknowledges authorship, IP, and industry trust concerns.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Rebalanced tool presentation — NVIDIA tools now shown alongside all other vendor tools with identical styling. Removed branded badges, icons, and callouts for a neutral, vendor-agnostic view.' },
