@@ -434,9 +434,23 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
 }
 .changelog-panel.open {
-  max-height: 600px;
+  max-height: 400px;
+  overflow-y: auto;
   opacity: 1;
   margin-top: var(--space-3);
+}
+.changelog-panel.open::-webkit-scrollbar {
+  width: 5px;
+}
+.changelog-panel.open::-webkit-scrollbar-track {
+  background: transparent;
+}
+.changelog-panel.open::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+.changelog-panel.open::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
 }
 
 .changelog-list {
@@ -2629,7 +2643,8 @@ const CHANGELOG = [
   { date: 'Mar 2026', tag: 'new', text: 'Added Google Form feedback integration for anonymous user input.' },
   { date: 'Mar 2026', tag: 'updated', text: 'Pain point selector now offers "Not Sure" with smart suggestions based on your selected discipline.' },
   { date: 'Mar 2026', tag: 'adjusted', text: 'Neural rendering upscaler confidence raised to High — engine plugins now mature with documented 30-60% performance gains across major engines.' },
-  { date: 'Mar 2026', tag: 'new', text: 'Initial release — 36 recommendations across 14 disciplines, 24 practical AI tips, caution zones, and category breakdown.' }
+  { date: 'Mar 2026', tag: 'new', text: 'Initial release — 36 recommendations across 14 disciplines, 24 practical AI tips, caution zones, and category breakdown.' },
+  { date: 'Mar 12, 2026', tag: 'new', text: 'Hello Game Dev World!' }
 ];
 
 function renderChangelog() {
