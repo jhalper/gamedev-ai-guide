@@ -2666,6 +2666,7 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 2026', tag: 'updated', text: 'Tips now include clickable hyperlinks for all referenced AI tools, matching the recommendation cards.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added shareable results — share your personalized recommendations via a compact URL link or download them as a PDF.' },
   { date: 'Mar 2026', tag: 'updated', text: 'GDC 2026 update pass: refreshed NVIDIA ACE tools (Chatterbox TTS production-quality, Audio2Face-3D v3.0, Audio2Emotion v3.0, UE5.6 plugin), updated ComfyUI (App View + NVFP4), added AI Code Assistant Playbook for UE5. Updated SAG-AFTRA IMA ratification details, Steam Jan 2026 AI disclosure rules, and replaced Galileo AI (acquired by Google) with v0.dev/Uizard.' },
   { date: 'Mar 2026', tag: 'new', text: 'Added update cadence indicator — tool is updated quarterly and after major conferences like GDC.' },
@@ -3595,6 +3596,109 @@ function savingsToLabel(raw) {
   return 'Minor potential';
 }
 
+// NVIDIA-specific tool URLs (rendered same as all other vendor tools)
+const NVIDIA_URLS = {
+  'ACE': 'https://developer.nvidia.com/ace-for-games',
+  'Audio2Face': 'https://developer.nvidia.com/ace-for-games',
+  'Audio2Face-3D': 'https://developer.nvidia.com/ace-for-games',
+  'Chatterbox TTS': 'https://developer.nvidia.com/ace-for-games',
+  'DLSS': 'https://developer.nvidia.com/rtx/dlss',
+  'DLSS 4.5': 'https://developer.nvidia.com/rtx/dlss',
+  'Super Resolution': 'https://developer.nvidia.com/rtx/dlss',
+  'Frame Generation': 'https://developer.nvidia.com/rtx/dlss',
+  'Ray Reconstruction': 'https://developer.nvidia.com/rtx/dlss',
+  'Nsight': 'https://developer.nvidia.com/tools-overview',
+  'Nsight Graphics': 'https://developer.nvidia.com/nsight-graphics',
+  'Nsight Systems': 'https://developer.nvidia.com/nsight-systems',
+  'Nsight Compute': 'https://developer.nvidia.com/nsight-compute',
+  'Broadcast SDK': 'https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-sdk/resources/',
+  'Riva Magpie TTS': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
+  'Riva': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
+  'Magpie TTS': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
+  'ComfyUI': 'https://blogs.nvidia.com/blog/rtx-ai-garage-flux-ltx-video-comfyui-gdc/',
+  'AI Code Assistant Playbook': 'https://developer.nvidia.com/blog/reliable-ai-coding-for-unreal-engine-improving-accuracy-and-reducing-token-costs/',
+  'Audio2Emotion': 'https://developer.nvidia.com/ace-for-games',
+  'RTX Kit': 'https://developer.nvidia.com/rtx/kit'
+};
+
+function linkifyNvidia(text) {
+  const keys = Object.keys(NVIDIA_URLS).sort((a, b) => b.length - a.length);
+  let result = text;
+  for (const key of keys) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const parts = result.split(/(<a[^>]*>.*?<\/a>)/gi);
+    result = parts.map(part => {
+      if (part.startsWith('<a ')) return part;
+      return part.replace(new RegExp(`\\b${escaped}\\b`, 'g'),
+        `<a href="${NVIDIA_URLS[key]}" target="_blank" rel="noopener noreferrer">$&</a>`);
+    }).join('');
+  }
+  return result;
+}
+
+// General AI tool URL map
+const TOOL_URLS = {
+  'Copilot': 'https://github.com/features/copilot',
+  'Cursor': 'https://cursor.com',
+  'modl.ai': 'https://modl.ai',
+  'Applitools': 'https://applitools.com',
+  'ElevenLabs': 'https://elevenlabs.io',
+  'Cascadeur': 'https://cascadeur.com',
+  'RADiCAL': 'https://radicalmotion.com',
+  'Midjourney': 'https://www.midjourney.com',
+  'Stable Diffusion': 'https://stability.ai',
+  'Meshy': 'https://www.meshy.ai',
+  'Tripo': 'https://www.tripo3d.ai',
+  'DeepL': 'https://www.deepl.com',
+  'Gridly': 'https://www.gridly.com',
+  'Ludo.ai': 'https://ludo.ai',
+  'Otter.ai': 'https://otter.ai',
+  'Fireflies': 'https://fireflies.ai',
+  'GameAnalytics': 'https://www.gameanalytics.com',
+  'Amplitude': 'https://amplitude.com',
+  'GGWP': 'https://www.ggwp.com',
+  'ToxMod': 'https://www.modulate.ai',
+  'Promethean AI': 'https://www.prometheanai.com',
+  'ReportPortal': 'https://reportportal.io',
+  'Uizard': 'https://uizard.io',
+  'v0.dev': 'https://v0.app',
+  'Percy': 'https://www.browserstack.com/percy',
+  'BackstopJS': 'https://github.com/garris/BackstopJS',
+  'Zigpoll': 'https://www.zigpoll.com',
+  'Notion AI': 'https://www.notion.com/product/ai',
+  'Mixpanel': 'https://mixpanel.com',
+  'Medallia': 'https://www.medallia.com',
+  'Qualtrics': 'https://www.qualtrics.com',
+  'MetaHuman Animator': 'https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-animator',
+  'ChatGPT': 'https://chat.openai.com',
+  'DALL-E': 'https://openai.com/index/dall-e/',
+  'Nano Banana': 'https://aistudio.google.com',
+  'Claude': 'https://claude.ai',
+  'Perplexity': 'https://www.perplexity.ai',
+  'MonkeyLearn': 'https://monkeylearn.com',
+  'Move.ai': 'https://www.move.ai',
+  'Rokoko Video': 'https://www.rokoko.com/products/video',
+  'Rokoko': 'https://www.rokoko.com',
+  'RenderDoc': 'https://renderdoc.org',
+  'Replica Studios': 'https://www.replicastudios.com',
+  'Fireflies.ai': 'https://fireflies.ai'
+};
+
+function linkifyTools(text) {
+  const keys = Object.keys(TOOL_URLS).sort((a, b) => b.length - a.length);
+  let result = text;
+  for (const key of keys) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const parts = result.split(/(<a[^>]*>.*?<\/a>)/gi);
+    result = parts.map(part => {
+      if (part.startsWith('<a ')) return part;
+      return part.replace(new RegExp(`\\b${escaped}`, 'g'),
+        `<a href="${TOOL_URLS[key]}" target="_blank" rel="noopener noreferrer" class="tool-link">$&</a>`);
+    }).join('');
+  }
+  return result;
+}
+
 function renderCard(rec, rank) {
   const riskClass = rec.risk === 'Low' ? 'badge-risk-low' : rec.risk === 'Medium' ? 'badge-risk-medium' : 'badge-risk-high';
 
@@ -3602,105 +3706,6 @@ function renderCard(rec, rank) {
   const savingsLabel = savingsToLabel(rec.savings);
   // First sentence of caveats for preview
   const caveatPreview = rec.caveats.split(/\. /)[0] + '.';
-
-  // NVIDIA-specific tool URLs (rendered same as all other vendor tools)
-  const NVIDIA_URLS = {
-    'ACE': 'https://developer.nvidia.com/ace-for-games',
-    'Audio2Face': 'https://developer.nvidia.com/ace-for-games',
-    'Audio2Face-3D': 'https://developer.nvidia.com/ace-for-games',
-    'Chatterbox TTS': 'https://developer.nvidia.com/ace-for-games',
-    'DLSS': 'https://developer.nvidia.com/rtx/dlss',
-    'DLSS 4.5': 'https://developer.nvidia.com/rtx/dlss',
-    'Super Resolution': 'https://developer.nvidia.com/rtx/dlss',
-    'Frame Generation': 'https://developer.nvidia.com/rtx/dlss',
-    'Ray Reconstruction': 'https://developer.nvidia.com/rtx/dlss',
-    'Nsight': 'https://developer.nvidia.com/tools-overview',
-    'Nsight Graphics': 'https://developer.nvidia.com/nsight-graphics',
-    'Nsight Systems': 'https://developer.nvidia.com/nsight-systems',
-    'Nsight Compute': 'https://developer.nvidia.com/nsight-compute',
-    'Broadcast SDK': 'https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-sdk/resources/',
-    'Riva Magpie TTS': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
-    'Riva': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
-    'Magpie TTS': 'https://build.nvidia.com/nvidia/magpie-tts-multilingual',
-    'ComfyUI': 'https://blogs.nvidia.com/blog/rtx-ai-garage-flux-ltx-video-comfyui-gdc/',
-    'AI Code Assistant Playbook': 'https://developer.nvidia.com/blog/reliable-ai-coding-for-unreal-engine-improving-accuracy-and-reducing-token-costs/',
-    'Audio2Emotion': 'https://developer.nvidia.com/ace-for-games',
-    'RTX Kit': 'https://developer.nvidia.com/rtx/kit'
-  };
-
-  function linkifyNvidia(text) {
-    // Sort keys longest-first so "DLSS 4.5" matches before "DLSS"
-    const keys = Object.keys(NVIDIA_URLS).sort((a, b) => b.length - a.length);
-    let result = text;
-    for (const key of keys) {
-      const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      // Split on existing links to avoid replacing inside them
-      const parts = result.split(/(<a[^>]*>.*?<\/a>)/gi);
-      result = parts.map(part => {
-        if (part.startsWith('<a ')) return part; // already a link, skip
-        return part.replace(new RegExp(`\\b${escaped}\\b`, 'g'),
-          `<a href="${NVIDIA_URLS[key]}" target="_blank" rel="noopener noreferrer">$&</a>`);
-      }).join('');
-    }
-    return result;
-  }
-
-  // General AI tool URL map
-  const TOOL_URLS = {
-    'Copilot': 'https://github.com/features/copilot',
-    'Cursor': 'https://cursor.com',
-    'modl.ai': 'https://modl.ai',
-    'Applitools': 'https://applitools.com',
-    'ElevenLabs': 'https://elevenlabs.io',
-    'Cascadeur': 'https://cascadeur.com',
-    'RADiCAL': 'https://radicalmotion.com',
-    'Midjourney': 'https://www.midjourney.com',
-    'Stable Diffusion': 'https://stability.ai',
-    'Meshy': 'https://www.meshy.ai',
-    'Tripo': 'https://www.tripo3d.ai',
-    'DeepL': 'https://www.deepl.com',
-    'Gridly': 'https://www.gridly.com',
-    'Ludo.ai': 'https://ludo.ai',
-    'Otter.ai': 'https://otter.ai',
-    'Fireflies': 'https://fireflies.ai',
-    'GameAnalytics': 'https://www.gameanalytics.com',
-    'Amplitude': 'https://amplitude.com',
-    'GGWP': 'https://www.ggwp.com',
-    'ToxMod': 'https://www.modulate.ai',
-    'Promethean AI': 'https://www.prometheanai.com',
-    'ReportPortal': 'https://reportportal.io',
-    'Uizard': 'https://uizard.io',
-    'v0.dev': 'https://v0.app',
-    'Percy': 'https://www.browserstack.com/percy',
-    'BackstopJS': 'https://github.com/garris/BackstopJS',
-    'Zigpoll': 'https://www.zigpoll.com',
-    'Notion AI': 'https://www.notion.com/product/ai',
-    'Mixpanel': 'https://mixpanel.com',
-    'Medallia': 'https://www.medallia.com',
-    'Qualtrics': 'https://www.qualtrics.com',
-    'MetaHuman Animator': 'https://dev.epicgames.com/documentation/en-us/metahuman/metahuman-animator',
-    'ChatGPT': 'https://chat.openai.com',
-    'DALL-E': 'https://openai.com/index/dall-e/',
-    'Nano Banana': 'https://aistudio.google.com',
-    'Claude': 'https://claude.ai',
-    'Perplexity': 'https://www.perplexity.ai',
-    'MonkeyLearn': 'https://monkeylearn.com'
-  };
-
-  function linkifyTools(text) {
-    const keys = Object.keys(TOOL_URLS).sort((a, b) => b.length - a.length);
-    let result = text;
-    for (const key of keys) {
-      const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const parts = result.split(/(<a[^>]*>.*?<\/a>)/gi);
-      result = parts.map(part => {
-        if (part.startsWith('<a ')) return part;
-        return part.replace(new RegExp(`\\b${escaped}`, 'g'),
-          `<a href="${TOOL_URLS[key]}" target="_blank" rel="noopener noreferrer" class="tool-link">$&</a>`);
-      }).join('');
-    }
-    return result;
-  }
 
   let realWorldHTML = '';
   if (rec.realWorld) {
@@ -3861,7 +3866,7 @@ function showRandomTip() {
   if (tipShuffleOrder.length === 0) shuffleTipOrder();
   currentTipIndex = (currentTipIndex + 1) % tipShuffleOrder.length;
   const tipObj = AI_TIPS[tipShuffleOrder[currentTipIndex]];
-  document.getElementById('tip-text').textContent = tipObj.tip;
+  document.getElementById('tip-text').innerHTML = linkifyTools(linkifyNvidia(tipObj.tip));
   // Update header label based on tip type
   const isMyth = tipObj.tip.startsWith('Myth vs. Reality');
   const headerEl = document.querySelector('.tip-header');
@@ -3874,7 +3879,7 @@ function showRandomTip() {
   }
   // Reset detail state
   const detailEl = document.getElementById('tip-detail');
-  detailEl.textContent = tipObj.detail;
+  detailEl.innerHTML = linkifyTools(linkifyNvidia(tipObj.detail));
   detailEl.classList.remove('visible');
   // Reset button text
   const moreBtn = document.getElementById('tip-more-btn');
