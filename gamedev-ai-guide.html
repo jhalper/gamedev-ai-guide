@@ -319,6 +319,8 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 .form-intro {
   margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
 }
 
 .form-intro h1 {
@@ -1540,9 +1542,14 @@ h1, h2, h3, h4, h5, h6 {
    ============================================ */
 .app-footer {
   margin-top: var(--space-12);
-  padding-top: var(--space-4);
+  padding: var(--space-6) 0 var(--space-8);
   border-top: 1px solid var(--color-divider);
   text-align: center;
+}
+
+.app-footer span {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
 }
 
 .app-footer a {
@@ -2403,7 +2410,7 @@ h1, h2, h3, h4, h5, h6 {
     <div class="form-intro">
       <h1>Find Your AI Opportunities</h1>
       <p class="form-blurb">Cut through the AI noise. Get honest, practical recommendations for your specific role and project. Built by a veteran game dev who got tired of the hype.</p>
-      <p>Answer a few quick questions about your role and project. You'll get a shortlist of AI opportunities ranked for your situation, with difficulty ratings, risks, and concrete next steps you can act on this week.</p>
+      <p>Answer a few quick questions and get ranked recommendations with difficulty ratings, risks, and concrete next steps.</p>
       <div class="creator-line">
         <span>Created by HALP (<a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>)</span>
       </div>
@@ -2630,6 +2637,7 @@ h1, h2, h3, h4, h5, h6 {
 
   <!-- FOOTER -->
   <footer class="app-footer">
+    <span>Game Dev AI Guide by HALP &middot; <a href="https://gamedevai.guide">gamedevai.guide</a></span>
   </footer>
 </div>
 
@@ -2662,6 +2670,9 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 17, 2026', tag: 'new', text: 'Added copyright/IP Myth vs. Reality: covers the March 2026 Supreme Court ruling, human authorship requirements, documentation best practices, and Steam AI disclosure rules.' },
+  { date: 'Mar 17, 2026', tag: 'new', text: 'Added practical tip on AI 3D model generation: where AI-generated meshes work (props, environments) and where they need manual cleanup (rigged characters, VR, mobile).' },
+  { date: 'Mar 17, 2026', tag: 'updated', text: 'Tightened hero text, added visual separator between intro and wizard, added site footer.' },
   { date: 'Mar 17, 2026', tag: 'updated', text: 'ElevenLabs v3 update: Recommendations #21 and #34 now reference Eleven v3 with audio tags for emotion control, multi-speaker dialogue API, and 70+ languages. Significantly upgrades placeholder VO quality for prototyping.' },
   { date: 'Mar 17, 2026', tag: 'new', text: 'Added Unity AI + MCP support: Unity 6.4 introduces AI-powered scene generation, profiling, and Model Context Protocol (MCP) for plugging external AI models directly into the editor. Meta also released Quest-specific MCP extensions.' },
   { date: 'Mar 17, 2026', tag: 'new', text: 'Added Aura 12.0 (by Ramen VR): UE5-specific AI assistant with Blueprint generation, autonomous coding, animation/rigging, and a Dragon Agent that builds gameplay systems without opening Unreal. Now referenced in code assistance recommendation.' },
@@ -2830,7 +2841,11 @@ const AI_TIPS = [
   { tip: "Unity 6.4 now supports MCP (Model Context Protocol) — plug your preferred AI model directly into the editor to create GameObjects, edit scenes, and run profiling.",
     detail: "Unity's AI Gateway lets you bring your own API key for any frontier model (Claude, GPT, etc.) and have it take actions inside your Unity project via MCP. Meta also released Quest-specific MCP extensions for scaffolding VR camera rigs and interaction systems. This means your existing AI tooling can now operate inside the editor instead of just suggesting code in a separate window." },
   { tip: "Myth vs. Reality: 'AI training on game assets is free and easy.' → Training custom models requires clean data, compute budget, and iteration time most studios underestimate.",
-    detail: "Fine-tuning a model on your game's art style or codebase isn't plug-and-play. You need curated, labeled datasets (not just a dump of your asset folder), GPU compute time that costs real money, and multiple training runs to get usable results. Most studios that attempt custom training spend 2-4x their initial time estimate before getting production-quality output." }
+    detail: "Fine-tuning a model on your game's art style or codebase isn't plug-and-play. You need curated, labeled datasets (not just a dump of your asset folder), GPU compute time that costs real money, and multiple training runs to get usable results. Most studios that attempt custom training spend 2-4x their initial time estimate before getting production-quality output." },
+  { tip: "Myth vs. Reality: 'AI-generated game assets are just as protectable as hand-made ones.' → Under current U.S. law, AI-generated content without sufficient human creative control cannot be copyrighted. Competitors can freely copy unprotected assets.",
+    detail: "The U.S. Supreme Court declined to hear the AI copyright case in March 2026, leaving the human authorship requirement intact. The Copyright Office requires meaningful human creative involvement for protection. If AI autonomously generates your art, music, or code, those outputs may be uncopyrightable. Practical steps: document your creative decisions (prompt iterations, manual edits, selection and arrangement choices), keep process logs, and review AI outputs for similarity to existing works. Also note that Steam updated its AI disclosure rules in January 2026 — workflow tools (code helpers) don't need disclosure, but AI-generated in-game content and marketing materials do." },
+  { tip: "AI 3D model generators (Tripo, Meshy, Rodin) can drop props and environment assets straight into Unity or Unreal with PBR materials. Characters still need manual topology cleanup for rigging.",
+    detail: "AI-generated 3D models have matured enough for production use in specific cases. Static props (tables, barrels, rocks, weapons, buildings) come out with clean-enough topology, reasonable poly counts, and PBR textures that work natively in both engines. For PC and console games, they're comparable to asset store quality. Where they break down: rigged characters (topology isn't optimized for deformation), VR (poly budgets are too tight), and mobile (draw call optimization needed). The practical workflow is using AI as a fast starting point — generate the model in minutes, then optimize in Blender if needed. That's still dramatically faster than modeling from scratch." }
 ];
 
 const DISCIPLINES = [
