@@ -351,7 +351,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://www.nvidia.com/en-us/geforce/news/gdc-2026-nvidia-geforce-rtx-announcements/",
       "hiddenGem": 4,
       "id": 1,
-      "whyGameDev": "Generate game concept art and storyboards locally on your RTX card — no cloud costs, no art director waiting."
+      "whyGameDev": "Prototype concept art and storyboards locally on your RTX card — fast iterations between art direction reviews."
     },
     {
       "name": "NVIDIA ACE (Avatar Cloud Engine) for Games",
@@ -406,7 +406,7 @@ const NVIDIA_DATA = {
         }
       },
       "id": 2,
-      "whyGameDev": "Give your NPCs real-time perception, memory, and natural conversation instead of pre-scripted dialogue trees."
+      "whyGameDev": "Add real-time perception, memory, and natural conversation to your NPCs — a new layer on top of your existing dialogue systems."
     },
     {
       "name": "NVIDIA Audio2Face-3D",
@@ -466,7 +466,7 @@ const NVIDIA_DATA = {
         }
       },
       "id": 3,
-      "whyGameDev": "Auto-generate lip sync from any audio file in real time — skip the mocap session entirely."
+      "whyGameDev": "Get working lip sync from any audio file in real time — unblock animation before your mocap session is even scheduled."
     },
     {
       "name": "NVIDIA Cosmos World Foundation Models",
@@ -543,7 +543,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://blogs.nvidia.com/blog/ai-decoded-edify/",
       "hiddenGem": 3,
       "id": 5,
-      "whyGameDev": "Generate PBR materials, 360 HDRi skies, and 3D props at scale — cut weeks off your art team's backlog."
+      "whyGameDev": "Generate PBR materials, 360 HDRi skies, and 3D props at scale — give your art team a head start on asset production."
     },
     {
       "name": "NVIDIA In-Game Inferencing SDK (NVIGI)",
@@ -805,7 +805,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-app/",
       "hiddenGem": 1,
       "id": 12,
-      "whyGameDev": "Record professional-quality dev diaries, live reveals, and playtests without a soundproofed studio or dedicated AV team."
+      "whyGameDev": "Record professional-quality dev diaries, live reveals, and playtests from any workspace — studio-grade audio cleanup built in."
     },
     {
       "name": "NVIDIA Canvas",
@@ -1179,7 +1179,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://developer.nvidia.com/nim",
       "hiddenGem": 5,
       "id": 20,
-      "whyGameDev": "Plug containerized AI models with OpenAI-compatible APIs directly into your game — on-device or cloud, no ML ops team needed."
+      "whyGameDev": "Plug containerized AI models with OpenAI-compatible APIs directly into your game — on-device or cloud, accessible even to small teams."
     },
     {
       "name": "GTC and GDC Developer Resources",
@@ -1324,7 +1324,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://github.com/NVIDIAGameWorks",
       "hiddenGem": 3,
       "id": 24,
-      "whyGameDev": "Drop in battle-tested PhysX destruction, cloth sim, and real-time lighting without building any of it from scratch."
+      "whyGameDev": "Extend your engine with battle-tested PhysX destruction, cloth sim, and real-time lighting — proven middleware that integrates with your existing pipeline."
     },
     {
       "name": "NVIDIA Inception Program",
@@ -1614,7 +1614,7 @@ const NVIDIA_DATA = {
         }
       },
       "id": 31,
-      "whyGameDev": "Give players real-time post-processing filters — including colorblind accessibility modes — without touching your engine's rendering code."
+      "whyGameDev": "Give players real-time post-processing filters — including colorblind accessibility modes — layered on top of your engine's rendering pipeline."
     },
     {
       "name": "NVIDIA Highlights",
@@ -2193,7 +2193,7 @@ const NVIDIA_DATA = {
         }
       },
       "id": 42,
-      "whyGameDev": "Move LOD, culling, and procedural geometry entirely to the GPU — render far more triangles with less CPU overhead."
+      "whyGameDev": "Offload LOD, culling, and procedural geometry to the GPU — freeing your engine's CPU budget for gameplay logic."
     },
     {
       "name": "NRD — NVIDIA Real-time Denoiser",
@@ -2422,7 +2422,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://www.nvidia.com/en-us/design-visualization/iray/",
       "hiddenGem": 2,
       "id": 47,
-      "whyGameDev": "Render photorealistic key art from your game assets in Maya or 3ds Max — no photo shoot, no outsourcing."
+      "whyGameDev": "Render photorealistic key art directly from your game assets in Maya or 3ds Max — another option in your marketing pipeline."
     },
     {
       "name": "NVIDIA Material Definition Language (MDL)",
@@ -3099,7 +3099,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://docs.nvidia.com/gameworks-products/index.html",
       "hiddenGem": 0,
       "id": 61,
-      "whyGameDev": "Drop in cinematic GPU-simulated ocean waves with real water interaction — looks better than anything you'd hand-animate."
+      "whyGameDev": "Drop in cinematic GPU-simulated ocean waves with real water interaction — production-quality fluid dynamics out of the box."
     },
     {
       "name": "Neural Radiance Cache (NRC)",
@@ -3300,7 +3300,7 @@ const NVIDIA_DATA = {
         }
       },
       "id": 65,
-      "whyGameDev": "Replace baked lightmaps with fully dynamic probe-based GI — light changes when you blow up a wall, no rebake required."
+      "whyGameDev": "Upgrade from baked lightmaps to fully dynamic probe-based GI — light responds when you blow up a wall, no rebake required."
     },
     {
       "name": "RTX Mega Geometry",
@@ -3659,7 +3659,7 @@ const NVIDIA_DATA = {
       "officialPage": "https://catalog.ngc.nvidia.com",
       "hiddenGem": 3,
       "id": 73,
-      "whyGameDev": "Pull pre-built CUDA and TensorRT containers so your team trains game AI models instead of wrestling with environment setup."
+      "whyGameDev": "Pull pre-built CUDA and TensorRT containers so your team can focus on training game AI models — environment setup handled."
     },
     {
       "name": "NVIDIA GPU Compatibility Testing (CUDA Toolkit / Driver Matrix)",

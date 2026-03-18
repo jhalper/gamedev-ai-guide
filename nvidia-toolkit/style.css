@@ -324,6 +324,16 @@ a:hover { color: var(--green-bright); }
   color: var(--text-secondary);
   max-width: 640px;
   line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.hero-philosophy {
+  font-size: 13px;
+  color: var(--green);
+  max-width: 640px;
+  line-height: 1.6;
+  font-style: italic;
+  opacity: 0.85;
   margin-bottom: 40px;
 }
 
