@@ -368,14 +368,35 @@
       `<button class="detail-tab-btn${i === 0 ? ' active' : ''}" data-dtab="${t.key}">${t.icon}${t.label}</button>`
     ).join('');
 
-    // Overview panel
+    // Overview panel — structured layout
+    const descSplit = splitDescription(tool.description || '');
     const overviewPanel = `
       <div class="detail-tab-panel active" data-dtab-panel="overview">
-        ${tool.description ? `<div class="detail-text">${tool.description}</div>` : ''}
+        <div class="overview-quick-bar">
+          <span class="oq-item"><span class="oq-label">Pricing</span><span class="oq-value">${tool.pricing || 'N/A'}</span></span>
+          <span class="oq-divider"></span>
+          <span class="oq-item"><span class="oq-label">Maturity</span><span class="oq-value">${tool.maturity || 'N/A'}</span></span>
+          <span class="oq-divider"></span>
+          <span class="oq-item"><span class="oq-label">Difficulty</span><span class="oq-value">${tool.difficulty || 'N/A'}</span></span>
+        </div>
+        ${descSplit.lead ? `<p class="overview-lead">${descSplit.lead}</p>` : ''}
+        ${descSplit.rest ? `
+        <div class="overview-more-wrap">
+          <div class="overview-more-text collapsed">${descSplit.rest}</div>
+          <button class="overview-toggle" aria-expanded="false">Read more</button>
+        </div>` : ''}
         ${tool.limitations ? `
-        <div class="limitations-box">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span>${tool.limitations}</span>
+        <div class="limitations-wrap">
+          <button class="limitations-toggle" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            Things to know
+            <svg class="limitations-chevron" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="limitations-content collapsed">
+            <ul class="limitations-list">
+              ${tool.limitations.split(';').map(s => s.trim()).filter(Boolean).map(s => `<li>${s}</li>`).join('')}
+            </ul>
+          </div>
         </div>` : ''}
         <div class="tool-links">
           ${tool.url ? `<a href="${tool.url}" class="tool-link tool-link-primary" target="_blank" rel="noopener noreferrer">
@@ -524,6 +545,31 @@
     return str.length > len ? str.substring(0, len) + '…' : str;
   }
 
+  function splitDescription(desc) {
+    if (!desc) return { lead: '', rest: '' };
+    if (desc.length <= 180) return { lead: desc, rest: '' };
+    // Find sentence boundaries (period followed by space/end, not inside parens/abbreviations)
+    const sentenceEnds = [];
+    let parenDepth = 0;
+    for (let i = 0; i < desc.length; i++) {
+      if (desc[i] === '(') parenDepth++;
+      if (desc[i] === ')') parenDepth = Math.max(0, parenDepth - 1);
+      if (parenDepth === 0 && desc[i] === '.' && i > 30 &&
+          (i + 1 >= desc.length || desc[i + 1] === ' ' || desc[i + 1] === '\n') &&
+          !/\d$/.test(desc.substring(i - 1, i))) {
+        sentenceEnds.push(i + 1);
+      }
+    }
+    // Pick first sentence end, or second if first is too short
+    let breakIdx = sentenceEnds.find(idx => idx >= 60 && idx <= 300) ||
+                   sentenceEnds.find(idx => idx >= 30) ||
+                   180;
+    return {
+      lead: desc.substring(0, breakIdx).trim(),
+      rest: desc.substring(breakIdx).trim()
+    };
+  }
+
   function bindDetailTabs(card) {
     card.querySelectorAll('.detail-tab-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
@@ -534,6 +580,30 @@
         btn.classList.add('active');
         const panel = container.querySelector(`[data-dtab-panel="${btn.dataset.dtab}"]`);
         if (panel) panel.classList.add('active');
+      });
+    });
+    // Read more toggle
+    card.querySelectorAll('.overview-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrap = btn.closest('.overview-more-wrap');
+        const text = wrap.querySelector('.overview-more-text');
+        const isCollapsed = text.classList.contains('collapsed');
+        text.classList.toggle('collapsed');
+        btn.textContent = isCollapsed ? 'Show less' : 'Read more';
+        btn.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
+      });
+    });
+    // Limitations toggle
+    card.querySelectorAll('.limitations-toggle').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wrap = btn.closest('.limitations-wrap');
+        const content = wrap.querySelector('.limitations-content');
+        const isCollapsed = content.classList.contains('collapsed');
+        content.classList.toggle('collapsed');
+        btn.setAttribute('aria-expanded', isCollapsed ? 'true' : 'false');
+        btn.querySelector('.limitations-chevron').style.transform = isCollapsed ? 'rotate(180deg)' : '';
       });
     });
   }
