@@ -144,13 +144,17 @@
   function renderEngineMatrix() {
     dom.matrixBody.innerHTML = NVIDIA_DATA.engineMatrix.map(row => {
       function cell(val, type) {
-        let cls, label;
-        if (val >= 4) { cls = 'matrix-green'; label = val; }
-        else if (val >= 2) { cls = 'matrix-yellow'; label = val; }
-        else if (val >= 1) { cls = 'matrix-red'; label = val; }
-        else { cls = 'matrix-gray'; label = '—'; }
-        const typeStr = type !== 'N/A' ? `<span class="matrix-type">${type}</span>` : '';
-        return `<td><span class="matrix-cell ${cls}">${label}</span>${typeStr}</td>`;
+        // If type is "Not Available" or "N/A", show gray dash
+        const isUnavailable = !type || type === 'N/A' || type === 'Not Available';
+        if (isUnavailable || val <= 0) {
+          return `<td><span class="matrix-dot matrix-dot-gray"></span></td>`;
+        }
+        // Color based on integration quality
+        let cls;
+        if (val >= 4) cls = 'matrix-dot-green';
+        else if (val >= 2) cls = 'matrix-dot-yellow';
+        else cls = 'matrix-dot-red';
+        return `<td><span class="matrix-dot ${cls}"></span><span class="matrix-type">${type}</span></td>`;
       }
       return `<tr>
         <td>${row.name}</td>

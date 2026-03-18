@@ -500,31 +500,41 @@ a:hover { color: var(--green-bright); }
 }
 
 .engine-matrix th {
-  padding: 14px 16px;
+  padding: 10px 12px;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
   border-bottom: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   color: var(--text-secondary);
 }
 
 .matrix-tool-header {
   text-align: left !important;
-  min-width: 220px;
+  min-width: 200px;
+  width: 40%;
 }
 
 .engine-matrix td {
-  padding: 10px 16px;
+  padding: 7px 12px;
   text-align: center;
   border-bottom: 1px solid var(--border);
   font-size: 13px;
+  vertical-align: middle;
 }
 
 .engine-matrix tbody tr {
   transition: background var(--duration) var(--ease);
+}
+
+.engine-matrix tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="light"] .engine-matrix tbody tr:nth-child(even) {
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .engine-matrix tbody tr:hover {
@@ -535,31 +545,30 @@ a:hover { color: var(--green-bright); }
   text-align: left;
   font-weight: 500;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--text-primary);
+  line-height: 1.3;
 }
 
-.matrix-cell {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 700;
+.matrix-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
 }
 
-.matrix-green { background: rgba(118, 185, 0, 0.2); color: var(--q-green); }
-.matrix-yellow { background: rgba(255, 213, 79, 0.15); color: var(--q-yellow); }
-.matrix-red { background: rgba(239, 83, 80, 0.15); color: var(--q-red); }
-.matrix-gray { background: rgba(100, 100, 100, 0.1); color: var(--q-gray); }
+.matrix-dot-green { background: var(--q-green); box-shadow: 0 0 6px rgba(118, 185, 0, 0.4); }
+.matrix-dot-yellow { background: var(--q-yellow); box-shadow: 0 0 6px rgba(255, 213, 79, 0.3); }
+.matrix-dot-red { background: var(--q-red); box-shadow: 0 0 6px rgba(239, 83, 80, 0.3); }
+.matrix-dot-gray { background: var(--border-hover); opacity: 0.4; }
 
 .matrix-type {
   display: block;
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text-muted);
   margin-top: 2px;
+  line-height: 1.2;
 }
 
 /* ---------- Filter Bar ---------- */
@@ -1048,17 +1057,19 @@ a:hover { color: var(--green-bright); }
   background: none;
   border: none;
   border-bottom: 2px solid transparent;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-family: var(--font-body);
   font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: color var(--duration) var(--ease), border-color var(--duration) var(--ease);
+  transition: color var(--duration) var(--ease), border-color var(--duration) var(--ease), background var(--duration) var(--ease);
 }
 
 .detail-tab-btn:hover {
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  background: var(--green-glow);
+  border-bottom-color: rgba(118, 185, 0, 0.3);
 }
 
 .detail-tab-btn.active {
@@ -1067,7 +1078,7 @@ a:hover { color: var(--green-bright); }
 }
 
 .detail-tab-btn svg {
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .detail-tab-btn.active svg {
