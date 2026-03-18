@@ -939,7 +939,7 @@ const NVIDIA_DATA = {
       "name": "GeForce NOW (GFN) Developer Platform",
       "category": "Cloud & Distribution",
       "oneLiner": "Cloud gaming platform with developer portal, SDK, and testing tools enabling game publishers to stream their Steam/Epic titles to GeForce NOW's 4,500+ game library.",
-      "description": "GeForce NOW (GFN) is NVIDIA's cloud gaming service streaming games to any device. For developers, the GFN Developer Platform consists of three parts: (1) The GeForce NOW Developer Portal (GDP), a web-based portal with workflows to deploy, test, and monitor streaming experiences; dashboards tracking usage; and tools for debugging cloud sessions. (2) The GFN SDK, a set of APIs and runtimes developers integrate into their games to make them 'cloud-aware' — detecting when running on GFN infrastructure, enabling mobile controller input, triggering streaming from launchers, and linking player accounts. (3) A Playtest product (announced GDC 2026) for secure pre-release QA and media testing. Steam games are onboarded via the Steamworks dashboard by ticking two checkboxes under 'Cloud Gaming' and signing Valve's Cloud Gaming Addendum. Non-Steam games require contacting NVIDIA directly. GFN has now streamed over 1 billion hours across 4,500+ games. As of March 2026, GFN supports VR streaming at 90 FPS to Apple Vision Pro and Meta Quest. Revenue model: NVIDIA does not take a revenue share from game sales — the publisher keeps revenue from their own store (Steam, Epic, etc.); NVIDIA monetizes via subscription tiers paid by end users (Free, Performance, Ultimate).",
+      "description": "GeForce NOW (GFN) is NVIDIA's cloud gaming service streaming games to any device. For developers, the GFN Developer Platform consists of three parts: (1) The GeForce NOW Developer Portal (GDP), a web-based portal with workflows to deploy, test, and monitor streaming experiences; dashboards tracking usage; and tools for debugging cloud sessions. (2) The GFN SDK, a set of APIs and runtimes developers integrate into their games to make them 'cloud-aware' — detecting when running on GFN infrastructure, enabling mobile controller input, triggering streaming from launchers, and linking player accounts. (3) A Playtest product (announced GDC 2026) for secure pre-release QA and media testing. Steam games are onboarded via the Steamworks dashboard by ticking two checkboxes under 'Cloud Gaming' and signing Valve's Cloud Gaming Addendum. Non-Steam games require contacting NVIDIA directly. GFN has now streamed over 1 billion hours across 4,500+ games. As of March 19, 2026, GFN supports VR streaming at 90 FPS (up from 60 FPS) to Apple Vision Pro and Meta Quest for Ultimate members, with up to 4K 120 FPS on Vision Pro via CloudXR. Revenue model: NVIDIA does not take a revenue share from game sales — the publisher keeps revenue from their own store (Steam, Epic, etc.); NVIDIA monetizes via subscription tiers paid by end users (Free, Performance, Ultimate).",
       "useCases": [
         "Reaching players on low-spec hardware, Chromebooks, mobile, Smart TVs without a PC port",
         "VR game streaming to untethered headsets at 90 FPS",
@@ -1185,7 +1185,7 @@ const NVIDIA_DATA = {
       "name": "GTC and GDC Developer Resources",
       "category": "Developer Programs",
       "oneLiner": "NVIDIA's two major developer conferences — GTC (GPU Technology Conference, annual March) and GDC presence — with free on-demand sessions, hands-on labs, and networking relevant to game developers.",
-      "description": "NVIDIA runs two major developer-facing event tracks: (1) GTC (GPU Technology Conference) — NVIDIA's flagship technical conference, now held annually in March in San Jose, CA (GTC 2026: March 16-19). Offers 900+ sessions across AI, graphics, simulation, and gaming. Sessions are recorded and available on-demand for free at nvidia.com/gtc. GTC 2026 featured game-relevant content on path tracing, neural rendering, ACE (AI characters), DLSS 4.5, and RTX Kit. Free on-demand access removes the barrier for indie developers. (2) GDC Presence — NVIDIA maintains a major booth at GDC every year, presenting GeForce RTX announcements, meeting with game developers 1:1, and hosting dedicated game dev sessions. GDC 2026 (March 2026, San Francisco) included announcements of DLSS 4.5, CloudXR 6.0 for visionOS, GeForce NOW Cloud Playtest, RTX PRO Server, and new ACE on-device TTS. NVIDIA also posts 'GeForce On Community Update' videos and dedicated game dev blog posts summarizing GDC announcements. Developer sessions from both conferences are archived on NVIDIA On-Demand.",
+      "description": "NVIDIA runs two major developer-facing event tracks: (1) GTC (GPU Technology Conference) — NVIDIA's flagship technical conference, now held annually in March in San Jose, CA (GTC 2026: March 16-19). Offers 900+ sessions across AI, graphics, simulation, and gaming. Sessions are recorded and available on-demand for free at nvidia.com/gtc. GTC 2026 featured game-relevant content on DLSS 5 (the headline gaming announcement — neural rendering launching Fall 2026), NemoClaw (agentic AI framework), path tracing, neural rendering, ACE (AI characters), DLSS 4.5, and RTX Kit. Free on-demand access removes the barrier for indie developers. (2) GDC Presence — NVIDIA maintains a major booth at GDC every year, presenting GeForce RTX announcements, meeting with game developers 1:1, and hosting dedicated game dev sessions. GDC 2026 (March 2026, San Francisco) included announcements of DLSS 4.5, CloudXR 6.0 for visionOS, GeForce NOW Cloud Playtest, RTX PRO Server, and new ACE on-device TTS. NVIDIA also posts 'GeForce On Community Update' videos and dedicated game dev blog posts summarizing GDC announcements. Developer sessions from both conferences are archived on NVIDIA On-Demand.",
       "useCases": [
         "Learning cutting-edge rendering techniques (path tracing, neural shading) from NVIDIA engineers",
         "Getting early access to new SDK demos and feature previews",
@@ -2035,7 +2035,7 @@ const NVIDIA_DATA = {
       "name": "DLSS Super Resolution (DLSS SR)",
       "category": "Rendering & Graphics",
       "oneLiner": "DLSS 4's transformer-based architecture combining Super Resolution with up to 6x Multi Frame Generation (5 AI-generated frames per rendered frame) for 240+ FPS path-traced gaming.",
-      "description": "DLSS Super Resolution is NVIDIA's flagship AI upscaling technology. It renders frames at a lower internal resolution and uses a trained neural network (since DLSS 4, a transformer-based model instead of the earlier CNN) to reconstruct a higher-resolution output that rivals or exceeds native quality. DLSS 4 introduced the first transformer model in Jan 2025, and DLSS 4.5 (announced CES 2026) introduced a second-generation transformer model that uses 5x more compute, trains in linear color space, and delivers superior temporal stability, reduced ghosting, and near-native quality in Performance mode. It is deployed via Streamline plugin and supported in Unreal Engine (UE 5.4–5.7 plugins available) and Unity (2021.2+). Over 400 games and apps support DLSS 4.5 Super Resolution as of March 2026. Typical frame rate uplift depends on quality mode: Quality (67% native), Balanced (58%), Performance (50%), Ultra Performance (33%). The second-gen transformer is backwards compatible with existing integrations and auto-updates in the NVIDIA app.",
+      "description": "DLSS Super Resolution is NVIDIA's flagship AI upscaling technology. It renders frames at a lower internal resolution and uses a trained neural network (since DLSS 4, a transformer-based model instead of the earlier CNN) to reconstruct a higher-resolution output that rivals or exceeds native quality. DLSS 4 introduced the first transformer model in Jan 2025, and DLSS 4.5 (announced CES 2026) introduced a second-generation transformer model that uses 5x more compute, trains in linear color space, and delivers superior temporal stability, reduced ghosting, and near-native quality in Performance mode. It is deployed via Streamline plugin and supported in Unreal Engine (UE 5.4–5.7 plugins available) and Unity (2021.2+). Over 400 games and apps support DLSS 4.5 Super Resolution as of March 2026. At GDC 2026, 20 additional games were announced with DLSS 4.5 integration including Crimson Desert, DEATH STRANDING 2: ON THE BEACH, Star Wars: Galactic Racer, Directive 8020, and others. DLSS 4.5 Dynamic Multi Frame Generation launches March 31, 2026 as an opt-in NVIDIA app beta with additional override capabilities. Typical frame rate uplift depends on quality mode: Quality (67% native), Balanced (58%), Performance (50%), Ultra Performance (33%). The second-gen transformer is backwards compatible with existing integrations and auto-updates in the NVIDIA app. Note: DLSS 5, announced at GTC 2026 (launching Fall 2026), represents a fundamentally new neural rendering approach — see the separate DLSS 5 entry.",
       "useCases": [
         "Increasing frame rates without sacrificing visual quality",
         "Enabling path tracing and heavy ray tracing at playable frame rates",
@@ -2617,7 +2617,7 @@ const NVIDIA_DATA = {
       "name": "NVIDIA RTX Kit",
       "category": "Rendering & Graphics",
       "oneLiner": "Suite of neural rendering SDKs for building path-traced games with AI — includes RTX Neural Shaders, Neural Texture Compression, Mega Geometry, DLSS 4, ReSTIR path tracing, and character rendering too",
-      "description": "RTX Kit (announced CES 2025, expanded at GDC 2025/2026) is the umbrella SDK suite replacing the previously scattered collection of RTX game graphics SDKs. Current version: 2026.2 (GDC 2026). Components: RTX Neural Shaders (train/deploy tiny neural networks within shaders — textures, materials, lighting; requires Slang shader language); RTX Neural Texture Compression (up to 8X VRAM savings with Tensor Core decompression); RTX Neural Materials (5X faster complex material processing); RTX Mega Geometry (accelerates BVH building for Nanite-style cluster geometry, path-tracing millions of triangles — used in The Witcher 4, Control Resonant, Alan Wake 2); RTX Dynamic Illumination SDK (ReSTIR DI + PT for accurate global illumination); RTX Hair (strand-based path-traced hair, Beta — LSS for RTX 50 Series); RTX Character Rendering (SSS for path-traced skin, BSDF for hair); DLSS 4 (Multi Frame Generation, Super Resolution, Ray Reconstruction); Reflex 2 (latency optimization); RTX Path Tracing (reference solution); NVIDIA Real-Time Denoisers. Available via GitHub and NVIDIA SDK Manager. ReSTIR PT (added GDC 2026) provides accurate indirect illumination and mirror reflections. Unreal Engine support via NvRTX branch (experimental NVIDIA branch of UE5, currently 5.6).",
+      "description": "RTX Kit (announced CES 2025, expanded at GDC 2025/2026) is the umbrella SDK suite replacing the previously scattered collection of RTX game graphics SDKs. Current version: 2026.2 (GDC 2026). Components: RTX Neural Shaders (train/deploy tiny neural networks within shaders — textures, materials, lighting; requires Slang shader language); RTX Neural Texture Compression (up to 8X VRAM savings with Tensor Core decompression); RTX Neural Materials (5X faster complex material processing); RTX Mega Geometry (accelerates BVH building for Nanite-style cluster geometry, path-tracing millions of triangles — used in The Witcher 4, Control Resonant, Alan Wake 2); RTX Dynamic Illumination SDK (ReSTIR DI + PT for accurate global illumination); RTX Hair (strand-based path-traced hair, Beta — LSS for RTX 50 Series); RTX Character Rendering (SSS for path-traced skin, BSDF for hair); DLSS 4 (Multi Frame Generation, Super Resolution, Ray Reconstruction); Reflex 2 (latency optimization); RTX Path Tracing (reference solution); NVIDIA Real-Time Denoisers. DLSS 5 (announced GTC 2026, launching Fall 2026) will extend this suite with a fundamentally new neural rendering model. Available via GitHub and NVIDIA SDK Manager. ReSTIR PT (added GDC 2026) provides accurate indirect illumination and mirror reflections. Unreal Engine support via NvRTX branch (experimental NVIDIA branch of UE5, currently 5.6).",
       "useCases": [
         "Shipping DLSS 4 Super Resolution and Multi Frame Generation for performance uplift",
         "Path-traced indirect lighting and reflections (ReSTIR DI/PT) for next-gen visuals",
@@ -3306,7 +3306,7 @@ const NVIDIA_DATA = {
       "name": "RTX Mega Geometry",
       "category": "Rendering & Graphics",
       "oneLiner": "Cluster-based geometry system that accelerates BVH building for ray tracing by up to 100x, enabling real-time path tracing of massive triangle counts including Nanite-like geometry.",
-      "description": "RTX Mega Geometry is a new GPU primitive introduced in 2024/2025 (NVIDIA RTX Kit, initially with Ada Lovelace optimizations, matured for Blackwell) that solves the BVH (Bounding Volume Hierarchy) rebuild bottleneck for high-polygon ray-traced scenes. Traditional BLAS rebuilding is prohibitively slow for highly detailed streaming geometry — Mega Geometry compresses geometry into clusters and caches/reuses them across frames. It enables up to 100x more ray-traced triangles versus standard DXR methods, supports real-time tessellation for path tracing, and works with cluster-based geometry systems like Nanite (UE5). In Alan Wake 2, enabling Mega Geometry resulted in a 5-20% FPS improvement and 300 MB VRAM reduction. A new foliage system (shown at GDC 2026) uses partitioned top-level acceleration structures to path-trace millions of animated foliage elements — used by CD PROJEKT RED for The Witcher 4. Available via NVIDIA RTX Kit GitHub and NVIDIA RTX Branch of UE5 (NvRTX). Nsight Graphics 2025.3+ supports Mega Geometry debugging via cluster acceleration structures.",
+      "description": "RTX Mega Geometry is a new GPU primitive introduced in 2024/2025 (NVIDIA RTX Kit, initially with Ada Lovelace optimizations, matured for Blackwell) that solves the BVH (Bounding Volume Hierarchy) rebuild bottleneck for high-polygon ray-traced scenes. Traditional BLAS rebuilding is prohibitively slow for highly detailed streaming geometry — Mega Geometry compresses geometry into clusters and caches/reuses them across frames. It enables up to 100x more ray-traced triangles versus standard DXR methods, supports real-time tessellation for path tracing, and works with cluster-based geometry systems like Nanite (UE5). In Alan Wake 2, enabling Mega Geometry resulted in a 5-20% FPS improvement and 300 MB VRAM reduction. CONTROL Resonant (Remedy) will also integrate RTX Mega Geometry to more efficiently render detail. A new foliage system (shown at GDC 2026) uses partitioned top-level acceleration structures and a new level-of-detail system for vegetation to path-trace dense environments with millions of detailed plants and trees, each with unique animation and accurate real-time lighting — for the first time making full path-traced forests possible. CD PROJEKT RED is using this foliage system for The Witcher 4. NVIDIA will open-source the RTX Mega Geometry foliage system later in 2026, enabling all developers to incorporate it into their games. Available via NVIDIA RTX Kit GitHub and NVIDIA RTX Branch of UE5 (NvRTX). Nsight Graphics 2025.3+ supports Mega Geometry debugging via cluster acceleration structures.",
       "useCases": [
         "Path tracing open worlds with Nanite-style micro-polygon geometry",
         "Real-time ray tracing of dense forest and foliage environments",
@@ -4038,6 +4038,95 @@ const NVIDIA_DATA = {
       "hiddenGem": 4,
       "id": 81,
       "whyGameDev": "Embed GPU counters in your builds and run automated perf regression tests in CI before frame rate slips ship."
+    },
+    {
+      "name": "NVIDIA DLSS 5 (Neural Rendering)",
+      "category": "Rendering & Graphics",
+      "oneLiner": "Next-generation neural rendering model announced at GTC 2026 that fuses structured 3D data with generative AI to deliver photoreal lighting and materials in real time — launching Fall 2026.",
+      "description": "DLSS 5, unveiled at GTC 2026 by Jensen Huang, is NVIDIA's most significant graphics breakthrough since real-time ray tracing in 2018. Unlike DLSS 4.x (which upscales and generates frames from traditionally rendered input), DLSS 5 introduces a real-time neural rendering model that infuses rendered pixels with photoreal lighting and materials by blending hand-crafted rendering with generative AI. Jensen described it as 'the GPT moment for graphics.' The technology bridges the divide between real-time rendering and cinematic-quality visual effects previously only achievable in Hollywood. DLSS 5 preserves the control artists need for creative expression while dramatically elevating visual realism. The GTC 2026 demo ran on two GeForce RTX 5090 GPUs (one for game rendering, one for the DLSS 5 model) — the final version will be optimized for a single GPU. Integration follows a process similar to DLSS Frame Generation via the Streamline SDK or UE5 plugin. DLSS 5 is compatible with DLSS Super Resolution, Ray Reconstruction, Frame Generation, and Multi Frame Generation. Major publisher support confirmed: Bethesda (Starfield, Elder Scrolls IV: Oblivion Remastered), Capcom (Resident Evil Requiem), Hotta Studio, NetEase, NCSOFT, S-GAME, Tencent, Ubisoft (Assassin's Creed Shadows), and Warner Bros. Games. Additional confirmed titles: AION 2, Black State, CINDER CITY, Delta Force, Hogwarts Legacy, Justice, NARAKA: BLADEPOINT, NTE: Neverness to Everness, Phantom Blade Zero, Sea of Remnants, and Where Winds Meet.",
+      "useCases": [
+        "Achieving cinematic-quality photoreal lighting in real-time gameplay",
+        "Bridging the gap between game rendering and Hollywood VFX quality",
+        "Enhancing path-traced games with AI-generated photoreal materials",
+        "Future-proofing AAA titles for the next generation of visual fidelity",
+        "Delivering dramatically improved visuals without sacrificing artistic control"
+      ],
+      "phases": [
+        "Pre-production",
+        "Production",
+        "Polish",
+        "Launch"
+      ],
+      "engines": [
+        "Custom Engine",
+        "Unreal Engine"
+      ],
+      "teamSizes": [
+        "AAA (50+)",
+        "Mid-size (10-50)"
+      ],
+      "pricing": "Free",
+      "maturity": "Preview",
+      "difficulty": "Moderate",
+      "limitations": "Not yet released — launching Fall 2026. GTC demo required two RTX 5090 GPUs; single-GPU optimization is in progress. Minimum GPU requirements not yet finalized. The neural rendering model is still being optimized — memory usage and performance details will be shared closer to launch. Likely limited to Blackwell (RTX 50 Series) and future GPUs. No console support expected. Early preview stage — not production-ready as of March 2026.",
+      "url": "https://www.nvidia.com/en-us/geforce/news/death-stranding-2-crimson-desert-dlss-4-multi-frame-gen/",
+      "officialPage": "https://www.nvidia.com/en-us/geforce/news/death-stranding-2-crimson-desert-dlss-4-multi-frame-gen/",
+      "hiddenGem": 2,
+      "engineIntegration": {
+        "unreal": {
+          "type": "Planned (Streamline/Plugin)",
+          "setup": "Integration follows a process similar to DLSS Frame Generation — developers will use the Streamline SDK or the NVIDIA DLSS Unreal Engine 5 plugin. Full integration details will be shared closer to the Fall 2026 launch.",
+          "quality": 0,
+          "issues": "Not yet available. Early preview only shown at GTC 2026. Plugin and SDK will be released alongside the Fall 2026 launch.",
+          "version": "TBD (Fall 2026)"
+        },
+        "custom": {
+          "apiType": "Streamline SDK",
+          "setupComplexity": 3,
+          "docsQuality": 0,
+          "notes": "DLSS 5 integration will be available via the Streamline SDK, following the same pattern as DLSS Frame Generation. Direct NGX integration may also be supported. Full SDK documentation and integration guide will be released closer to Fall 2026 launch. The NVIDIA Zorah tech demo shown at GTC 2026 provides an early reference implementation."
+        }
+      },
+      "id": 82,
+      "whyGameDev": "The next leap in real-time visuals — DLSS 5 fuses your rendered frames with AI-generated photoreal lighting, closing the gap between games and cinema."
+    },
+    {
+      "name": "NVIDIA NemoClaw (Agentic AI Framework)",
+      "category": "AI & NPCs",
+      "oneLiner": "Open-source framework for safely building and deploying autonomous, long-running AI agents on NVIDIA hardware — from desktop DGX Spark to cloud AI factories.",
+      "description": "NemoClaw, announced at GTC 2026, is NVIDIA's open-source stack for building and deploying autonomous, long-running AI agents. While not exclusively a game development tool, NemoClaw is directly relevant for studios building complex AI-driven gameplay systems: autonomous NPC ecosystems that persist and evolve across sessions, AI game masters that manage narrative and world state over extended play, intelligent assistant bots that learn and adapt, and backend agent pipelines for procedural content generation. NemoClaw provides secure infrastructure for agentic AI — agents that reason, plan, and act over extended periods rather than just responding to single prompts. It integrates with NVIDIA's broader AI platform including DGX Spark (desktop), DGX Station, and cloud infrastructure. Jensen Huang devoted significant keynote time to NemoClaw at GTC 2026, positioning it alongside OpenClaw as a foundational platform for the agentic AI era. NemoClaw supports tools, context management, and safe deployment patterns for agents that need to operate continuously. For game developers, this represents the infrastructure layer for building AI systems that go far beyond scripted NPC behavior — enabling truly autonomous characters and game systems that can reason about complex, open-ended situations.",
+      "useCases": [
+        "Building autonomous NPC ecosystems that persist and evolve across game sessions",
+        "AI game master systems managing narrative, quests, and world state dynamically",
+        "Long-running AI agent pipelines for procedural content generation",
+        "Backend AI orchestration for multiplayer game services",
+        "Intelligent assistant bots for game communities and player support",
+        "Complex multi-agent NPC interactions with planning and reasoning"
+      ],
+      "phases": [
+        "Pre-production",
+        "Production"
+      ],
+      "engines": [
+        "Custom Engine",
+        "Unreal Engine",
+        "Unity",
+        "Godot"
+      ],
+      "teamSizes": [
+        "AAA (50+)",
+        "Mid-size (10-50)",
+        "Small Team (2-10)"
+      ],
+      "pricing": "Free (Open Source)",
+      "maturity": "Preview",
+      "difficulty": "Complex",
+      "limitations": "Newly announced at GTC 2026 — ecosystem and documentation are early-stage. Primarily designed for general agentic AI, not specifically optimized for game development use cases. Requires NVIDIA GPU hardware (DGX Spark, RTX workstations, or cloud). Running long-lived agents requires persistent compute resources. Game-specific integration patterns (connecting agents to game engines, game state, player interactions) are not yet established. Open-source license details to be confirmed as the project matures.",
+      "url": "https://blogs.nvidia.com/blog/gtc-2026-news/",
+      "officialPage": "https://blogs.nvidia.com/blog/gtc-2026-news/",
+      "hiddenGem": 3,
+      "id": 83,
+      "whyGameDev": "Build AI characters and game systems that reason, plan, and act autonomously over long play sessions — moving beyond scripted behavior into truly intelligent agents."
     }
   ]
 };
