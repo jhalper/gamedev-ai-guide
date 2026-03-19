@@ -2354,6 +2354,7 @@ h1, h2, h3, h4, h5, h6 {
           <li>Honest risks and caveats for each recommendation — not just hype</li>
           <li>A concrete next step you can act on immediately</li>
           <li>GPU vendor tool callouts where relevant (upscalers, profilers, AI frameworks)</li>
+          <li>A companion <a href="https://gamedevai.guide/nvidia-toolkit/" target="_blank" rel="noopener noreferrer">NVIDIA Game Dev Toolkit</a> with 83 tools mapped to real game dev workflows</li>
           <li>A Caution Zone flagging where AI is unreliable or controversial for your discipline</li>
           <li>A heat map showing AI opportunity density across categories</li>
         </ul>
@@ -2637,7 +2638,7 @@ h1, h2, h3, h4, h5, h6 {
 
   <!-- FOOTER -->
   <footer class="app-footer">
-    <span>Game Dev AI Guide by HALP &middot; <a href="https://gamedevai.guide">gamedevai.guide</a></span>
+    <span>Game Dev AI Guide by HALP &middot; <a href="https://gamedevai.guide">gamedevai.guide</a> &middot; <a href="https://gamedevai.guide/nvidia-toolkit/">NVIDIA Toolkit</a></span>
   </footer>
 </div>
 
@@ -2670,6 +2671,7 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 18, 2026', tag: 'new', text: 'Added cross-link to the companion NVIDIA Game Dev Toolkit (83 tools) in the footer, About modal, and on recommendation cards with NVIDIA tool callouts.' },
   { date: 'Mar 18, 2026', tag: 'updated', text: 'DLSS 5 update: Added community backlash context, Jensen Huang and Bethesda responses clarifying developer artistic control (intensity, color grading, masking). Not a filter — operates at geometry level. Added to both the practical tip and recommendation card caveats.' },
   { date: 'Mar 18, 2026', tag: 'updated', text: 'Myth vs. Reality updates: Added Take-Two CEO Strauss Zelnick\'s March 2026 comments (\'AI tools may help you create assets, but that won\'t help you create hits\') to the artist replacement and small-team myths.' },
   { date: 'Mar 18, 2026', tag: 'new', text: 'Added GDC 2026 State of the Industry survey data as a practical tip: 36% usage (stable), 81% for research/brainstorming, only 5% player-facing. Sentiment at 52% negative. 78% of studios now have AI policies.' },
@@ -3775,6 +3777,7 @@ function renderCard(rec, rank) {
         <div class="detail-label">Related Tools</div>
         <div class="detail-value">
           <div class="vendor-tools-detail">${linkedVendorTools}</div>
+          <div style="margin-top:var(--space-2);font-size:var(--text-xs);"><a href="https://gamedevai.guide/nvidia-toolkit/" target="_blank" rel="noopener noreferrer" style="color:var(--color-text-muted);">Browse all 83 NVIDIA tools →</a></div>
         </div>
       </div>`;
   }
