@@ -2325,6 +2325,117 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="light"] .modal-disclaimer h3 {
   color: #8a6d00;
 }
+
+/* Scenario cards */
+.scenarios-section {
+  margin-top: var(--space-6);
+}
+.scenarios-heading {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+.scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 640px) {
+  .scenarios-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
+}
+.scenario-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+.scenario-card svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+.scenario-card-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+.scenario-card-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+/* Scenario banner on results page */
+.scenario-banner {
+  display: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.scenario-banner.visible {
+  display: block;
+}
+.scenario-banner strong {
+  color: var(--color-text);
+}
+.scenario-banner a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.scenario-banner a:hover {
+  color: var(--color-text);
+}
+.scenarios-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.scenarios-divider::before,
+.scenarios-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+}
+.scenarios-explainer,
+.wizard-path-explainer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: var(--space-1) 0 var(--space-3) 0;
+}
+.wizard-path-heading {
+  margin-top: var(--space-6);
+}
+
 </style>
 </head>
 <body>
@@ -2415,7 +2526,7 @@ h1, h2, h3, h4, h5, h6 {
       <div class="creator-line">
         <span>Created by HALP (<a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>)</span>
       </div>
-      <div class="update-cadence" style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);">Last updated March 18, 2026 &middot; Updated quarterly and after major industry events</div>
+      <div class="update-cadence" style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);">Last updated March 19, 2026 &middot; Updated quarterly and after major industry events</div>
 
       <button type="button" class="changelog-toggle" id="changelog-toggle">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
@@ -2427,6 +2538,19 @@ h1, h2, h3, h4, h5, h6 {
         <ul class="changelog-list" id="changelog-list">
           <!-- Filled by JS from CHANGELOG array -->
         </ul>
+      </div>
+
+      <div class="scenarios-divider">Quick Look: Pre-Built Scenarios</div>
+      <p class="scenarios-explainer">These are preset demos with pre-filled answers for common game types. Click one to see what the tool would recommend for that kind of project. No wizard, instant results.</p>
+      <div class="scenarios-section" id="scenarios-section">
+        <div class="scenarios-grid" id="scenarios-grid">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <div class="wizard-path-heading">
+        <div class="scenarios-divider">Your Project: Personalized Results</div>
+        <p class="wizard-path-explainer">Answer 6 quick questions about your role, engine, team size, and pain points. The tool scores all 36 recommendations against your answers and shows only what's relevant to you.</p>
       </div>
     </div>
 
@@ -2534,6 +2658,9 @@ h1, h2, h3, h4, h5, h6 {
   <div id="screen-results" class="screen">
     <div class="shared-banner" id="shared-banner">
       These results were shared with you. <a href="#" id="try-own-btn">Try it with your own role and project</a>.
+    </div>
+    <div class="scenario-banner" id="scenario-banner">
+      <strong id="scenario-banner-label"></strong> — You're viewing a pre-built demo. These results are based on a preset profile, not your actual role or project. To get personalized recommendations, <a href="#" id="scenario-own-btn">run the wizard with your own answers</a>.
     </div>
     <div class="results-header">
       <h1 id="results-title"></h1>
@@ -2671,6 +2798,7 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 19, 2026', tag: 'new', text: 'Added Sample Scenarios: 6 pre-built game type profiles (FPS, Open World RPG, MOBA/Live Service, Indie/Platformer, Mobile Casual, Battle Royale) on the intro page. Click any scenario to instantly see what the tool recommends for that game type \u2014 no wizard required.' },
   { date: 'Mar 18, 2026', tag: 'new', text: 'Added cross-link to the companion NVIDIA Game Dev Toolkit (83 tools) in the footer, About modal, and on recommendation cards with NVIDIA tool callouts.' },
   { date: 'Mar 18, 2026', tag: 'updated', text: 'DLSS 5 update: Added community backlash context, Jensen Huang and Bethesda responses clarifying developer artistic control (intensity, color grading, masking). Not a filter — operates at geometry level. Added to both the practical tip and recommendation card caveats.' },
   { date: 'Mar 18, 2026', tag: 'updated', text: 'Myth vs. Reality updates: Added Take-Two CEO Strauss Zelnick\'s March 2026 comments (\'AI tools may help you create assets, but that won\'t help you create hits\') to the artist replacement and small-team myths.' },
@@ -2906,6 +3034,94 @@ const AI_CATEGORIES = [
   "Planning/Scheduling","Performance Optimization",
   "Content Assistance (prototyping)","Community/Moderation"
 ];
+
+const SCENARIOS = [
+  {
+    id: 'fps',
+    label: 'FPS / Shooter',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>',
+    desc: 'AA studio, UE5, production phase. Performance optimization, animation, audio.',
+    selections: {
+      discipline: 'Engineering',
+      engine: 'Unreal Engine 5',
+      team: 'AA',
+      phase: ['Production', 'QA/Stabilization'],
+      pain: ['Performance optimization', 'Build times', 'Bug volume'],
+      openness: ['Code Assistance', 'Performance Optimization', 'QA/Testing']
+    }
+  },
+  {
+    id: 'rpg',
+    label: 'Open World RPG',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+    desc: 'AAA studio, UE5, pre-production to production. Content velocity across every discipline.',
+    selections: {
+      discipline: 'Game Design',
+      engine: 'Unreal Engine 5',
+      team: 'AAA',
+      phase: ['Pre-Production', 'Production'],
+      pain: ['Content velocity', 'Documentation chaos', 'Scheduling visibility'],
+      openness: ['Content Assistance (prototyping)', 'Analysis/Reporting', 'Planning/Scheduling', 'Code Assistance']
+    }
+  },
+  {
+    id: 'moba',
+    label: 'MOBA / Live Service',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+    desc: 'AA studio, custom engine, post-launch. Player analytics, moderation, community management.',
+    selections: {
+      discipline: 'Community/Marketing',
+      engine: 'Proprietary/Custom',
+      team: 'AA',
+      phase: ['Launch', 'Post-Launch'],
+      pain: ['Player feedback volume', 'Bug volume', 'Performance optimization'],
+      openness: ['Analysis/Reporting', 'Community/Moderation', 'QA/Testing']
+    }
+  },
+  {
+    id: 'indie',
+    label: 'Indie / Platformer',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="17" cy="12" r="1"/></svg>',
+    desc: 'Solo dev, Unity, concept to production. Stretching a small budget across every role.',
+    selections: {
+      discipline: 'Engineering',
+      engine: 'Unity',
+      team: 'Solo',
+      phase: ['Concept', 'Pre-Production', 'Production'],
+      pain: ['Content velocity', 'Build times', 'Performance optimization'],
+      openness: ['Code Assistance', 'Content Assistance (prototyping)', 'Performance Optimization']
+    }
+  },
+  {
+    id: 'mobile',
+    label: 'Mobile Casual',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
+    desc: 'Indie team, Unity, full cycle. Monetization analytics, fast iteration, localization.',
+    selections: {
+      discipline: 'Production',
+      engine: 'Unity',
+      team: 'Indie',
+      phase: ['Production', 'Launch', 'Post-Launch'],
+      pain: ['Content velocity', 'Scheduling visibility', 'Player feedback volume'],
+      openness: ['Analysis/Reporting', 'Planning/Scheduling', 'Content Assistance (prototyping)']
+    }
+  },
+  {
+    id: 'battleroyale',
+    label: 'Battle Royale',
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+    desc: 'AAA studio, UE5, QA and launch. Scale testing, anti-cheat, community moderation.',
+    selections: {
+      discipline: 'QA',
+      engine: 'Unreal Engine 5',
+      team: 'AAA',
+      phase: ['QA/Stabilization', 'Launch', 'Post-Launch'],
+      pain: ['Bug volume', 'Performance optimization', 'Player feedback volume'],
+      openness: ['QA/Testing', 'Performance Optimization', 'Community/Moderation']
+    }
+  }
+];
+
 
 const RECOMMENDATIONS = [
   {"id":1,"discipline":["Engineering"],"phase":["Pre-Production","Production"],"task":"Boilerplate code, API integration, shader scaffolding","opportunity":"AI code completion (Copilot/Cursor) for repetitive patterns","risk":"Low","integration":"Engine-agnostic","teamFit":["Solo","Indie","AA","AAA"],"savings":"20-40%","confidence":"High","category":"Code Assistance","painPoints":["Build times","Content velocity"],"benefit":"Cuts repetitive coding by 20-40%. Most effective for API glue code, boilerplate systems, and shader scaffolding. Unity 6.4 adds MCP support for plugging AI models directly into the editor. Aura 12.0 brings autonomous Blueprint and C++ generation to UE5. Use spec-first prompts for best results.","difficulty":"Low — install IDE extension, start using immediately. Unity devs: enable AI Gateway + MCP in 6.4. UE5 devs: try Aura (tryaura.dev)","nvidia":"NVIDIA AI Code Assistant Playbook (GDC 2026) covers AST-aware indexing, hybrid search, and MCP integration for reliable AI coding in large UE5 codebases.","caveats":"Hallucinated engine APIs are the most common failure. Always review generated code against engine docs. Multi-file architectural drift is a real risk on complex systems.","nextStep":"Install Cursor or Copilot in your IDE. Start with constrained tasks: write a spec comment, let AI complete the implementation.","rationale":"Repetitive coding patterns are where AI excels most reliably. The task is bounded, the output is verifiable, and the risk of errors is manageable through code review. This gives teams the highest confidence-to-effort ratio of any AI coding use case."},
@@ -3322,6 +3538,8 @@ form.addEventListener('submit', (e) => {
     pain: pain.join(','),
     openness: openness.join(',')
   });
+  window._isScenario = false;
+  document.getElementById('scenario-banner').classList.remove('visible');
   showResults({ discipline, engine, team, phase, pain, openness });
 });
 
@@ -4029,6 +4247,9 @@ document.getElementById('start-over-btn').addEventListener('click', () => {
   pp.classList.remove('all-selected');
   // Clear all validation messages
   document.querySelectorAll('.validation-msg').forEach(m => m.classList.remove('visible'));
+  // Hide scenario banner
+  document.getElementById('scenario-banner').classList.remove('visible');
+  window._isScenario = false;
   // Reset wizard to step 1
   if (window._wizardReset) window._wizardReset();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -4182,7 +4403,118 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
     .next-step { background: #f0fdf4; border-radius: 6px; padding: 8px 12px; font-size: 12px; margin-top: 6px; }
     .next-step strong { color: #0d7a3e; }
     @media print { body { padding: 20px; } }
-  </style></head><body>`;
+  
+/* Scenario cards */
+.scenarios-section {
+  margin-top: var(--space-6);
+}
+.scenarios-heading {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+.scenarios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+@media (max-width: 640px) {
+  .scenarios-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.scenario-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: center;
+}
+.scenario-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+.scenario-card svg {
+  width: 28px;
+  height: 28px;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+.scenario-card-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+.scenario-card-desc {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+/* Scenario banner on results page */
+.scenario-banner {
+  display: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+.scenario-banner.visible {
+  display: block;
+}
+.scenario-banner strong {
+  color: var(--color-text);
+}
+.scenario-banner a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.scenario-banner a:hover {
+  color: var(--color-text);
+}
+.scenarios-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.scenarios-divider::before,
+.scenarios-divider::after {
+  content: '';
+  flex: 1;
+  border-top: 1px solid var(--color-border);
+}
+.scenarios-explainer,
+.wizard-path-explainer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: var(--space-1) 0 var(--space-3) 0;
+}
+.wizard-path-heading {
+  margin-top: var(--space-6);
+}
+
+</style></head><body>`;
 
   html += `<h1>Top AI Opportunities for ${selections.discipline}${phaseLabel}</h1>`;
   html += `<div class="subtitle">Generated from Game Dev AI Guide by HALP (Joe Halper) — gamedevai.guide</div>`;
@@ -4414,6 +4746,63 @@ document.addEventListener('keydown', (e) => {
     e.target.click();
   }
 });
+
+/* ============================================
+   SAMPLE SCENARIOS
+   ============================================ */
+(function() {
+  const grid = document.getElementById('scenarios-grid');
+  if (!grid || typeof SCENARIOS === 'undefined') return;
+
+  grid.innerHTML = SCENARIOS.map(s => `
+    <div class="scenario-card" data-scenario="${s.id}" role="button" tabindex="0" aria-label="Try ${s.label} scenario">
+      ${s.icon}
+      <div class="scenario-card-label">${s.label}</div>
+      <div class="scenario-card-desc">${s.desc}</div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.scenario-card').forEach(card => {
+    function activate() {
+      const id = card.getAttribute('data-scenario');
+      const scenario = SCENARIOS.find(s => s.id === id);
+      if (!scenario) return;
+
+      gaEvent('scenario_click', { scenario: id });
+
+      // Show scenario banner
+      const banner = document.getElementById('scenario-banner');
+      const bannerLabel = document.getElementById('scenario-banner-label');
+      bannerLabel.textContent = scenario.label + ' Scenario';
+      banner.classList.add('visible');
+
+      // Hide shared banner if visible
+      document.getElementById('shared-banner').classList.remove('visible');
+
+      // Store scenario flag
+      window._isScenario = true;
+      window._scenarioId = id;
+
+      // Run the results
+      showResults(scenario.selections);
+    }
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+  });
+
+  // "Run with your own answers" from scenario banner
+  document.getElementById('scenario-own-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('scenario-banner').classList.remove('visible');
+    window._isScenario = false;
+    document.getElementById('screen-results').classList.remove('active');
+    document.getElementById('screen-form').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+
 </script>
 </body>
 </html>
