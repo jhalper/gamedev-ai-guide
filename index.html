@@ -1547,18 +1547,34 @@ h1, h2, h3, h4, h5, h6 {
   text-align: center;
 }
 
-.app-footer span {
+.app-footer p {
   font-size: var(--text-xs);
-  color: var(--color-text-faint);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-2);
 }
 
 .app-footer a {
   font-size: var(--text-xs);
-  color: var(--color-text-faint);
+  color: var(--color-text-muted);
 }
 
 .app-footer a:hover {
-  color: var(--color-text-muted);
+  color: var(--color-primary);
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.footer-links a + a::before {
+  content: '|';
+  margin-right: var(--space-4);
+  color: var(--color-text-faint);
 }
 
 /* ============================================
@@ -2765,7 +2781,11 @@ h1, h2, h3, h4, h5, h6 {
 
   <!-- FOOTER -->
   <footer class="app-footer">
-    <span>Game Dev AI Guide by HALP &middot; <a href="https://gamedevai.guide">gamedevai.guide</a> &middot; <a href="https://gamedevai.guide/nvidia-toolkit/">NVIDIA Toolkit</a></span>
+    <div class="footer-links">
+      <a href="https://gamedevai.guide/jobs/" target="_blank" rel="noopener noreferrer">Job Search Guide</a>
+      <a href="https://gamedevai.guide/nvidia-toolkit/" target="_blank" rel="noopener noreferrer">NVIDIA Toolkit</a>
+    </div>
+    <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   </footer>
 </div>
 
