@@ -940,6 +940,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-header.warning-header svg { color: var(--color-warning); }
 
+.boards-disclaimer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+  font-style: italic;
+}
+
 /* RESULT CARDS */
 .rec-card {
   margin-bottom: var(--space-3);
@@ -1292,28 +1302,6 @@ h1, h2, h3, h4, h5, h6 {
   text-decoration: underline;
 }
 
-.footer-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-top: var(--space-3);
-}
-
-.footer-links a {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
-}
-
-.footer-links a + a::before {
-  content: '|';
-  margin-right: var(--space-4);
-  color: var(--color-text-faint);
-}
-
-.footer-links a:hover {
-  color: var(--color-primary);
-}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
@@ -1321,53 +1309,8 @@ h1, h2, h3, h4, h5, h6 {
 ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
 </style>
-
-<style id="hub-nav-styles">
-  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
-  .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
-  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
-  .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
-  .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
-  .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
-  .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
-  .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
-  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
-  .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
-  .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
-  .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
-  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
-</style>
-
 </head>
 <body>
-
-<nav class="hub-nav" role="navigation" aria-label="Site navigation">
-  <div class="hub-nav-inner">
-    <a href="../" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
-      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
-        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
-        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
-      </svg>
-      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
-    </a>
-    <div class="hub-nav-right">
-      <ul class="hub-nav-links" id="hubNavLinks">
-        <li><a href="../">Home</a></li>
-        <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
-        <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
-        <li><a href="../jobs/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
-      </ul>
-      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
 
 <div class="app-container">
   <!-- HEADER -->
@@ -1426,11 +1369,19 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.1</span>
+            <span class="whats-new-badge">v1.2</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.2 &mdash; March 20, 2026</div>
+          <ul class="whats-new-list">
+            <li>Added Outscal to job boards (entry-level and international coverage)</li>
+            <li>Added curation note explaining board selection philosophy</li>
+            <li>Fixed duplicate LinkedIn link in action plan for senior profiles</li>
+            <li>Renamed from "Game Dev AI Job Search Guide" to "Game Dev Job Search Guide"</li>
+            <li>Simplified footer (cross-links now handled by site navigation)</li>
+          </ul>
           <div class="whats-new-version">v1.1 &mdash; March 19, 2026</div>
           <ul class="whats-new-list">
             <li>Action plan steps now link directly to recommended tools and platforms</li>
@@ -1441,7 +1392,7 @@ h1, h2, h3, h4, h5, h6 {
           <div class="whats-new-version">v1.0 &mdash; March 19, 2026</div>
           <ul class="whats-new-list">
             <li>Initial release: 4-step wizard with personalized job board, AI tool, and pitfall recommendations</li>
-            <li>13 job boards scored by discipline, experience, and situation</li>
+            <li>13 job boards scored by discipline, experience, and situation (now 14)</li>
             <li>12 AI tools evaluated for game-dev-specific relevance</li>
             <li>10 market pitfalls with honest assessments and concrete alternatives</li>
             <li>5-step personalized action plan generator</li>
@@ -1544,12 +1495,8 @@ h1, h2, h3, h4, h5, h6 {
 
 <!-- FOOTER -->
 <footer class="app-footer">
-  <div class="footer-links">
-    <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">Game Dev AI Guide</a>
-    <a href="https://gamedevai.guide/nvidia-toolkit/" target="_blank" rel="noopener noreferrer">NVIDIA Toolkit</a>
-  </div>
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 19, 2026 (v1.1) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 20, 2026 (v1.2) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -1777,6 +1724,23 @@ var JOB_BOARDS = [
     disciplines: ['engineering','art','animation','game_design','production','community'],
     experienceLevels: ['senior','lead'],
     situations: ['employed_looking','international']
+  },
+  {
+    id: 'outscal',
+    name: 'Outscal',
+    url: 'https://outscal.com/jobs',
+    description: 'Game dev job portal with upskilling courses attached. Strong presence in India and Southeast Asia, growing US/EU listings. Community of 100k+ game developers.',
+    cost: 'Free (courses paid)',
+    costType: 'freemium',
+    size: 'Thousands',
+    bestFor: ['Entry-level', 'International'],
+    hasRemoteFilter: true,
+    bestForTags: ['Entry-level', 'Upskilling', 'International'],
+    strengths: 'Combines job search with skill-building. Good for entry-level developers who need to fill gaps. Strong international coverage, especially India and Southeast Asia.',
+    caveats: 'Skews toward entry/mid roles. Course upsells can feel pushy. US and EU listings thinner than dedicated Western boards.',
+    disciplines: ['engineering','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','qa','vfx'],
+    experienceLevels: ['entry','mid'],
+    situations: ['first_job','international','laid_off']
   }
 ];
 
@@ -2326,6 +2290,10 @@ function scoreBoards() {
 
     if (board.id === 'studio_pages' && state.situations.indexOf('employed_looking') >= 0) score += 3;
 
+    if (board.id === 'outscal' && state.experience === 'entry') score += 4;
+    if (board.id === 'outscal' && state.situations.indexOf('first_job') >= 0) score += 3;
+    if (board.id === 'outscal' && state.situations.indexOf('international') >= 0) score += 3;
+
     if (board.id === 'gamejobs') score += 2; // always a good base recommendation
 
     return { board: board, score: score };
@@ -2560,6 +2528,8 @@ function showResults() {
     html += '</div></div></div>';
   });
 
+  html += '<p class="boards-disclaimer">These boards are selected and ranked based on your profile. This is a curated list, not an exhaustive directory. We prioritize boards with active listings, strong community reputation, and relevance to your specific situation.</p>';
+
   // Section 2: AI Tools
   html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg><h2>AI Tools for Your Search</h2></div>';
 
@@ -2637,5 +2607,66 @@ function restart() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
-</body>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
 </html>
