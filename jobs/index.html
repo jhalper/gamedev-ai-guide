@@ -2407,7 +2407,11 @@ function generateActionPlan(boards, tools) {
   if (state.situations.indexOf('remote') >= 0) {
     steps.push('Set up daily alerts on <a href="https://remotegamejobs.com" target="_blank" rel="noopener noreferrer">Remote Game Jobs</a> and ' + topBoardLink + ' for ' + discLabel + ' roles. Also check <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a> (indie studios are more remote-friendly).');
   } else {
-    steps.push('Set up alerts on ' + topBoardLink + ' and <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for ' + discLabel + ' roles. Bookmark career pages of your top 5-10 target studios and check weekly.');
+    if (topBoard.id === 'linkedin') {
+      steps.push('Set up alerts on ' + topBoardLink + ' and <a href="https://gamejobs.co" target="_blank" rel="noopener noreferrer">GameJobs.co</a> for ' + discLabel + ' roles. Bookmark career pages of your top 5-10 target studios and check weekly.');
+    } else {
+      steps.push('Set up alerts on ' + topBoardLink + ' and <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for ' + discLabel + ' roles. Bookmark career pages of your top 5-10 target studios and check weekly.');
+    }
   }
 
   // Step 5: Action
