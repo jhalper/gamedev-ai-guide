@@ -1311,6 +1311,49 @@ h1, h2, h3, h4, h5, h6 {
 </style>
 </head>
 <body>
+<style id="hub-nav-styles">
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
+  .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
+  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
+  .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
+  .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
+  .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
+  .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
+  .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
+  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
+  .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
+  .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
+  .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
+  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
+</style>
+
+<nav class="hub-nav" role="navigation" aria-label="Site navigation">
+  <div class="hub-nav-inner">
+    <a href="../" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
+      </svg>
+      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
+    </a>
+    <div class="hub-nav-right">
+      <ul class="hub-nav-links" id="hubNavLinks">
+        <li><a href="../">Home</a></li>
+        <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
+        <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
+        <li><a href="../jobs/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
+      </ul>
+      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
 
 <div class="app-container">
   <!-- HEADER -->
@@ -1676,71 +1719,71 @@ var JOB_BOARDS = [
   },
   {
     id: 'gamedevclassifieds',
-    name: 'r/gameDevClassifieds',
-    url: 'https://reddit.com/r/gameDevClassifieds',
-    description: 'Reddit community (126k+ members) for paid game dev gigs. Mix of freelance, contract, and some full-time. Mostly remote.',
+    name: 'GameDev Classifieds',
+    url: 'https://www.gamedevmap.com/classifieds',
+    description: 'Reddit-style board (r/gamedev classifieds). Strong for freelance, contract, and student/intern postings.',
     cost: 'Free',
     costType: 'free',
-    size: 'Daily posts',
-    bestFor: ['Freelance', 'Contract'],
+    size: 'Small-medium',
+    bestFor: ['Freelance', 'Entry-level', 'Contracts'],
     hasRemoteFilter: false,
-    bestForTags: ['Freelance', 'Contract', 'Portfolio building'],
-    strengths: 'Good for freelancers. Paid gigs can build portfolio credits. Low barrier to entry.',
-    caveats: 'Not for full-time permanent roles. Expect low rates and small scopes. Quality varies.',
-    disciplines: ['engineering','art','animation','audio','game_design','narrative','uiux','vfx'],
+    bestForTags: ['Freelance', 'Entry-level', 'Contracts'],
+    strengths: 'Community-driven. Strong for freelance and contract. Entry-level friendly with student/intern postings.',
+    caveats: 'Inconsistent quality. No verification. Budget rates common in freelance posts.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid'],
-    situations: ['freelance','first_job']
+    situations: ['freelance','first_job','remote']
   },
   {
     id: 'gamesjobsdirect',
     name: 'Games Jobs Direct',
     url: 'https://www.gamesjobsdirect.com',
-    description: 'UK-based game industry job board with salary checker tool. Strong European and Middle Eastern studio coverage.',
+    description: 'UK/Europe-focused dedicated game dev board. Salary checker built in. Strong for international and AAA European studios.',
     cost: 'Free',
     costType: 'free',
-    size: 'Hundreds',
-    bestFor: ['European market', 'UK studios'],
+    size: '1,500+ listings',
+    bestFor: ['UK/Europe', 'AAA', 'Salary data'],
     hasRemoteFilter: true,
-    bestForTags: ['EU/UK', 'Salary data'],
-    strengths: 'Good European coverage, particularly UK, Middle Eastern studios. Salary check tool useful for market rates.',
-    caveats: 'Less relevant for US-based seekers. UI feels dated. Limited smart features.',
+    bestForTags: ['UK/Europe', 'Salary checker', 'AAA'],
+    strengths: 'If you\'re in or targeting UK/Europe, this is essential. Salary checker provides market data. Strong AAA coverage.',
+    caveats: 'Less relevant for US-only search. Some listings cross-post from other boards.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['mid','senior','lead'],
-    situations: ['international','relocation']
+    situations: ['laid_off','employed_looking','relocation','international']
   },
   {
     id: 'gijobs',
-    name: 'GamesIndustry.biz Jobs',
+    name: 'GI.biz Jobs',
     url: 'https://jobs.gamesindustry.biz',
-    description: 'Job board attached to the industry\'s leading trade publication. Low volume but high-quality audience of working professionals.',
+    description: 'Jobs board from GamesIndustry.biz (the leading B2B games publication). Senior and leadership roles. Strong credibility signal.',
     cost: 'Free',
     costType: 'free',
-    size: '~34-43 listings',
-    bestFor: ['Senior professionals', 'EU market'],
+    size: 'Medium (curated)',
+    bestFor: ['Senior/Lead', 'International', 'Leadership'],
     hasRemoteFilter: true,
-    bestForTags: ['Senior roles', 'EU/UK'],
-    strengths: 'High-credibility audience. Lower competition per listing (fewer but more qualified applicants). Strong UK/Nordic representation.',
-    caveats: 'Very low volume. Not a primary search tool. US roles underrepresented.',
-    disciplines: ['engineering','art','animation','game_design','production','community'],
+    bestForTags: ['Senior roles', 'International', 'Leadership'],
+    strengths: 'High credibility due to GI.biz brand. International reach. Skews senior/leadership. Good for management and production roles.',
+    caveats: 'Lower volume than aggregators. Less useful for junior/mid individual contributor roles.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['senior','lead'],
-    situations: ['employed_looking','international']
+    situations: ['laid_off','employed_looking','relocation','international']
   },
   {
     id: 'outscal',
     name: 'Outscal',
     url: 'https://outscal.com/jobs',
-    description: 'Game dev job portal with upskilling courses attached. Strong presence in India and Southeast Asia, growing US/EU listings. Community of 100k+ game developers.',
-    cost: 'Free (courses paid)',
-    costType: 'freemium',
-    size: 'Thousands',
-    bestFor: ['Entry-level', 'International'],
+    description: 'Game dev learning + job platform. Strong entry-level and international coverage. Integrated courses and job readiness tools.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Growing (1,000+ listings)',
+    bestFor: ['Entry-level', 'International', 'Learning'],
     hasRemoteFilter: true,
-    bestForTags: ['Entry-level', 'Upskilling', 'International'],
-    strengths: 'Combines job search with skill-building. Good for entry-level developers who need to fill gaps. Strong international coverage, especially India and Southeast Asia.',
-    caveats: 'Skews toward entry/mid roles. Course upsells can feel pushy. US and EU listings thinner than dedicated Western boards.',
-    disciplines: ['engineering','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','qa','vfx'],
+    bestForTags: ['Entry-level', 'International', 'Learning path'],
+    strengths: 'Integrated learning + job board is unique. Strong international reach. Entry-level friendly. Growing community.',
+    caveats: 'Newer platform with less brand recognition than established boards. Course upsells prominent. Community less established than ASGC.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid'],
-    situations: ['first_job','international','laid_off']
+    situations: ['first_job','international','laid_off','remote']
   }
 ];
 
@@ -1750,31 +1793,31 @@ var JOB_BOARDS = [
 var AI_TOOLS = [
   {
     id: 'chatgpt_interview',
-    name: 'ChatGPT Voice (Interview Prep)',
+    name: 'ChatGPT Voice Mode (Interview Prep)',
     url: 'https://chat.openai.com',
-    description: 'Use Voice Mode for realistic mock interviews. Upload resume + JD, simulate specific interview stages. Ask for harsh feedback.',
-    cost: 'Free (Plus ~$20/mo for Voice)',
-    costType: 'freemium',
+    description: 'Use Voice Mode for live mock interviews. Upload your resume + a target JD, then ask it to simulate a specific interview format (portfolio review, behavioral, technical).',
+    cost: 'Free',
+    costType: 'free',
     stage: 'Interview',
-    challenges: ['interview_prep','getting_ghosted','no_shipped_titles'],
+    challenges: ['interview_prep'],
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     difficulty: 'Easy',
-    gameDevRelevance: 'High. Can simulate game-specific interview formats (design challenges, portfolio walkthroughs, technical screens) when properly prompted with studio and game context.',
-    caveats: 'Optimistically positive by default. Must explicitly ask for harsh feedback. Does not deeply know studio culture or specific games.'
+    gameDevRelevance: 'High. Can simulate portfolio reviews for artists, design critiques for designers, behavioral interviews for production. You control the specificity by the context you provide.',
+    caveats: 'Quality depends entirely on prompt quality. Ask for harsh feedback explicitly. Does not know actual interviewer preferences at specific studios.'
   },
   {
     id: 'teal',
     name: 'Teal',
     url: 'https://www.tealhq.com',
-    description: 'All-in-one: ATS resume builder + keyword matcher + job tracker + cover letter generator. Has game-dev-specific LinkedIn guide.',
-    cost: 'Free (Teal+ $29/mo)',
+    description: 'All-in-one platform: ATS-optimized resume builder, job tracker, LinkedIn optimizer, and AI resume tailoring. Best-in-class for tracking applications.',
+    cost: 'Free (basic); Pro $29/mo',
     costType: 'freemium',
     stage: 'Resume',
-    challenges: ['ats_trouble','finding_jobs','getting_ghosted'],
+    challenges: ['ats_trouble','getting_ghosted','finding_jobs'],
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     difficulty: 'Easy',
-    gameDevRelevance: 'Partial. Has specific LinkedIn guide for game developers and game dev cover letter templates. Still fundamentally generic for keyword matching.',
-    caveats: 'AI-generated bullets contain placeholder metrics. Free tier is useful; paid only worth it if applying to 5+ jobs/week. Trustpilot: 4.1/5.'
+    gameDevRelevance: 'Generic but solid. No game-industry-specific knowledge. Resume tailoring AI is template-based. Best value is the integrated tracker + LinkedIn optimizer combo.',
+    caveats: 'AI tailoring still requires your manual editing for specificity. $29/mo Pro is a lot for what it offers vs. Jobscan free trial + Huntr free.'
   },
   {
     id: 'jobscan',
