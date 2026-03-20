@@ -738,19 +738,98 @@
   // Make clearAllFilters available globally for the no-results button
   window.clearAllFilters = clearAllFilters;
 
-  // ---------- New Features Banner ----------
-  function initBanner() {
-    const banner = document.getElementById('newFeaturesBanner');
-    const closeBtn = document.getElementById('bannerClose');
-    if (banner && closeBtn) {
-      closeBtn.addEventListener('click', () => {
-        banner.classList.add('hidden');
-      });
-    }
+  // ---------- What's New Panel ----------
+  const CHANGELOG = [
+    { version: 'v1.8.1', date: '2026-03-20', changes: [
+      'Removed redundant site header — hub nav now serves as the single sticky navigation',
+      'Merged section links (Where to Start, Engine Matrix, All Tools) and theme toggle into hub nav',
+      'Moved "What\'s New" changelog into the hero section for better content flow',
+      'Reduced vertical overhead — content is immediately visible with less stacking'
+    ]},
+    { version: 'v1.8.0', date: '2026-03-20', changes: [
+      'Replaced dismissible NEW banner with persistent collapsible "What\'s New" panel',
+      'Full version history now accessible from the hero section at any time',
+      'Timeline-style layout shows all updates in reverse-chronological order',
+      'Confirmed no new GTC 2026 gaming announcements beyond v1.7.0 coverage'
+    ]},
+    { version: 'v1.7.0', date: '2026-03-18', changes: [
+      'Added DLSS 5 (Neural Rendering) — GTC 2026 headline, Fall 2026 launch',
+      'Added NemoClaw (Agentic AI Framework) — open-source AI agent stack',
+      'Updated DLSS SR with 20 new GDC 2026 game integrations + March 31 override beta',
+      'Updated RTX Mega Geometry with foliage system + CONTROL Resonant integration',
+      'Updated GeForce NOW with March 19 VR 90 FPS launch + CloudXR 4K 120 FPS',
+      'Tool count: 81 → 83'
+    ]},
+    { version: 'v1.6.0', date: '2026-03-18', changes: [
+      'Added philosophy statement: tools extend developers, not replace them',
+      'Full language audit — rewrote 13 one-liners that used replacement-adjacent phrasing',
+      'All phrasing now frames NVIDIA tools as augmenting engines and developer craft'
+    ]},
+    { version: 'v1.5.0', date: '2026-03-17', changes: [
+      'Restructured Overview tab — quick-glance info bar, smart lead sentences',
+      'Replaced verbose warning boxes with collapsible "Things to know" toggles',
+      'Overviews now scannable at a glance'
+    ]},
+    { version: 'v1.4.2', date: '2026-03-17', changes: ['Added SVG favicon (NVIDIA green hexagon)'] },
+    { version: 'v1.4.1', date: '2026-03-17', changes: ['Legend line break fix in Engine Matrix'] },
+    { version: 'v1.4.0', date: '2026-03-17', changes: [
+      'Replaced numeric scores in Engine Matrix with colored dots (green/yellow/red/gray)',
+      'Integration type labels now primary info per cell'
+    ]},
+    { version: 'v1.3.0', date: '2026-03-17', changes: [
+      'Fixed 9 matrix cells showing scores alongside "Not Available"',
+      'Tightened matrix row spacing, added alternating row backgrounds'
+    ]},
+    { version: 'v1.2.0', date: '2026-03-17', changes: [
+      'Improved inactive tab styling — brighter text, green glow hover'
+    ]},
+    { version: 'v1.1.0', date: '2026-03-17', changes: [
+      'Added tabbed details, "Why Game Dev?" one-liners, hyperlinked tool names',
+      'Rebuilt engine integration matrix, added "Where to Start" scenario cards',
+      'Added light/dark mode toggle'
+    ]},
+    { version: 'v1.0.0', date: '2026-03-16', changes: [
+      'Initial release — 81 tools, filters, search, NVIDIA dark theme'
+    ]}
+  ];
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr + 'T12:00:00');
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  function initWhatsNew() {
+    const toggle = document.getElementById('whatsNewToggle');
+    const panel = document.getElementById('whatsNewPanel');
+    const timeline = document.getElementById('wnTimeline');
+    if (!toggle || !panel || !timeline) return;
+
+    // Render timeline
+    timeline.innerHTML = CHANGELOG.map(entry => `
+      <div class="wn-entry">
+        <div class="wn-entry-header">
+          <span class="wn-entry-ver">${entry.version}</span>
+          <span class="wn-entry-date">${formatDate(entry.date)}</span>
+        </div>
+        <div class="wn-entry-dot-col">
+          <span class="wn-dot"></span>
+          <span class="wn-line"></span>
+        </div>
+        <div class="wn-entry-changes">
+          <ul>${entry.changes.map(c => `<li>${c}</li>`).join('')}</ul>
+        </div>
+      </div>
+    `).join('');
+
+    toggle.addEventListener('click', () => {
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!isOpen));
+      panel.hidden = isOpen;
+    });
   }
 
   // ---------- Go ----------
   initTheme();
-  initBanner();
+  initWhatsNew();
   init();
 })();

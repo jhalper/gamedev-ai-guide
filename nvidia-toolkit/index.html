@@ -20,18 +20,26 @@
 <style id="hub-nav-styles">
   @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
   .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
-  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
+  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
   .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
   .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
   .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
   .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
   .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
-  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
+  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.8rem,0.75rem + 0.3vw,0.9rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
   .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
   .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
   .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .hub-nav-divider{width:1px;height:18px;background:#3a3836;margin:0 0.25rem;flex-shrink:0}
+  .hub-section-link{color:#6a6a80 !important;font-size:clamp(0.75rem,0.7rem + 0.25vw,0.85rem) !important}
+  .hub-section-link:hover{color:#d4d0c8 !important}
+  .hub-nav .theme-toggle{background:none;border:1px solid #3a3836;color:#8a8680;width:32px;height:32px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 180ms ease;margin-left:0.25rem;flex-shrink:0}
+  .hub-nav .theme-toggle:hover{color:#76b900;border-color:#76b900}
+  [data-theme="dark"] .hub-nav .icon-moon{display:none}
+  [data-theme="light"] .hub-nav .icon-sun{display:none}
   .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
-  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
+  @media(max-width:900px){.hub-nav-divider,.hub-section-link{display:none !important}}
+  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}.hub-nav-divider{display:none !important}.hub-section-link{display:inline-flex !important}}
 </style>
 
 </head>
@@ -53,7 +61,19 @@
         <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
         <li><a href="../nvidia-toolkit/" class="active"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
         <li><a href="../jobs/"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
+        <li class="hub-nav-divider" aria-hidden="true"></li>
+        <li><a href="#where-to-start" class="hub-section-link">Where to Start</a></li>
+        <li><a href="#engine-matrix" class="hub-section-link">Engine Matrix</a></li>
+        <li><a href="#tools" class="hub-section-link">All Tools</a></li>
       </ul>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
       <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
@@ -65,42 +85,7 @@
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- New Features Banner -->
-  <div class="new-features-banner" id="newFeaturesBanner">
-    <div class="container banner-inner">
-      <span class="banner-badge">NEW</span>
-      <span class="banner-text" id="bannerText">v1.7.0 — Added DLSS 5, NemoClaw, GTC/GDC 2026 updates across 83 tools.</span>
-      <button class="banner-close" id="bannerClose" aria-label="Dismiss banner">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-  </div>
 
-  <!-- Header -->
-  <header class="site-header" role="banner">
-    <div class="header-inner container">
-      <div class="logo-area">
-        <svg class="nvidia-logo" viewBox="0 0 32 32" width="32" height="32" aria-label="NVIDIA Game Dev Toolkit">
-          <rect width="32" height="32" rx="6" fill="#76b900"/>
-          <path d="M8 22V10l8 6-8 6zm9-6l7-6v12l-7-6z" fill="#0d0d1a" opacity="0.9"/>
-        </svg>
-        <span class="logo-text">NVIDIA Game Dev Toolkit</span>
-      </div>
-      <nav class="header-nav" aria-label="Main navigation">
-        <a href="#where-to-start" class="nav-link">Where to Start</a>
-        <a href="#engine-matrix" class="nav-link">Engine Matrix</a>
-        <a href="#tools" class="nav-link">All Tools</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
-          <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-      </nav>
-    </div>
-  </header>
 
   <!-- Hero -->
   <section class="hero" aria-labelledby="hero-title">
@@ -110,6 +95,21 @@
       <p class="hero-subtitle">Cut through the noise. Find the NVIDIA tools that matter for your game.</p>
       <p class="hero-intro">NVIDIA's ecosystem spans 80+ tools (and growing) across rendering, AI, physics, profiling, cloud gaming, and more. Most are buried in enterprise-focused documentation. This guide maps every tool to the game development workflows where it actually helps — from prototype to post-launch.</p>
       <p class="hero-philosophy">These tools are built to extend what game developers and their engines can do — not replace the craft, creativity, or expertise that makes games worth playing.</p>
+      <!-- What's New (inline) -->
+      <div class="whats-new-inline" id="whatsNewBar">
+        <button class="whats-new-toggle" id="whatsNewToggle" aria-expanded="false" aria-controls="whatsNewPanel">
+          <span class="whats-new-left">
+            <span class="wn-version-badge">v1.8.1</span>
+            <span class="wn-summary">Updated Mar 20, 2026 — Streamlined layout, 83 tools</span>
+          </span>
+          <span class="wn-caret">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </button>
+        <div class="whats-new-panel" id="whatsNewPanel" hidden>
+          <div class="wn-timeline" id="wnTimeline"></div>
+        </div>
+      </div>
       <div class="stats-bar" role="list" aria-label="Quick statistics">
         <div class="stat-item" role="listitem">
           <span class="stat-number" id="statTools">60+</span>

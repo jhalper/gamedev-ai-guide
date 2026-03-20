@@ -94,68 +94,188 @@
   color-scheme: light;
 }
 
-/* ---------- New Features Banner ---------- */
-.new-features-banner {
-  background: linear-gradient(90deg, rgba(118, 185, 0, 0.12) 0%, rgba(118, 185, 0, 0.06) 100%);
-  border-bottom: 1px solid rgba(118, 185, 0, 0.2);
-  padding: 10px 0;
-  position: relative;
-  z-index: 100;
+/* ---------- What's New (Inline in Hero) ---------- */
+.whats-new-inline {
+  margin-bottom: 28px;
+  max-width: 640px;
 }
 
-.banner-inner {
+.whats-new-toggle {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 14px;
+  background: rgba(118, 185, 0, 0.06);
+  border: 1px solid rgba(118, 185, 0, 0.15);
+  border-radius: var(--radius-md);
+  cursor: pointer;
   font-family: var(--font-body);
-  font-size: 0.85rem;
   color: var(--text-secondary);
+  gap: 10px;
+  transition: border-color var(--duration) var(--ease), background var(--duration) var(--ease);
 }
 
-.banner-badge {
+.whats-new-toggle:hover {
+  color: var(--text-primary);
+  border-color: rgba(118, 185, 0, 0.3);
+  background: rgba(118, 185, 0, 0.10);
+}
+
+.whats-new-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.wn-version-badge {
   display: inline-flex;
   align-items: center;
   background: var(--green);
   color: #0d0d1a;
   font-size: 0.65rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 3px 8px;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
   border-radius: 4px;
   flex-shrink: 0;
+  font-family: var(--font-mono);
 }
 
-.banner-text {
-  flex: 1;
+.wn-summary {
+  font-size: 0.82rem;
   line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.banner-close {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+.wn-caret {
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-shrink: 0;
-  transition: color var(--duration) var(--ease), background var(--duration) var(--ease);
+  color: var(--text-muted);
+  transition: transform var(--duration) var(--ease);
 }
 
-.banner-close:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.08);
+.whats-new-toggle[aria-expanded="true"] .wn-caret {
+  transform: rotate(180deg);
 }
 
-[data-theme="light"] .banner-close:hover {
-  background: rgba(0, 0, 0, 0.06);
+.whats-new-panel {
+  padding: 12px 14px 4px;
 }
 
-.new-features-banner.hidden {
+.whats-new-panel[hidden] {
   display: none;
+}
+
+/* Timeline entries */
+.wn-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wn-entry {
+  display: grid;
+  grid-template-columns: auto 20px 1fr;
+  gap: 0 12px;
+  align-items: start;
+}
+
+.wn-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 4px;
+  grid-column: 1;
+}
+
+.wn-entry-ver {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  white-space: nowrap;
+}
+
+.wn-entry-date {
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.wn-entry-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  padding-top: 12px;
+}
+
+.wn-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(118, 185, 0, 0.4);
+}
+
+.wn-entry:not(:last-child) .wn-line {
+  width: 1px;
+  flex: 1;
+  background: rgba(118, 185, 0, 0.2);
+  min-height: 12px;
+}
+
+.wn-entry-changes {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  padding: 6px 0 14px;
+}
+
+.wn-entry-changes ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.wn-entry-changes li {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding-left: 14px;
+  position: relative;
+}
+
+.wn-entry-changes li::before {
+  content: '\2022';
+  position: absolute;
+  left: 2px;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.wn-entry:first-child .wn-entry-changes li {
+  color: var(--text-primary);
+}
+
+@media (max-width: 640px) {
+  .wn-entry {
+    grid-template-columns: auto 1fr;
+    gap: 0 10px;
+  }
+  .wn-entry-dot-col { display: none; }
+  .wn-entry-changes { grid-column: 2; grid-row: 2; }
+  .wn-entry-header { grid-column: 1 / -1; }
+  .wn-summary { display: none; }
 }
 
 /* ---------- Reset & Base ---------- */
@@ -167,7 +287,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px;
+  scroll-padding-top: 64px;
 }
 
 body {
@@ -204,84 +324,14 @@ a:hover { color: var(--green-bright); }
 }
 .skip-link:focus { top: 8px; }
 
-/* ---------- Header ---------- */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(13, 13, 26, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-}
-
-[data-theme="light"] .site-header {
-  background: rgba(245, 245, 248, 0.88);
-}
-
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 60px;
-}
-
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.nvidia-logo {
-  flex-shrink: 0;
-}
-
-.logo-text {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: -0.02em;
-}
-
-.header-nav {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.nav-link {
-  color: var(--text-secondary);
-  font-size: 14px;
-  font-weight: 500;
-  transition: color var(--duration) var(--ease);
-}
-.nav-link:hover { color: var(--text-primary); }
-
-.theme-toggle {
-  background: none;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all var(--duration) var(--ease);
-}
-.theme-toggle:hover {
-  color: var(--green);
-  border-color: var(--green);
-}
-
+/* Theme toggle icons (now in hub nav) */
 [data-theme="dark"] .icon-moon { display: none; }
 [data-theme="light"] .icon-sun { display: none; }
 
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  padding: 100px 0 80px;
+  padding: 72px 0 64px;
   overflow: hidden;
 }
 
@@ -589,7 +639,7 @@ a:hover { color: var(--green-bright); }
   padding: 20px;
   margin-bottom: 24px;
   position: sticky;
-  top: 60px;
+  top: 48px;
   z-index: 50;
 }
 

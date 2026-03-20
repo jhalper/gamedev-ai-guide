@@ -1,5 +1,22 @@
 # NVIDIA Game Dev Toolkit — Changelog
 
+## v1.8.1 — 2026-03-20
+- Removed redundant site header — hub nav now serves as the single sticky navigation
+- Merged section links (Where to Start, Engine Matrix, All Tools) and theme toggle into hub nav
+- Moved "What's New" changelog into the hero section as an inline collapsible pill
+- Reduced vertical overhead — content is immediately visible with less stacking
+- Fixed sticky offsets: filter-bar and scroll-padding adjusted for single-bar layout
+- Section links hidden on tablets (< 900px), reappear in mobile hamburger menu
+- Tool count: 83 (unchanged)
+
+## v1.8.0 — 2026-03-20
+- Replaced dismissible NEW banner with persistent collapsible "What's New" panel
+- Full version history now accessible from the hero section at any time (timeline layout, reverse-chronological)
+- Changelog data embedded in app.js — all 12 versions rendered dynamically
+- Confirmed no new GTC 2026 gaming announcements beyond v1.7.0 coverage
+- Mobile responsive: timeline dots hidden on small screens, clean stacked layout
+- Tool count: 83 (unchanged)
+
 ## v1.7.0 — 2026-03-18
 - Added DLSS 5 (Neural Rendering) as new tool entry — GTC 2026 headline announcement, Fall 2026 launch
 - Added NemoClaw (Agentic AI Framework) as new tool entry — open-source long-running AI agent stack
