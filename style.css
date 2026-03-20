@@ -321,6 +321,66 @@
   text-decoration: underline;
 }
 
+/* ---- QUICK ROUTING ---- */
+.routing-section {
+  padding-bottom: clamp(var(--space-12), 6vw, var(--space-20));
+}
+
+.routing-label {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.routing-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.routing-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color var(--transition-interactive),
+              color var(--transition-interactive),
+              background var(--transition-interactive);
+}
+
+.routing-btn:hover {
+  border-color: var(--color-border);
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.routing-btn-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .routing-btn {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
 /* ---- TOOL CARDS ---- */
 .tools-section {
   padding-bottom: clamp(var(--space-16), 8vw, var(--space-32));
