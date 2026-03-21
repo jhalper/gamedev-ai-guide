@@ -996,6 +996,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Recommendation Cards */
+.discipline-group-header {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  padding: var(--space-2) 0;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+  border-bottom: 2px solid var(--color-primary);
+  letter-spacing: -0.01em;
+}
+.discipline-group-header:first-child {
+  margin-top: 0;
+}
+
 .rec-card {
   margin-bottom: var(--space-3);
   border: 1px solid var(--color-border);
@@ -1563,19 +1578,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-primary);
 }
 
-.footer-links {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  margin-bottom: var(--space-3);
-}
-
-.footer-links a + a::before {
-  content: '|';
-  margin-right: var(--space-4);
-  color: var(--color-text-faint);
-}
 
 /* ============================================
    SENTIMENT POLL
@@ -2453,53 +2455,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 </style>
-
-<style id="hub-nav-styles">
-  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
-  .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
-  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
-  .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
-  .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
-  .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
-  .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
-  .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
-  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
-  .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
-  .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
-  .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
-  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
-</style>
-
 </head>
 <body>
-
-<nav class="hub-nav" role="navigation" aria-label="Site navigation">
-  <div class="hub-nav-inner">
-    <a href="../" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
-      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
-        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
-        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
-      </svg>
-      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
-    </a>
-    <div class="hub-nav-right">
-      <ul class="hub-nav-links" id="hubNavLinks">
-        <li><a href="../">Home</a></li>
-        <li><a href="../ai-tools/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
-        <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
-        <li><a href="../jobs/"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
-      </ul>
-      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-    </div>
-  </div>
-</nav>
-
 
 <!-- ABOUT MODAL (outside app-container for z-index stacking) -->
 <div class="modal-overlay" id="about-modal">
@@ -2826,10 +2783,6 @@ h1, h2, h3, h4, h5, h6 {
 
   <!-- FOOTER -->
   <footer class="app-footer">
-    <div class="footer-links">
-      <a href="https://gamedevai.guide/jobs/" target="_blank" rel="noopener noreferrer">Job Search Guide</a>
-      <a href="https://gamedevai.guide/nvidia-toolkit/" target="_blank" rel="noopener noreferrer">NVIDIA Toolkit</a>
-    </div>
     <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   </footer>
 </div>
@@ -2863,6 +2816,8 @@ h1, h2, h3, h4, h5, h6 {
    CHANGELOG
    ============================================ */
 const CHANGELOG = [
+  { date: 'Mar 21, 2026', tag: 'updated', text: 'Scenarios redesigned: each scenario now shows AI recommendations across all relevant disciplines (art, animation, engineering, audio, design, etc.) instead of a single discipline. Results are grouped by department so you can see the full picture for any game type.' },
+  { date: 'Mar 21, 2026', tag: 'updated', text: 'Simplified footer \u2014 cross-links now handled by site navigation banner.' },
   { date: 'Mar 19, 2026', tag: 'new', text: 'Added Sample Scenarios: 6 pre-built game type profiles (FPS, Open World RPG, MOBA/Live Service, Indie/Platformer, Mobile Casual, Battle Royale) on the intro page. Click any scenario to instantly see what the tool recommends for that game type \u2014 no wizard required.' },
   { date: 'Mar 18, 2026', tag: 'new', text: 'Added cross-link to the companion NVIDIA Game Dev Toolkit (83 tools) in the footer, About modal, and on recommendation cards with NVIDIA tool callouts.' },
   { date: 'Mar 18, 2026', tag: 'updated', text: 'DLSS 5 update: Added community backlash context, Jensen Huang and Bethesda responses clarifying developer artistic control (intensity, color grading, masking). Not a filter — operates at geometry level. Added to both the practical tip and recommendation card caveats.' },
@@ -3105,23 +3060,23 @@ const SCENARIOS = [
     id: 'fps',
     label: 'FPS / Shooter',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>',
-    desc: 'AA studio, UE5, production phase. Performance optimization, animation, audio.',
+    desc: 'AA studio, UE5, production. AI across engineering, art, animation, audio, level design, and QA.',
     selections: {
-      discipline: 'Engineering',
+      discipline: ['Engineering', 'Art', 'Animation', 'Audio', 'Level Design', 'QA', 'Technical Art'],
       engine: 'Unreal Engine 5',
       team: 'AA',
       phase: ['Production', 'QA/Stabilization'],
-      pain: ['Performance optimization', 'Build times', 'Bug volume'],
-      openness: ['Code Assistance', 'Performance Optimization', 'QA/Testing']
+      pain: ['Performance optimization', 'Content velocity', 'Bug volume'],
+      openness: ['Code Assistance', 'Performance Optimization', 'QA/Testing', 'Content Assistance (prototyping)']
     }
   },
   {
     id: 'rpg',
     label: 'Open World RPG',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
-    desc: 'AAA studio, UE5, pre-production to production. Content velocity across every discipline.',
+    desc: 'AAA studio, UE5, pre-production to production. Content velocity across design, art, narrative, animation, and production.',
     selections: {
-      discipline: 'Game Design',
+      discipline: ['Game Design', 'Art', 'Narrative', 'Animation', 'Level Design', 'Production', 'Engineering'],
       engine: 'Unreal Engine 5',
       team: 'AAA',
       phase: ['Pre-Production', 'Production'],
@@ -3133,56 +3088,56 @@ const SCENARIOS = [
     id: 'moba',
     label: 'MOBA / Live Service',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
-    desc: 'AA studio, custom engine, post-launch. Player analytics, moderation, community management.',
+    desc: 'AA studio, custom engine, post-launch. Analytics, moderation, balance, engineering, and community across a live game.',
     selections: {
-      discipline: 'Community/Marketing',
+      discipline: ['Community/Marketing', 'Engineering', 'QA', 'Game Design', 'Production', 'UI/UX'],
       engine: 'Proprietary/Custom',
       team: 'AA',
       phase: ['Launch', 'Post-Launch'],
       pain: ['Player feedback volume', 'Bug volume', 'Performance optimization'],
-      openness: ['Analysis/Reporting', 'Community/Moderation', 'QA/Testing']
+      openness: ['Analysis/Reporting', 'Community/Moderation', 'QA/Testing', 'Code Assistance']
     }
   },
   {
     id: 'indie',
     label: 'Indie / Platformer',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="17" cy="12" r="1"/></svg>',
-    desc: 'Solo dev, Unity, concept to production. Stretching a small budget across every role.',
+    desc: 'Solo dev, Unity, concept to production. Wearing every hat: code, art, audio, design, and production.',
     selections: {
-      discipline: 'Engineering',
+      discipline: ['Engineering', 'Art', 'Audio', 'Game Design', 'Animation', 'Production'],
       engine: 'Unity',
       team: 'Solo',
       phase: ['Concept', 'Pre-Production', 'Production'],
       pain: ['Content velocity', 'Build times', 'Performance optimization'],
-      openness: ['Code Assistance', 'Content Assistance (prototyping)', 'Performance Optimization']
+      openness: ['Code Assistance', 'Content Assistance (prototyping)', 'Performance Optimization', 'Analysis/Reporting']
     }
   },
   {
     id: 'mobile',
     label: 'Mobile Casual',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>',
-    desc: 'Indie team, Unity, full cycle. Monetization analytics, fast iteration, localization.',
+    desc: 'Indie team, Unity, full cycle. Art, UI/UX, production, analytics, community, and localization.',
     selections: {
-      discipline: 'Production',
+      discipline: ['Production', 'Art', 'UI/UX', 'Community/Marketing', 'Engineering', 'Game Design'],
       engine: 'Unity',
       team: 'Indie',
       phase: ['Production', 'Launch', 'Post-Launch'],
       pain: ['Content velocity', 'Scheduling visibility', 'Player feedback volume'],
-      openness: ['Analysis/Reporting', 'Planning/Scheduling', 'Content Assistance (prototyping)']
+      openness: ['Analysis/Reporting', 'Planning/Scheduling', 'Content Assistance (prototyping)', 'Community/Moderation']
     }
   },
   {
     id: 'battleroyale',
     label: 'Battle Royale',
     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
-    desc: 'AAA studio, UE5, QA and launch. Scale testing, anti-cheat, community moderation.',
+    desc: 'AAA studio, UE5, QA through post-launch. Scale testing, engineering, community moderation, art, and live ops.',
     selections: {
-      discipline: 'QA',
+      discipline: ['QA', 'Engineering', 'Community/Marketing', 'Art', 'Level Design', 'Live Ops'],
       engine: 'Unreal Engine 5',
       team: 'AAA',
       phase: ['QA/Stabilization', 'Launch', 'Post-Launch'],
       pain: ['Bug volume', 'Performance optimization', 'Player feedback volume'],
-      openness: ['QA/Testing', 'Performance Optimization', 'Community/Moderation']
+      openness: ['QA/Testing', 'Performance Optimization', 'Community/Moderation', 'Code Assistance', 'Analysis/Reporting']
     }
   }
 ];
@@ -3642,8 +3597,10 @@ document.addEventListener('change', (e) => {
 function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
   let score = 0;
 
-  // Primary filter: discipline must match
-  if (!rec.discipline.includes(discipline)) return -1;
+  // Primary filter: discipline must match (discipline can be string or array)
+  const disciplines = Array.isArray(discipline) ? discipline : [discipline];
+  const discMatch = disciplines.some(d => rec.discipline.includes(d));
+  if (!discMatch) return -1;
 
   // Category match (strong boost, not a hard filter)
   if (openness.includes(rec.category)) {
@@ -3673,8 +3630,9 @@ function scoreRecommendation(rec, { discipline, phase, team, pain, openness }) {
 
   // Pain point boost — pain is now an array (up to 3 selections)
   if (pain.includes('Not Sure')) {
-    // Check if rec matches any suggested pain points for this discipline
-    const suggested = PAIN_SUGGESTIONS[discipline] || [];
+    // Check if rec matches any suggested pain points for matched disciplines
+    const _discs = Array.isArray(discipline) ? discipline : [discipline];
+    const suggested = _discs.flatMap(d => PAIN_SUGGESTIONS[d] || []);
     if (suggested.some(sp => rec.painPoints.includes(sp))) {
       score += 20; // Weighted toward discipline-typical pains
     } else {
@@ -3722,7 +3680,8 @@ function generateWriteup(selections, scored) {
 
   // Creative discipline detection
   const CREATIVE_DISCIPLINES = ['Art', '3D / Environment Art', 'Animation', 'Audio', 'Narrative', 'Creative Direction'];
-  const isCreativeDiscipline = CREATIVE_DISCIPLINES.includes(selections.discipline);
+  const _discs = Array.isArray(selections.discipline) ? selections.discipline : [selections.discipline];
+  const isCreativeDiscipline = _discs.some(d => CREATIVE_DISCIPLINES.includes(d));
   const contentAssistCount = scored.filter(r => r.category === 'Content Assistance (prototyping)').length;
 
   // SVG icons (inline, no emoji)
@@ -3741,7 +3700,8 @@ function generateWriteup(selections, scored) {
   const phaseText = selections.phase.includes('Not Sure') ? 'across all phases'
     : selections.phase.length === 1 ? 'during ' + selections.phase[0]
     : 'across ' + selections.phase.join(' and ');
-  items.push({ icon: iconProfile, text: `As ${teamLabel} in ${selections.discipline} ${phaseText}, your top ${scored.length} matches lean toward ${topCat ? topCat[0].replace(' (prototyping)', '') : 'general'} opportunities.` });
+  const discText = Array.isArray(selections.discipline) ? selections.discipline.length + ' disciplines' : selections.discipline;
+  items.push({ icon: iconProfile, text: `As ${teamLabel} ${Array.isArray(selections.discipline) ? 'across ' + discText : 'in ' + discText} ${phaseText}, your top ${scored.length} matches lean toward ${topCat ? topCat[0].replace(' (prototyping)', '') : 'general'} opportunities.` });
 
   // Creative context warning
   if (isCreativeDiscipline && contentAssistCount > 0) {
@@ -3796,13 +3756,17 @@ function generateWriteup(selections, scored) {
    RESULTS RENDERING
    ============================================ */
 function showResults(selections) {
+  // Determine if multi-discipline (scenario) or single (wizard)
+  const isMultiDisc = Array.isArray(selections.discipline);
+  const maxCards = isMultiDisc ? 15 : 5;
+
   // Score all recommendations
   const scored = RECOMMENDATIONS.map(rec => ({
     ...rec,
     score: scoreRecommendation(rec, selections)
   })).filter(r => r.score >= 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, maxCards);
 
   // Header
   const phaseLabel = selections.phase.includes('Not Sure')
@@ -3810,7 +3774,8 @@ function showResults(selections) {
     : selections.phase.length === 1
       ? ' in ' + selections.phase[0]
       : ' in ' + selections.phase.slice(0, -1).join(', ') + ' & ' + selections.phase[selections.phase.length - 1];
-  document.getElementById('results-title').textContent = `Top AI Opportunities for ${selections.discipline}${phaseLabel}`;
+  const discLabel = isMultiDisc ? selections.discipline.length + ' Disciplines' : selections.discipline;
+  document.getElementById('results-title').textContent = `Top AI Opportunities across ${discLabel}${phaseLabel}`;
 
   document.getElementById('results-summary').textContent =
     scored.length > 0
@@ -3828,9 +3793,45 @@ function showResults(selections) {
     writeupEl.style.display = 'none';
   }
 
-  // Cards
+  // Cards — group by discipline for multi-discipline scenarios
   const cardsContainer = document.getElementById('results-cards');
-  cardsContainer.innerHTML = scored.map((rec, i) => renderCard(rec, i + 1)).join('');
+  if (isMultiDisc && scored.length > 0) {
+    // Group scored recs by their primary discipline
+    const groups = {};
+    scored.forEach(rec => {
+      const primaryDisc = rec.discipline.find(d => selections.discipline.includes(d)) || rec.discipline[0];
+      if (!groups[primaryDisc]) groups[primaryDisc] = [];
+      groups[primaryDisc].push(rec);
+    });
+    // Ensure every selected discipline has at least 1 rec (pull from eligible pool)
+    const allEligible = RECOMMENDATIONS.map(rec => ({
+      ...rec,
+      score: scoreRecommendation(rec, selections)
+    })).filter(r => r.score >= 0).sort((a, b) => b.score - a.score);
+    selections.discipline.forEach(disc => {
+      if (!groups[disc] || groups[disc].length === 0) {
+        const best = allEligible.find(r => r.discipline.includes(disc) && !scored.some(s => s.id === r.id));
+        if (best) {
+          groups[disc] = [best];
+        }
+      }
+    });
+    // Render groups in the order disciplines appear in the scenario
+    let cardNum = 0;
+    let html = '';
+    selections.discipline.forEach(disc => {
+      if (groups[disc] && groups[disc].length > 0) {
+        html += `<div class="discipline-group-header">${disc}</div>`;
+        groups[disc].forEach(rec => {
+          cardNum++;
+          html += renderCard(rec, cardNum);
+        });
+      }
+    });
+    cardsContainer.innerHTML = html;
+  } else {
+    cardsContainer.innerHTML = scored.map((rec, i) => renderCard(rec, i + 1)).join('');
+  }
 
   // Add expand/collapse handlers
   cardsContainer.querySelectorAll('.rec-card-header').forEach(header => {
@@ -4129,8 +4130,9 @@ function renderCard(rec, rank) {
 }
 
 function getCautions(selections) {
+  const discs = Array.isArray(selections.discipline) ? selections.discipline : [selections.discipline];
   return CAUTION_DATA.filter(c =>
-    c.trigger.discipline.includes(selections.discipline)
+    discs.some(d => c.trigger.discipline.includes(d))
   );
 }
 
@@ -4153,7 +4155,8 @@ function renderHeatmap(selections, scored) {
 
   RECOMMENDATIONS.forEach(rec => {
     // Total possible for this discipline
-    if (rec.discipline.includes(selections.discipline)) {
+    const _hmDiscs = Array.isArray(selections.discipline) ? selections.discipline : [selections.discipline];
+    if (_hmDiscs.some(d => rec.discipline.includes(d))) {
       totalPerCat[rec.category] = (totalPerCat[rec.category] || 0) + 1;
     }
   });
@@ -4183,7 +4186,7 @@ function renderHeatmap(selections, scored) {
       </div>
       <span class="relevance-count">${r.matched} of ${r.total}</span>
     </div>`;
-  }).join('') + `<div style="text-align:center;font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">${totalMatched} of ${totalInDiscipline} recommendations in ${selections.discipline} matched your profile</div>`;
+  }).join('') + `<div style="text-align:center;font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2)">${totalMatched} of ${totalInDiscipline} recommendations in ${Array.isArray(selections.discipline) ? selections.discipline.length + ' disciplines' : selections.discipline} matched your profile</div>`;
 }
 
 /* ============================================
@@ -4378,7 +4381,7 @@ document.getElementById('share-btn').addEventListener('click', () => {
       label.textContent = 'Share Results';
       btn.classList.remove('copied');
     }, 2500);
-    gaEvent('share_results', { discipline: selections.discipline });
+    gaEvent('share_results', { discipline: Array.isArray(selections.discipline) ? selections.discipline.join(',') : selections.discipline });
   }).catch(() => {
     prompt('Copy this link:', shareURL);
   });
@@ -4417,25 +4420,26 @@ document.getElementById('try-own-btn').addEventListener('click', (e) => {
 document.getElementById('pdf-btn').addEventListener('click', () => {
   const selections = window._lastSelections;
   if (!selections) return;
-  gaEvent('pdf_export', { discipline: selections.discipline });
+  gaEvent('pdf_export', { discipline: Array.isArray(selections.discipline) ? selections.discipline.join(',') : selections.discipline });
 
   const scored = RECOMMENDATIONS.map(rec => ({
     ...rec,
     score: scoreRecommendation(rec, selections)
   })).filter(r => r.score >= 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, Array.isArray(selections.discipline) ? 15 : 5);
 
   const phaseLabel = selections.phase.includes('Not Sure')
     ? ''
     : selections.phase.length === 1
       ? ' in ' + selections.phase[0]
       : ' in ' + selections.phase.slice(0, -1).join(', ') + ' & ' + selections.phase[selections.phase.length - 1];
+  const pdfDiscLabel = Array.isArray(selections.discipline) ? selections.discipline.join(', ') : selections.discipline;
 
   const cautionCards = getCautions(selections);
 
   // Build PDF content as printable HTML
-  let html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>AI Recommendations — ${selections.discipline}${phaseLabel}</title>
+  let html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>AI Recommendations — ${pdfDiscLabel}${phaseLabel}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a2e; line-height: 1.6; padding: 40px; max-width: 800px; margin: 0 auto; }
@@ -4581,9 +4585,9 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
 
 </style></head><body>`;
 
-  html += `<h1>Top AI Opportunities for ${selections.discipline}${phaseLabel}</h1>`;
+  html += `<h1>Top AI Opportunities for ${pdfDiscLabel}${phaseLabel}</h1>`;
   html += `<div class="subtitle">Generated from Game Dev AI Guide by HALP (Joe Halper) — gamedevai.guide</div>`;
-  html += `<div class="profile"><strong>Profile:</strong> ${selections.team} team · ${selections.discipline} · Phase: ${selections.phase.join(', ')} · Pain points: ${selections.pain.join(', ')}</div>`;
+  html += `<div class="profile"><strong>Profile:</strong> ${selections.team} team · ${pdfDiscLabel} · Phase: ${selections.phase.join(', ')} · Pain points: ${selections.pain.join(', ')}</div>`;
 
   // Recommendation cards
   scored.forEach((rec, i) => {
