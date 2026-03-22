@@ -331,7 +331,7 @@ a:hover { color: var(--green-bright); }
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
-  padding: 72px 0 64px;
+  padding: 56px 0 40px;
   overflow: hidden;
 }
 
@@ -384,7 +384,7 @@ a:hover { color: var(--green-bright); }
   line-height: 1.6;
   font-style: italic;
   opacity: 0.85;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
 }
 
 .stats-bar {
@@ -428,7 +428,39 @@ a:hover { color: var(--green-bright); }
 
 /* ---------- Sections ---------- */
 .section {
-  padding: 80px 0;
+  padding: 56px 0;
+}
+
+/* ---------- Why This Toolkit ---------- */
+.why-content {
+  max-width: 720px;
+}
+
+.why-content p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.why-content p:last-of-type:not(.why-attribution) {
+  margin-bottom: 24px;
+}
+
+.why-content p:first-child {
+  font-size: 16px;
+  color: var(--text-primary);
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.why-attribution {
+  font-size: 13px !important;
+  color: var(--text-muted) !important;
+  font-style: italic;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 0 !important;
 }
 
 .section-alt {
@@ -447,7 +479,7 @@ a:hover { color: var(--green-bright); }
   color: var(--text-secondary);
   font-size: 15px;
   max-width: 640px;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 /* ---------- Where to Start ---------- */
@@ -1775,7 +1807,7 @@ a:hover { color: var(--green-bright); }
   }
 
   .section {
-    padding: 48px 0;
+    padding: 40px 0;
   }
 
   .tool-name,
@@ -1807,4 +1839,117 @@ a:hover { color: var(--green-bright); }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* ---------- Back to Top Button ---------- */
+.back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 200;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #0d0d1a;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(12px);
+  transition: opacity 0.3s var(--ease), visibility 0.3s, transform 0.3s var(--ease), background 0.2s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--green-bright);
+  box-shadow: 0 4px 20px rgba(118, 185, 0, 0.35);
+}
+
+@media (max-width: 640px) {
+  .back-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 38px;
+    height: 38px;
+  }
+}
+
+/* ---------- Sort Dropdown ---------- */
+.filter-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sort-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 5px 28px 5px 10px;
+  cursor: pointer;
+  transition: border-color var(--duration) var(--ease);
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%236a6a80' stroke-width='2'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+.sort-select:hover,
+.sort-select:focus {
+  border-color: var(--green);
+}
+
+[data-theme="light"] .sort-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%238888a0' stroke-width='2'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E");
+}
+
+/* ---------- Filter Option Counts ---------- */
+.filter-option-count {
+  margin-left: auto;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  opacity: 0.7;
+  min-width: 20px;
+  text-align: right;
+}
+
+/* ---------- WTS Active Card ---------- */
+.wts-card.wts-active {
+  border-color: var(--green);
+  background: var(--bg-card-hover);
+  box-shadow: 0 0 0 1px var(--green), var(--shadow);
+}
+
+.wts-card.wts-active::before {
+  opacity: 1;
 }

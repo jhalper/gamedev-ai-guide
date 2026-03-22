@@ -1,5 +1,14 @@
 # NVIDIA Game Dev Toolkit — Changelog
 
+## v1.9.0 — 2026-03-22
+- Added floating "Back to Top" button — appears after 500px scroll, smooth scroll back, NVIDIA green accent
+- Added tool count badges inside all filter dropdown options (e.g., "Rendering & Graphics 30")
+- Added sort dropdown — sort by name (A→Z / Z→A), category, pricing (free first), maturity, or difficulty (easy first)
+- Where to Start cards now apply a real curated filter, narrowing the tool list to the relevant 5-7 tools
+- Active WTS card highlighted with green border; click again to deactivate and restore full list
+- Clear All button resets sort, WTS selection, search, and all filters
+- Tool count: 83 (unchanged)
+
 ## v1.8.1 — 2026-03-20
 - Removed redundant site header — hub nav now serves as the single sticky navigation
 - Merged section links (Where to Start, Engine Matrix, All Tools) and theme toggle into hub nav

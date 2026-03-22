@@ -8,6 +8,14 @@
 <title>NVIDIA Game Dev Toolkit</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta name="description" content="Cut through the noise. Find the NVIDIA tools that matter for your game. 83 tools mapped to real game dev workflows.">
+<meta property="og:title" content="NVIDIA Game Dev Toolkit">
+<meta property="og:description" content="Cut through the noise. 83+ NVIDIA tools mapped to real game dev workflows — rendering, AI, physics, profiling, cloud gaming, and more.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NVIDIA Game Dev Toolkit">
+<meta name="twitter:description" content="Cut through the noise. 83+ NVIDIA tools mapped to real game dev workflows.">
+<meta name="twitter:image" content="og-image.png">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -93,14 +101,14 @@
     <div class="container hero-content">
       <h1 id="hero-title" class="hero-title">NVIDIA Game Dev<br><span class="text-accent">Toolkit</span></h1>
       <p class="hero-subtitle">Cut through the noise. Find the NVIDIA tools that matter for your game.</p>
-      <p class="hero-intro">NVIDIA's ecosystem spans 80+ tools (and growing) across rendering, AI, physics, profiling, cloud gaming, and more. Most are buried in enterprise-focused documentation. This guide maps every tool to the game development workflows where it actually helps — from prototype to post-launch.</p>
+      <p class="hero-intro">NVIDIA's ecosystem spans 80+ tools across rendering, AI, physics, profiling, cloud gaming, and more — built by a deep bench of engineers, not just AI models. Most are buried in enterprise-focused documentation or announced in keynotes aimed at a different audience. This guide cuts through that, mapping every tool to the game development workflows where it actually helps.</p>
       <p class="hero-philosophy">These tools are built to extend what game developers and their engines can do — not replace the craft, creativity, or expertise that makes games worth playing.</p>
       <!-- What's New (inline) -->
       <div class="whats-new-inline" id="whatsNewBar">
         <button class="whats-new-toggle" id="whatsNewToggle" aria-expanded="false" aria-controls="whatsNewPanel">
           <span class="whats-new-left">
-            <span class="wn-version-badge">v1.8.1</span>
-            <span class="wn-summary">Updated Mar 20, 2026 — Streamlined layout, 83 tools</span>
+            <span class="wn-version-badge">v1.9.0</span>
+            <span class="wn-summary">Updated Mar 22, 2026 — Sort, filter counts, curated shortcuts, 83 tools</span>
           </span>
           <span class="wn-caret">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
@@ -210,7 +218,21 @@
 
           <div class="filter-meta">
             <span class="result-count" id="resultCount"></span>
-            <button class="clear-filters" id="clearFilters" aria-label="Clear all filters">Clear All</button>
+            <div class="filter-meta-right">
+              <div class="sort-wrapper">
+                <label for="sortSelect" class="sort-label">Sort:</label>
+                <select id="sortSelect" class="sort-select" aria-label="Sort tools">
+                  <option value="default">Default</option>
+                  <option value="alpha">A → Z</option>
+                  <option value="alpha-desc">Z → A</option>
+                  <option value="category">Category</option>
+                  <option value="pricing">Pricing (Free first)</option>
+                  <option value="maturity">Maturity</option>
+                  <option value="difficulty">Difficulty (Easy first)</option>
+                </select>
+              </div>
+              <button class="clear-filters" id="clearFilters" aria-label="Clear all filters">Clear All</button>
+            </div>
           </div>
 
           <div class="active-filters" id="activeFilters" aria-live="polite"></div>
@@ -237,6 +259,11 @@
       </p>
     </div>
   </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 15-6-6-6 6"/></svg>
+  </button>
 
   <script src="./data.js"></script>
   <script src="./app.js"></script>

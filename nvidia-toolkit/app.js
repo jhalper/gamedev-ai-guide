@@ -14,6 +14,8 @@
       team: []
     },
     search: '',
+    sort: 'default',
+    wtsActive: null,
     expanded: new Set()
   };
 
@@ -61,7 +63,9 @@
     wtsGrid: document.getElementById('wtsGrid'),
     matrixBody: document.getElementById('matrixBody'),
     themeToggle: document.getElementById('themeToggle'),
-    statTools: document.getElementById('statTools')
+    statTools: document.getElementById('statTools'),
+    sortSelect: document.getElementById('sortSelect'),
+    backToTop: document.getElementById('backToTop')
   };
 
   // ---------- Initialize ----------
@@ -103,25 +107,37 @@
       </div>
     `).join('');
 
-    // Click handler for WTS cards
+    // Click handler for WTS cards — applies real filter
     dom.wtsGrid.querySelectorAll('.wts-card').forEach(card => {
       card.addEventListener('click', () => {
         const id = card.dataset.wts;
         const guide = NVIDIA_DATA.whereToStart.find(g => g.id === id);
-        if (guide) {
-          // Search for these tool names
-          const toolNames = guide.tools.join(' ');
-          state.search = '';
-          clearFiltersState();
-          dom.searchInput.value = '';
-          // Expand matching tools
-          const matchingTools = NVIDIA_DATA.tools.filter(t =>
-            guide.tools.some(gn => t.name.toLowerCase().includes(gn.toLowerCase().split(' ')[0]))
-          );
-          state.expanded = new Set(matchingTools.map(t => t.id));
-          renderTools();
-          document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+        if (!guide) return;
+
+        // Toggle: if same card is already active, clear
+        if (state.wtsActive === id) {
+          clearWtsActive();
+          clearAllFilters();
+          return;
         }
+
+        // Set WTS active
+        state.wtsActive = id;
+        dom.wtsGrid.querySelectorAll('.wts-card').forEach(c => c.classList.remove('wts-active'));
+        card.classList.add('wts-active');
+
+        // Build a WTS-specific search: match tool names from the guide
+        clearFiltersState();
+        state.search = '';
+        state.expanded = new Set();
+        dom.searchInput.value = '';
+        syncCheckboxes();
+        updateFilterToggles();
+
+        // Apply WTS filter — render only matching tools
+        state._wtsToolNames = guide.tools;
+        renderTools();
+        document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
       });
       card.addEventListener('keydown', e => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -130,6 +146,14 @@
         }
       });
     });
+  }
+
+  function clearWtsActive() {
+    state.wtsActive = null;
+    state._wtsToolNames = null;
+    if (dom.wtsGrid) {
+      dom.wtsGrid.querySelectorAll('.wts-card').forEach(c => c.classList.remove('wts-active'));
+    }
   }
 
   function shortenToolName(name) {
@@ -174,15 +198,28 @@
     buildDropdown('filterTeam', 'team', TEAMS);
   }
 
+  function countToolsForOption(filterKey, optionValue) {
+    return NVIDIA_DATA.tools.filter(tool => {
+      if (filterKey === 'phase') return tool.phases && tool.phases.includes(optionValue);
+      if (filterKey === 'engine') return tool.engines && tool.engines.includes(optionValue);
+      if (filterKey === 'category') return tool.category === optionValue;
+      if (filterKey === 'team') return tool.teamSizes && tool.teamSizes.includes(optionValue);
+      return false;
+    }).length;
+  }
+
   function buildDropdown(containerId, filterKey, options) {
     const container = document.getElementById(containerId);
-    container.innerHTML = options.map(opt => `
+    container.innerHTML = options.map(opt => {
+      const count = countToolsForOption(filterKey, opt);
+      return `
       <label class="filter-option">
         <input type="checkbox" value="${opt}" data-filter-key="${filterKey}"
                ${state.filters[filterKey].includes(opt) ? 'checked' : ''}>
         <span>${opt}</span>
-      </label>
-    `).join('');
+        <span class="filter-option-count">${count}</span>
+      </label>`;
+    }).join('');
 
     container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', () => {
@@ -193,6 +230,7 @@
         } else {
           state.filters[key] = state.filters[key].filter(v => v !== val);
         }
+        clearWtsActive();
         updateFilterToggles();
         renderTools();
         saveStateToHash();
@@ -234,6 +272,16 @@
   // ---------- Filter Logic ----------
   function filterTools() {
     return NVIDIA_DATA.tools.filter(tool => {
+      // WTS curated filter (takes priority)
+      if (state._wtsToolNames) {
+        const toolLower = tool.name.toLowerCase();
+        return state._wtsToolNames.some(gn => {
+          const guideLower = gn.toLowerCase();
+          // Match if tool name contains the guide name or vice versa
+          return toolLower.includes(guideLower) || guideLower.includes(toolLower);
+        });
+      }
+
       // Search
       if (state.search) {
         const q = state.search.toLowerCase();
@@ -265,9 +313,52 @@
     });
   }
 
+  // ---------- Sort ----------
+  const PRICING_ORDER = { 'Free': 0, 'Free (Open Source)': 0, 'Free (Academic)': 0, 'Freemium': 1, 'Paid': 2, 'Enterprise': 3 };
+  const MATURITY_ORDER = { 'Stable': 0, 'Beta': 1, 'Early Access': 2, 'Preview': 3 };
+  const DIFFICULTY_ORDER = { 'Easy': 0, 'Moderate': 1, 'Complex': 2 };
+
+  function sortTools(tools) {
+    if (state.sort === 'default') return tools;
+    const sorted = [...tools];
+    switch (state.sort) {
+      case 'alpha':
+        sorted.sort((a, b) => a.name.localeCompare(b.name));
+        break;
+      case 'alpha-desc':
+        sorted.sort((a, b) => b.name.localeCompare(a.name));
+        break;
+      case 'category':
+        sorted.sort((a, b) => (a.category || '').localeCompare(b.category || '') || a.name.localeCompare(b.name));
+        break;
+      case 'pricing':
+        sorted.sort((a, b) => {
+          const pa = PRICING_ORDER[a.pricing] ?? 9;
+          const pb = PRICING_ORDER[b.pricing] ?? 9;
+          return pa - pb || a.name.localeCompare(b.name);
+        });
+        break;
+      case 'maturity':
+        sorted.sort((a, b) => {
+          const ma = MATURITY_ORDER[a.maturity] ?? 9;
+          const mb = MATURITY_ORDER[b.maturity] ?? 9;
+          return ma - mb || a.name.localeCompare(b.name);
+        });
+        break;
+      case 'difficulty':
+        sorted.sort((a, b) => {
+          const da = DIFFICULTY_ORDER[a.difficulty] ?? 9;
+          const db = DIFFICULTY_ORDER[b.difficulty] ?? 9;
+          return da - db || a.name.localeCompare(b.name);
+        });
+        break;
+    }
+    return sorted;
+  }
+
   // ---------- Render Tools ----------
   function renderTools() {
-    const filtered = filterTools();
+    const filtered = sortTools(filterTools());
     const count = filtered.length;
     const total = NVIDIA_DATA.tools.length;
 
@@ -630,9 +721,16 @@
       searchTimeout = setTimeout(() => {
         state.search = dom.searchInput.value.trim();
         state.expanded = new Set();
+        clearWtsActive();
         renderTools();
         saveStateToHash();
       }, 200);
+    });
+
+    // Sort
+    dom.sortSelect.addEventListener('change', () => {
+      state.sort = dom.sortSelect.value;
+      renderTools();
     });
 
     // Clear All
@@ -679,9 +777,12 @@
   // ---------- Clear Filters ----------
   function clearAllFilters() {
     clearFiltersState();
+    clearWtsActive();
     dom.searchInput.value = '';
     state.search = '';
+    state.sort = 'default';
     state.expanded = new Set();
+    dom.sortSelect.value = 'default';
     syncCheckboxes();
     updateFilterToggles();
     renderTools();
@@ -740,6 +841,13 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.0', date: '2026-03-22', changes: [
+      'Added floating "Back to Top" button — appears after scrolling, smooth scroll back',
+      'Added tool counts in filter dropdowns — see how many tools match each option',
+      'Added sort dropdown — sort by name, category, pricing, maturity, or difficulty',
+      'Where to Start cards now filter the tool list to a curated shortlist instead of just expanding',
+      'Active WTS card highlighted with green border, click again to clear'
+    ]},
     { version: 'v1.8.1', date: '2026-03-20', changes: [
       'Removed redundant site header — hub nav now serves as the single sticky navigation',
       'Merged section links (Where to Start, Engine Matrix, All Tools) and theme toggle into hub nav',
@@ -828,8 +936,28 @@
     });
   }
 
+  // ---------- Back to Top ----------
+  function initBackToTop() {
+    const btn = dom.backToTop;
+    if (!btn) return;
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          btn.classList.toggle('visible', window.scrollY > 500);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
   // ---------- Go ----------
   initTheme();
   initWhatsNew();
+  initBackToTop();
   init();
 })();
