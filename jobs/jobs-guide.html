@@ -18,6 +18,7 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
   var firebaseConfig = {
     apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
@@ -30,9 +31,10 @@
     measurementId: "G-ZBGDRYKQXB"
   };
   firebase.initializeApp(firebaseConfig);
-  var _ga = firebase.analytics();
+  var analytics = firebase.analytics();
+  var db = firebase.database();
   window.gaEvent = function(name, params) {
-    try { _ga.logEvent(name, params || {}); } catch(e) {}
+    try { analytics.logEvent(name, params); } catch(e) {}
   };
 </script>
 
@@ -1303,6 +1305,269 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* EMPATHY BANNER */
+.empathy-banner {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-text-muted);
+  background: var(--color-surface);
+}
+.empathy-banner p {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CHALLENGE TAGS */
+.meta-tag-challenge {
+  background: var(--color-warning-bg);
+  border-color: rgba(212, 160, 74, 0.3);
+  color: var(--color-warning);
+  font-size: 11px;
+}
+
+/* COPY PLAN BUTTON */
+.action-plan-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+.action-plan-title-row .action-plan-title {
+  margin-bottom: 0;
+}
+.copy-plan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-primary-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.copy-plan-btn:hover {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary);
+}
+
+/* TIME FRAMES */
+.action-timeframe {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+}
+
+/* START HERE HIGHLIGHT */
+.rec-card.start-here {
+  border-color: var(--color-primary-border);
+  position: relative;
+}
+.rec-card.start-here::before {
+  content: 'START HERE';
+  position: absolute;
+  top: -1px;
+  right: var(--space-3);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: var(--color-primary);
+  padding: 2px 8px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  z-index: 1;
+}
+
+/* SURVEY */
+.survey-card {
+  margin-top: var(--space-8);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.survey-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+.survey-card-header h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+.survey-card-header svg { color: var(--color-primary); flex-shrink: 0; }
+.survey-card-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.survey-q {
+  margin-bottom: var(--space-4);
+}
+.survey-q:last-of-type {
+  margin-bottom: var(--space-5);
+}
+.survey-q-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.survey-q-label .sq-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  line-height: 1.3;
+}
+.survey-q-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-bottom: var(--space-2);
+}
+.survey-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.survey-opt {
+  position: relative;
+}
+.survey-opt input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.survey-opt label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  line-height: 1.5;
+}
+.survey-opt label:hover {
+  border-color: var(--color-border-hover);
+}
+.survey-opt input:checked + label {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+  color: var(--color-text);
+}
+.survey-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  resize: vertical;
+  color: var(--color-text);
+}
+.survey-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+.survey-textarea::placeholder {
+  color: var(--color-text-faint);
+}
+.survey-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.survey-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.survey-submit:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+.survey-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.survey-results-link {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.survey-results-link a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.survey-thanks {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+.survey-thanks h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+.survey-thanks p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.survey-thanks a {
+  color: var(--color-primary);
+}
+.survey-val-msg {
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+  margin-top: var(--space-2);
+  display: none;
+}
+.survey-val-msg.visible { display: block; }
+
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1311,6 +1576,49 @@ h1, h2, h3, h4, h5, h6 {
 </style>
 </head>
 <body>
+<style id="hub-nav-styles">
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
+  .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
+  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
+  .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
+  .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
+  .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
+  .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
+  .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
+  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
+  .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
+  .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
+  .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
+  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
+</style>
+
+<nav class="hub-nav" role="navigation" aria-label="Site navigation">
+  <div class="hub-nav-inner">
+    <a href="../" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
+      </svg>
+      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
+    </a>
+    <div class="hub-nav-right">
+      <ul class="hub-nav-links" id="hubNavLinks">
+        <li><a href="../">Home</a></li>
+        <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
+        <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
+        <li><a href="../jobs/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
+      </ul>
+      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
 
 <div class="app-container">
   <!-- HEADER -->
@@ -1346,7 +1654,7 @@ h1, h2, h3, h4, h5, h6 {
 
       <div class="stat-pills">
         <span class="stat-pill stat-warning"><strong>33%</strong> of US game devs laid off in past 2 years</span>
-        <span class="stat-pill stat-warning"><strong>~0.2%</strong> cold application offer rate</span>
+        <span class="stat-pill stat-warning"><strong>48%</strong> still haven't found work</span>
         <span class="stat-pill stat-good"><strong>~50%</strong> referral interview rate</span>
       </div>
 
@@ -1369,11 +1677,22 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.2</span>
+            <span class="whats-new-badge">v1.3</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.3 &mdash; March 21, 2026</div>
+          <ul class="whats-new-list">
+            <li>Copy Plan button: save your personalized action plan to clipboard</li>
+            <li>New challenge option: "Worried AI is replacing my role"</li>
+            <li>Time framing on action plan steps (This week / Ongoing / Within 30 days)</li>
+            <li>Challenge selections now shown in results profile tags</li>
+            <li>"Start Here" badge highlights top-ranked board and AI tool</li>
+            <li>Updated market data with latest GDC 2026 and Satvat tracking figures</li>
+            <li>Improved pitfall card language for clarity</li>
+            <li>60-second community survey with live public results</li>
+          </ul>
           <div class="whats-new-version">v1.2 &mdash; March 20, 2026</div>
           <ul class="whats-new-list">
             <li>Added Outscal to job boards (entry-level and international coverage)</li>
@@ -1485,7 +1804,7 @@ h1, h2, h3, h4, h5, h6 {
   <div class="modal">
     <h2>About This Tool</h2>
     <p>The <strong>Game Dev Job Search Guide</strong> is a companion to the <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">Game Dev AI Guide</a>. It helps game developers navigate the job search landscape with personalized recommendations.</p>
-    <p>Every recommendation is based on research into 15+ job platforms, 10+ AI tools, and current market data from GDC 2026 and industry sources. No motivational fluff &mdash; concrete, honest, practical.</p>
+    <p>Every recommendation is based on research into 15+ job platforms, 12+ AI tools, and current market data from GDC 2025-2026 and industry sources. No motivational fluff &mdash; concrete, honest, practical.</p>
     <p>AI tools augment your search &mdash; they don't replace doing the real work. A referral from a former colleague is still worth more than 100 AI-optimized cold applications.</p>
     <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
     <p>Data sources: GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025.</p>
@@ -1496,7 +1815,8 @@ h1, h2, h3, h4, h5, h6 {
 <!-- FOOTER -->
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 20, 2026 (v1.2) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-2); font-size: var(--text-xs);"><a href="survey-results.html">Community Survey Results</a></p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 21, 2026 (v1.3) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -1559,7 +1879,7 @@ var JOB_BOARDS = [
     id: 'asgc',
     name: "Amir Satvat's ASGC",
     url: 'https://asgc.gg',
-    description: 'Volunteer-run community by Tencent BD Director. Jobs workbook, Discord, mentorship matching, portfolio reviews. Has helped ~4,000 people land jobs.',
+    description: 'Volunteer-run community by industry veteran Amir Satvat. Jobs workbook, Discord, mentorship matching, portfolio reviews. Has helped ~4,000 people land jobs.',
     cost: 'Free',
     costType: 'free',
     size: 'Thousands (curated)',
@@ -1576,7 +1896,7 @@ var JOB_BOARDS = [
     id: 'artstation',
     name: 'ArtStation Jobs',
     url: 'https://www.artstation.com/jobs',
-    description: 'Industry-standard portfolio platform (owned by Epic). Recruiters can view applicant portfolios alongside job listings. The platform for visual artists.',
+    description: 'Industry-standard portfolio platform with integrated job listings. Recruiters can view applicant portfolios alongside listings. The platform for visual artists.',
     cost: 'Free',
     costType: 'free',
     size: 'Large (art-focused)',
@@ -1584,7 +1904,7 @@ var JOB_BOARDS = [
     hasRemoteFilter: true,
     bestForTags: ['Art roles', 'Portfolio integration'],
     strengths: 'Portfolio integration is the key differentiator. Recruiters immediately view your work. Being discoverable via portfolio gets inbound contact.',
-    caveats: 'Almost irrelevant for non-art disciplines. $149+ listing cost means only studios with budget post. Some report reduced organic discovery under Epic ownership.',
+    caveats: 'Almost irrelevant for non-art disciplines. $149+ listing cost means only studios with budget post. Discoverability depends on portfolio optimization and tagging.',
     disciplines: ['art','animation','tech_art','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior','lead'],
     situations: ['laid_off','employed_looking','first_job','freelance','relocation','remote','international']
@@ -1676,71 +1996,71 @@ var JOB_BOARDS = [
   },
   {
     id: 'gamedevclassifieds',
-    name: 'r/gameDevClassifieds',
-    url: 'https://reddit.com/r/gameDevClassifieds',
-    description: 'Reddit community (126k+ members) for paid game dev gigs. Mix of freelance, contract, and some full-time. Mostly remote.',
+    name: 'GameDev Classifieds',
+    url: 'https://www.gamedevmap.com/classifieds',
+    description: 'Reddit-style board (r/gamedev classifieds). Strong for freelance, contract, and student/intern postings.',
     cost: 'Free',
     costType: 'free',
-    size: 'Daily posts',
-    bestFor: ['Freelance', 'Contract'],
+    size: 'Small-medium',
+    bestFor: ['Freelance', 'Entry-level', 'Contracts'],
     hasRemoteFilter: false,
-    bestForTags: ['Freelance', 'Contract', 'Portfolio building'],
-    strengths: 'Good for freelancers. Paid gigs can build portfolio credits. Low barrier to entry.',
-    caveats: 'Not for full-time permanent roles. Expect low rates and small scopes. Quality varies.',
-    disciplines: ['engineering','art','animation','audio','game_design','narrative','uiux','vfx'],
+    bestForTags: ['Freelance', 'Entry-level', 'Contracts'],
+    strengths: 'Community-driven. Strong for freelance and contract. Entry-level friendly with student/intern postings.',
+    caveats: 'Inconsistent quality. No verification. Budget rates common in freelance posts.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid'],
-    situations: ['freelance','first_job']
+    situations: ['freelance','first_job','remote']
   },
   {
     id: 'gamesjobsdirect',
     name: 'Games Jobs Direct',
     url: 'https://www.gamesjobsdirect.com',
-    description: 'UK-based game industry job board with salary checker tool. Strong European and Middle Eastern studio coverage.',
+    description: 'UK/Europe-focused dedicated game dev board. Salary checker built in. Strong for international and AAA European studios.',
     cost: 'Free',
     costType: 'free',
-    size: 'Hundreds',
-    bestFor: ['European market', 'UK studios'],
+    size: '1,500+ listings',
+    bestFor: ['UK/Europe', 'AAA', 'Salary data'],
     hasRemoteFilter: true,
-    bestForTags: ['EU/UK', 'Salary data'],
-    strengths: 'Good European coverage, particularly UK, Middle Eastern studios. Salary check tool useful for market rates.',
-    caveats: 'Less relevant for US-based seekers. UI feels dated. Limited smart features.',
+    bestForTags: ['UK/Europe', 'Salary checker', 'AAA'],
+    strengths: 'If you\'re in or targeting UK/Europe, this is essential. Salary checker provides market data. Strong AAA coverage.',
+    caveats: 'Less relevant for US-only search. Some listings cross-post from other boards.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['mid','senior','lead'],
-    situations: ['international','relocation']
+    situations: ['laid_off','employed_looking','relocation','international']
   },
   {
     id: 'gijobs',
-    name: 'GamesIndustry.biz Jobs',
+    name: 'GI.biz Jobs',
     url: 'https://jobs.gamesindustry.biz',
-    description: 'Job board attached to the industry\'s leading trade publication. Low volume but high-quality audience of working professionals.',
+    description: 'Jobs board from GamesIndustry.biz (the leading B2B games publication). Senior and leadership roles. Strong credibility signal.',
     cost: 'Free',
     costType: 'free',
-    size: '~34-43 listings',
-    bestFor: ['Senior professionals', 'EU market'],
+    size: 'Medium (curated)',
+    bestFor: ['Senior/Lead', 'International', 'Leadership'],
     hasRemoteFilter: true,
-    bestForTags: ['Senior roles', 'EU/UK'],
-    strengths: 'High-credibility audience. Lower competition per listing (fewer but more qualified applicants). Strong UK/Nordic representation.',
-    caveats: 'Very low volume. Not a primary search tool. US roles underrepresented.',
-    disciplines: ['engineering','art','animation','game_design','production','community'],
+    bestForTags: ['Senior roles', 'International', 'Leadership'],
+    strengths: 'High credibility due to GI.biz brand. International reach. Skews senior/leadership. Good for management and production roles.',
+    caveats: 'Lower volume than aggregators. Less useful for junior/mid individual contributor roles.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['senior','lead'],
-    situations: ['employed_looking','international']
+    situations: ['laid_off','employed_looking','relocation','international']
   },
   {
     id: 'outscal',
     name: 'Outscal',
     url: 'https://outscal.com/jobs',
-    description: 'Game dev job portal with upskilling courses attached. Strong presence in India and Southeast Asia, growing US/EU listings. Community of 100k+ game developers.',
-    cost: 'Free (courses paid)',
-    costType: 'freemium',
-    size: 'Thousands',
-    bestFor: ['Entry-level', 'International'],
+    description: 'Game dev learning + job platform. Strong entry-level and international coverage. Integrated courses and job readiness tools.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Growing (1,000+ listings)',
+    bestFor: ['Entry-level', 'International', 'Learning'],
     hasRemoteFilter: true,
-    bestForTags: ['Entry-level', 'Upskilling', 'International'],
-    strengths: 'Combines job search with skill-building. Good for entry-level developers who need to fill gaps. Strong international coverage, especially India and Southeast Asia.',
-    caveats: 'Skews toward entry/mid roles. Course upsells can feel pushy. US and EU listings thinner than dedicated Western boards.',
-    disciplines: ['engineering','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','qa','vfx'],
+    bestForTags: ['Entry-level', 'International', 'Learning path'],
+    strengths: 'Integrated learning + job board is unique. Strong international reach. Entry-level friendly. Growing community.',
+    caveats: 'Newer platform with less brand recognition than established boards. Course upsells prominent. Community less established than ASGC.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid'],
-    situations: ['first_job','international','laid_off']
+    situations: ['first_job','international','laid_off','remote']
   }
 ];
 
@@ -1750,31 +2070,31 @@ var JOB_BOARDS = [
 var AI_TOOLS = [
   {
     id: 'chatgpt_interview',
-    name: 'ChatGPT Voice (Interview Prep)',
+    name: 'ChatGPT Voice Mode (Interview Prep)',
     url: 'https://chat.openai.com',
-    description: 'Use Voice Mode for realistic mock interviews. Upload resume + JD, simulate specific interview stages. Ask for harsh feedback.',
-    cost: 'Free (Plus ~$20/mo for Voice)',
-    costType: 'freemium',
+    description: 'Use Voice Mode for live mock interviews. Upload your resume + a target JD, then ask it to simulate a specific interview format (portfolio review, behavioral, technical).',
+    cost: 'Free',
+    costType: 'free',
     stage: 'Interview',
-    challenges: ['interview_prep','getting_ghosted','no_shipped_titles'],
+    challenges: ['interview_prep'],
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     difficulty: 'Easy',
-    gameDevRelevance: 'High. Can simulate game-specific interview formats (design challenges, portfolio walkthroughs, technical screens) when properly prompted with studio and game context.',
-    caveats: 'Optimistically positive by default. Must explicitly ask for harsh feedback. Does not deeply know studio culture or specific games.'
+    gameDevRelevance: 'High. Can simulate portfolio reviews for artists, design critiques for designers, behavioral interviews for production. You control the specificity by the context you provide.',
+    caveats: 'Quality depends entirely on prompt quality. Ask for harsh feedback explicitly. Does not know actual interviewer preferences at specific studios.'
   },
   {
     id: 'teal',
     name: 'Teal',
     url: 'https://www.tealhq.com',
-    description: 'All-in-one: ATS resume builder + keyword matcher + job tracker + cover letter generator. Has game-dev-specific LinkedIn guide.',
-    cost: 'Free (Teal+ $29/mo)',
+    description: 'All-in-one platform: ATS-optimized resume builder, job tracker, LinkedIn optimizer, and AI resume tailoring. Best-in-class for tracking applications.',
+    cost: 'Free (basic); Pro $29/mo',
     costType: 'freemium',
     stage: 'Resume',
-    challenges: ['ats_trouble','finding_jobs','getting_ghosted'],
+    challenges: ['ats_trouble','getting_ghosted','finding_jobs'],
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     difficulty: 'Easy',
-    gameDevRelevance: 'Partial. Has specific LinkedIn guide for game developers and game dev cover letter templates. Still fundamentally generic for keyword matching.',
-    caveats: 'AI-generated bullets contain placeholder metrics. Free tier is useful; paid only worth it if applying to 5+ jobs/week. Trustpilot: 4.1/5.'
+    gameDevRelevance: 'Generic but solid. No game-industry-specific knowledge. Resume tailoring AI is template-based. Best value is the integrated tracker + LinkedIn optimizer combo.',
+    caveats: 'AI tailoring still requires your manual editing for specificity. $29/mo Pro is a lot for what it offers vs. Jobscan free trial + Huntr free.'
   },
   {
     id: 'jobscan',
@@ -1944,7 +2264,7 @@ var PITFALLS = [
     id: 'remote_myth',
     title: 'Remote Roles Have Collapsed',
     severity: 'medium',
-    explanation: 'Remote-friendly game dev roles went from 80%+ in 2020 to under 15% by 2025. Ubisoft mandated 5 days in-office in 2026. Paradox went to 4-5 days/week (54% of employees said this would make them consider leaving). Housing costs in top 5 game hubs rose 42%.',
+    explanation: 'Remote-friendly game dev roles have gone from 80%+ in 2020 to under 15% by 2025, with most large studios now requiring some in-office presence. That said, remote and hybrid roles still exist — especially at indie studios and in contract/freelance work. The search takes more effort but the options are real.',
     whatToDoInstead: 'Expand to hybrid roles and consider relocation if permanent studio employment is the goal. Contract/freelance and indie studio roles remain more remote-friendly. Check <a href="https://remotegamejobs.com" target="_blank" rel="noopener noreferrer">Remote Game Jobs</a> and <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a> for remaining remote-friendly positions.',
     situations: ['remote'],
     challenges: ['finding_jobs']
@@ -1953,7 +2273,7 @@ var PITFALLS = [
     id: 'seniors_taking_mids',
     title: 'Seniors Are Taking Mid-Level Jobs',
     severity: 'high',
-    explanation: 'The market is flooded with experienced, laid-off talent competing for roles below their level. Mid-level jobs are going to formerly senior candidates. Junior jobs are nearly extinct. Entry-level success rate: ~5% over 12 months vs. ~30% for laid-off veterans.',
+    explanation: 'Competition is intense at every level right now. Experienced candidates are applying for roles below their previous title, which compresses opportunity across the board. Entry-level hiring is slow, but it has not stopped. The path takes longer and requires more creative approaches than it did two years ago.',
     whatToDoInstead: 'For juniors: Build portfolio through game jams (<a href="https://globalgamejam.org" target="_blank" rel="noopener noreferrer">Global Game Jam</a>, <a href="https://ldjam.com" target="_blank" rel="noopener noreferrer">Ludum Dare</a>), contribute to open source (<a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a>), or ship a small game on <a href="https://itch.io" target="_blank" rel="noopener noreferrer">itch.io</a>. For experienced candidates: Target the 5-15 year experience sweet spot that makes up the bulk of openings.',
     situations: ['first_job','laid_off'],
     challenges: ['no_shipped_titles','getting_ghosted','finding_jobs']
@@ -1978,10 +2298,10 @@ var PITFALLS = [
   },
   {
     id: 'art_test_exploit',
-    title: 'Art Tests Are Becoming Unpaid Labor',
+    title: 'Art Tests Have Expanded Significantly',
     severity: 'medium',
-    explanation: 'Art tests that were once quick skill checks have expanded into multi-day production assignments on live projects. The oversupply of laid-off talent means studios know candidates won\'t decline. Some tests involve branding and character designs where IP ownership is legally murky.',
-    whatToDoInstead: 'Set scope expectations upfront: "I can commit to 4-6 hours. What should I prioritize?" For clearly excessive tests (3+ days), negotiate: point to your portfolio of shipped work. Senior candidates can propose an alternative test design.',
+    explanation: 'Art tests that were once quick skill checks have grown into multi-day assignments at some studios. In a competitive market, candidates often feel pressure to accept any scope without pushback. It\'s worth understanding what you\'re agreeing to before starting.',
+    whatToDoInstead: 'Set scope expectations upfront: "I can commit to 4-6 hours. What should I prioritize?" For tests requiring 3+ days of work, it\'s reasonable to ask about scope, deliverables, and whether the work will be used in production. Senior candidates can propose showing relevant shipped work as an alternative.',
     situations: ['laid_off','employed_looking'],
     challenges: ['interview_prep','portfolio_needs_work']
   },
@@ -1998,7 +2318,7 @@ var PITFALLS = [
     id: 'no_networking',
     title: 'Cold Applications Are the Worst Odds',
     severity: 'high',
-    explanation: 'Cold application offer rate has dropped to ~0.2% (2 in 1,000). Referral interview rate: ~50%+. Most game dev roles are filled through referrals or direct recruiter outreach before a public listing goes up. If 80% of your time goes to cold applications, you\'re playing the worst odds available.',
+    explanation: 'Cold application offer rate is roughly 0.2% (2 in 1,000), while referral interview rates run above 50%. Many game dev roles are filled through referrals or direct recruiter outreach before a public listing goes up. The takeaway is not to stop applying — it is to diversify how you spend your search time.',
     whatToDoInstead: 'Shift 20-30% of job search time to relationship building. Join <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat\'s ASGC Discord</a>. Engage with 5-10 people at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for 2-4 weeks, then reach out with specific context. One real conversation at <a href="https://gdconf.com" target="_blank" rel="noopener noreferrer">GDC</a> beats months of messages.',
     situations: ['laid_off','first_job','employed_looking'],
     challenges: ['getting_ghosted','finding_jobs']
@@ -2011,6 +2331,15 @@ var PITFALLS = [
     whatToDoInstead: 'Explicitly map your experience to game dev terms. "Wrote shaders for real-time architectural visualization" becomes "Real-time shader development (translates directly to game rendering pipelines)." Make the connection obvious.',
     situations: ['first_job'],
     challenges: ['switching_from_nongames','switching_disciplines']
+  },
+  {
+    id: 'ai_anxiety',
+    title: 'AI and Job Security Are Separate Conversations',
+    severity: 'medium',
+    explanation: 'Layoffs in the games industry are driven by restructuring, declining revenues, market shifts, and over-hiring during the pandemic boom. The GDC 2025 survey found that 22% of layoffs cited restructuring, 18% declining revenues, and 15% market shifts. AI adoption is increasing at studios, but the layoff wave predates widespread AI tool deployment and correlates with broader business decisions, not automation of specific roles.',
+    whatToDoInstead: 'Focus your job search energy on what you can control: portfolio, networking, and targeting studios that match your skills. If AI tools come up in interviews, be honest about your experience with them rather than performing enthusiasm or opposition. Studios are still figuring this out too.',
+    situations: ['laid_off','employed_looking','first_job'],
+    challenges: ['ai_replacing_role','getting_ghosted','finding_jobs']
   }
 ];
 
@@ -2060,7 +2389,8 @@ var CHALLENGES = [
   { id: 'salary_negotiation', label: 'Salary negotiation' },
   { id: 'no_shipped_titles', label: "Don't have shipped titles yet" },
   { id: 'switching_disciplines', label: 'Switching disciplines within games' },
-  { id: 'switching_from_nongames', label: 'Switching from non-games tech to games' }
+  { id: 'switching_from_nongames', label: 'Switching from non-games tech to games' },
+  { id: 'ai_replacing_role', label: 'Worried AI is replacing my role' }
 ];
 
 /* ============================================
@@ -2357,6 +2687,7 @@ function scorePitfalls() {
     if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_from_nongames') >= 0) score += 5;
     if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_disciplines') >= 0) score += 4;
     if (pit.id === 'no_networking' && state.challenges.indexOf('getting_ghosted') >= 0) score += 3;
+    if (pit.id === 'ai_anxiety' && state.challenges.indexOf('ai_replacing_role') >= 0) score += 6;
 
     return { pitfall: pit, score: score };
   });
@@ -2475,26 +2806,42 @@ function showResults() {
     var sit = SITUATIONS.find(function(x) { return x.id === s; });
     if (sit) html += '<span class="meta-tag">' + sit.label + '</span>';
   });
+  state.challenges.forEach(function(c) {
+    var ch = CHALLENGES.find(function(x) { return x.id === c; });
+    if (ch) html += '<span class="meta-tag meta-tag-challenge">' + ch.label + '</span>';
+  });
   html += '</div></div>';
+
+  // Emotional acknowledgment for recently laid off
+  if (state.situations.indexOf('laid_off') >= 0) {
+    html += '<div class="empathy-banner">';
+    html += '<p>This is a tough market, and being here says nothing about your ability. One in three US game developers has been through this in the past two years. Nobody said it would be easy, and anxiety is a real part of this process. But there are more tools and communities than ever to help you move forward. The plan below focuses on concrete next steps — use what fits your situation and keep pushing.</p>';
+    html += '</div>';
+  }
 
   // Market Snapshot
   html += '<div class="market-snapshot">';
   html += '<div class="market-snapshot-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg> Market Snapshot (2025-2026)</div>';
   html += '<div class="market-stats-grid">';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">33%</div><div class="market-stat-label">US game devs laid off in 2 years</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">48%</div><div class="market-stat-label">Of laid-off devs still without work</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~10,100</div><div class="market-stat-label">Projected 2026 layoffs</div><div class="market-stat-source"><a href="https://www.linkedin.com/in/amirsatvat/" target="_blank" rel="noopener noreferrer">Satvat 2026</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">~0.2%</div><div class="market-stat-label">Cold application offer rate</div><div class="market-stat-source"><a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby 2024</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
-  html += '<div class="market-stat"><div class="market-stat-value stat-ok">15,000+</div><div class="market-stat-label">Open game dev roles globally</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
-  html += '<div class="market-stat"><div class="market-stat-value stat-bad">40%</div><div class="market-stat-label">Unemployed filed 100+ apps</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2025-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2025</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
   html += '</div></div>';
 
   // Action Plan
+  var timeFrames = ['This week', 'This week', 'Ongoing', 'Ongoing', 'Within 30 days'];
   html += '<div class="action-plan">';
+  html += '<div class="action-plan-title-row">';
   html += '<div class="action-plan-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Your 5-Step Action Plan</div>';
+  html += '<button class="copy-plan-btn" id="copyPlanBtn" title="Copy plan to clipboard"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="copy-plan-label">Copy Plan</span></button>';
+  html += '</div>';
   html += '<ol>';
-  actionPlan.forEach(function(step) {
-    html += '<li>' + step + '</li>';
+  actionPlan.forEach(function(step, i) {
+    var tf = timeFrames[i] || '';
+    html += '<li><span class="action-timeframe">' + tf + '</span>' + step + '</li>';
   });
   html += '</ol></div>';
 
@@ -2503,7 +2850,8 @@ function showResults() {
 
   boards.forEach(function(item, i) {
     var b = item.board;
-    html += '<div class="rec-card" data-card-id="board_' + b.id + '">';
+    var isStartHere = (i === 0);
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + '" data-card-id="board_' + b.id + '">';
     html += '<div class="rec-card-header" onclick="toggleCard(this)">';
     html += '<div class="rec-card-top">';
     html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
@@ -2535,7 +2883,8 @@ function showResults() {
 
   tools.forEach(function(item, i) {
     var t = item.tool;
-    html += '<div class="rec-card" data-card-id="tool_' + t.id + '">';
+    var isStartHere = (i === 0);
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + '" data-card-id="tool_' + t.id + '">';
     html += '<div class="rec-card-header" onclick="toggleCard(this)">';
     html += '<div class="rec-card-top">';
     html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
@@ -2573,7 +2922,63 @@ function showResults() {
   });
 
   // Disclaimer
-  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified March 2026.</p>';
+  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified March 2026.</p>';
+
+  // Survey
+  var alreadySubmitted = _ls ? _ls.getItem('jsg-survey-done') : null;
+  html += '<div class="survey-card" id="surveyCard">';
+  if (alreadySubmitted) {
+    html += '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded. <a href="survey-results.html">View community results</a></p></div>';
+  } else {
+    html += '<div class="survey-card-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><h3>60-Second Survey</h3></div>';
+    html += '<p class="survey-card-subtitle">Help improve this tool. Results are shared publicly so the community can see what\u2019s working.</p>';
+
+    // Q1: Usefulness
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">1</span> How useful was this tool?</div><div class="survey-options">';
+    ['Very useful \u2014 I have a clear next step','Somewhat useful \u2014 gave me a few ideas','Not very useful \u2014 didn\'t tell me much new','Not useful at all'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq1" id="sq1_'+i+'" value="'+opt+'"><label for="sq1_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q2: Purpose
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">2</span> What brought you here today?</div><div class="survey-options">';
+    ['Recently laid off','Employed but exploring','Breaking into games','Helping someone else','Just curious'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq2" id="sq2_'+i+'" value="'+opt+'"><label for="sq2_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q3: Source
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">3</span> Where did you hear about this?</div><div class="survey-options">';
+    ['LinkedIn','Twitter/X','Discord','Reddit','Friend or colleague','Search engine','Game Dev AI Guide','Other'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq3" id="sq3_'+i+'" value="'+opt+'"><label for="sq3_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q4: Most valuable section
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">4</span> Which section was most valuable?</div><div class="survey-options">';
+    ['Action plan','Job boards','AI tools','Pitfall warnings','Market snapshot'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq4" id="sq4_'+i+'" value="'+opt+'"><label for="sq4_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q5: Improvements (multi-select)
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">5</span> What should we add?</div><p class="survey-q-hint">Select all that apply (optional)</p><div class="survey-options">';
+    ['More job boards','More AI tools','Salary data by discipline','Interview prep resources','Freelance/contract guidance','Mental health resources','Company culture reviews','Networking events'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="checkbox" name="sq5" id="sq5_'+i+'" value="'+opt+'"><label for="sq5_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q6: Open text
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">6</span> Anything else?</div><p class="survey-q-hint">Optional, 280 characters max</p>';
+    html += '<textarea class="survey-textarea" id="sq6" maxlength="280" placeholder="What would make this tool more useful for you?"></textarea></div>';
+
+    html += '<div class="survey-val-msg" id="surveyValMsg">Please answer questions 1\u20134 before submitting.</div>';
+    html += '<div class="survey-submit-row">';
+    html += '<button class="survey-submit" id="surveySubmitBtn">Submit Feedback</button>';
+    html += '<span class="survey-results-link"><a href="survey-results.html">View community results</a></span>';
+    html += '</div>';
+  }
+  html += '</div>';
 
   // Restart
   html += '<div class="restart-section"><button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button></div>';
@@ -2582,6 +2987,106 @@ function showResults() {
   document.getElementById('formScreen').classList.remove('active');
   document.getElementById('resultsScreen').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Copy plan button
+  var copyBtn = document.getElementById('copyPlanBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      var planOl = document.querySelector('.action-plan ol');
+      var planItems = planOl ? planOl.querySelectorAll('li') : [];
+      var text = 'Game Dev Job Search Plan (' + exp.label + ' ' + disc.label + ')\n';
+      text += '='.repeat(40) + '\n\n';
+      planItems.forEach(function(li, idx) {
+        var tf = timeFrames[idx] || '';
+        var liText = li.textContent.replace(tf, '').trim();
+        text += (idx + 1) + '. [' + tf + '] ' + liText + '\n\n';
+      });
+      text += 'Top boards: ';
+      boards.slice(0, 3).forEach(function(item, idx) {
+        text += item.board.name + ' (' + item.board.url + ')';
+        if (idx < 2 && idx < boards.length - 1) text += ', ';
+      });
+      text += '\n\nGenerated at gamedevai.guide/jobs/';
+
+      navigator.clipboard.writeText(text).then(function() {
+        var label = copyBtn.querySelector('.copy-plan-label');
+        label.textContent = 'Copied!';
+        setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
+      }).catch(function() {
+        // fallback
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var label = copyBtn.querySelector('.copy-plan-label');
+        label.textContent = 'Copied!';
+        setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
+      });
+      gaEvent('copy_plan', { discipline: state.discipline, experience: state.experience });
+    });
+  }
+
+  // Survey submit handler
+  var surveyBtn = document.getElementById('surveySubmitBtn');
+  if (surveyBtn) {
+    surveyBtn.addEventListener('click', function() {
+      var q1 = document.querySelector('input[name="sq1"]:checked');
+      var q2 = document.querySelector('input[name="sq2"]:checked');
+      var q3 = document.querySelector('input[name="sq3"]:checked');
+      var q4 = document.querySelector('input[name="sq4"]:checked');
+      var valMsg = document.getElementById('surveyValMsg');
+
+      // Validate required questions 1-4
+      if (!q1 || !q2 || !q3 || !q4) {
+        valMsg.classList.add('visible');
+        return;
+      }
+      valMsg.classList.remove('visible');
+
+      // Gather multi-select Q5
+      var q5Checked = document.querySelectorAll('input[name="sq5"]:checked');
+      var q5Vals = [];
+      q5Checked.forEach(function(cb) { q5Vals.push(cb.value); });
+
+      // Gather Q6 free text
+      var q6El = document.getElementById('sq6');
+      var q6Val = q6El ? q6El.value.trim().substring(0, 280) : '';
+
+      var payload = {
+        q1_useful: q1.value,
+        q2_purpose: q2.value,
+        q3_source: q3.value,
+        q4_valuable: q4.value,
+        q5_improve: q5Vals,
+        q6_freetext: q6Val,
+        discipline: state.discipline || '',
+        experience: state.experience || '',
+        timestamp: Date.now()
+      };
+
+      // Disable button while submitting
+      surveyBtn.disabled = true;
+      surveyBtn.textContent = 'Submitting...';
+
+      db.ref('survey_responses').push(payload).then(function() {
+        if (_ls) _ls.setItem('jsg-survey-done', '1');
+        var card = document.getElementById('surveyCard');
+        if (card) {
+          card.innerHTML = '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded. <a href="survey-results.html">View community results</a></p></div>';
+        }
+        gaEvent('survey_submit', { discipline: state.discipline, experience: state.experience });
+      }).catch(function(err) {
+        surveyBtn.disabled = false;
+        surveyBtn.textContent = 'Submit Feedback';
+        valMsg.textContent = 'Something went wrong. Please try again.';
+        valMsg.classList.add('visible');
+      });
+    });
+  }
 }
 
 function toggleCard(header) {
