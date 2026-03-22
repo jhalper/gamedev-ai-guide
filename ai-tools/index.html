@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Game Dev AI Guide by HALP — Find Your Best AI Workflow Opportunities</title>
+<title>AI Tools for Game Devs — Find Your Best AI Workflow Opportunities</title>
 <meta name="description" content="An interactive tool for game developers to find the best AI-assisted workflow opportunities for their specific discipline, engine, team size, and development phase.">
 
 <!-- Favicon -->
@@ -11,16 +11,16 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Game Dev AI Guide by HALP">
-<meta property="og:description" content="Find where AI can (and can't) help your game project. 14 disciplines, 36 recommendations, honest caveats, real shipped examples.">
+<meta property="og:title" content="AI Tools for Game Devs">
+<meta property="og:description" content="Practical AI recommendations tailored to your role, engine, team size, and production phase. 14 disciplines, 36 recommendations, honest caveats.">
 <meta property="og:image" content="https://gamedevai.guide/ai-tools/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Game Dev AI Guide by HALP">
-<meta name="twitter:description" content="Find where AI can (and can't) help your game project. 14 disciplines, 36 recommendations, honest caveats.">
+<meta name="twitter:title" content="AI Tools for Game Devs">
+<meta name="twitter:description" content="Practical AI recommendations tailored to your role, engine, team size, and production phase. 14 disciplines, 36 recommendations, honest caveats.">
 <meta name="twitter:image" content="https://gamedevai.guide/ai-tools/og-image.png">
 
 <!-- Firebase SDK -->
@@ -2513,7 +2513,7 @@ h1, h2, h3, h4, h5, h6 {
     </div>
     <div class="modal-body">
       <h3>What is this?</h3>
-      <p>Game Dev AI Guide by HALP is a decision-support tool for game developers evaluating where AI can (and can't) help across an 18-month development cycle. It covers 14 disciplines, from engineering and art to production and live ops.</p>
+      <p>AI Tools for Game Devs is a decision-support tool for game developers evaluating where AI can (and can't) help across an 18-month development cycle. It covers 14 disciplines, from engineering and art to production and live ops.</p>
 
       <div class="modal-section">
         <h3>How it works</h3>
@@ -2560,14 +2560,14 @@ h1, h2, h3, h4, h5, h6 {
   <!-- HEADER -->
   <header class="app-header">
     <div class="app-logo">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="Game Dev AI Guide by HALP logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="AI Tools for Game Devs logo">
         <rect x="2" y="2" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.5" fill="none"/>
         <path d="M8 14L12 10L16 14L20 10" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="8" cy="18" r="1.5" fill="var(--color-primary)"/>
         <circle cx="14" cy="18" r="1.5" fill="var(--color-primary)" opacity="0.6"/>
         <circle cx="20" cy="18" r="1.5" fill="var(--color-primary)" opacity="0.3"/>
       </svg>
-      <div class="app-logo-text">Game Dev <span>AI Guide</span> <span class="logo-byline">by HALP</span></div>
+      <div class="app-logo-text">AI Tools <span>for Game Devs</span></div>
     </div>
     <div class="header-actions">
       <button class="info-btn" id="info-btn" aria-label="About this tool">
@@ -4630,7 +4630,7 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
 </style></head><body>`;
 
   html += `<h1>Top AI Opportunities for ${pdfDiscLabel}${phaseLabel}</h1>`;
-  html += `<div class="subtitle">Generated from Game Dev AI Guide by HALP (Joe Halper) — gamedevai.guide</div>`;
+  html += `<div class="subtitle">Generated from AI Tools for Game Devs by HALP (Joe Halper) — gamedevai.guide</div>`;
   html += `<div class="profile"><strong>Profile:</strong> ${selections.team} team · ${pdfDiscLabel} · Phase: ${selections.phase.join(', ')} · Pain points: ${selections.pain.join(', ')}</div>`;
 
   // Recommendation cards
@@ -4660,7 +4660,7 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
 
   // Footer with link back
   const hash = encodeSelectionsToHash(selections);
-  html += `<div class="footer">Generated from <a href="https://gamedevai.guide">Game Dev AI Guide</a> by HALP (Joe Halper)<br>`;
+  html += `<div class="footer">Generated from <a href="https://gamedevai.guide/ai-tools">AI Tools for Game Devs</a> by HALP (Joe Halper)<br>`;
   html += `<a href="https://gamedevai.guide?s=${hash}">Open these results in the tool</a> · Last updated March 2026</div>`;
   html += `</body></html>`;
 
