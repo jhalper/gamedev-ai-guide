@@ -1670,6 +1670,13 @@ h1, h2, h3, h4, h5, h6 {
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.4 &mdash; March 25, 2026</div>
+          <ul class="whats-new-list">
+            <li>New section: Communities &amp; Support &mdash; 14 Discord servers, Reddit communities, mentorship programs, mental health resources, and professional organizations, scored and filtered to your profile</li>
+            <li>Community cards show type badges (Discord, Reddit, Mental Health, Mentorship, etc.) with direct join links</li>
+            <li>Take This mental health resources surfaced for recently laid-off developers</li>
+            <li>GameDevMap studio discovery tool integrated for relocation-focused profiles</li>
+          </ul>
           <div class="whats-new-version">v1.3 &mdash; March 21, 2026</div>
           <ul class="whats-new-list">
             <li>Copy Plan button: save your personalized action plan to clipboard</li>
@@ -1804,7 +1811,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p style="margin-top: var(--space-2); font-size: var(--text-xs);"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 21, 2026 (v1.3) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 25, 2026 (v1.4) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -2332,6 +2339,211 @@ var PITFALLS = [
 ];
 
 /* ============================================
+   DATA: COMMUNITIES & SUPPORT
+   ============================================ */
+var COMMUNITIES = [
+  {
+    id: 'asgc_community',
+    name: 'ASGC (Always Supporting the Games Community)',
+    url: 'https://asgc.gg',
+    discordUrl: 'https://discord.gg/asgc',
+    type: 'discord',
+    description: 'The largest career-focused game dev community. 600K+ unique monthly members, 4,600+ people placed. Free resume reviews, mentorship, job leads, and career coaching led by Amir Satvat.',
+    size: '14,000+ Discord / 600K+ monthly',
+    bestForTags: ['Career help', 'Resume reviews', 'Job placement'],
+    strengths: 'Unmatched career placement track record. Covers 20+ professional disciplines. Active coaches and mentors. Completely free.',
+    caveats: 'Skews toward early-to-mid career. Very large server can feel overwhelming. Not a social community — focused on career outcomes.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote','international']
+  },
+  {
+    id: 'game_dev_league',
+    name: 'Game Dev League',
+    url: 'https://discord.com/invite/gamedev',
+    type: 'discord',
+    description: 'One of the largest general game dev Discords. Channels for every discipline, portfolio feedback, job postings, and project collaboration. A decade-old community.',
+    size: '130,000+ members',
+    bestForTags: ['All disciplines', 'Portfolio feedback', 'Networking'],
+    strengths: 'Massive, active community with channels for every discipline. Good for networking, getting portfolio feedback, and finding collaborators.',
+    caveats: 'General purpose — not career-focused. Job postings mixed in with general chat. Quality of feedback varies.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote']
+  },
+  {
+    id: 'game_dev_network',
+    name: 'Game Dev Network (GDN)',
+    url: 'https://discord.gg/gdn',
+    type: 'discord',
+    description: 'Active 61,000+ member Discord focused entirely on game development. Channels for job postings, portfolio reviews, and discipline-specific discussion.',
+    size: '61,000+ members',
+    bestForTags: ['General dev', 'Job postings', 'Community'],
+    strengths: 'Large and active. Good balance between social interaction and professional discussion. Dedicated job posting channels.',
+    caveats: 'General purpose community. Less structured career support than ASGC.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote']
+  },
+  {
+    id: 'work_with_indies_disc',
+    name: 'Work With Indies (Discord)',
+    url: 'https://workwithindies.com/discord',
+    type: 'discord',
+    description: 'Community arm of the Work With Indies job board. Monthly showcases, weekly dev streams, and a Discord webhook that pushes new indie job listings automatically.',
+    size: '42,000+ members',
+    bestForTags: ['Indie jobs', 'Showcases', 'Freelance'],
+    strengths: 'Direct pipeline to indie job listings. Monthly showcases let you get your work in front of hiring indie studios. Strong freelance culture.',
+    caveats: 'Indie-focused — less useful for AAA job seekers. Smaller studios mean lower budgets.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','vfx'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['freelance','laid_off','first_job','remote']
+  },
+  {
+    id: 'igda',
+    name: 'IGDA (International Game Developers Association)',
+    url: 'https://igda.org',
+    discordUrl: 'https://discord.gg/igda',
+    type: 'organization',
+    description: 'The game industry\'s main professional association. Local chapters worldwide, GDC networking events, Special Interest Groups (SIGs), and a resource library. Discord has 9,500+ members.',
+    size: '9,500+ Discord / global chapters',
+    bestForTags: ['Professional org', 'GDC networking', 'Local chapters'],
+    strengths: 'Chapters in most major game dev cities provide local networking. GDC presence. SIGs for specific disciplines. Advocacy on industry issues.',
+    caveats: 'Membership not required for many resources. Local chapter activity varies greatly by location. More networking than direct job placement.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','relocation','international']
+  },
+  {
+    id: 'funsmith',
+    name: 'Funsmith Club',
+    url: 'https://gamedesignskills.com',
+    discordUrl: 'https://discord.gg/funsmith',
+    type: 'discord',
+    description: 'Game design-focused community with courses, challenges, and a Build a Game Challenge. Regular talks, job listings, and curated design resources. Run by Game Design Skills.',
+    size: '7,000+ members',
+    bestForTags: ['Game design', 'Courses', 'Challenges'],
+    strengths: 'Unique learning + community model. Build a Game Challenge provides portfolio-ready project experience. Curated job listings and regular expert talks.',
+    caveats: 'Primarily game design focused — less relevant for engineering, art, or audio roles. Some paid course content.',
+    disciplines: ['game_design','level_design','uiux','narrative','production'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'design_den',
+    name: 'The Design Den',
+    url: 'https://discord.com/invite/thedesignden',
+    type: 'discord',
+    description: 'Level design and game design community with practical knowledge sharing. Active YouTube channel with tutorials. Good for portfolio feedback on design work.',
+    size: '8,900+ members',
+    bestForTags: ['Level design', 'Design feedback', 'Tutorials'],
+    strengths: 'Focused community where design-specific feedback is high quality. YouTube tutorials provide portfolio-building knowledge.',
+    caveats: 'Narrow focus on level/game design. Small community means less activity than larger servers.',
+    disciplines: ['game_design','level_design'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'd3v_central',
+    name: 'D3v Central Station',
+    url: 'https://discord.com/invite/d3v-central-station-1008240363334545428',
+    type: 'discord',
+    description: 'Unique community with channels for visa/immigration info, salary transparency, and labor organizing discussion alongside standard dev channels.',
+    size: '2,200+ members',
+    bestForTags: ['Visa info', 'Salary data', 'Labor rights'],
+    strengths: 'Rare resource for visa and immigration questions. Salary transparency channels help with negotiation research. Progressive labor perspective.',
+    caveats: 'Small community. Less active than larger servers. More discussion-oriented than career placement.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['international','relocation','employed_looking','laid_off']
+  },
+  {
+    id: 'reddit_gamedev',
+    name: 'r/gamedev',
+    url: 'https://www.reddit.com/r/gamedev/',
+    type: 'reddit',
+    description: 'The largest game development subreddit. Career threads, postmortems, industry news, and an active community of both hobbyist and professional developers.',
+    size: '1.5M+ members',
+    bestForTags: ['Career advice', 'Industry news', 'Postmortems'],
+    strengths: 'Huge knowledge base. Search archives for discipline-specific career advice. Postmortems provide portfolio inspiration. Active community.',
+    caveats: 'Noisy. Hobbyist content mixed with professional. Career advice quality varies — verify claims. Moderation is general-purpose.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking','freelance']
+  },
+  {
+    id: 'reddit_classifieds',
+    name: 'r/gameDevClassifieds',
+    url: 'https://www.reddit.com/r/gameDevClassifieds/',
+    type: 'reddit',
+    description: 'Reddit\'s game industry job board. Freelance gigs, contract work, team recruitment, and job listings. Especially strong for entry-level and indie opportunities.',
+    size: '200K+ members',
+    bestForTags: ['Freelance gigs', 'Entry-level', 'Team building'],
+    strengths: 'Direct access to indie hiring. Good for building freelance client base. Entry-level friendly.',
+    caveats: 'No quality control on listings. Budget rates common. Verify legitimacy of any offer. Rev-share projects rarely pay.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','vfx'],
+    experienceLevels: ['entry','mid'],
+    situations: ['freelance','first_job','remote']
+  },
+  {
+    id: 'take_this',
+    name: 'Take This',
+    url: 'https://www.takethis.org',
+    type: 'mental_health',
+    description: 'The game industry\'s dedicated mental health nonprofit (501(c)(3)). Provides crisis resources, research reports on developer wellbeing, and GDC programming. Their 2025 white paper surveyed developer stressors and coping strategies.',
+    size: 'Nonprofit org',
+    bestForTags: ['Mental health', 'Crisis resources', 'Research'],
+    strengths: 'Only mental health org specifically for the game industry. Crisis line list, research white papers, and GDC sessions. Understands crunch, layoffs, and industry-specific stressors.',
+    caveats: 'Not a community in the traditional sense — more of a resource hub. Does not provide 1:1 counseling directly (connects to crisis lines and resources).',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job']
+  },
+  {
+    id: 'gamedev_mentors',
+    name: 'Game Dev Mentors',
+    url: 'https://www.gamedevmentors.com',
+    type: 'mentorship',
+    description: 'Paid 1:1 mentorship marketplace connecting aspiring devs with industry professionals. Mentors across concept art, Unity, Unreal, game design, and more. Rates from $15-$150/hr.',
+    size: 'Marketplace',
+    bestForTags: ['1:1 mentorship', 'Portfolio review', 'Paid'],
+    strengths: 'Direct access to working professionals. Choose mentors by discipline and shipped titles. Structured 1:1 format for targeted career advice.',
+    caveats: 'Paid service ($15-$150/hr). Quality varies by mentor. Research mentor backgrounds before committing. Not free career support.',
+    disciplines: ['engineering','art','animation','tech_art','game_design','level_design','uiux','vfx'],
+    experienceLevels: ['entry','mid'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'gamedevmap',
+    name: 'GameDevMap',
+    url: 'https://www.gamedevmap.com',
+    type: 'tool',
+    description: 'Interactive world map of game studios. Filter by location, company type, and remote-friendliness. Essential for relocation research and finding studios near you that you may not know about.',
+    size: '100+ countries mapped',
+    bestForTags: ['Studio map', 'Relocation', 'Discovery'],
+    strengths: 'Reveals studios you didn\'t know existed in your area. Remote-friendly filter. Useful for relocation planning and targeting applications geographically.',
+    caveats: 'Data currency depends on community updates. Does not list job openings — use for studio discovery, then check career pages.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['relocation','laid_off','employed_looking','first_job','international']
+  },
+  {
+    id: 'gameheads',
+    name: 'Gameheads',
+    url: 'https://gameheadsoakland.org',
+    type: 'mentorship',
+    description: 'Youth mentorship program (ages 15-24) preparing underrepresented youth for game industry careers through game design, coding, art, and sound design training. Year-long program with industry mentor pairing.',
+    size: 'Oakland-based program',
+    bestForTags: ['Youth program', 'Mentorship', 'Underrepresented'],
+    strengths: 'Structured year-long program with real industry mentors. Focuses on underrepresented communities. Produces portfolio-ready projects.',
+    caveats: 'Age-restricted (15-24). Oakland-based, though expanding. Competitive admission. Not for established professionals.',
+    disciplines: ['engineering','art','animation','game_design','level_design','audio'],
+    experienceLevels: ['entry'],
+    situations: ['first_job']
+  }
+];
+
+/* ============================================
    CONFIG DATA
    ============================================ */
 var DISCIPLINES = [
@@ -2684,6 +2896,64 @@ function scorePitfalls() {
   return scored.filter(function(s) { return s.score > 0; }).slice(0, 5);
 }
 
+function scoreCommunities() {
+  var scored = COMMUNITIES.map(function(comm) {
+    var score = 0;
+
+    // discipline match
+    if (comm.disciplines.indexOf(state.discipline) >= 0) score += 2;
+
+    // experience match
+    if (comm.experienceLevels.indexOf(state.experience) >= 0) score += 2;
+
+    // situation matches
+    state.situations.forEach(function(s) {
+      if (comm.situations.indexOf(s) >= 0) score += 2;
+    });
+
+    // special boosts
+    if (comm.id === 'asgc_community') score += 4; // universally valuable career resource
+    if (comm.id === 'asgc_community' && state.situations.indexOf('laid_off') >= 0) score += 4;
+    if (comm.id === 'asgc_community' && state.experience === 'entry') score += 3;
+    if (comm.id === 'asgc_community' && state.situations.indexOf('first_job') >= 0) score += 3;
+
+    if (comm.id === 'take_this' && state.situations.indexOf('laid_off') >= 0) score += 5;
+
+    if (comm.id === 'igda' && state.situations.indexOf('relocation') >= 0) score += 3;
+    if (comm.id === 'igda' && state.situations.indexOf('international') >= 0) score += 3;
+    if (comm.id === 'igda' && ['senior','lead'].indexOf(state.experience) >= 0) score += 2;
+
+    if (comm.id === 'work_with_indies_disc' && state.situations.indexOf('freelance') >= 0) score += 4;
+    if (comm.id === 'work_with_indies_disc' && state.situations.indexOf('remote') >= 0) score += 2;
+
+    if (comm.id === 'gamedevmap' && state.situations.indexOf('relocation') >= 0) score += 5;
+    if (comm.id === 'gamedevmap' && state.situations.indexOf('international') >= 0) score += 3;
+
+    if (comm.id === 'reddit_classifieds' && state.situations.indexOf('freelance') >= 0) score += 3;
+    if (comm.id === 'reddit_classifieds' && state.experience === 'entry') score += 2;
+
+    if (comm.id === 'd3v_central' && state.situations.indexOf('international') >= 0) score += 4;
+    if (comm.id === 'd3v_central' && state.situations.indexOf('relocation') >= 0) score += 3;
+    if (comm.id === 'd3v_central' && state.challenges.indexOf('salary_negotiation') >= 0) score += 3;
+
+    if (comm.id === 'gamedev_mentors' && state.experience === 'entry') score += 3;
+    if (comm.id === 'gamedev_mentors' && state.situations.indexOf('first_job') >= 0) score += 3;
+    if (comm.id === 'gamedev_mentors' && state.challenges.indexOf('portfolio_needs_work') >= 0) score += 3;
+
+    if (comm.id === 'gameheads' && state.experience === 'entry') score += 3;
+    if (comm.id === 'gameheads' && state.situations.indexOf('first_job') >= 0) score += 5;
+
+    var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
+    if (comm.id === 'funsmith' && isDesign) score += 4;
+    if (comm.id === 'design_den' && isDesign) score += 4;
+
+    return { community: comm, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.filter(function(s) { return s.score > 0; }).slice(0, 8);
+}
+
 /* ============================================
    ACTION PLAN GENERATOR
    ============================================ */
@@ -2776,6 +3046,7 @@ function showResults() {
   var boards = scoreBoards();
   var tools = scoreTools();
   var pitfalls = scorePitfalls();
+  var communities = scoreCommunities();
   var actionPlan = generateActionPlan(boards, tools);
 
   var disc = DISCIPLINES.find(function(d) { return d.id === state.discipline; });
@@ -2909,6 +3180,50 @@ function showResults() {
     html += '</div>';
   });
 
+  // Section 4: Communities & Support
+  if (communities.length > 0) {
+    html += '<div class="section-header communities-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Communities &amp; Support</h2></div>';
+
+    var TYPE_LABELS = { discord: 'Discord', reddit: 'Reddit', organization: 'Organization', mental_health: 'Mental Health', mentorship: 'Mentorship', tool: 'Tool' };
+    var TYPE_COLORS = { discord: '#5865F2', reddit: '#FF4500', organization: '#D4943A', mental_health: '#4CAF50', mentorship: '#9C27B0', tool: '#00BCD4' };
+
+    communities.forEach(function(item, i) {
+      var c = item.community;
+      var isFirst = (i === 0);
+      var typeLabel = TYPE_LABELS[c.type] || c.type;
+      var typeColor = TYPE_COLORS[c.type] || 'var(--color-primary)';
+      html += '<div class="rec-card' + (isFirst ? ' start-here' : '') + '" data-card-id="comm_' + c.id + '">';
+      html += '<div class="rec-card-header" onclick="toggleCard(this)">';
+      html += '<div class="rec-card-top">';
+      html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
+      html += '<span class="rec-card-title">' + c.name + '</span>';
+      html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '</div>';
+      html += '<div class="rec-card-badges">';
+      html += '<span class="badge" style="background:' + typeColor + ';color:#fff;">' + typeLabel + '</span>';
+      html += '<span class="badge badge-size">' + c.size + '</span>';
+      c.bestForTags.forEach(function(tag) {
+        html += '<span class="badge badge-bestfor">' + tag + '</span>';
+      });
+      html += '</div>';
+      html += '<div class="caveat-preview">' + c.description + '</div>';
+      html += '</div>';
+      html += '<div class="rec-card-details"><div class="rec-card-body">';
+      html += '<div class="detail-row"><div class="detail-label">Why for you</div><div class="detail-value">' + c.strengths + '</div></div>';
+      var linkUrl = c.discordUrl || c.url;
+      var linkLabel = c.discordUrl ? 'Discord' : c.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      html += '<div class="detail-row"><div class="detail-label">Link</div><div class="detail-value"><a href="' + linkUrl + '" target="_blank" rel="noopener noreferrer" onclick="gaEvent(\'community_click\',{community:\'' + c.id + '\'})">' + linkLabel + '</a>';
+      if (c.discordUrl && c.url !== c.discordUrl) {
+        html += ' &bull; <a href="' + c.url + '" target="_blank" rel="noopener noreferrer">Website</a>';
+      }
+      html += '</div></div>';
+      html += '<div class="detail-row"><div class="detail-label">Honest caveat</div><div class="detail-value caveat">' + c.caveats + '</div></div>';
+      html += '</div></div></div>';
+    });
+
+    html += '<p class="boards-disclaimer">Communities are ranked by relevance to your profile. This is a curated selection — we prioritize active communities with genuine value for job seekers over sheer size.</p>';
+  }
+
   // Disclaimer
   html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified March 2026.</p>';
 
@@ -2944,7 +3259,7 @@ function showResults() {
 
     // Q4: Most valuable section
     html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">4</span> Which section was most valuable?</div><div class="survey-options">';
-    ['Action plan','Job boards','AI tools','Pitfall warnings','Market snapshot'].forEach(function(opt,i){
+    ['Action plan','Job boards','AI tools','Pitfall warnings','Communities','Market snapshot'].forEach(function(opt,i){
       html += '<div class="survey-opt"><input type="radio" name="sq4" id="sq4_'+i+'" value="'+opt+'"><label for="sq4_'+i+'">'+opt+'</label></div>';
     });
     html += '</div></div>';
@@ -3101,6 +3416,67 @@ function restart() {
 }
 </script>
 <script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script><script data-pplx-inline-edit>
 (function(){
   if(window===window.top)return;
   function inlineAll(orig,clone){
