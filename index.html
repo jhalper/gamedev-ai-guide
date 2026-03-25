@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,11 +23,11 @@
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 
+<link rel="stylesheet" href="./base.css">
 <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-<div class="page-wrapper">
 
   <!-- ====== NAV ====== -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
@@ -37,43 +36,18 @@
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
           <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
-          <circle cx="16" cy="16" r="2" fill="var(--color-primary)"/>
+          <circle cx="16" cy="16" r="2" fill="#d4943c"/>
         </svg>
         <span class="nav-logo-text">Game Dev AI Guide</span>
       </a>
 
       <div class="nav-right">
         <ul class="nav-links" role="list" id="navLinks">
-          <li>
-            <a href="./" class="active">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="./ai-tools/">
-              <span class="nav-dot" style="background: var(--color-primary)"></span>
-              AI Tools
-            </a>
-          </li>
-          <li>
-            <a href="./nvidia-toolkit/">
-              <span class="nav-dot" style="background: var(--color-nvidia)"></span>
-              NVIDIA Toolkit
-            </a>
-          </li>
-          <li>
-            <a href="./jobs/">
-              <span class="nav-dot" style="background: var(--color-jobs-amber)"></span>
-              Job Search
-            </a>
-          </li>
+          <li><a href="./" class="active">Home</a></li>
+          <li><a href="./ai-tools/"><span class="nav-dot" style="background:#d4943c"></span>AI Tools</a></li>
+          <li><a href="./nvidia-toolkit/"><span class="nav-dot" style="background:#76b900"></span>NVIDIA Toolkit</a></li>
+          <li><a href="./jobs/"><span class="nav-dot" style="background:#d4943c"></span>Job Search</a></li>
         </ul>
-
-        <button class="nav-theme-toggle" data-theme-toggle aria-label="Switch to light mode">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-          </svg>
-        </button>
 
         <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -87,33 +61,29 @@
   <!-- ====== HERO ====== -->
   <main>
     <section class="hero">
-      <div class="container">
-        <div class="hero-badge">
-          <span class="hero-badge-dot"></span>
-          3 tools, one home
+      <div class="container hero-layout">
+        <div class="hero-text">
+          <p class="hero-label">3 tools, one home</p>
+          <h1>Practical AI tools for game devs</h1>
+          <p class="hero-sub">No hype. No replacement talk. Just honest tools and guidance for game developers figuring out where AI actually fits in their work.</p>
+          <p class="hero-byline">Built by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>, game dev, not an AI company</p>
         </div>
-        <h1>Practical <span>AI tools</span> for game devs</h1>
-        <p class="hero-sub">No hype. No replacement talk. Just honest tools and guidance for game developers figuring out where AI actually fits in their work.</p>
-        <p class="hero-byline">Built by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>, game dev, not an AI company</p>
-      </div>
-    </section>
-
-    <!-- ====== QUICK ROUTING ====== -->
-    <section class="routing-section" aria-label="Quick navigation">
-      <div class="container">
-        <p class="routing-label">What are you working on?</p>
-        <div class="routing-options">
-          <a href="./ai-tools/" class="routing-btn routing-btn--ai">
-            <span class="routing-btn-dot" style="background: var(--color-primary)"></span>
-            Figuring out where AI fits in my pipeline
+        <div class="hero-routing">
+          <p class="routing-label">What are you working on?</p>
+          <a href="./ai-tools/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#d4943c"></span>
+            <span class="routing-btn-text">Figuring out where AI fits in my pipeline</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </a>
-          <a href="./nvidia-toolkit/" class="routing-btn routing-btn--nvidia">
-            <span class="routing-btn-dot" style="background: var(--color-nvidia)"></span>
-            Looking for specific NVIDIA tools
+          <a href="./nvidia-toolkit/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#76b900"></span>
+            <span class="routing-btn-text">Looking for specific NVIDIA tools</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </a>
-          <a href="./jobs/" class="routing-btn routing-btn--jobs">
-            <span class="routing-btn-dot" style="background: var(--color-jobs-amber)"></span>
-            Job hunting in the industry
+          <a href="./jobs/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#d4943c"></span>
+            <span class="routing-btn-text">Job hunting in the industry</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
           </a>
         </div>
       </div>
@@ -125,22 +95,14 @@
         <div class="tools-grid">
 
           <!-- AI Tools Guide -->
-          <a href="./ai-tools/" id="ai-tools" class="tool-card tool-card--ai fade-in">
-            <div class="tool-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-              </svg>
-            </div>
+          <a href="./ai-tools/" class="tool-card tool-card--ai">
             <h2>AI Tools Guide</h2>
             <p class="tool-card-headline">Superpowers, no instructions included.</p>
-            <details class="tool-card-details">
-              <summary>Read more</summary>
-              <p>Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that. Personalized recommendations by discipline, engine, and team size.</p>
-            </details>
-            <div class="tool-card-tags">
-              <span class="tool-card-tag">By discipline</span>
-              <span class="tool-card-tag">By engine</span>
-              <span class="tool-card-tag">Creative sensitivity</span>
+            <p class="tool-card-desc">Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that.</p>
+            <div class="tool-card-meta">
+              <span>By discipline</span>
+              <span>By engine</span>
+              <span>Creative sensitivity</span>
             </div>
             <span class="tool-card-cta">
               Open tool
@@ -149,22 +111,14 @@
           </a>
 
           <!-- NVIDIA Toolkit -->
-          <a href="./nvidia-toolkit/" id="nvidia" class="tool-card tool-card--nvidia fade-in">
-            <div class="tool-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6M9 12h6M9 15h4"/>
-              </svg>
-            </div>
+          <a href="./nvidia-toolkit/" class="tool-card tool-card--nvidia">
             <h2>NVIDIA Toolkit</h2>
             <p class="tool-card-headline">80+ tools you didn't know you had.</p>
-            <details class="tool-card-details">
-              <summary>Read more</summary>
-              <p>GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist. This toolkit was built after GTC 2026 to surface them, mapped by engine, workflow phase, and team role.</p>
-            </details>
-            <div class="tool-card-tags">
-              <span class="tool-card-tag">80+ tools</span>
-              <span class="tool-card-tag">UE5 / Unity / Godot</span>
-              <span class="tool-card-tag">By workflow phase</span>
+            <p class="tool-card-desc">GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist.</p>
+            <div class="tool-card-meta">
+              <span>80+ tools</span>
+              <span>UE5 / Unity / Godot</span>
+              <span>By workflow phase</span>
             </div>
             <span class="tool-card-cta">
               Open tool
@@ -173,22 +127,14 @@
           </a>
 
           <!-- Job Search Guide -->
-          <a href="./jobs/" id="jobs" class="tool-card tool-card--jobs fade-in">
-            <div class="tool-card-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-              </svg>
-            </div>
+          <a href="./jobs/" class="tool-card tool-card--jobs">
             <h2>Job Search Guide</h2>
             <p class="tool-card-headline">Use the tools they fear to land the next gig.</p>
-            <details class="tool-card-details">
-              <summary>Read more</summary>
-              <p>Built after a studio closure that hit close to home. Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role. Action plans, resume optimization, pitfall warnings, and curated job boards.</p>
-            </details>
-            <div class="tool-card-tags">
-              <span class="tool-card-tag">Action plans</span>
-              <span class="tool-card-tag">Resume tips</span>
-              <span class="tool-card-tag">Market data</span>
+            <p class="tool-card-desc">Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role.</p>
+            <div class="tool-card-meta">
+              <span>Action plans</span>
+              <span>Resume tips</span>
+              <span>Market data</span>
             </div>
             <span class="tool-card-cta">
               Open tool
@@ -202,10 +148,14 @@
 
     <!-- ====== ABOUT ====== -->
     <section class="about-section">
-      <div class="container about-inner">
-        <h2>Why this exists</h2>
-        <p>I've spent 25+ years developing games for entertainment, simulation, training, and enterprise across PC, consoles, VR, MR, and XR. When AI tools started flooding the industry, most of the guidance I found was either hype from people who don't make games, or fear from people who haven't tried the tools.</p>
-        <p>So I built these. Practical, honest, built on the position that AI augments what developers do. It doesn't replace them. Recommendations are grounded in real shipped examples where possible, not press releases.</p>
+      <div class="container about-layout">
+        <div class="about-label">
+          <span>Why this exists</span>
+        </div>
+        <div class="about-content">
+          <p>I've spent 25+ years developing games for entertainment, simulation, training, and enterprise across PC, consoles, VR, MR, and XR. When AI tools started flooding the industry, most of the guidance I found was either hype from people who don't make games, or fear from people who haven't tried the tools.</p>
+          <p>So I built these. Practical, honest, built on the position that AI augments what developers do. It doesn't replace them. Recommendations are grounded in real shipped examples where possible, not press releases.</p>
+        </div>
       </div>
     </section>
   </main>
@@ -218,38 +168,11 @@
       </div>
       <div class="footer-right">
         <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-
       </div>
     </div>
   </footer>
 
-</div>
-
 <script>
-// Theme toggle
-(function(){
-  const t = document.querySelector('[data-theme-toggle]');
-  const r = document.documentElement;
-  let d = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  // Default to dark
-  d = 'dark';
-  r.setAttribute('data-theme', d);
-
-  function updateIcon() {
-    t.innerHTML = d === 'dark'
-      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-    t.setAttribute('aria-label', 'Switch to ' + (d === 'dark' ? 'light' : 'dark') + ' mode');
-  }
-  updateIcon();
-
-  t.addEventListener('click', () => {
-    d = d === 'dark' ? 'light' : 'dark';
-    r.setAttribute('data-theme', d);
-    updateIcon();
-  });
-})();
-
 // Mobile nav toggle
 (function(){
   const btn = document.getElementById('mobileToggle');
@@ -259,7 +182,6 @@
     const open = nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', open);
   });
-  // Close on link click
   nav.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => {
       nav.classList.remove('open');
