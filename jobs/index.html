@@ -36,6 +36,17 @@
   window.gaEvent = function(name, params) {
     try { analytics.logEvent(name, params); } catch(e) {}
   };
+  // Check survey response count — show results links only above threshold
+  var SURVEY_THRESHOLD = 10;
+  db.ref('survey_responses').once('value').then(function(snap) {
+    var count = snap.numChildren();
+    if (count >= SURVEY_THRESHOLD) {
+      var fl = document.getElementById('footerResultsLink');
+      var sl = document.getElementById('surveyResultsLink');
+      if (fl) fl.style.display = '';
+      if (sl) sl.style.display = '';
+    }
+  }).catch(function() {});
 </script>
 
 <!-- Fonts from Fontshare -->
@@ -1665,7 +1676,7 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.3</span>
+            <span class="whats-new-badge">v1.4</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
@@ -1810,7 +1821,7 @@ h1, h2, h3, h4, h5, h6 {
 <!-- FOOTER -->
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
-  <p style="margin-top: var(--space-2); font-size: var(--text-xs);"><a href="survey-results.html">Community Survey Results</a></p>
+  <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
   <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 25, 2026 (v1.4) &bull; Research data subject to change</p>
 </footer>
 
@@ -3231,10 +3242,10 @@ function showResults() {
   var alreadySubmitted = _ls ? _ls.getItem('jsg-survey-done') : null;
   html += '<div class="survey-card" id="surveyCard">';
   if (alreadySubmitted) {
-    html += '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded. <a href="survey-results.html">View community results</a></p></div>';
+    html += '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded.</p></div>';
   } else {
     html += '<div class="survey-card-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><h3>60-Second Survey</h3></div>';
-    html += '<p class="survey-card-subtitle">Help improve this tool. Results are shared publicly so the community can see what\u2019s working.</p>';
+    html += '<p class="survey-card-subtitle">Help improve this tool. Results will be shared publicly once enough responses are collected.</p>';
 
     // Q1: Usefulness
     html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">1</span> How useful was this tool?</div><div class="survey-options">';
@@ -3278,7 +3289,7 @@ function showResults() {
     html += '<div class="survey-val-msg" id="surveyValMsg">Please answer questions 1\u20134 before submitting.</div>';
     html += '<div class="survey-submit-row">';
     html += '<button class="survey-submit" id="surveySubmitBtn">Submit Feedback</button>';
-    html += '<span class="survey-results-link"><a href="survey-results.html">View community results</a></span>';
+    html += '<span class="survey-results-link" id="surveyResultsLink" style="display:none;"><a href="survey-results.html">View community results</a></span>';
     html += '</div>';
   }
   html += '</div>';

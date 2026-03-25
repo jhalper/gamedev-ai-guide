@@ -560,6 +560,7 @@ var Q4_OPTIONS = [
   'Job boards',
   'AI tools',
   'Pitfall warnings',
+  'Communities',
   'Market snapshot'
 ];
 
@@ -612,6 +613,14 @@ db.ref('survey_responses').once('value').then(function(snapshot) {
 
   var responses = Object.values(data);
   var total = responses.length;
+  var THRESHOLD = 10;
+
+  // Gate: require minimum responses before showing results
+  if (total < THRESHOLD) {
+    document.getElementById('emptyState').style.display = 'block';
+    document.getElementById('emptyState').innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:var(--space-4);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h3 style="font-family:var(--font-display);font-size:var(--text-lg);margin-bottom:var(--space-3);color:var(--color-text);">Collecting Responses</h3><p>We\'re gathering feedback from the community. Results will appear here once enough responses have been collected to show meaningful patterns.</p><p style="margin-top:var(--space-4);"><a href="./">Take the Job Search Guide and share your feedback →</a></p>';
+    return;
+  }
 
   // Show count
   document.getElementById('totalCount').textContent = total;
