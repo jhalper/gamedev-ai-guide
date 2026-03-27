@@ -1670,10 +1670,21 @@ h1, h2, h3, h4, h5, h6 {
 /* EMPATHY BANNER */
 .empathy-banner {
   margin-bottom: var(--space-4);
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-lg);
-  border-left: 3px solid var(--color-text-muted);
-  background: var(--color-surface);
+  border-left: 4px solid var(--sec-boards);
+  background: rgba(79, 152, 163, 0.06);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+[data-theme="light"] .empathy-banner {
+  background: rgba(58, 122, 133, 0.06);
+}
+.empathy-banner svg {
+  flex-shrink: 0;
+  color: var(--sec-boards);
+  margin-top: 2px;
 }
 .empathy-banner p {
   font-size: var(--text-sm);
@@ -3565,7 +3576,8 @@ function showResults() {
   // Emotional acknowledgment for recently laid off
   if (state.situations.indexOf('laid_off') >= 0) {
     html += '<div class="empathy-banner">';
-    html += '<p>This is a tough market, and being here says nothing about your ability. One in three US game developers has been through this in the past two years. Nobody said it would be easy, and anxiety is a real part of this process. But there are more tools and communities than ever to help you move forward. The plan below focuses on concrete next steps — use what fits your situation and keep pushing.</p>';
+    html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+    html += '<p>One in three US game developers has been through this in the past two years. There are more tools and communities than ever to help you move forward \u2014 the plan below focuses on concrete next steps.</p>';
     html += '</div>';
   }
 
