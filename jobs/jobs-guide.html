@@ -585,11 +585,31 @@ h1, h2, h3, h4, h5, h6 {
   height: 4px;
   border-radius: 2px;
   background: var(--color-border);
-  transition: background var(--transition-fast);
+  transition: background var(--transition-med), opacity var(--transition-med), transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.wizard-progress-step.active { background: var(--color-primary); }
-.wizard-progress-step.completed { background: var(--color-primary); opacity: 0.6; }
+.wizard-progress-step.active {
+  background: var(--color-primary);
+  transform: scaleY(1.5);
+}
+
+.wizard-progress-step.completed {
+  background: var(--color-primary);
+  opacity: 0.6;
+  transform: scaleY(1);
+}
+
+.wizard-progress-step.just-completed {
+  animation: stepPulse 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes stepPulse {
+  0% { transform: scaleY(1); }
+  40% { transform: scaleY(2.5); background: var(--color-primary-hover); }
+  100% { transform: scaleY(1); }
+}
 
 .wizard-step-counter {
   font-size: var(--text-xs);
@@ -810,6 +830,114 @@ h1, h2, h3, h4, h5, h6 {
 .validation-msg.visible { display: block; }
 
 /* RESULTS */
+/* RESULTS SECTION NAV */
+.results-nav {
+  position: sticky;
+  top: 52px; /* below hub-nav */
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-divider);
+  padding: var(--space-2) 0;
+  margin: 0 calc(-1 * var(--space-4));
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: box-shadow var(--transition-fast);
+}
+
+.results-nav::-webkit-scrollbar { display: none; }
+
+.results-nav.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] .results-nav.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.results-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.results-nav-btn:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.results-nav-btn.active {
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary-border);
+}
+
+.results-nav-btn .nav-count {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* SHOW MORE EXPANDER */
+.show-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  margin-top: var(--space-2);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.show-more-btn:hover {
+  border-color: var(--color-primary-border);
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.show-more-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.rec-card.hidden-card {
+  display: none;
+}
+
+.rec-card.hidden-card.revealed {
+  display: block;
+}
+
+.pitfall-card.hidden-card {
+  display: none;
+}
+
+.pitfall-card.hidden-card.revealed {
+  display: block;
+}
+
 .results-header {
   margin-bottom: var(--space-6);
 }
@@ -1014,9 +1142,97 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
 }
 
+.section-count {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-faint);
+  margin-left: var(--space-1);
+}
+
 .section-header svg { color: var(--color-primary); flex-shrink: 0; }
 
 .section-header.warning-header svg { color: var(--color-warning); }
+.section-header.warning-header h2 { color: var(--color-warning); }
+
+/* Section accent colors */
+:root {
+  --sec-boards: #4F98A3;
+  --sec-tools: #9C7BDB;
+  --sec-pitfalls: var(--color-warning);
+  --sec-communities: #5B9F5B;
+}
+
+[data-theme="light"] {
+  --sec-boards: #3A7A85;
+  --sec-tools: #7B5FBB;
+  --sec-communities: #4A8A4A;
+}
+
+/* Board cards */
+.rec-card[data-section="boards"] {
+  border-left: 3px solid var(--sec-boards) !important;
+}
+.rec-card[data-section="boards"] .rec-card-rank {
+  color: var(--sec-boards);
+  background: rgba(79, 152, 163, 0.12);
+  border-color: rgba(79, 152, 163, 0.25);
+}
+#sec-boards .section-header svg { color: var(--sec-boards); }
+
+/* Tool cards */
+.rec-card[data-section="tools"] {
+  border-left: 3px solid var(--sec-tools) !important;
+}
+.rec-card[data-section="tools"] .rec-card-rank {
+  color: var(--sec-tools);
+  background: rgba(156, 123, 219, 0.12);
+  border-color: rgba(156, 123, 219, 0.25);
+}
+#sec-tools .section-header svg { color: var(--sec-tools); }
+
+/* Community cards */
+.rec-card[data-section="communities"] {
+  border-left: 3px solid var(--sec-communities) !important;
+}
+.rec-card[data-section="communities"] .rec-card-rank {
+  color: var(--sec-communities);
+  background: rgba(91, 159, 91, 0.12);
+  border-color: rgba(91, 159, 91, 0.25);
+}
+#sec-communities .section-header svg { color: var(--sec-communities); }
+
+/* Tool stage pipeline */
+.badge-stage-pipe {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.badge-stage-pipe.stage-resume { background: rgba(156,123,219,0.15); color: #B89EE8; }
+.badge-stage-pipe.stage-interview { background: rgba(219,170,80,0.15); color: #DBA950; }
+.badge-stage-pipe.stage-tracking { background: rgba(79,152,163,0.15); color: #6BB5C0; }
+.badge-stage-pipe.stage-portfolio { background: rgba(91,159,91,0.15); color: #7BC07B; }
+
+[data-theme="light"] .badge-stage-pipe.stage-resume { background: rgba(123,95,187,0.12); color: #6B4FB5; }
+[data-theme="light"] .badge-stage-pipe.stage-interview { background: rgba(180,130,40,0.12); color: #8B6520; }
+[data-theme="light"] .badge-stage-pipe.stage-tracking { background: rgba(58,122,133,0.12); color: #2E6E78; }
+[data-theme="light"] .badge-stage-pipe.stage-portfolio { background: rgba(74,138,74,0.12); color: #3A753A; }
+
+/* Community platform icon inline */
+.comm-platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
 
 .boards-disclaimer {
   font-size: var(--text-xs);
@@ -1031,14 +1247,21 @@ h1, h2, h3, h4, h5, h6 {
 /* RESULT CARDS */
 .rec-card {
   margin-bottom: var(--space-3);
-  border: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   overflow: hidden;
   transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.rec-card:hover { border-color: var(--color-border-hover); }
+.rec-card:hover {
+  border-top-color: var(--color-border-hover);
+  border-right-color: var(--color-border-hover);
+  border-bottom-color: var(--color-border-hover);
+}
 
 .rec-card-header {
   padding: var(--space-4);
@@ -1176,10 +1399,23 @@ h1, h2, h3, h4, h5, h6 {
 .detail-label {
   font-size: var(--text-xs);
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.detail-label::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .detail-value {
@@ -1254,6 +1490,56 @@ h1, h2, h3, h4, h5, h6 {
 .restart-section {
   margin-top: var(--space-8);
   text-align: center;
+}
+
+.restart-section .restart-prompt {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-3);
+}
+
+.share-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.share-cta-text {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.share-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: #0F1923;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition-fast);
+}
+
+.share-cta-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+[data-theme="light"] .share-cta-btn {
+  color: #fff;
 }
 
 .btn-secondary {
@@ -1766,11 +2052,25 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.4</span>
+            <span class="whats-new-badge">v1.5</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.5 &mdash; March 27, 2026</div>
+          <ul class="whats-new-list">
+            <li>Sticky section nav on results page &mdash; jump between Action Plan, Boards, Tools, Pitfalls, and Communities with one click</li>
+            <li>Scroll spy highlights the active section as you scroll</li>
+            <li>Collapsible sections &mdash; top 3 results shown by default with "Show all" expander for each section</li>
+            <li>Visual section differentiation &mdash; each section has a unique accent color (teal for boards, purple for tools, amber for pitfalls, green for communities)</li>
+            <li>Color-coded stage badges on AI tools (Resume, Interview, Tracking, Portfolio)</li>
+            <li>Inline platform icons on community cards (Discord, Reddit, mental health, mentorship)</li>
+            <li>Share prompt after action plan to encourage sharing</li>
+            <li>"Run it again" prompt at page bottom encourages exploring different profiles</li>
+            <li>Animated wizard progress bar with step completion pulse</li>
+            <li>Improved card detail labels with amber accent styling</li>
+            <li>Share button with LinkedIn, X, Bluesky, Reddit, and copy link</li>
+          </ul>
           <div class="whats-new-version">v1.4 &mdash; March 25, 2026</div>
           <ul class="whats-new-list">
             <li>New section: Communities &amp; Support &mdash; 14 Discord servers, Reddit communities, mentorship programs, mental health resources, and professional organizations, scored and filtered to your profile</li>
@@ -1913,7 +2213,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 25, 2026 (v1.4) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 27, 2026 (v1.5) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -2872,9 +3172,17 @@ var wizardBack = document.getElementById('wizardBack');
 function updateProgress() {
   var steps = document.querySelectorAll('.wizard-progress-step');
   steps.forEach(function(s, i) {
-    s.classList.remove('active', 'completed');
-    if (i + 1 === state.step) s.classList.add('active');
-    else if (i + 1 < state.step) s.classList.add('completed');
+    var wasActive = s.classList.contains('active');
+    s.classList.remove('active', 'completed', 'just-completed');
+    if (i + 1 === state.step) {
+      s.classList.add('active');
+    } else if (i + 1 < state.step) {
+      s.classList.add('completed');
+      if (wasActive) {
+        s.classList.add('just-completed');
+        setTimeout(function() { s.classList.remove('just-completed'); }, 500);
+      }
+    }
   });
   document.getElementById('wizardCounter').textContent = 'Step ' + state.step + ' of ' + state.totalSteps;
 
@@ -3261,7 +3569,19 @@ function showResults() {
     html += '</div>';
   }
 
+  // Section Nav
+  html += '<nav class="results-nav" id="resultsNav">';
+  html += '<button class="results-nav-btn active" data-target="sec-plan">Action Plan</button>';
+  html += '<button class="results-nav-btn" data-target="sec-boards">Boards <span class="nav-count">' + boards.length + '</span></button>';
+  html += '<button class="results-nav-btn" data-target="sec-tools">Tools <span class="nav-count">' + tools.length + '</span></button>';
+  html += '<button class="results-nav-btn" data-target="sec-pitfalls">Pitfalls <span class="nav-count">' + pitfalls.length + '</span></button>';
+  if (communities.length > 0) {
+    html += '<button class="results-nav-btn" data-target="sec-communities">Communities <span class="nav-count">' + communities.length + '</span></button>';
+  }
+  html += '</nav>';
+
   // Market Snapshot
+  html += '<div id="sec-plan">';
   html += '<div class="market-snapshot">';
   html += '<div class="market-snapshot-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg> Market Snapshot (2025-2026)</div>';
   html += '<div class="market-stats-grid">';
@@ -3287,13 +3607,23 @@ function showResults() {
   });
   html += '</ol></div>';
 
+  // Share CTA
+  html += '<div class="share-cta">';
+  html += '<div class="share-cta-text">Know someone navigating a layoff or job search? This plan is personalized \u2014 share the tool so they can get their own.</div>';
+  html += '<button class="share-cta-btn" onclick="document.getElementById(\'shareBtn\').click()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</button>';
+  html += '</div>';
+
+  html += '</div>'; // close sec-plan
+
   // Section 1: Where to Look
-  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h2>Where to Look</h2></div>';
+  html += '<div id="sec-boards">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h2>Where to Look <span class="section-count">(' + boards.length + ')</span></h2></div>';
 
   boards.forEach(function(item, i) {
     var b = item.board;
     var isStartHere = (i === 0);
-    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + '" data-card-id="board_' + b.id + '">';
+    var hiddenClass = (i >= 3) ? ' hidden-card' : '';
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + hiddenClass + '" data-card-id="board_' + b.id + '" data-section="boards">';
     html += '<div class="rec-card-header" onclick="toggleCard(this)">';
     html += '<div class="rec-card-top">';
     html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
@@ -3318,15 +3648,22 @@ function showResults() {
     html += '</div></div></div>';
   });
 
+  if (boards.length > 3) {
+    html += '<button class="show-more-btn" data-section="boards" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + boards.length + ' boards</button>';
+  }
+
   html += '<p class="boards-disclaimer">These boards are selected and ranked based on your profile. This is a curated list, not an exhaustive directory. We prioritize boards with active listings, strong community reputation, and relevance to your specific situation.</p>';
+  html += '</div>'; // close sec-boards
 
   // Section 2: AI Tools
-  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg><h2>AI Tools for Your Search</h2></div>';
+  html += '<div id="sec-tools">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg><h2>AI Tools for Your Search <span class="section-count">(' + tools.length + ')</span></h2></div>';
 
   tools.forEach(function(item, i) {
     var t = item.tool;
     var isStartHere = (i === 0);
-    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + '" data-card-id="tool_' + t.id + '">';
+    var hiddenTool = (i >= 3) ? ' hidden-card' : '';
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + hiddenTool + '" data-card-id="tool_' + t.id + '" data-section="tools">';
     html += '<div class="rec-card-header" onclick="toggleCard(this)">';
     html += '<div class="rec-card-top">';
     html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
@@ -3335,7 +3672,8 @@ function showResults() {
     html += '</div>';
     html += '<div class="rec-card-badges">';
     html += '<span class="badge badge-' + t.costType + '">' + t.cost + '</span>';
-    html += '<span class="badge badge-stage">' + t.stage + '</span>';
+    var stageClass = 'stage-' + t.stage.toLowerCase();
+    html += '<span class="badge-stage-pipe ' + stageClass + '">' + t.stage + '</span>';
     html += '<span class="badge badge-difficulty">' + t.difficulty + '</span>';
     html += '</div>';
     html += '<div class="caveat-preview">' + t.description + '</div>';
@@ -3347,12 +3685,19 @@ function showResults() {
     html += '</div></div></div>';
   });
 
-  // Section 3: Watch Out For
-  html += '<div class="section-header warning-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><h2>Watch Out For</h2></div>';
+  if (tools.length > 3) {
+    html += '<button class="show-more-btn" data-section="tools" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + tools.length + ' tools</button>';
+  }
+  html += '</div>'; // close sec-tools
 
-  pitfalls.forEach(function(item) {
+  // Section 3: Watch Out For
+  html += '<div id="sec-pitfalls">';
+  html += '<div class="section-header warning-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><h2>Watch Out For <span class="section-count">(' + pitfalls.length + ')</span></h2></div>';
+
+  pitfalls.forEach(function(item, pi) {
     var p = item.pitfall;
-    html += '<div class="pitfall-card' + (p.severity === 'high' ? ' severity-high' : '') + '">';
+    var hiddenPit = (pi >= 3) ? ' hidden-card' : '';
+    html += '<div class="pitfall-card' + (p.severity === 'high' ? ' severity-high' : '') + hiddenPit + '" data-section="pitfalls">';
     html += '<div class="pitfall-card-title">';
     if (p.severity === 'high') {
       html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
@@ -3363,9 +3708,15 @@ function showResults() {
     html += '</div>';
   });
 
+  if (pitfalls.length > 3) {
+    html += '<button class="show-more-btn" data-section="pitfalls" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + pitfalls.length + ' pitfalls</button>';
+  }
+  html += '</div>'; // close sec-pitfalls
+
   // Section 4: Communities & Support
   if (communities.length > 0) {
-    html += '<div class="section-header communities-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Communities &amp; Support</h2></div>';
+    html += '<div id="sec-communities">';
+    html += '<div class="section-header communities-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Communities &amp; Support <span class="section-count">(' + communities.length + ')</span></h2></div>';
 
     var TYPE_LABELS = { discord: 'Discord', reddit: 'Reddit', organization: 'Organization', mental_health: 'Mental Health', mentorship: 'Mentorship', tool: 'Tool' };
     var TYPE_COLORS = { discord: '#5865F2', reddit: '#FF4500', organization: '#D4943A', mental_health: '#4CAF50', mentorship: '#9C27B0', tool: '#00BCD4' };
@@ -3375,11 +3726,22 @@ function showResults() {
       var isFirst = (i === 0);
       var typeLabel = TYPE_LABELS[c.type] || c.type;
       var typeColor = TYPE_COLORS[c.type] || 'var(--color-primary)';
-      html += '<div class="rec-card' + (isFirst ? ' start-here' : '') + '" data-card-id="comm_' + c.id + '">';
+      var hiddenComm = (i >= 3) ? ' hidden-card' : '';
+      // Inline platform icons
+      var PLATFORM_ICONS = {
+        discord: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="#5865F2" width="16" height="16"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>',
+        reddit: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="#FF4500" width="16" height="16"><circle cx="12" cy="12" r="10"/><path fill="#fff" d="M17.5 12.3c0-.6-.5-1.1-1.1-1.1-.3 0-.6.1-.8.3-.8-.6-1.9-.9-3.1-1l.5-2.5 1.7.4c0 .5.4.9.9.9s.9-.4.9-.9-.4-.9-.9-.9c-.4 0-.7.2-.8.5l-1.9-.4c-.1 0-.2 0-.2.1l-.6 2.8c-1.2.1-2.3.4-3.2 1-.2-.2-.5-.3-.8-.3-.6 0-1.1.5-1.1 1.1 0 .4.2.8.6 1-.1.5-.1 1-.1 1.5 0 2.1 2.4 3.8 5.4 3.8s5.4-1.7 5.4-3.8c0-.5 0-1-.1-1.5.3-.2.5-.6.5-1zm-8 1.3c0-.5.4-.9.9-.9s.9.4.9.9-.4.9-.9.9-.9-.4-.9-.9zm5.2 2.5c-.6.6-1.8.7-2.7.7s-2-.1-2.7-.7c-.1-.1-.1-.2 0-.3.1-.1.2-.1.3 0 .5.4 1.5.6 2.4.6s1.8-.2 2.4-.6c.1-.1.2-.1.3 0 .1.1.1.2 0 .3zm-.2-1.6c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9z"/></svg>',
+        organization: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#D4943A" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        mental_health: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+        mentorship: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#9C27B0" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+        tool: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
+      };
+      var platformIcon = PLATFORM_ICONS[c.type] || '';
+      html += '<div class="rec-card' + (isFirst ? ' start-here' : '') + hiddenComm + '" data-card-id="comm_' + c.id + '" data-section="communities">';
       html += '<div class="rec-card-header" onclick="toggleCard(this)">';
       html += '<div class="rec-card-top">';
       html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
-      html += '<span class="rec-card-title">' + c.name + '</span>';
+      html += '<span class="rec-card-title">' + platformIcon + ' ' + c.name + '</span>';
       html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
       html += '</div>';
       html += '<div class="rec-card-badges">';
@@ -3404,7 +3766,11 @@ function showResults() {
       html += '</div></div></div>';
     });
 
+    if (communities.length > 3) {
+      html += '<button class="show-more-btn" data-section="communities" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + communities.length + ' communities</button>';
+    }
     html += '<p class="boards-disclaimer">Communities are ranked by relevance to your profile. This is a curated selection — we prioritize active communities with genuine value for job seekers over sheer size.</p>';
+    html += '</div>'; // close sec-communities
   }
 
   // Disclaimer
@@ -3467,7 +3833,7 @@ function showResults() {
   html += '</div>';
 
   // Restart
-  html += '<div class="restart-section"><button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button></div>';
+  html += '<div class="restart-section"><button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button><p class="restart-prompt">Searching for a different discipline or situation? Run it again \u2014 results change based on your profile.</p></div>';
 
   document.getElementById('resultsContent').innerHTML = html;
   document.getElementById('formScreen').classList.remove('active');
@@ -3579,6 +3945,87 @@ function toggleCard(header) {
   var card = header.parentElement;
   card.classList.toggle('expanded');
 }
+
+function revealCards(btn) {
+  var section = btn.getAttribute('data-section');
+  var cards = document.querySelectorAll('[data-section="' + section + '"].hidden-card');
+  cards.forEach(function(c) { c.classList.add('revealed'); });
+  btn.style.display = 'none';
+  gaEvent('show_more', { section: section });
+}
+
+// Section nav: click to scroll
+(function() {
+  function initResultsNav() {
+    var nav = document.getElementById('resultsNav');
+    if (!nav) return;
+
+    var btns = nav.querySelectorAll('.results-nav-btn');
+    var navHeight = 110; // hub-nav + results-nav offset
+
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetId = btn.getAttribute('data-target');
+        var target = document.getElementById(targetId);
+        if (target) {
+          var y = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          btns.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          gaEvent('nav_click', { section: targetId });
+        }
+      });
+    });
+
+    // Scroll spy: update active nav button based on scroll position
+    var sectionIds = [];
+    btns.forEach(function(b) { sectionIds.push(b.getAttribute('data-target')); });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var scrollY = window.pageYOffset + navHeight + 40;
+          var activeId = sectionIds[0];
+          for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.offsetTop <= scrollY) {
+              activeId = sectionIds[i];
+              break;
+            }
+          }
+          btns.forEach(function(b) {
+            b.classList.toggle('active', b.getAttribute('data-target') === activeId);
+          });
+
+          // Shadow when scrolled past initial position
+          if (nav.getBoundingClientRect().top <= 53) {
+            nav.classList.add('has-shadow');
+          } else {
+            nav.classList.remove('has-shadow');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  // Re-init after results are rendered
+  var origShowResults = window.showResults;
+  if (typeof origShowResults === 'undefined') {
+    // Will be called manually after showResults
+  }
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.target.id === 'resultsContent' && m.addedNodes.length > 0) {
+        setTimeout(initResultsNav, 50);
+      }
+    });
+  });
+  var rc = document.getElementById('resultsContent');
+  if (rc) observer.observe(rc, { childList: true });
+})();
 
 function restart() {
   state.step = 1;
