@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Dev AI Guide | Practical AI Tools for Game Developers</title>
+<meta name="description" content="Practical tools to help game developers figure out where AI fits in their work. Tool recommendations, NVIDIA workflows, and job search guidance. Built by a game dev, for game devs.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Game Dev AI Guide">
+<meta property="og:description" content="Practical AI tools for game developers. No hype, just what works.">
+<meta property="og:image" content="https://gamedevai.guide/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gamedevai.guide/og-image.png">
+<meta property="og:type" content="website">
+
+<!-- Fonts: Cabinet Grotesk (display) + Satoshi (body) -->
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+
+<link rel="stylesheet" href="./base.css">
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <!-- ====== NAV ====== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="./" class="nav-logo" aria-label="Game Dev AI Guide home">
+        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+          <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+          <circle cx="16" cy="16" r="2" fill="#d4943c"/>
+        </svg>
+        <span class="nav-logo-text">Game Dev AI Guide</span>
+      </a>
+
+      <div class="nav-right">
+        <ul class="nav-links" role="list" id="navLinks">
+          <li><a href="./" class="active">Home</a></li>
+          <li><a href="./ai-tools/"><span class="nav-dot" style="background:#d4943c"></span>AI Tools</a></li>
+          <li><a href="./perspectives/"><span class="nav-dot" style="background:#d4943c"></span>Perspectives</a></li>
+          <li><a href="./jobs/"><span class="nav-dot" style="background:#d4943c"></span>Job Search</a></li>
+          <li><a href="./nvidia-toolkit/"><span class="nav-dot" style="background:#76b900"></span>NVIDIA Toolkit</a></li>
+        </ul>
+
+        <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== HERO ====== -->
+  <main>
+    <section class="hero">
+      <div class="container hero-layout">
+        <div class="hero-text">
+          <p class="hero-label">4 tools, one home</p>
+          <h1>Practical AI tools for game devs</h1>
+          <p class="hero-sub">No hype. No replacement talk. Just honest tools and guidance for game developers figuring out where AI actually fits in their work.</p>
+          <p class="hero-byline">Built by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>, game dev, not an AI company</p>
+        </div>
+        <div class="hero-routing">
+          <p class="routing-label">What are you working on?</p>
+          <a href="./ai-tools/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#d4943c"></span>
+            <span class="routing-btn-text">Figuring out where AI fits in my pipeline</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="./perspectives/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#d4943c"></span>
+            <span class="routing-btn-text">Understanding the AI perception divide</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="./jobs/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#d4943c"></span>
+            <span class="routing-btn-text">Job hunting in the industry</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="./nvidia-toolkit/" class="routing-btn">
+            <span class="routing-btn-accent" style="background:#76b900"></span>
+            <span class="routing-btn-text">Looking for specific NVIDIA tools</span>
+            <svg class="routing-btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== TOOL CARDS ====== -->
+    <section class="tools-section" aria-label="Tools">
+      <div class="container">
+        <div class="tools-grid">
+
+          <!-- AI Tools Guide -->
+          <a href="./ai-tools/" class="tool-card tool-card--ai">
+            <h2>AI Tools Guide</h2>
+            <p class="tool-card-headline">Superpowers, no instructions included.</p>
+            <p class="tool-card-desc">Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that.</p>
+            <div class="tool-card-meta">
+              <span>By discipline</span>
+              <span>By engine</span>
+              <span>Creative sensitivity</span>
+            </div>
+            <span class="tool-card-cta">
+              Open tool
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </span>
+          </a>
+
+          <!-- Perspectives -->
+          <a href="./perspectives/" class="tool-card tool-card--perspectives">
+            <h2>Perspectives</h2>
+            <p class="tool-card-headline">Same tools. Different realities.</p>
+            <p class="tool-card-desc">The AI conversation in game dev is splitting into camps. Executives, creatives, engineers, indie devs, and enterprise are all reaching different conclusions about the same technology. This maps the divide so teams can actually talk to each other.</p>
+            <div class="tool-card-meta">
+              <span>5 personas</span>
+              <span>GDC 2026 data</span>
+              <span>Cross-perspective matrix</span>
+            </div>
+            <span class="tool-card-cta">
+              Open tool
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </span>
+          </a>
+
+          <!-- Job Search Guide -->
+          <a href="./jobs/" class="tool-card tool-card--jobs">
+            <h2>Job Search Guide</h2>
+            <p class="tool-card-headline">Use the tools they fear to land the next gig.</p>
+            <p class="tool-card-desc">Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role.</p>
+            <div class="tool-card-meta">
+              <span>Action plans</span>
+              <span>Resume tips</span>
+              <span>Market data</span>
+            </div>
+            <span class="tool-card-cta">
+              Open tool
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </span>
+          </a>
+
+          <!-- NVIDIA Toolkit -->
+          <a href="./nvidia-toolkit/" class="tool-card tool-card--nvidia">
+            <h2>NVIDIA Toolkit</h2>
+            <p class="tool-card-headline">80+ tools you didn't know you had.</p>
+            <p class="tool-card-desc">GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist.</p>
+            <div class="tool-card-meta">
+              <span>80+ tools</span>
+              <span>UE5 / Unity / Godot</span>
+              <span>By workflow phase</span>
+            </div>
+            <span class="tool-card-cta">
+              Open tool
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== ABOUT ====== -->
+    <section class="about-section">
+      <div class="container about-layout">
+        <div class="about-label">
+          <span>Why this exists</span>
+        </div>
+        <div class="about-content">
+          <p>I've spent 25+ years developing games for entertainment, simulation, training, and enterprise across PC, consoles, VR, MR, and XR. When AI tools started flooding the industry, most of the guidance I found was either hype from people who don't make games, or fear from people who haven't tried the tools.</p>
+          <p>So I built these. Practical, honest, built on the position that AI augments what developers do. It doesn't replace them. Recommendations are grounded in real shipped examples where possible, not press releases.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-left">
+        &copy; 2026 Game Dev AI Guide
+      </div>
+      <div class="footer-right">
+        <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+// Mobile nav toggle
+(function(){
+  const btn = document.getElementById('mobileToggle');
+  const nav = document.getElementById('navLinks');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
