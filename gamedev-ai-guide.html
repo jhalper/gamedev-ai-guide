@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Game Dev AI Guide | Practical AI Tools for Game Developers</title>
+<meta name="description" content="Practical tools to help game developers figure out where AI fits in their work. Tool recommendations, NVIDIA workflows, and job search guidance. Built by a game dev, for game devs.">
+
+<!-- Open Graph -->
+<meta property="og:title" content="Game Dev AI Guide">
+<meta property="og:description" content="Practical AI tools for game developers. No hype, just what works.">
+<meta property="og:image" content="https://gamedevai.guide/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gamedevai.guide/og-image.png">
+<meta property="og:type" content="website">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        surface: "#121317",
+        "surface-low": "#1a1b20",
+        "surface-container": "#1f1f24",
+        "surface-high": "#292a2e",
+        "surface-highest": "#343439",
+        "surface-bright": "#38393e",
+        "surface-lowest": "#0d0e12",
+        primary: "#a4e6ff",
+        "primary-container": "#00d1ff",
+        "on-primary": "#003543",
+        "on-primary-container": "#00566a",
+        "on-surface": "#e3e2e8",
+        "on-surface-variant": "#bbc9cf",
+        secondary: "#b5cacf",
+        "secondary-container": "#364a4e",
+        "outline-variant": "#3c494e",
+        outline: "#859399",
+        tertiary: "#ffd59c",
+        "tertiary-container": "#feb127",
+        "on-tertiary-container": "#6b4700",
+        amber: { DEFAULT: "#d4943c", hover: "#e8a84e" },
+        nvidia: "#76b900",
+      },
+      fontFamily: {
+        headline: ["Space Grotesk", "sans-serif"],
+        body: ["Inter", "sans-serif"],
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        lg: "0.25rem",
+        xl: "0.5rem",
+        full: "0.75rem",
+      },
+    },
+  },
+};
+</script>
+<style>
+  body {
+    background-color: #121317;
+    color: #e3e2e8;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ---- Background Atmosphere System ---- */
+
+  /* Fine grid texture — creates subtle depth without feeling like a stock pattern */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(164, 230, 255, 0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(164, 230, 255, 0.018) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* Noise overlay for premium matte texture — uses a tiny inline SVG */
+  .noise-overlay::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.3;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+  }
+
+  /* Vignette — darkens edges to draw the eye inward */
+  .vignette::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(13, 14, 18, 0.5) 100%);
+  }
+
+  /* Ensure all real content sits above the body pseudo-elements */
+  nav, main, footer { position: relative; z-index: 2; }
+
+  /* Hero atmospheric mesh — a finer, denser grid that fades out */
+  .hero-mesh::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(164, 230, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(164, 230, 255, 0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+    mask-image: radial-gradient(ellipse at 70% 30%, rgba(0,0,0,0.5) 0%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse at 70% 30%, rgba(0,0,0,0.5) 0%, transparent 70%);
+  }
+
+  /* Tonal wash for the cards section — very subtle primary bleed from the left */
+  .tonal-wash {
+    background: linear-gradient(135deg, rgba(0, 209, 255, 0.015) 0%, transparent 50%, rgba(212, 148, 60, 0.01) 100%);
+  }
+
+  .glass-panel {
+    background: rgba(41, 42, 46, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(164, 230, 255, 0.06);
+  }
+  .glass-panel-warm {
+    background: rgba(41, 42, 46, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(212, 148, 60, 0.1);
+  }
+  .inner-glow { box-shadow: inset 0 0 10px rgba(0, 209, 255, 0.04); }
+  .inner-glow-warm { box-shadow: inset 0 0 10px rgba(212, 148, 60, 0.04); }
+  .text-glow { text-shadow: 0 0 30px rgba(0, 209, 255, 0.25); }
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  }
+
+  /* Nav mobile toggle */
+  @media (max-width: 768px) {
+    .nav-links-list { display: none; }
+    .nav-links-list.open { display: flex; }
+    .mobile-toggle { display: flex !important; }
+  }
+
+  /* Routing button hover — smooth slide-in feel */
+  .routing-btn {
+    transition: background 0.25s ease, border-left-color 0.25s ease, padding-left 0.25s ease;
+  }
+  .routing-btn:hover .routing-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .routing-btn:hover .routing-accent {
+    transform: scaleY(1.4);
+  }
+  .routing-btn:hover {
+    background: rgba(41, 42, 46, 0.5);
+    border-left-color: #d4943c;
+    padding-left: 1.25rem;
+  }
+  .routing-btn:active {
+    background: rgba(41, 42, 46, 0.65);
+    transition-duration: 0.08s;
+  }
+
+  /* Tool card hover — lift + glow + inner elements react */
+  .tool-card {
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.35s ease,
+                box-shadow 0.35s ease;
+  }
+  .tool-card:hover {
+    background: rgba(41, 42, 46, 0.45);
+    transform: translateY(-4px);
+    box-shadow:
+      inset 0 0 10px rgba(0, 209, 255, 0.04),
+      0 12px 40px -8px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(164, 230, 255, 0.08);
+  }
+  .tool-card:active {
+    transform: translateY(-1px);
+    transition-duration: 0.1s;
+  }
+  .tool-card:hover .card-accent-line { opacity: 0.8; }
+  .tool-card:hover .card-arrow { transform: translateX(4px); }
+  .tool-card:hover .card-number { color: rgba(164, 230, 255, 0.3); }
+  .tool-card:hover .card-icon { transform: scale(1.08); }
+  .card-icon { transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
+
+  /* Gradient divider */
+  .gradient-divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(164, 230, 255, 0.12), transparent);
+  }
+
+  /* ---- Motion System ---- */
+
+  /* Scroll-triggered fade-up reveals */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Staggered children — add delay via inline style or data attribute */
+  .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0ms; }
+  .reveal-stagger > .reveal:nth-child(2) { transition-delay: 80ms; }
+  .reveal-stagger > .reveal:nth-child(3) { transition-delay: 160ms; }
+  .reveal-stagger > .reveal:nth-child(4) { transition-delay: 240ms; }
+
+  /* Nav link hover underline grow */
+  .nav-link-animated {
+    position: relative;
+  }
+  .nav-link-animated::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #a4e6ff;
+    transition: width 0.25s ease, left 0.25s ease;
+  }
+  .nav-link-animated:hover::after {
+    width: 100%;
+    left: 0;
+  }
+
+  /* Status badge float */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  .badge-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* Glow orb drift — very slow ambient motion */
+  @keyframes drift {
+    0%, 100% { transform: translate(0, 0); }
+    25% { transform: translate(12px, -8px); }
+    50% { transform: translate(-6px, 12px); }
+    75% { transform: translate(8px, 6px); }
+  }
+  .orb-drift { animation: drift 20s ease-in-out infinite; }
+  .orb-drift-slow { animation: drift 28s ease-in-out infinite reverse; }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .badge-float { animation: none; }
+    .orb-drift, .orb-drift-slow { animation: none; }
+    .tool-card:hover { transform: none; }
+    .routing-btn:hover { padding-left: 1rem; }
+  }
+
+  /* Scroll smooth */
+  html { scroll-behavior: smooth; }
+
+  /* Selection */
+  ::selection {
+    background: rgba(0, 209, 255, 0.2);
+    color: #e3e2e8;
+  }
+
+  /* Focus */
+  :focus-visible {
+    outline: 2px solid #a4e6ff;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+</style>
+</head>
+
+<body class="bg-surface text-on-surface bg-grid noise-overlay vignette">
+
+<!-- ====== NAV ====== -->
+<nav class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl border-b border-white/[0.06]" role="navigation" aria-label="Main navigation">
+  <div class="flex justify-between items-center px-6 md:px-8 h-14 w-full max-w-[1200px] mx-auto">
+
+    <!-- Logo -->
+    <a href="./" class="flex items-center gap-2.5 no-underline text-on-surface" aria-label="Game Dev AI Guide home">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="w-6 h-6 flex-shrink-0">
+        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
+      </svg>
+      <span class="font-headline font-bold text-sm tracking-tight whitespace-nowrap">Game Dev AI Guide</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="nav-links-list hidden md:flex items-center gap-0 font-headline text-xs tracking-wide uppercase" id="navLinks">
+      <a href="./" class="px-3.5 py-1.5 text-primary font-bold border-b-2 border-primary">Home</a>
+      <a href="./ai-tools/" class="nav-link-animated px-3.5 py-1.5 text-on-surface-variant/60 hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>AI Tools
+      </a>
+      <a href="./perspectives/" class="nav-link-animated px-3.5 py-1.5 text-on-surface-variant/60 hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>Perspectives
+      </a>
+      <a href="./jobs/" class="nav-link-animated px-3.5 py-1.5 text-on-surface-variant/60 hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>Job Search
+      </a>
+      <a href="./nvidia-toolkit/" class="nav-link-animated px-3.5 py-1.5 text-on-surface-variant/60 hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-nvidia flex-shrink-0"></span>NVIDIA Toolkit
+      </a>
+    </div>
+
+    <!-- Mobile Toggle -->
+    <button class="mobile-toggle hidden items-center p-2 text-on-surface-variant/60" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="nav-links-list md:hidden flex-col bg-surface-container border-b border-white/[0.06] font-headline text-sm tracking-wide" id="navLinksMobile">
+    <a href="./" class="px-6 py-3 text-primary font-bold">Home</a>
+    <a href="./ai-tools/" class="px-6 py-3 text-on-surface-variant/60 hover:text-on-surface transition-colors flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>AI Tools
+    </a>
+    <a href="./perspectives/" class="px-6 py-3 text-on-surface-variant/60 hover:text-on-surface transition-colors flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>Perspectives
+    </a>
+    <a href="./jobs/" class="px-6 py-3 text-on-surface-variant/60 hover:text-on-surface transition-colors flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber flex-shrink-0"></span>Job Search
+    </a>
+    <a href="./nvidia-toolkit/" class="px-6 py-3 text-on-surface-variant/60 hover:text-on-surface transition-colors flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-nvidia flex-shrink-0"></span>NVIDIA Toolkit
+    </a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ====== HERO ====== -->
+<section class="relative pt-28 pb-16 md:pt-36 md:pb-24 overflow-hidden hero-mesh">
+
+  <!-- Atmospheric glow orbs — larger, more visible, with slow ambient drift -->
+  <div class="absolute -top-32 right-[-10%] w-[600px] h-[600px] bg-primary/[0.045] blur-[160px] rounded-full pointer-events-none orb-drift"></div>
+  <div class="absolute -top-20 left-[-5%] w-[400px] h-[400px] bg-amber/[0.04] blur-[140px] rounded-full pointer-events-none orb-drift-slow"></div>
+  <div class="absolute bottom-[-20%] left-[30%] w-[300px] h-[300px] bg-primary/[0.02] blur-[120px] rounded-full pointer-events-none orb-drift"></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-6 md:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-12 lg:gap-16 items-center">
+
+      <!-- Hero Text -->
+      <div class="max-w-2xl">
+
+        <!-- Status badge -->
+        <div class="inline-flex items-center gap-2 mb-6 px-3 py-1 bg-amber/[0.08] border border-amber/20 rounded-full badge-float reveal">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber animate-pulse"></span>
+          <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-amber font-headline">4 tools, one home</span>
+        </div>
+
+        <h1 class="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.92] text-white mb-6 reveal">
+          Practical AI tools<br/><span class="text-primary text-glow">for game devs</span>
+        </h1>
+
+        <p class="font-body text-base md:text-lg text-on-surface-variant leading-relaxed mb-8 max-w-xl reveal">
+          No hype. No replacement talk. Just honest tools and guidance for game developers figuring out where AI actually fits in their work.
+        </p>
+
+        <p class="font-body text-sm text-outline reveal">
+          Built by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer" class="text-amber hover:text-amber-hover transition-colors">Joe Halper</a>, game dev, not an AI company
+        </p>
+      </div>
+
+      <!-- Routing Panel -->
+      <div class="glass-panel-warm inner-glow-warm rounded-lg p-6 reveal">
+        <p class="font-headline text-base font-bold text-white mb-5 tracking-tight">What are you working on?</p>
+
+        <a href="./ai-tools/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm mb-0.5 transition-all duration-200">
+          <span class="routing-accent w-[3px] h-[18px] rounded-sm bg-amber flex-shrink-0 transition-transform duration-200"></span>
+          <span class="flex-1">Figuring out where AI fits in my pipeline</span>
+          <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+
+        <a href="./perspectives/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm mb-0.5 transition-all duration-200">
+          <span class="routing-accent w-[3px] h-[18px] rounded-sm bg-amber flex-shrink-0 transition-transform duration-200"></span>
+          <span class="flex-1">Understanding the AI perception divide</span>
+          <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+
+        <a href="./jobs/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm mb-0.5 transition-all duration-200">
+          <span class="routing-accent w-[3px] h-[18px] rounded-sm bg-amber flex-shrink-0 transition-transform duration-200"></span>
+          <span class="flex-1">Job hunting in the industry</span>
+          <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+
+        <a href="./nvidia-toolkit/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm transition-all duration-200">
+          <span class="routing-accent w-[3px] h-[18px] rounded-sm bg-nvidia flex-shrink-0 transition-transform duration-200"></span>
+          <span class="flex-1">Looking for specific NVIDIA tools</span>
+          <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Divider -->
+<div class="gradient-divider"></div>
+
+<!-- ====== TOOL CARDS ====== -->
+<section class="py-16 md:py-24 relative overflow-hidden tonal-wash" aria-label="Tools">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-8 relative z-10">
+
+    <!-- Section header -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 reveal">
+      <div>
+        <span class="text-amber font-body text-[10px] tracking-[0.25em] uppercase font-semibold mb-3 block">What's inside</span>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight text-white uppercase">
+          Four tools.<br/><span class="text-on-surface-variant/40">One mission.</span>
+        </h2>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+
+      <!-- AI Tools Guide -->
+      <a href="./ai-tools/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
+        <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-amber opacity-20 transition-opacity duration-300"></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">01.</div>
+        <div class="mb-4">
+          <span class="material-symbols-outlined text-amber text-3xl card-icon">construction</span>
+        </div>
+        <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">AI Tools Guide</h3>
+        <p class="text-amber text-sm font-medium italic mb-4">Superpowers, no instructions included.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that.</p>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
+          <span>By discipline</span>
+          <span class="text-outline/30">/</span>
+          <span>By engine</span>
+          <span class="text-outline/30">/</span>
+          <span>Creative sensitivity</span>
+        </div>
+        <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-amber">
+          Open tool
+          <svg class="card-arrow w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+
+      <!-- Perspectives -->
+      <a href="./perspectives/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
+        <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-amber opacity-20 transition-opacity duration-300"></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">02.</div>
+        <div class="mb-4">
+          <span class="material-symbols-outlined text-amber text-3xl card-icon">visibility</span>
+        </div>
+        <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">Perspectives</h3>
+        <p class="text-amber text-sm font-medium italic mb-4">Same tools. Different realities.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">The AI conversation in game dev is splitting into camps. Executives, creatives, engineers, indie devs, and enterprise are all reaching different conclusions about the same technology. This maps the divide so teams can actually talk to each other.</p>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
+          <span>5 personas</span>
+          <span class="text-outline/30">/</span>
+          <span>GDC 2026 data</span>
+          <span class="text-outline/30">/</span>
+          <span>Cross-perspective matrix</span>
+        </div>
+        <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-amber">
+          Open tool
+          <svg class="card-arrow w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+
+      <!-- Job Search Guide -->
+      <a href="./jobs/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
+        <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-amber opacity-20 transition-opacity duration-300"></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">03.</div>
+        <div class="mb-4">
+          <span class="material-symbols-outlined text-amber text-3xl card-icon">work</span>
+        </div>
+        <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">Job Search Guide</h3>
+        <p class="text-amber text-sm font-medium italic mb-4">Use the tools they fear to land the next gig.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role.</p>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
+          <span>Action plans</span>
+          <span class="text-outline/30">/</span>
+          <span>Resume tips</span>
+          <span class="text-outline/30">/</span>
+          <span>Market data</span>
+        </div>
+        <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-amber">
+          Open tool
+          <svg class="card-arrow w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+
+      <!-- NVIDIA Toolkit -->
+      <a href="./nvidia-toolkit/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
+        <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-nvidia opacity-20 transition-opacity duration-300"></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">04.</div>
+        <div class="mb-4">
+          <span class="material-symbols-outlined text-nvidia text-3xl card-icon">memory</span>
+        </div>
+        <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">NVIDIA Toolkit</h3>
+        <p class="text-nvidia text-sm font-medium italic mb-4">80+ tools you didn't know you had.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist.</p>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
+          <span>80+ tools</span>
+          <span class="text-outline/30">/</span>
+          <span>UE5 / Unity / Godot</span>
+          <span class="text-outline/30">/</span>
+          <span>By workflow phase</span>
+        </div>
+        <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-nvidia">
+          Open tool
+          <svg class="card-arrow w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Atmospheric glow orbs -->
+  <div class="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-primary/[0.03] blur-[150px] rounded-full pointer-events-none orb-drift-slow"></div>
+  <div class="absolute top-[20%] left-[-8%] w-[350px] h-[350px] bg-amber/[0.02] blur-[130px] rounded-full pointer-events-none orb-drift"></div>
+</section>
+
+<!-- Divider -->
+<div class="gradient-divider"></div>
+
+<!-- ====== ABOUT ====== -->
+<section class="py-16 md:py-24 relative overflow-hidden">
+  <!-- Subtle warm glow behind the about text -->
+  <div class="absolute top-[50%] right-[10%] w-[300px] h-[300px] bg-amber/[0.02] blur-[120px] rounded-full pointer-events-none orb-drift-slow"></div>
+  <div class="max-w-[1200px] mx-auto px-6 md:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-8 md:gap-12 items-start">
+      <div class="reveal">
+        <span class="font-headline text-[10px] font-bold text-outline tracking-[0.15em] uppercase">Why this exists</span>
+      </div>
+      <div class="max-w-2xl reveal">
+        <p class="font-body text-base text-on-surface-variant leading-[1.8] mb-5">
+          I've spent 25+ years developing games for entertainment, simulation, training, and enterprise across PC, consoles, VR, MR, and XR. When AI tools started flooding the industry, most of the guidance I found was either hype from people who don't make games, or fear from people who haven't tried the tools.
+        </p>
+        <p class="font-body text-base text-on-surface-variant leading-[1.8]">
+          So I built these. Practical, honest, built on the position that AI augments what developers do. It doesn't replace them. Recommendations are grounded in real shipped examples where possible, not press releases.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ====== FOOTER ====== -->
+<footer class="bg-surface-lowest py-10 border-t border-white/[0.04]">
+  <div class="max-w-[1200px] mx-auto px-6 md:px-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="font-body text-xs text-outline/60">&copy; 2026 Game Dev AI Guide</div>
+    <div class="flex items-center gap-6">
+      <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer" class="text-xs text-outline/60 hover:text-on-surface-variant transition-colors no-underline">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Mobile nav toggle
+(function(){
+  const btn = document.getElementById('mobileToggle');
+  const nav = document.getElementById('navLinksMobile');
+  if (!btn || !nav) return;
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+  });
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      nav.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+
+// Scroll-triggered reveal observer
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    els.forEach(el => el.classList.add('visible'));
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  els.forEach(el => observer.observe(el));
+})();
+</script>
+
+</body>
+</html>
