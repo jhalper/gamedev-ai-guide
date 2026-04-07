@@ -1980,7 +1980,7 @@ h1, h2, h3, h4, h5, h6 {
       <ul class="hub-nav-links" id="hubNavLinks">
         <li><a href="../">Home</a></li>
         <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
-        <li><a href="../perspectives/"><span class="hub-nav-dot" style="background:#d4943c"></span> Perspectives</a></li>
+        <li><a href="../perspectives/"><span class="hub-nav-dot" style="background:#7b8ff5"></span> Perspectives</a></li>
         <li><a href="../jobs/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
         <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
       </ul>
@@ -2064,11 +2064,18 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.5</span>
+            <span class="whats-new-badge">v1.6</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.6 &mdash; April 7, 2026</div>
+          <ul class="whats-new-list">
+            <li>Market snapshot updated: Q1 2026 logged ~2,700 layoffs &mdash; the highest single quarter since early 2024</li>
+            <li>New pitfall: &ldquo;Waiting for an Identical Role&rdquo; &mdash; covers structurally contracting areas (manual QA, traditional art, generalist Unity dev) and where to pivot</li>
+            <li>Awesome People List (ex-Epic) added to Communities section &mdash; surfaces for recently laid-off devs</li>
+            <li>Godot tip added to action plans for entry-level and indie/freelance engineers and designers</li>
+          </ul>
           <div class="whats-new-version">v1.5 &mdash; March 27, 2026</div>
           <ul class="whats-new-list">
             <li>Sticky section nav on results page &mdash; jump between Action Plan, Boards, Tools, Pitfalls, and Communities with one click</li>
@@ -2225,7 +2232,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: March 27, 2026 (v1.5) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: April 7, 2026 (v1.6) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -2749,6 +2756,15 @@ var PITFALLS = [
     whatToDoInstead: 'Focus your job search energy on what you can control: portfolio, networking, and targeting studios that match your skills. If AI tools come up in interviews, be honest about your experience with them rather than performing enthusiasm or opposition. Studios are still figuring this out too.',
     situations: ['laid_off','employed_looking','first_job'],
     challenges: ['ai_replacing_role','getting_ghosted','finding_jobs']
+  },
+  {
+    id: 'waiting_for_identical_role',
+    title: 'Waiting for an Identical Role to Open Up',
+    severity: 'high',
+    explanation: 'The Q1 2026 layoff wave — over 2,700 jobs lost in three months — has flooded the market with highly qualified candidates competing for fewer open roles. Some specific areas have structurally contracted: manual QA, traditional 2D/3D art production at large studios, and generalist Unity programming (Unity programmer salaries have dropped an estimated 50% since 2022). Holding out for the exact same title at the same studio type can mean months of waiting for a role that may no longer exist at scale.',
+    whatToDoInstead: 'Identify adjacent roles where your skills transfer. QA → QA automation or product analytics. Traditional artist → technical art or real-time pipeline. Generalist programmer → tools engineering or live ops. Growing areas right now: AI integration roles, live operations, cross-platform dev, and data analytics. A lateral move that gets you employed beats a perfect title that stays unfilled.',
+    situations: ['laid_off','employed_looking'],
+    challenges: ['finding_jobs','getting_ghosted','switching_disciplines']
   }
 ];
 
@@ -2940,6 +2956,20 @@ var COMMUNITIES = [
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior','lead'],
     situations: ['relocation','laid_off','employed_looking','first_job','international']
+  },
+  {
+    id: 'awesome_people_list',
+    name: 'Awesome People List (ex-Epic)',
+    url: 'https://awesomepeoplelist.replit.app/',
+    type: 'tool',
+    description: 'Directory of ex-Epic Games employees from the March 2026 layoffs, organized for recruiters and hiring managers. Created by Lee Graham within hours of being laid off. A reference point for networking with fellow displaced Epic talent.',
+    size: 'Ex-Epic directory',
+    bestForTags: ['Ex-Epic network', 'Peer connections', 'Recruiter visibility'],
+    strengths: 'Direct roster of ex-Epic talent from the March 2026 layoffs. If you worked at Epic, getting listed here puts you in front of recruiters actively searching this directory. Also useful for finding peers to network with.',
+    caveats: 'Specific to ex-Epic employees from the March 2026 round. Not a general job board or community \u2014 narrow scope by design.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','first_job','employed_looking','remote','relocation']
   },
   {
     id: 'gameheads',
@@ -3446,6 +3476,11 @@ function scoreCommunities() {
     if (comm.id === 'gameheads' && state.experience === 'entry') score += 3;
     if (comm.id === 'gameheads' && state.situations.indexOf('first_job') >= 0) score += 5;
 
+    // Awesome People List — heavily boosted for recently laid off
+    if (comm.id === 'awesome_people_list' && state.situations.indexOf('laid_off') >= 0) score += 8;
+    if (comm.id === 'awesome_people_list' && state.experience === 'lead') score += 3;
+    if (comm.id === 'awesome_people_list' && state.experience === 'senior') score += 2;
+
     var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
     if (comm.id === 'funsmith' && isDesign) score += 4;
     if (comm.id === 'design_den' && isDesign) score += 4;
@@ -3488,6 +3523,12 @@ function generateActionPlan(boards, tools) {
     steps.push('Prepare 2-3 sample test plans and bug reports (anonymized) showing clear repro steps, severity classifications, and testing methodology.');
   } else {
     steps.push('Update your portfolio/resume highlighting shipped titles, specific contributions (not just duties), and engine/tool proficiency relevant to ' + discLabel + ' roles.');
+  }
+
+  // Godot tip for entry-level and indie/freelance profiles
+  var isIndie = state.situations.indexOf('freelance') >= 0;
+  if ((isEntry || state.situations.indexOf('first_job') >= 0 || isIndie) && (isCode || isDesign)) {
+    steps.push('Consider a small portfolio project in <a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a> — it\'s free, open source, and growing fast among indie studios. A small shipped Godot project demonstrates engine adaptability, which matters to interviewers at smaller studios and startups.');
   }
 
   // Step 2: Resume optimization
@@ -3600,7 +3641,7 @@ function showResults() {
   html += '<div class="market-stats-grid">';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">33%</div><div class="market-stat-label">US game devs laid off in 2 years</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">48%</div><div class="market-stat-label">Of laid-off devs still without work</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
-  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~10,100</div><div class="market-stat-label">Projected 2026 layoffs</div><div class="market-stat-source"><a href="https://www.linkedin.com/in/amirsatvat/" target="_blank" rel="noopener noreferrer">Satvat 2026</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~2,700</div><div class="market-stat-label">Q1 2026 layoffs alone</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">~0.2%</div><div class="market-stat-label">Cold application offer rate</div><div class="market-stat-source"><a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby 2024</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
