@@ -1211,7 +1211,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; line-height: 
     </p>
 
     <div class="reveal flex flex-wrap items-center gap-4 mb-8">
-      <a href="#wizard" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 font-bold font-headline uppercase tracking-widest rounded-sm shadow-[0_0_20px_rgba(255,185,92,0.2)] hover:shadow-[0_0_35px_rgba(255,185,92,0.4)] transition-all no-underline">
+      <a href="#wizard" id="hero-start-wizard" class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-8 py-4 font-bold font-headline uppercase tracking-widest rounded-sm shadow-[0_0_20px_rgba(255,185,92,0.2)] hover:shadow-[0_0_35px_rgba(255,185,92,0.4)] transition-all no-underline">
         Start the Wizard
       </a>
       <a href="#scenarios" class="border border-primary/30 text-primary px-8 py-4 font-bold font-headline uppercase tracking-widest rounded-sm hover:bg-primary/5 transition-all no-underline">
@@ -3675,14 +3675,32 @@ document.addEventListener('keydown', (e) => {
     });
   });
 
+  // "Start the Wizard" hero button — reset if results are showing
+  document.getElementById('hero-start-wizard').addEventListener('click', (e) => {
+    e.preventDefault();
+    // Hide results/feedback, show form
+    document.getElementById('screen-results').classList.remove('active');
+    document.getElementById('screen-feedback').classList.remove('active');
+    document.getElementById('screen-form').classList.add('active');
+    // Clear scenario state
+    document.getElementById('scenario-banner').classList.remove('visible');
+    window._isScenario = false;
+    // Reset wizard to step 1
+    if (typeof currentStep !== 'undefined') { currentStep = 1; showStep(1); }
+    document.getElementById('screen-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
   // "Run with your own answers" from scenario banner
   document.getElementById('scenario-own-btn').addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('scenario-banner').classList.remove('visible');
     window._isScenario = false;
     document.getElementById('screen-results').classList.remove('active');
+    document.getElementById('screen-feedback').classList.remove('active');
     document.getElementById('screen-form').classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Reset wizard to step 1
+    if (typeof currentStep !== 'undefined') { currentStep = 1; showStep(1); }
+    document.getElementById('screen-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 })();
 
