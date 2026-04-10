@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-04-10",
+  "notes": [
+    "This repository is deployed as committed static files.",
+    "Hashed assets referenced in HTML must exist on disk.",
+    "Edit generated JS/CSS bundles directly only for emergency hotfixes."
+  ],
+  "apps": {
+    "omniverse": {
+      "html": "omniverse/index.html",
+      "activeAssets": [
+        "omniverse/assets/index-V8Ddqx5o.js",
+        "omniverse/assets/index-DPtYF2M6.css"
+      ],
+      "extraAssets": [
+        "omniverse/assets/index-Cww1mISv.js",
+        "omniverse/assets/index-CTinhKt5.css"
+      ]
+    },
+    "vr-report-tracker": {
+      "html": "vr-report-tracker/index.html",
+      "activeAssets": [
+        "vr-report-tracker/assets/index-CIWQ9tm0.js",
+        "vr-report-tracker/assets/index-DuHhBLzj.css"
+      ],
+      "extraAssets": []
+    },
+    "vr-report-tracker-static": {
+      "html": "vr-report-tracker-static/index.html",
+      "activeAssets": [
+        "vr-report-tracker-static/assets/index-CZBMUVkk.js",
+        "vr-report-tracker-static/assets/index-DSSAB3kI.css"
+      ],
+      "extraAssets": [
+        "vr-report-tracker-static/assets/index-DVfZ6qYh.js"
+      ]
+    }
+  }
+}

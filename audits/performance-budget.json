@@ -1,0 +1,31 @@
+{
+  "profile": "mobile-balanced",
+  "description": "Balanced mobile thresholds for full-repo auditing.",
+  "thresholds": {
+    "performance": 80,
+    "lcp_ms": 3000,
+    "inp_ms": 250,
+    "cls": 0.1,
+    "tbt_ms": 300
+  },
+  "sentinel_routes": [
+    "jobs/jobs-guide.html",
+    "vr-report-tracker/index.html",
+    "omniverse/index.html",
+    "nvidia-toolkit/index.html"
+  ],
+  "full_routes": [
+    "index.html",
+    "gamedev-ai-guide.html",
+    "ai-tools/index.html",
+    "jobs/index.html",
+    "jobs/jobs-guide.html",
+    "jobs/survey-results.html",
+    "perspectives/index.html",
+    "nvidia-toolkit/index.html",
+    "omniverse/index.html",
+    "vr-report-tracker/index.html",
+    "vr-report-tracker-static/index.html",
+    "omniversePathFinder_Pitch/index.html"
+  ]
+}

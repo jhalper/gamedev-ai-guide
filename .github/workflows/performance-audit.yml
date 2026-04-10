@@ -1,0 +1,77 @@
+name: Mobile Performance Audit
+
+on:
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 12 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  sentinel-mobile:
+    name: Sentinel Mobile Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run sentinel mobile audit
+        run: bash scripts/audit-ci-sentinel.sh
+
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-audit-sentinel
+          path: audits/runs/**
+
+  full-mobile-weekly:
+    name: Full Mobile Audit (Scheduled)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Start local server
+        run: |
+          python3 -m http.server 5500 --directory . >/tmp/gamedev-ai-guide-full-audit-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl -sf http://localhost:5500 >/dev/null; then
+              break
+            fi
+            sleep 0.5
+          done
+
+      - name: Run full mobile audit (non-gating)
+        run: MODE=full FAIL_ON_THRESHOLD=0 BASE_URL=http://localhost:5500 bash scripts/audit-mobile.sh
+
+      - name: Upload full audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-audit-full
+          path: audits/runs/**

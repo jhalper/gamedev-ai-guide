@@ -25,23 +25,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
-<script>
-  var firebaseConfig = {
-    apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
-    authDomain: "gamedev-ai-guide.firebaseapp.com",
-    databaseURL: "https://gamedev-ai-guide-default-rtdb.firebaseio.com",
-    projectId: "gamedev-ai-guide",
-    storageBucket: "gamedev-ai-guide.firebasestorage.app",
-    messagingSenderId: "256487705979",
-    appId: "1:256487705979:web:6ff552e046926bd59141de",
-    measurementId: "G-ZBGDRYKQXB"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var _ga = firebase.analytics();
-  window.gaEvent = function(name, params) {
-    try { _ga.logEvent(name, params || {}); } catch(e) {}
-  };
-</script>
+<script src="../shared/firebase-bootstrap.js"></script>
 
 <!-- Fonts: Cabinet Grotesk (display) + Satoshi (body) -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -440,7 +424,7 @@ a, button, [role="button"] {
 
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <div class="container nav-inner">
-      <a href="https://gamedevai.guide/" class="nav-logo" aria-label="Game Dev AI Guide home">
+      <a href="../" class="nav-logo" aria-label="Game Dev AI Guide home">
         <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
           <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
@@ -450,11 +434,11 @@ a, button, [role="button"] {
       </a>
       <div class="nav-right">
         <ul class="nav-links" role="list" id="navLinks">
-          <li><a href="https://gamedevai.guide/">Home</a></li>
-          <li><a href="https://gamedevai.guide/ai-tools/"><span class="nav-dot" style="background:#d4943c"></span>AI Tools</a></li>
-          <li><a href="https://gamedevai.guide/perspectives/" class="active"><span class="nav-dot" style="background:#d4943c"></span>Perspectives</a></li>
-          <li><a href="https://gamedevai.guide/jobs/"><span class="nav-dot" style="background:#d4943c"></span>Job Search</a></li>
-          <li><a href="https://gamedevai.guide/nvidia-toolkit/"><span class="nav-dot" style="background:#76b900"></span>NVIDIA Toolkit</a></li>
+          <li><a href="../">Home</a></li>
+          <li><a href="../ai-tools/"><span class="nav-dot" style="background:#d4943c"></span>AI Tools</a></li>
+          <li><a href="../perspectives/" class="active"><span class="nav-dot" style="background:#d4943c"></span>Perspectives</a></li>
+          <li><a href="../jobs/"><span class="nav-dot" style="background:#d4943c"></span>Job Search</a></li>
+          <li><a href="../nvidia-toolkit/"><span class="nav-dot" style="background:#76b900"></span>NVIDIA Toolkit</a></li>
         </ul>
         <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
@@ -605,7 +589,7 @@ a, button, [role="button"] {
   // Share dropdown
   var shareBtn = document.getElementById('shareBtn');
   var shareDropdown = document.getElementById('shareDropdown');
-  var pageUrl = 'https://gamedevai.guide/perspectives/';
+  var pageUrl = window.location.origin + '/perspectives/';
   var shareText = 'Same AI tools, five different realities. See how your role shapes what you believe about AI in game dev.';
   if (shareBtn && shareDropdown) {
     shareBtn.addEventListener('click', function(e) { e.stopPropagation(); var o = shareDropdown.classList.toggle('open'); shareBtn.setAttribute('aria-expanded', o); });

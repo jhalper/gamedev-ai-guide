@@ -1,0 +1,10 @@
+# Editor-local settings
+.vscode/
+
+# Generated local audit outputs
+audits/runs/
+
+# Python cache artifacts
+__pycache__/
+*.pyc
+.mypy_cache/

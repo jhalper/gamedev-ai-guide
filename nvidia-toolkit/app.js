@@ -29,6 +29,8 @@
     'Developer Tools', 'Marketing & Content', 'Developer Programs'
   ];
   const TEAMS = ['Solo/Indie', 'Small Team (2-10)', 'Mid-size (10-50)', 'AAA (50+)'];
+  const SEARCH_DEBOUNCE_MS = 200;
+  const KEYBOARD_ACTIVATE_KEYS = new Set(['Enter', ' ']);
 
   const CATEGORY_COLORS = {
     'Rendering & Graphics': { bg: 'rgba(79,195,247,0.12)', text: '#4fc3f7' },
@@ -140,12 +142,16 @@
         document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
       });
       card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (isActivateKey(e.key)) {
           e.preventDefault();
           card.click();
         }
       });
     });
+  }
+
+  function isActivateKey(key) {
+    return KEYBOARD_ACTIVATE_KEYS.has(key);
   }
 
   function clearWtsActive() {
@@ -200,13 +206,30 @@
   }
 
   function countToolsForOption(filterKey, optionValue) {
-    return NVIDIA_DATA.tools.filter(tool => {
-      if (filterKey === 'phase') return tool.phases && tool.phases.includes(optionValue);
-      if (filterKey === 'engine') return tool.engines && tool.engines.includes(optionValue);
-      if (filterKey === 'category') return tool.category === optionValue;
-      if (filterKey === 'team') return tool.teamSizes && tool.teamSizes.includes(optionValue);
-      return false;
-    }).length;
+    return NVIDIA_DATA.tools.filter(tool => matchesToolFilter(tool, filterKey, optionValue)).length;
+  }
+
+  function matchesToolFilter(tool, filterKey, optionValue) {
+    switch (filterKey) {
+      case 'phase':
+        return tool.phases && tool.phases.includes(optionValue);
+      case 'engine':
+        return tool.engines && tool.engines.includes(optionValue);
+      case 'category':
+        return tool.category === optionValue;
+      case 'team':
+        return tool.teamSizes && tool.teamSizes.includes(optionValue);
+      default:
+        return false;
+    }
+  }
+
+  function matchesAnySelectedFilter(tool, filterKey, selectedValues) {
+    if (!selectedValues.length) {
+      return true;
+    }
+
+    return selectedValues.some(value => matchesToolFilter(tool, filterKey, value));
   }
 
   function buildDropdown(containerId, filterKey, options) {
@@ -291,24 +314,16 @@
       }
 
       // Phase filter
-      if (state.filters.phase.length > 0) {
-        if (!state.filters.phase.some(p => tool.phases && tool.phases.includes(p))) return false;
-      }
+      if (!matchesAnySelectedFilter(tool, 'phase', state.filters.phase)) return false;
 
       // Engine filter
-      if (state.filters.engine.length > 0) {
-        if (!state.filters.engine.some(e => tool.engines && tool.engines.includes(e))) return false;
-      }
+      if (!matchesAnySelectedFilter(tool, 'engine', state.filters.engine)) return false;
 
       // Category filter
-      if (state.filters.category.length > 0) {
-        if (!state.filters.category.includes(tool.category)) return false;
-      }
+      if (!matchesAnySelectedFilter(tool, 'category', state.filters.category)) return false;
 
       // Team filter
-      if (state.filters.team.length > 0) {
-        if (!state.filters.team.some(t => tool.teamSizes && tool.teamSizes.includes(t))) return false;
-      }
+      if (!matchesAnySelectedFilter(tool, 'team', state.filters.team)) return false;
 
       return true;
     });
@@ -412,7 +427,7 @@
     dom.toolsGrid.querySelectorAll('.tool-header').forEach(header => {
       header.addEventListener('click', () => toggleTool(header));
       header.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (isActivateKey(e.key)) {
           e.preventDefault();
           toggleTool(header);
         }
@@ -726,7 +741,7 @@
         clearWtsActive();
         renderTools();
         saveStateToHash();
-      }, 200);
+      }, SEARCH_DEBOUNCE_MS);
     });
 
     // Sort

@@ -1,0 +1,36 @@
+:root {
+  --gd-font-display: 'Cabinet Grotesk', 'Trebuchet MS', sans-serif;
+  --gd-font-body: 'Satoshi', 'Inter', sans-serif;
+  --gd-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --gd-text-xs: 0.8rem;
+  --gd-text-sm: 0.925rem;
+  --gd-text-base: 1.05rem;
+  --gd-text-lg: 1.3rem;
+  --gd-text-xl: 1.75rem;
+
+  --gd-space-1: 0.25rem;
+  --gd-space-2: 0.5rem;
+  --gd-space-3: 0.75rem;
+  --gd-space-4: 1rem;
+  --gd-space-5: 1.25rem;
+  --gd-space-6: 1.5rem;
+  --gd-space-8: 2rem;
+  --gd-space-10: 2.5rem;
+  --gd-space-12: 3rem;
+  --gd-space-16: 4rem;
+
+  --gd-radius-sm: 4px;
+  --gd-radius-md: 8px;
+  --gd-radius-lg: 12px;
+  --gd-radius-xl: 16px;
+
+  --gd-ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --gd-duration-fast: 150ms;
+  --gd-duration-medium: 250ms;
+  --gd-duration-slow: 400ms;
+
+  --gd-breakpoint-sm: 640px;
+  --gd-breakpoint-md: 768px;
+  --gd-breakpoint-lg: 1024px;
+}
