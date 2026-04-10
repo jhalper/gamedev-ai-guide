@@ -952,15 +952,36 @@
   }
 
   // ---------- Share: Copy Link ----------
+  function copyToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    // Fallback for non-HTTPS or older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return Promise.resolve();
+  }
+
   function initShareCopy() {
     const btn = document.getElementById('shareCopyLink');
     if (!btn) return;
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const url = 'https://gamedevai.guide/nvidia-toolkit/';
-      navigator.clipboard.writeText(url).then(() => {
+      copyToClipboard(url).then(() => {
         btn.classList.add('copied');
+        const origHTML = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
         btn.title = 'Copied!';
         setTimeout(() => {
+          btn.innerHTML = origHTML;
           btn.classList.remove('copied');
           btn.title = 'Copy link';
         }, 2000);
@@ -973,53 +994,63 @@
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-export-tool]');
       if (!btn) return;
+      e.preventDefault();
+      e.stopPropagation();
       const toolId = parseInt(btn.dataset.exportTool);
       const tool = NVIDIA_DATA.tools.find(t => t.id === toolId);
       if (!tool) return;
 
-      // Build a printable HTML doc
       const engines = (tool.engines || []).join(', ');
       const phases = (tool.phases || []).join(', ');
-      const useCases = (tool.useCases || []).map(u => `<li>${u}</li>`).join('');
+      const useCases = (tool.useCases || []).map(u => '<li>' + u + '</li>').join('');
       const limitations = tool.limitations
-        ? tool.limitations.split('.').filter(s => s.trim()).map(s => `<li>${s.trim()}</li>`).join('')
+        ? tool.limitations.split('.').filter(s => s.trim()).map(s => '<li>' + s.trim() + '</li>').join('')
         : '';
 
-      const html = `<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>${tool.name}</title>
-<style>
-body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #1a1a2e; line-height: 1.6; }
-h1 { font-size: 22px; margin-bottom: 4px; }
-.meta { color: #555; font-size: 13px; margin-bottom: 16px; }
-.meta span { margin-right: 16px; }
-.desc { font-size: 14px; margin-bottom: 16px; }
-h2 { font-size: 15px; margin: 20px 0 8px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-ul { padding-left: 20px; font-size: 13px; }
-li { margin-bottom: 4px; }
-.footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 11px; color: #888; }
-a { color: #76b900; }
-</style></head><body>
-<h1>${tool.name}</h1>
-<div class="meta">
-  <span><strong>Category:</strong> ${tool.category}</span>
-  <span><strong>Pricing:</strong> ${tool.pricing}</span>
-  <span><strong>Maturity:</strong> ${tool.maturity}</span>
-  <span><strong>Difficulty:</strong> ${tool.difficulty || 'N/A'}</span>
-</div>
-<p class="desc">${tool.description}</p>
-${engines ? `<h2>Engine Support</h2><p style="font-size:13px">${engines}</p>` : ''}
-${phases ? `<h2>Dev Phases</h2><p style="font-size:13px">${phases}</p>` : ''}
-${useCases ? `<h2>Use Cases</h2><ul>${useCases}</ul>` : ''}
-${limitations ? `<h2>Things to Know</h2><ul>${limitations}</ul>` : ''}
-${tool.url ? `<h2>Links</h2><p style="font-size:13px"><a href="${tool.url}">${tool.url}</a></p>` : ''}
-<div class="footer">Exported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper</div>
-</body></html>`;
+      const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + tool.name + '</title>' +
+        '<style>' +
+        'body{font-family:Segoe UI,system-ui,sans-serif;max-width:700px;margin:40px auto;padding:0 20px;color:#1a1a2e;line-height:1.6}' +
+        'h1{font-size:22px;margin-bottom:4px}' +
+        '.meta{color:#555;font-size:13px;margin-bottom:16px}.meta span{margin-right:16px}' +
+        '.desc{font-size:14px;margin-bottom:16px}' +
+        'h2{font-size:15px;margin:20px 0 8px;color:#333;border-bottom:1px solid #ddd;padding-bottom:4px}' +
+        'ul{padding-left:20px;font-size:13px}li{margin-bottom:4px}' +
+        '.footer{margin-top:32px;padding-top:12px;border-top:1px solid #ddd;font-size:11px;color:#888}' +
+        'a{color:#76b900}' +
+        '@media print{body{margin:20px}}' +
+        '</style></head><body>' +
+        '<h1>' + tool.name + '</h1>' +
+        '<div class="meta">' +
+        '<span><strong>Category:</strong> ' + tool.category + '</span>' +
+        '<span><strong>Pricing:</strong> ' + tool.pricing + '</span>' +
+        '<span><strong>Maturity:</strong> ' + tool.maturity + '</span>' +
+        '<span><strong>Difficulty:</strong> ' + (tool.difficulty || 'N/A') + '</span>' +
+        '</div>' +
+        '<p class="desc">' + tool.description + '</p>' +
+        (engines ? '<h2>Engine Support</h2><p style="font-size:13px">' + engines + '</p>' : '') +
+        (phases ? '<h2>Dev Phases</h2><p style="font-size:13px">' + phases + '</p>' : '') +
+        (useCases ? '<h2>Use Cases</h2><ul>' + useCases + '</ul>' : '') +
+        (limitations ? '<h2>Things to Know</h2><ul>' + limitations + '</ul>' : '') +
+        (tool.url ? '<h2>Links</h2><p style="font-size:13px"><a href="' + tool.url + '">' + tool.url + '</a></p>' : '') +
+        '<div class="footer">Exported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper</div>' +
+        '</body></html>';
 
-      const printWin = window.open('', '_blank');
-      printWin.document.write(html);
-      printWin.document.close();
-      printWin.focus();
-      setTimeout(() => printWin.print(), 300);
+      // Use a hidden iframe instead of window.open to avoid popup blockers
+      let iframe = document.getElementById('pdfExportFrame');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'pdfExportFrame';
+        iframe.style.cssText = 'position:fixed;left:-9999px;width:800px;height:600px;border:none';
+        document.body.appendChild(iframe);
+      }
+      const doc = iframe.contentDocument || iframe.contentWindow.document;
+      doc.open();
+      doc.write(html);
+      doc.close();
+      setTimeout(() => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }, 400);
     });
   }
 
