@@ -180,8 +180,9 @@
         else cls = 'matrix-dot-red';
         return `<td><span class="matrix-dot ${cls}"></span><span class="matrix-type">${type}</span></td>`;
       }
+      const shortName = row.name.replace(/^NVIDIA\s+/, '');
       return `<tr>
-        <td>${row.name}</td>
+        <td>${shortName}</td>
         ${cell(row.unreal, row.unrealType)}
         ${cell(row.unity, row.unityType)}
         ${cell(row.godot, row.godotType)}
@@ -498,6 +499,10 @@
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             NVIDIA Page
           </a>` : ''}
+          <button class="tool-export-btn" data-export-tool="${tool.id}" onclick="event.stopPropagation()" title="Save this tool's details as PDF">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            Save as PDF
+          </button>
         </div>
       </div>`;
 
@@ -946,6 +951,78 @@
     });
   }
 
+  // ---------- Share: Copy Link ----------
+  function initShareCopy() {
+    const btn = document.getElementById('shareCopyLink');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      const url = 'https://gamedevai.guide/nvidia-toolkit/';
+      navigator.clipboard.writeText(url).then(() => {
+        btn.classList.add('copied');
+        btn.title = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.title = 'Copy link';
+        }, 2000);
+      });
+    });
+  }
+
+  // ---------- PDF Export ----------
+  function initPdfExport() {
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-export-tool]');
+      if (!btn) return;
+      const toolId = parseInt(btn.dataset.exportTool);
+      const tool = NVIDIA_DATA.tools.find(t => t.id === toolId);
+      if (!tool) return;
+
+      // Build a printable HTML doc
+      const engines = (tool.engines || []).join(', ');
+      const phases = (tool.phases || []).join(', ');
+      const useCases = (tool.useCases || []).map(u => `<li>${u}</li>`).join('');
+      const limitations = tool.limitations
+        ? tool.limitations.split('.').filter(s => s.trim()).map(s => `<li>${s.trim()}</li>`).join('')
+        : '';
+
+      const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><title>${tool.name}</title>
+<style>
+body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; color: #1a1a2e; line-height: 1.6; }
+h1 { font-size: 22px; margin-bottom: 4px; }
+.meta { color: #555; font-size: 13px; margin-bottom: 16px; }
+.meta span { margin-right: 16px; }
+.desc { font-size: 14px; margin-bottom: 16px; }
+h2 { font-size: 15px; margin: 20px 0 8px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+ul { padding-left: 20px; font-size: 13px; }
+li { margin-bottom: 4px; }
+.footer { margin-top: 32px; padding-top: 12px; border-top: 1px solid #ddd; font-size: 11px; color: #888; }
+a { color: #76b900; }
+</style></head><body>
+<h1>${tool.name}</h1>
+<div class="meta">
+  <span><strong>Category:</strong> ${tool.category}</span>
+  <span><strong>Pricing:</strong> ${tool.pricing}</span>
+  <span><strong>Maturity:</strong> ${tool.maturity}</span>
+  <span><strong>Difficulty:</strong> ${tool.difficulty || 'N/A'}</span>
+</div>
+<p class="desc">${tool.description}</p>
+${engines ? `<h2>Engine Support</h2><p style="font-size:13px">${engines}</p>` : ''}
+${phases ? `<h2>Dev Phases</h2><p style="font-size:13px">${phases}</p>` : ''}
+${useCases ? `<h2>Use Cases</h2><ul>${useCases}</ul>` : ''}
+${limitations ? `<h2>Things to Know</h2><ul>${limitations}</ul>` : ''}
+${tool.url ? `<h2>Links</h2><p style="font-size:13px"><a href="${tool.url}">${tool.url}</a></p>` : ''}
+<div class="footer">Exported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper</div>
+</body></html>`;
+
+      const printWin = window.open('', '_blank');
+      printWin.document.write(html);
+      printWin.document.close();
+      printWin.focus();
+      setTimeout(() => printWin.print(), 300);
+    });
+  }
+
   // ---------- Back to Top ----------
   function initBackToTop() {
     const btn = dom.backToTop;
@@ -969,5 +1046,7 @@
   initTheme();
   initWhatsNew();
   initBackToTop();
+  initShareCopy();
+  initPdfExport();
   init();
 })();

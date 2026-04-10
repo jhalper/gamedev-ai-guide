@@ -69,8 +69,8 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-hover: rgba(255, 255, 255, 0.15);
   --text-primary: #f0f0f5;
-  --text-secondary: #a0a0b8;
-  --text-muted: #6a6a80;
+  --text-secondary: #b0b0c8;
+  --text-muted: #8888a0;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   color-scheme: dark;
@@ -87,8 +87,8 @@
   --border: rgba(0, 0, 0, 0.1);
   --border-hover: rgba(0, 0, 0, 0.2);
   --text-primary: #1a1a2e;
-  --text-secondary: #555570;
-  --text-muted: #8888a0;
+  --text-secondary: #4a4a68;
+  --text-muted: #707088;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
   color-scheme: light;
@@ -1212,16 +1212,15 @@ a:hover { color: var(--green-bright); }
   gap: 6px;
   background: none;
   border: none;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   font-size: 12px;
   cursor: pointer;
   padding: 4px 0;
-  opacity: 0.7;
-  transition: opacity 0.15s;
+  transition: color 0.15s;
 }
 
 .limitations-toggle:hover {
-  opacity: 1;
+  color: var(--text-primary);
 }
 
 .limitations-toggle svg {
@@ -1254,9 +1253,9 @@ a:hover { color: var(--green-bright); }
 }
 
 .limitations-list li {
-  font-size: 12px;
-  line-height: 1.5;
-  color: var(--text-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
   padding-left: 16px;
   position: relative;
 }
@@ -1839,6 +1838,67 @@ a:hover { color: var(--green-bright); }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+}
+
+/* ---------- Share Bar ---------- */
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.share-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  text-decoration: none;
+}
+
+.share-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+}
+
+.share-linkedin:hover { color: #0a66c2; border-color: #0a66c2; }
+.share-x:hover { color: var(--text-primary); }
+.share-copy:hover { color: var(--green); border-color: var(--green); }
+.share-copy.copied { color: var(--green); border-color: var(--green); }
+
+/* ---------- Tool Card Export Button ---------- */
+.tool-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tool-export-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
 }
 
 /* ---------- Back to Top Button ---------- */
