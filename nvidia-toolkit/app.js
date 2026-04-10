@@ -841,10 +841,15 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.2', date: '2026-04-10', changes: [
+      'Updated Omniverse entry — modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC',
+      'Updated DLSS SR entry — Dynamic Multi Frame Generation confirmed live since March 31',
+      'DLSS Dynamic MFG detail: auto-adjusts frame multipliers to match display refresh rate'
+    ]},
     { version: 'v1.9.1', date: '2026-04-07', changes: [
       'Nav order updated: Home, AI Tools, Perspectives, Job Search, NVIDIA Toolkit',
-      'Removed misleading pricing stat from hero — individual tool pricing shown in each card',
-      'Ongoing accuracy checks and maintenance'
+      'Cleaned up hero stats for accuracy',
+      'Ongoing maintenance and accuracy checks'
     ]},
     { version: 'v1.9.0', date: '2026-03-22', changes: [
       'Added floating "Back to Top" button — appears after scrolling, smooth scroll back',

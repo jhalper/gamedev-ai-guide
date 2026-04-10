@@ -1,5 +1,18 @@
 # NVIDIA Game Dev Toolkit — Changelog
 
+## v1.9.2 — 2026-04-10
+- Updated Omniverse entry: modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC with C/Python APIs
+- Omniverse shift: developers can now embed RTX rendering or PhysX simulation standalone, without the full Omniverse container stack
+- Updated DLSS SR entry: Dynamic Multi Frame Generation confirmed live since March 31 via NVIDIA app beta
+- Added detail: Dynamic MFG auto-adjusts frame multipliers in real time to match display refresh rate (up to 6X on RTX 50 Series)
+- Added detail: Enhanced Frame Generation model for improved UI clarity in select titles
+- Tool count: 83 (unchanged)
+
+## v1.9.1 — 2026-04-07
+- Nav order updated: Home, AI Tools, Perspectives, Job Search, NVIDIA Toolkit
+- Cleaned up hero stats for accuracy
+- Ongoing maintenance and accuracy checks
+
 ## v1.9.0 — 2026-03-22
 - Added floating "Back to Top" button — appears after 500px scroll, smooth scroll back, NVIDIA green accent
 - Added tool count badges inside all filter dropdown options (e.g., "Rendering & Graphics 30")
