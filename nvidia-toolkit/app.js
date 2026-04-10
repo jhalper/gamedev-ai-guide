@@ -499,9 +499,9 @@
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             NVIDIA Page
           </a>` : ''}
-          <button class="tool-export-btn" data-export-tool="${tool.id}" onclick="event.stopPropagation()" title="Save this tool's details as PDF">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            Save as PDF
+          <button class="tool-export-btn" data-export-tool="${tool.id}" onclick="event.stopPropagation()" title="Download tool details">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
           </button>
         </div>
       </div>`;
@@ -1002,55 +1002,32 @@
 
       const engines = (tool.engines || []).join(', ');
       const phases = (tool.phases || []).join(', ');
-      const useCases = (tool.useCases || []).map(u => '<li>' + u + '</li>').join('');
+      const useCases = (tool.useCases || []).map(u => '\u2022 ' + u).join('\n');
       const limitations = tool.limitations
-        ? tool.limitations.split('.').filter(s => s.trim()).map(s => '<li>' + s.trim() + '</li>').join('')
+        ? tool.limitations.split('.').filter(s => s.trim()).map(s => '\u2022 ' + s.trim()).join('\n')
         : '';
 
-      const html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + tool.name + '</title>' +
-        '<style>' +
-        'body{font-family:Segoe UI,system-ui,sans-serif;max-width:700px;margin:40px auto;padding:0 20px;color:#1a1a2e;line-height:1.6}' +
-        'h1{font-size:22px;margin-bottom:4px}' +
-        '.meta{color:#555;font-size:13px;margin-bottom:16px}.meta span{margin-right:16px}' +
-        '.desc{font-size:14px;margin-bottom:16px}' +
-        'h2{font-size:15px;margin:20px 0 8px;color:#333;border-bottom:1px solid #ddd;padding-bottom:4px}' +
-        'ul{padding-left:20px;font-size:13px}li{margin-bottom:4px}' +
-        '.footer{margin-top:32px;padding-top:12px;border-top:1px solid #ddd;font-size:11px;color:#888}' +
-        'a{color:#76b900}' +
-        '@media print{body{margin:20px}}' +
-        '</style></head><body>' +
-        '<h1>' + tool.name + '</h1>' +
-        '<div class="meta">' +
-        '<span><strong>Category:</strong> ' + tool.category + '</span>' +
-        '<span><strong>Pricing:</strong> ' + tool.pricing + '</span>' +
-        '<span><strong>Maturity:</strong> ' + tool.maturity + '</span>' +
-        '<span><strong>Difficulty:</strong> ' + (tool.difficulty || 'N/A') + '</span>' +
-        '</div>' +
-        '<p class="desc">' + tool.description + '</p>' +
-        (engines ? '<h2>Engine Support</h2><p style="font-size:13px">' + engines + '</p>' : '') +
-        (phases ? '<h2>Dev Phases</h2><p style="font-size:13px">' + phases + '</p>' : '') +
-        (useCases ? '<h2>Use Cases</h2><ul>' + useCases + '</ul>' : '') +
-        (limitations ? '<h2>Things to Know</h2><ul>' + limitations + '</ul>' : '') +
-        (tool.url ? '<h2>Links</h2><p style="font-size:13px"><a href="' + tool.url + '">' + tool.url + '</a></p>' : '') +
-        '<div class="footer">Exported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper</div>' +
-        '</body></html>';
+      let text = tool.name + '\n';
+      text += '='.repeat(tool.name.length) + '\n\n';
+      text += 'Category: ' + tool.category + '  |  Pricing: ' + tool.pricing + '  |  Maturity: ' + tool.maturity + '  |  Difficulty: ' + (tool.difficulty || 'N/A') + '\n\n';
+      text += tool.description + '\n';
+      if (engines) text += '\nEngine Support: ' + engines + '\n';
+      if (phases) text += 'Dev Phases: ' + phases + '\n';
+      if (useCases) text += '\nUse Cases:\n' + useCases + '\n';
+      if (limitations) text += '\nThings to Know:\n' + limitations + '\n';
+      if (tool.url) text += '\nDocumentation: ' + tool.url + '\n';
+      text += '\n---\nExported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper\n';
 
-      // Use a hidden iframe instead of window.open to avoid popup blockers
-      let iframe = document.getElementById('pdfExportFrame');
-      if (!iframe) {
-        iframe = document.createElement('iframe');
-        iframe.id = 'pdfExportFrame';
-        iframe.style.cssText = 'position:fixed;left:-9999px;width:800px;height:600px;border:none';
-        document.body.appendChild(iframe);
-      }
-      const doc = iframe.contentDocument || iframe.contentWindow.document;
-      doc.open();
-      doc.write(html);
-      doc.close();
-      setTimeout(() => {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-      }, 400);
+      // Download as .txt file
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = tool.name.replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-').toLowerCase() + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
     });
   }
 
