@@ -80,7 +80,11 @@ button{cursor:pointer;font-family:inherit}
 .sidebar.collapsed{width:0;overflow:hidden}
 .sb-inner{padding:14px;min-width:var(--sb)}
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:18px}
-.stat-cell{background:var(--surface3);border:1px solid var(--border-b);border-radius:8px;padding:12px}
+.stat-cell{background:var(--surface3);border:1px solid var(--border-b);border-radius:8px;padding:12px;cursor:pointer;transition:border-color .15s,background .15s;user-select:none}
+.stat-cell:hover{border-color:var(--accent);background:var(--accent-bg)}
+.stat-cell.stat-on{border-color:var(--accent);background:var(--accent-bg)}
+.stat-cell.stat-on .stat-val{color:var(--accent)}
+.stat-cell.stat-on .stat-lbl{color:var(--accent)}
 .stat-val{font-family:'Exo 2',sans-serif;font-weight:800;font-size:22px;color:var(--accent);line-height:1}
 .stat-lbl{font-size:12px;color:var(--muted);margin-top:2px}
 .sb-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:block}
@@ -675,10 +679,10 @@ button{cursor:pointer;font-family:inherit}
 <aside class="sidebar" id="sidebar">
   <div class="sb-inner">
     <div class="stats-grid">
-      <div class="stat-cell"><div class="stat-val" id="st-total">15</div><div class="stat-lbl">Total MCPs</div></div>
-      <div class="stat-cell"><div class="stat-val" id="st-active">10</div><div class="stat-lbl">Active</div></div>
-      <div class="stat-cell"><div class="stat-val" id="st-nvidia">5</div><div class="stat-lbl">NVIDIA Tools</div></div>
-      <div class="stat-cell"><div class="stat-val" id="st-beta">5</div><div class="stat-lbl">Beta</div></div>
+      <div class="stat-cell stat-on" id="st-all" data-stat="all" title="Show all MCPs"><div class="stat-val" id="st-total">15</div><div class="stat-lbl">Total MCPs</div></div>
+      <div class="stat-cell" id="st-active-cell" data-stat="active" title="Filter: Active MCPs only"><div class="stat-val" id="st-active">7</div><div class="stat-lbl">Active</div></div>
+      <div class="stat-cell" id="st-beginner-cell" data-stat="beginner" title="Filter: Beginner Friendly (complexity ≤ 2)"><div class="stat-val" id="st-beginner">6</div><div class="stat-lbl">Beginner Friendly</div></div>
+      <div class="stat-cell" id="st-free-cell" data-stat="free" title="Filter: Free / Open Source"><div class="stat-val" id="st-free">9</div><div class="stat-lbl">Free / Open Source</div></div>
     </div>
     <div class="sb-divider"></div>
     <div class="sb-group">
@@ -855,7 +859,7 @@ const CHANGELOG = [
   },
 ];
 const state = {
-  search:"",category:"All",status:"",target:"",complexity:"",docs:"",sort:"name",
+  search:"",category:"All",status:"",target:"",complexity:"",docs:"",sort:"name",_freeFilter:false,
   selected:null,activeTab:"overview",
   sidebarOpen:true,mobileSidebarOpen:false,
   compareSet:new Set(),
@@ -925,6 +929,7 @@ function filterMCPs(){
   if(state.target) list=list.filter(m=>m.targets.includes(state.target));
   if(state.complexity) list=list.filter(m=>m.complexity<=+state.complexity);
   if(state.docs) list=list.filter(m=>m.docs>=+state.docs);
+  if(state._freeFilter){const fl=["MIT","GPL-3.0","Apache 2.0","BSD-3"];list=list.filter(m=>fl.some(l=>m.license.includes(l)));}
   return [...list].sort((a,b)=>{
     switch(state.sort){
       case"docs":return b.docs-a.docs;
@@ -1005,7 +1010,7 @@ function renderCards(){
         <div class="meta-item"><span class="meta-lbl">Docs</span><div class="stars">${stars(m.docs)}</div></div>
         <div class="meta-item"><span class="meta-lbl">Community</span><div class="stars">${stars(m.community)}</div></div>
         <div class="meta-item"><span class="meta-lbl">Setup</span>~${m.setupTime}m</div>
-        <button class="vote-btn${voted?" voted":""}" data-vote="${m.id}" title="${voted?"Remove your vote":"Mark as used"}"><span class="vote-ico">▲</span>${voteCount?voteCount:""} ${voteCount===1?"use":"uses"}</button>
+        <button class="vote-btn${voted?" voted":""}" data-vote="${m.id}" title="${voted?"Remove your vote":"Mark as used"}"><span class="vote-ico">▲</span>${voteCount?" "+voteCount+" ·":""} I use this</button>
       </div>
     </div>`}).join('');
 
@@ -1034,10 +1039,16 @@ function renderCards(){
 }
 
 function updateStats(filtered){
+  const freeLicenses=["MIT","GPL-3.0","Apache 2.0","BSD-3"];
   document.getElementById("st-total").textContent=MCPS.length;
   document.getElementById("st-active").textContent=MCPS.filter(m=>m.status==="Active").length;
-  document.getElementById("st-nvidia").textContent=MCPS.filter(m=>m.category==="NVIDIA").length;
-  document.getElementById("st-beta").textContent=MCPS.filter(m=>m.status==="Beta").length;
+  document.getElementById("st-beginner").textContent=MCPS.filter(m=>m.complexity<=2).length;
+  document.getElementById("st-free").textContent=MCPS.filter(m=>freeLicenses.some(l=>m.license.includes(l))).length;
+  // Sync active highlight with current filter state
+  document.getElementById("st-all").classList.toggle("stat-on", state.category==="All"&&!state.status&&!state.complexity&&!state.docs);
+  document.getElementById("st-active-cell").classList.toggle("stat-on", state.status==="Active");
+  document.getElementById("st-beginner-cell").classList.toggle("stat-on", state.complexity==="2"&&!state.status);
+  document.getElementById("st-free-cell").classList.toggle("stat-on", state.docs===""&&state.status===""&&state._freeFilter===true);
   const base=MCPS.filter(m=>{
     const q=state.search.toLowerCase();
     if(q&&!(m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q)||m.caps.some(c=>c.toLowerCase().includes(q))||m.tags.some(t=>t.toLowerCase().includes(q))||m.targets.some(t=>t.toLowerCase().includes(q)))) return false;
@@ -1432,6 +1443,35 @@ function init(){
   document.getElementById("f-docs").addEventListener("change",e=>{state.docs=e.target.value;renderCards()});
   document.getElementById("f-sort").addEventListener("change",e=>{state.sort=e.target.value;renderCards()});
   document.getElementById("clear-btn").addEventListener("click",clearAllFilters);
+
+  // Stat cell click filters
+  document.querySelectorAll(".stat-cell[data-stat]").forEach(cell=>{
+    cell.addEventListener("click",()=>{
+      const stat=cell.dataset.stat;
+      // Reset all filters first
+      state.search=""; state.category="All"; state.status="";
+      state.target=""; state.complexity=""; state.docs="";
+      state._freeFilter=false;
+      document.getElementById("search").value="";
+      document.getElementById("f-status").value="";
+      document.getElementById("f-target").value="";
+      document.getElementById("f-complexity").value="";
+      document.getElementById("f-docs").value="";
+      // Apply the relevant filter
+      if(stat==="active"){
+        state.status="Active";
+        document.getElementById("f-status").value="Active";
+      } else if(stat==="beginner"){
+        state.complexity="2";
+        document.getElementById("f-complexity").value="2";
+      } else if(stat==="free"){
+        state._freeFilter=true;
+      }
+      // all: no filters needed, already reset above
+      syncCatBtns();
+      renderCards();
+    });
+  });
 
   // Category buttons
   document.querySelectorAll(".cat-btn").forEach(btn=>{
