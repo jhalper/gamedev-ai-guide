@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -160,9 +160,9 @@ button{cursor:pointer;font-family:inherit}
 .vote-ico{font-size:11px}
 
 /* COMPARE CHECKBOX */
-.compare-check-wrap{display:flex;align-items:center;gap:5px;position:absolute;top:10px;right:10px}
-.compare-cb{width:15px;height:15px;accent-color:var(--green);cursor:pointer}
-.compare-cb-label{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.compare-check-wrap{display:flex;align-items:center;gap:5px;margin-top:2px;justify-content:flex-end}
+.compare-cb{width:14px;height:14px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.compare-cb-label{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;white-space:nowrap;cursor:pointer}
 
 /* BADGES */
 .badge{display:inline-flex;align-items:center;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;border:1px solid;white-space:nowrap}
@@ -319,29 +319,32 @@ button{cursor:pointer;font-family:inherit}
 .wm-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
 @keyframes wm-fade{from{opacity:0}to{opacity:1}}
 .wm-overlay.hidden{display:none}
-.wm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:680px;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-lg);animation:wm-up .25s ease}
+.wm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:680px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .25s ease}
 @keyframes wm-up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
-.wm-header{padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start}
+.wm-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--surface)}
 .wm-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:20px;color:var(--text);line-height:1.25}
 .wm-title span{background:linear-gradient(90deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .wm-subtitle{font-size:15px;color:var(--dim);margin-top:5px;line-height:1.5}
-.wm-close{background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:7px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-left:12px;transition:all .15s}
+.wm-close{background:var(--surface3);border:1px solid var(--border-b);color:var(--text);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;margin-left:12px;transition:all .15s;cursor:pointer}
 .wm-close:hover{border-color:var(--red);color:var(--red)}
-.wm-section-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:18px 24px 8px;display:block}
-.wm-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 24px}
-@media(max-width:500px){.wm-steps{grid-template-columns:1fr}}
+.wm-section-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:16px 20px 8px;display:block}
+.wm-scroll-body{overflow-y:auto;flex:1;padding-bottom:4px}
+.wm-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px}
+@media(max-width:540px){.wm-steps{grid-template-columns:1fr}}
 .wm-step{display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:11px 12px}
 .wm-step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;font-family:'Exo 2',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .wm-step-t{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
 .wm-step-d{font-size:13px;color:var(--dim);line-height:1.55}
-.wm-roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:0 24px}
+.wm-role-context{padding:0 20px 10px;font-size:13px;color:var(--dim);line-height:1.5}
+.wm-role-context strong{color:var(--text)}
+.wm-roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:0 20px}
 .wm-role{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:13px 12px;cursor:pointer;text-align:center;transition:all .18s}
 .wm-role:hover{border-color:var(--accent);background:var(--accent-bg);transform:translateY(-2px)}
 .wm-role-icon{font-size:24px;margin-bottom:6px}
 .wm-role-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--text);margin-bottom:3px}
 .wm-role-desc{font-size:12px;color:var(--muted);line-height:1.4}
-.wm-footer{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 20px;flex-wrap:wrap;gap:10px}
-.wm-skip{font-size:13px;color:var(--muted);background:none;border:none;font-family:'JetBrains Mono',monospace;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.wm-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 18px;flex-wrap:wrap;gap:10px;flex-shrink:0;border-top:1px solid var(--border);background:var(--surface)}
+.wm-skip{font-size:13px;color:var(--dim);background:var(--surface2);border:1px solid var(--border-b);border-radius:7px;padding:8px 14px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .15s}
 .wm-skip:hover{color:var(--dim)}
 .wm-start{background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;font-family:'Exo 2',sans-serif;transition:opacity .15s,transform .15s}
 .wm-start:hover{opacity:.9;transform:scale(1.02)}
@@ -458,38 +461,49 @@ button{cursor:pointer;font-family:inherit}
 <!-- WELCOME MODAL -->
 <div class="wm-overlay hidden" id="wm-overlay">
   <div class="wm-box" role="dialog" aria-modal="true">
+
+    <!-- Sticky header — always visible, close button always reachable -->
     <div class="wm-header">
       <div>
-        <div class="wm-title">Welcome to the<br><span>Game Dev MCP Guide</span></div>
-        <div class="wm-subtitle">Discover, compare and integrate Model Context Protocols for your game development workflow.</div>
+        <div class="wm-title">Welcome to the <span>Game Dev MCP Guide</span></div>
+        <div class="wm-subtitle">Model Context Protocols for game developers.</div>
       </div>
-      <button class="wm-close" id="wm-close-x">✕</button>
+      <button class="wm-close" id="wm-close-x" title="Close and browse everything" aria-label="Close">✕</button>
     </div>
-    <span class="wm-section-label">How to use this guide</span>
-    <div class="wm-steps">
-      <div class="wm-step"><div class="wm-step-num">1</div><div><div class="wm-step-t">Open the filter panel</div><div class="wm-step-d">Tap the <strong>☰ menu</strong> (top-left) or use the <strong>bottom tabs</strong> on mobile to filter by engine, tool, or complexity.</div></div></div>
-      <div class="wm-step"><div class="wm-step-num">2</div><div><div class="wm-step-t">Search or pick a role</div><div class="wm-step-d">Use the <strong>search bar</strong> for keywords, or tap one of the <strong>role shortcuts</strong> below to pre-filter for your job.</div></div></div>
-      <div class="wm-step"><div class="wm-step-num">3</div><div><div class="wm-step-t">Click any MCP card</div><div class="wm-step-d">Opens a detail panel with full <strong>integration steps</strong>, copy-able commands, capabilities, and quality scores.</div></div></div>
-      <div class="wm-step"><div class="wm-step-num">4</div><div><div class="wm-step-t">Compare MCPs side-by-side</div><div class="wm-step-d">Tick the <strong>checkbox on 2–3 cards</strong> to open a comparison table showing setup time, docs score, capabilities and more.</div></div></div>
+
+    <!-- Scrollable body -->
+    <div class="wm-scroll-body">
+      <span class="wm-section-label">How to use this guide</span>
+      <div class="wm-steps">
+        <div class="wm-step"><div class="wm-step-num">1</div><div><div class="wm-step-t">Open the filter panel</div><div class="wm-step-d">Tap the <strong>☰ menu</strong> (top-left) or use the <strong>bottom tabs</strong> on mobile to filter by engine, tool, or complexity.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">2</div><div><div class="wm-step-t">Search or pick a role</div><div class="wm-step-d">Use the <strong>search bar</strong> for keywords, or tap a role below to pre-filter for your job.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">3</div><div><div class="wm-step-t">Click any MCP card</div><div class="wm-step-d">Opens a detail panel with full <strong>integration steps</strong>, copy-able commands, capabilities, and quality scores.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">4</div><div><div class="wm-step-t">Compare MCPs side-by-side</div><div class="wm-step-d">Tick the <strong>checkbox on 2 to 3 cards</strong> to open a comparison table showing setup time, docs score, capabilities and more.</div></div></div>
+      </div>
+
+      <span class="wm-section-label">Optional: start with a filtered example</span>
+      <div class="wm-role-context">Tap a role below to pre-load a relevant set of filters. You can change or clear them at any time. This is just a starting point, not a requirement.</div>
+      <div class="wm-roles" id="wm-roles">
+        <div class="wm-role" data-role="engine-programmer"><div class="wm-role-icon">⚙️</div><div class="wm-role-name">Engine Programmer</div><div class="wm-role-desc">Unity · Unreal · Godot integration &amp; C++/C# tooling</div></div>
+        <div class="wm-role" data-role="technical-artist"><div class="wm-role-icon">🎨</div><div class="wm-role-name">Technical Artist</div><div class="wm-role-desc">Shaders, materials, Blender &amp; Substance Painter pipelines</div></div>
+        <div class="wm-role" data-role="vfx-artist"><div class="wm-role-icon">✨</div><div class="wm-role-name">VFX / 3D Artist</div><div class="wm-role-desc">Maya, 3ds Max, Mixamo &amp; Quixel content creation</div></div>
+        <div class="wm-role" data-role="indie-dev"><div class="wm-role-icon">🕹️</div><div class="wm-role-name">Indie Developer</div><div class="wm-role-desc">Easiest-to-integrate tools across any engine</div></div>
+        <div class="wm-role" data-role="graphics-engineer"><div class="wm-role-icon">🖥️</div><div class="wm-role-name">Graphics Engineer</div><div class="wm-role-desc">NVIDIA DLSS, Nsight profiling &amp; RTX Remix</div></div>
+        <div class="wm-role" data-role="sim-engineer"><div class="wm-role-icon">🔬</div><div class="wm-role-name">Sim / Physics Dev</div><div class="wm-role-desc">PhysX, Omniverse &amp; USD simulation pipelines</div></div>
+        <div class="wm-role" data-role="roblox-creator"><div class="wm-role-icon">🧱</div><div class="wm-role-name">Roblox Creator</div><div class="wm-role-desc">Roblox Studio, Luau scripting &amp; publishing tools</div></div>
+        <div class="wm-role" data-role="just-browsing"><div class="wm-role-icon">👀</div><div class="wm-role-name">No Filter, Show All</div><div class="wm-role-desc">Browse everything unfiltered</div></div>
+      </div>
     </div>
-    <span class="wm-section-label">Jump in by role. What best describes you?</span>
-    <div class="wm-roles" id="wm-roles">
-      <div class="wm-role" data-role="engine-programmer"><div class="wm-role-icon">⚙️</div><div class="wm-role-name">Engine Programmer</div><div class="wm-role-desc">Unity · Unreal · Godot integration &amp; C++/C# tooling</div></div>
-      <div class="wm-role" data-role="technical-artist"><div class="wm-role-icon">🎨</div><div class="wm-role-name">Technical Artist</div><div class="wm-role-desc">Shaders, materials, Blender &amp; Substance Painter pipelines</div></div>
-      <div class="wm-role" data-role="vfx-artist"><div class="wm-role-icon">✨</div><div class="wm-role-name">VFX / 3D Artist</div><div class="wm-role-desc">Maya, 3ds Max, Mixamo &amp; Quixel content creation</div></div>
-      <div class="wm-role" data-role="indie-dev"><div class="wm-role-icon">🕹️</div><div class="wm-role-name">Indie Developer</div><div class="wm-role-desc">Easiest-to-integrate tools across any engine</div></div>
-      <div class="wm-role" data-role="graphics-engineer"><div class="wm-role-icon">🖥️</div><div class="wm-role-name">Graphics Engineer</div><div class="wm-role-desc">NVIDIA DLSS, Nsight profiling &amp; RTX Remix</div></div>
-      <div class="wm-role" data-role="sim-engineer"><div class="wm-role-icon">🔬</div><div class="wm-role-name">Sim / Physics Dev</div><div class="wm-role-desc">PhysX, Omniverse &amp; USD simulation pipelines</div></div>
-      <div class="wm-role" data-role="roblox-creator"><div class="wm-role-icon">🧱</div><div class="wm-role-name">Roblox Creator</div><div class="wm-role-desc">Roblox Studio, Luau scripting &amp; publishing tools</div></div>
-      <div class="wm-role" data-role="just-browsing"><div class="wm-role-icon">👀</div><div class="wm-role-name">Just Browsing</div><div class="wm-role-desc">Show me everything. I'll explore</div></div>
-    </div>
+
+    <!-- Sticky footer — always visible -->
     <div class="wm-footer">
       <label class="wm-no-show"><input type="checkbox" id="wm-no-show"> Don't show this again</label>
       <div style="display:flex;gap:10px;align-items:center">
-        <button class="wm-skip" id="wm-skip">Skip intro</button>
-        <button class="wm-start" id="wm-start">Browse all MCPs →</button>
+        <button class="wm-skip" id="wm-skip">Skip, show all</button>
+        <button class="wm-start" id="wm-start">Browse all MCPs</button>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -763,6 +777,30 @@ const MCPS = [
 ══════════════════════════════════════════════════════════ */
 const CHANGELOG = [
   {
+    version: "1.4.0",
+    date: "2026-04-12",
+    label: "Feature Update",
+    changes: [
+      { type: "added",   text: "What's New changelog now live and tracking all updates." },
+      { type: "added",   text: "Product Roadmap added with four phases covering integration, share/export, and visual redesign plans." },
+      { type: "added",   text: "favicon.svg and og-image.png added for browser tab and social sharing previews." },
+      { type: "fixed",   text: "OG image meta tag updated to use the full absolute URL at gamedevai.guide/mcp/og-image.png so social platforms can fetch it correctly." },
+      { type: "improved", text: "Minimum body font size raised to 16px throughout to prevent iOS auto-zoom and improve readability." },
+      { type: "improved", text: "Visual separation between sidebar, header, cards, and main content area using distinct background tones, stronger borders, and card shadows." },
+      { type: "improved", text: "Text contrast raised across both light and dark modes, particularly for description and label text that was getting lost in the background." },
+      { type: "improved", text: "Header buttons (Roadmap, What's New, Light/Dark) increased to 13px bold and are now clearly readable." },
+      { type: "improved", text: "Light mode is now the default for first-time visitors." },
+      { type: "improved", text: "Roadmap phase order updated: gamedevai.guide integration moved to Phase 2, visual redesign moved to Phase 4." },
+      { type: "fixed",   text: "Roadmap phase boxes were being clipped due to overflow:hidden on the phase container." },
+      { type: "fixed",   text: "Welcome modal close button was cut off on mobile. Header and footer are now sticky outside the scroll area so close and action buttons are always reachable." },
+      { type: "improved", text: "Welcome modal role cards now include a context note explaining they are optional filter presets, not a required selection." },
+      { type: "improved", text: "Role card section label changed to 'Optional: start with a filtered example' for clarity." },
+      { type: "improved", text: "Just Browsing role renamed to No Filter, Show All to better describe the action." },
+      { type: "fixed",   text: "Compare checkbox was overlapping the status badge in the top-right of each card. It now sits below the badge in the same column." },
+      { type: "fixed",   text: "Card template was missing description, tags, and footer after a previous edit truncated the render function. All sections restored." },
+    ]
+  },
+  {
     version: "1.3.0",
     date: "2026-04-12",
     label: "Bug Fix",
@@ -951,6 +989,10 @@ function renderCards(){
         <div class="card-top-right">
           <span class="badge ${statusClass(m.status)}">${m.status}</span>
           ${stale?`<span class="stale-dot" data-tip="${staleLabel(m)} check for updates" title="${staleLabel(m)} check for updates"></span>`:''}
+          <label class="compare-check-wrap" title="Add to comparison" onclick="event.stopPropagation()">
+            <input type="checkbox" class="compare-cb" data-cid="${m.id}" ${state.compareSet.has(m.id)?"checked":""} ${!state.compareSet.has(m.id)&&state.compareSet.size>=3?"disabled":""}>
+            <span class="compare-cb-label">Compare</span>
+          </label>
         </div>
       </div>
       <div class="card-desc">${m.desc}</div>
@@ -965,10 +1007,6 @@ function renderCards(){
         <div class="meta-item"><span class="meta-lbl">Setup</span>~${m.setupTime}m</div>
         <button class="vote-btn${voted?" voted":""}" data-vote="${m.id}" title="${voted?"Remove your vote":"Mark as used"}"><span class="vote-ico">▲</span>${voteCount?voteCount:""} ${voteCount===1?"use":"uses"}</button>
       </div>
-      <label class="compare-check-wrap" title="Add to comparison" onclick="event.stopPropagation()">
-        <input type="checkbox" class="compare-cb" data-cid="${m.id}" ${state.compareSet.has(m.id)?"checked":""} ${!state.compareSet.has(m.id)&&state.compareSet.size>=3?"disabled":""}>
-        <span class="compare-cb-label">Compare</span>
-      </label>
     </div>`}).join('');
 
   // Bind events
@@ -1345,7 +1383,7 @@ function init(){
   });
 
   // Theme
-  let savedTheme="dark";try{savedTheme=localStorage.getItem("mcp-theme")||"dark"}catch(e){}
+  let savedTheme="light";try{savedTheme=localStorage.getItem("mcp-theme")||"light"}catch(e){}
   setTheme(savedTheme==="dark");
   document.getElementById("theme-toggle").addEventListener("click",()=>{setTheme(document.documentElement.getAttribute("data-theme")==="dark"?false:true)});
 
