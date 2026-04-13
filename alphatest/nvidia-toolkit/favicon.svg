@@ -1,5 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0d0d1a"/>
-  <path d="M7 16l5-8h8l5 8-5 8h-8z" fill="none" stroke="#76b900" stroke-width="2.5" stroke-linejoin="round"/>
-  <circle cx="16" cy="16" r="3" fill="#76b900"/>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#76b900"/>
+      <stop offset="100%" stop-color="#a3e635"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="7" fill="url(#g)"/>
+  <text x="16" y="22" font-family="'Exo 2','DejaVu Sans',Arial,sans-serif" font-weight="800" font-size="14" fill="white" text-anchor="middle" letter-spacing="-0.5">GD</text>
 </svg>
