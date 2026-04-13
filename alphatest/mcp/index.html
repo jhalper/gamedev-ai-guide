@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Dev MCP Guide</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="description" content="Discover, compare and integrate Model Context Protocols for game development. Covers Unity, Unreal, Godot, Roblox, Blender, Maya, NVIDIA Omniverse and more.">
+<meta property="og:title" content="Game Dev MCP Guide">
+<meta property="og:description" content="Search, filter and compare MCPs for game engines, 3D tools, and NVIDIA, built for game developers.">
+<meta property="og:image" content="https://gamedevai.guide/mcp/og-image.png">
+<meta property="og:url" content="https://gamedevai.guide/mcp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Game Dev MCP Guide">
+<meta name="twitter:description" content="Search, filter and compare MCPs for game engines, 3D tools, and NVIDIA.">
+<meta name="twitter:image" content="https://gamedevai.guide/mcp/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Mulish:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Shared nav styles + component -->
+<link rel="stylesheet" href="/hub-nav.css">
+<script src="/nav-component.js"></script>
+<style>
+:root {
+  --bg:#05080f;--surface:#0b1422;--surface2:#101d30;--surface3:#16263d;
+  --border:#1d3050;--border-b:#2a4568;
+  --text:#e4eefa;--dim:#9bbdd8;--muted:#4e6e90;
+  --accent:#38bdf8;--accent-bg:rgba(56,189,248,.12);--accent-br:rgba(56,189,248,.3);
+  --green:#34d399;--green-bg:rgba(52,211,153,.12);--green-br:rgba(52,211,153,.3);
+  --orange:#fb923c;--orange-bg:rgba(251,146,60,.12);--orange-br:rgba(251,146,60,.3);
+  --red:#f87171;--red-bg:rgba(248,113,113,.12);--red-br:rgba(248,113,113,.3);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,.12);--purple-br:rgba(167,139,250,.3);
+  --nv:#76b900;--nv-bg:rgba(118,185,0,.12);--nv-br:rgba(118,185,0,.3);
+  --amber:#fbbf24;--amber-bg:rgba(251,191,36,.12);--amber-br:rgba(251,191,36,.3);
+  --sh-sm:0 2px 8px rgba(0,0,0,.55);--sh-md:0 4px 24px rgba(0,0,0,.6);--sh-lg:0 8px 48px rgba(0,0,0,.7);
+  --sb:290px;--hdr:62px;--btm:0px;--nav:44px;
+}
+[data-theme="light"]{
+  --bg:#eef3fb;--surface:#ffffff;--surface2:#f4f8ff;--surface3:#e6edf8;
+  --border:#c8d8ee;--border-b:#a8c0e0;
+  --text:#0d1829;--dim:#1e3a5a;--muted:#6080a0;
+  --accent:#0277bd;--accent-bg:rgba(2,119,189,.08);--accent-br:rgba(2,119,189,.25);
+  --green:#047857;--green-bg:rgba(4,120,87,.08);--green-br:rgba(4,120,87,.25);
+  --orange:#b45309;--orange-bg:rgba(180,83,9,.08);--orange-br:rgba(180,83,9,.25);
+  --red:#b91c1c;--red-bg:rgba(185,28,28,.08);--red-br:rgba(185,28,28,.25);
+  --purple:#5b21b6;--purple-bg:rgba(91,33,182,.08);--purple-br:rgba(91,33,182,.25);
+  --nv:#3a7000;--nv-bg:rgba(58,112,0,.08);--nv-br:rgba(58,112,0,.25);
+  --amber:#92400e;--amber-bg:rgba(146,64,14,.08);--amber-br:rgba(146,64,14,.25);
+  --sh-sm:0 2px 8px rgba(0,20,60,.1);--sh-md:0 4px 24px rgba(0,20,60,.12);--sh-lg:0 8px 48px rgba(0,20,60,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;transition:background .2s,color .2s;padding-bottom:var(--btm)}
+[data-theme="dark"] body{background-image:linear-gradient(rgba(56,189,248,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(56,189,248,.012) 1px,transparent 1px);background-size:44px 44px}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+button{cursor:pointer;font-family:inherit}
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:var(--surface)}::-webkit-scrollbar-thumb{background:var(--border-b);border-radius:3px}
+
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:3px solid transparent;border-image:linear-gradient(90deg,var(--accent),var(--green)) 1;height:var(--hdr);display:flex;align-items:center;gap:12px;padding:0 16px;box-shadow:var(--sh-md)}
+.logo{display:flex;align-items:center;gap:8px;flex-shrink:0;text-decoration:none}
+.logo-box{width:30px;height:30px;border-radius:7px;flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--green));display:flex;align-items:center;justify-content:center;font-family:'Exo 2',sans-serif;font-weight:800;font-size:12px;color:#fff}
+.logo-name{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--text)}
+.logo-name em{font-style:normal;color:var(--accent)}
+.logo-sub{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.08em}
+.logo-stack{display:flex;flex-direction:column;line-height:1}
+.search-wrap{flex:1;max-width:400px;position:relative}
+.search-wrap input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 10px 7px 34px;font-size:16px;color:var(--text);outline:none;font-family:'Mulish',sans-serif;transition:border-color .15s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap input::placeholder{color:var(--muted)}
+.search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:15px;pointer-events:none}
+.hdr-right{display:flex;align-items:center;gap:6px;margin-left:auto}
+.hdr-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap;padding:0 6px}
+.icon-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:7px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all .15s;flex-shrink:0}
+.icon-btn:hover{border-color:var(--accent);color:var(--accent)}
+.theme-btn{background:var(--surface2);border:1px solid var(--border-b);color:var(--dim);border-radius:7px;height:36px;padding:0 13px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'JetBrains Mono',monospace;transition:all .15s;white-space:nowrap;font-weight:600}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* LAYOUT */
+.layout{display:flex;flex:1}
+
+/* SIDEBAR */
+.sidebar{width:var(--sb);flex-shrink:0;background:var(--surface);border-right:2px solid var(--border-b);overflow-y:auto;overflow-x:hidden;position:sticky;top:var(--hdr);height:calc(100vh - var(--hdr));transition:width .25s ease}
+.sidebar.collapsed{width:0;overflow:hidden}
+.sb-inner{padding:14px;min-width:var(--sb)}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:18px}
+.stat-cell{background:var(--surface3);border:1px solid var(--border-b);border-radius:8px;padding:12px;cursor:pointer;transition:border-color .15s,background .15s;user-select:none}
+.stat-cell:hover{border-color:var(--accent);background:var(--accent-bg)}
+.stat-cell.stat-on{border-color:var(--accent);background:var(--accent-bg)}
+.stat-cell.stat-on .stat-val{color:var(--accent)}
+.stat-cell.stat-on .stat-lbl{color:var(--accent)}
+.stat-val{font-family:'Exo 2',sans-serif;font-weight:800;font-size:22px;color:var(--accent);line-height:1}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:2px}
+.sb-section-title{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:block}
+.sb-group{margin-bottom:18px}
+.cat-list{display:flex;flex-direction:column;gap:3px}
+.cat-btn{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;border-radius:7px;border:1px solid transparent;background:none;color:var(--dim);font-size:14px;text-align:left;transition:all .15s;width:100%}
+.cat-btn:hover{background:var(--surface2);border-color:var(--border)}
+.cat-btn.on{background:var(--accent-bg);border-color:var(--accent-br);color:var(--accent)}
+.cat-btn.on .cc{color:var(--accent);background:var(--accent-bg)}
+.cat-btn-l{display:flex;align-items:center;gap:7px}
+.cdot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.cc{font-family:'JetBrains Mono',monospace;font-size:11px;background:var(--surface3);color:var(--muted);border-radius:10px;padding:1px 6px}
+.sb-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:9px 10px;font-size:16px;color:var(--text);outline:none;cursor:pointer;font-family:'Mulish',sans-serif}
+.sb-select:focus{border-color:var(--accent)}
+.sb-divider{height:1px;background:var(--border);margin:6px 0 14px}
+
+/* COMPARE BAR */
+.compare-bar{
+  position:fixed;bottom:calc(var(--btm) + 12px);left:50%;transform:translateX(-50%);
+  z-index:180;background:var(--surface);border:1px solid var(--accent-br);
+  border-radius:40px;padding:8px 8px 8px 18px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 4px 24px rgba(56,189,248,.25);
+  animation:slideup .2s ease;
+  white-space:nowrap;
+}
+.compare-bar.hidden{display:none}
+@keyframes slideup{from{transform:translateX(-50%) translateY(10px);opacity:0}to{transform:translateX(-50%) translateY(0);opacity:1}}
+.compare-bar-txt{font-size:12px;color:var(--dim)}
+.compare-bar-txt strong{color:var(--text)}
+.compare-btn{background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;border:none;border-radius:25px;padding:7px 16px;font-size:12px;font-weight:700;font-family:'Exo 2',sans-serif;transition:opacity .15s}
+.compare-btn:hover{opacity:.88}
+.compare-clear{background:none;border:none;color:var(--muted);font-size:18px;line-height:1;padding:0 4px;transition:color .15s}
+.compare-clear:hover{color:var(--red)}
+
+/* MAIN */
+.main{flex:1;padding:20px;min-width:0;background:var(--bg)}
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.tb-left{display:flex;align-items:center;gap:6px;flex-wrap:wrap;flex:1;min-width:0}
+.tb-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.results-txt{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim);white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:3px;background:var(--accent-bg);border:1px solid var(--accent-br);border-radius:20px;padding:3px 9px;font-size:10px;color:var(--accent);font-family:'JetBrains Mono',monospace}
+.chip .x{cursor:pointer;margin-left:2px;opacity:.7}.chip .x:hover{opacity:1}
+.sort-sel{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 9px;font-size:11px;color:var(--text);outline:none;cursor:pointer;font-family:'JetBrains Mono',monospace}
+
+/* CARDS */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--border-b);border-radius:12px;padding:20px 20px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .1s;display:flex;flex-direction:column;gap:11px;animation:fadeup .22s ease both;position:relative;outline:none;box-shadow:var(--sh-sm)}
+.card:focus-visible{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+@keyframes fadeup{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.card:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent-br),var(--sh-md);transform:translateY(-2px)}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-bg)}
+.card.in-compare{border-color:var(--green);box-shadow:0 0 0 3px var(--green-bg)}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.card-name-area{flex:1;min-width:0}
+.card-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:16px;color:var(--text);line-height:1.3}
+.card-ver{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px}
+.card-top-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.card-desc{font-size:15px;color:var(--dim);line-height:1.6}
+.card-tags{display:flex;flex-wrap:wrap;gap:5px}
+.card-foot{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.meta-item{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--dim)}
+.meta-lbl{color:var(--muted);font-size:12px}
+.stars{display:flex;gap:1px}
+.star{font-size:13px}.on{color:#f5c842}.off{color:var(--border-b)}
+
+/* CARD RIBBONS & INDICATORS */
+.card-ribbon{position:absolute;top:10px;left:-1px;background:linear-gradient(90deg,var(--green),#059669);color:#fff;font-family:'Exo 2',sans-serif;font-weight:700;font-size:9px;letter-spacing:.06em;padding:3px 8px 3px 10px;border-radius:0 4px 4px 0;box-shadow:1px 1px 4px rgba(0,0,0,.3)}
+.stale-dot{width:7px;height:7px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:5px;position:relative}
+.stale-dot::after{content:attr(data-tip);position:absolute;right:12px;top:-2px;background:var(--surface);border:1px solid var(--amber-br);color:var(--amber);font-size:10px;font-family:'JetBrains Mono',monospace;white-space:nowrap;padding:2px 7px;border-radius:4px;opacity:0;pointer-events:none;transition:opacity .15s;z-index:10}
+.stale-dot:hover::after{opacity:1}
+
+/* VOTE BUTTON */
+.vote-btn{display:flex;align-items:center;gap:4px;background:none;border:1px solid var(--border);border-radius:20px;padding:3px 8px;font-size:10px;color:var(--muted);transition:all .15s;font-family:'JetBrains Mono',monospace}
+.vote-btn:hover{border-color:var(--accent);color:var(--accent)}
+.vote-btn.voted{background:var(--accent-bg);border-color:var(--accent-br);color:var(--accent)}
+.vote-ico{font-size:11px}
+
+/* COMPARE CHECKBOX */
+.compare-check-wrap{display:flex;align-items:center;gap:5px;margin-top:2px;justify-content:flex-end}
+.compare-cb{width:14px;height:14px;accent-color:var(--green);cursor:pointer;flex-shrink:0}
+.compare-cb-label{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;white-space:nowrap;cursor:pointer}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;border-radius:4px;padding:2px 7px;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:.04em;border:1px solid;white-space:nowrap}
+.b-active{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
+.b-beta{color:var(--orange);background:var(--orange-bg);border-color:var(--orange-br)}
+.b-stable{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-br)}
+.b-deprecated{color:var(--red);background:var(--red-bg);border-color:var(--red-br)}
+.b-engine{color:var(--purple);background:var(--purple-bg);border-color:var(--purple-br)}
+.b-3d{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-br)}
+.b-nvidia{color:var(--nv);background:var(--nv-bg);border-color:var(--nv-br)}
+.b-neutral{color:var(--dim);background:var(--surface2);border-color:var(--border)}
+.b-sm{font-size:9px;padding:1px 5px}
+
+/* DETAIL PANEL */
+.overlay{display:none;position:fixed;z-index:300}
+.overlay.open{display:flex}
+.overlay{inset:0;background:rgba(0,0,0,.55);align-items:flex-end;justify-content:center}
+.panel{background:var(--surface);width:100%;max-height:88vh;border-radius:14px 14px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:slideup2 .25s ease;box-shadow:var(--sh-lg)}
+@keyframes slideup2{from{transform:translateY(25px);opacity:0}to{transform:none;opacity:1}}
+@media(min-width:860px){
+  .overlay{top:var(--hdr);right:0;bottom:0;left:auto;width:460px;background:none;align-items:stretch;justify-content:flex-end}
+  .panel{width:100%;max-height:100%;border-radius:0;border-left:1px solid var(--border);animation:slidein .2s ease}
+  @keyframes slidein{from{transform:translateX(20px);opacity:0}to{transform:none;opacity:1}}
+}
+.panel-hdr{padding:16px 18px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.panel-hdr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+.panel-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:18px;color:var(--text)}
+.panel-ver{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.panel-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px}
+.panel-desc{font-size:15px;color:var(--dim);line-height:1.65}
+.close-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);border-radius:7px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;transition:all .15s}
+.close-btn:hover{border-color:var(--red);color:var(--red)}
+.ext-bar{display:flex;flex-wrap:wrap;gap:5px;padding:9px 18px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--surface2)}
+.ext-a{display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 11px;font-size:13px;color:var(--dim);text-decoration:none;font-family:'JetBrains Mono',monospace;transition:all .15s}
+.ext-a:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+.ext-ico{font-size:14px}
+.panel-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-tab{flex:1;background:none;border:none;border-bottom:2px solid transparent;padding:10px 4px;font-size:11px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);transition:all .15s}
+.p-tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.panel-body{flex:1;overflow-y:auto;padding:16px 18px}
+.det-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);gap:10px}
+.det-row:last-child{border-bottom:none}
+.det-lbl{font-size:14px;color:var(--muted);white-space:nowrap}
+.det-val{font-size:14px;color:var(--text);font-family:'JetBrains Mono',monospace;text-align:right}
+.det-sect{margin-top:16px}
+.det-sect-lbl{font-size:10px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
+.tag-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.step{background:var(--surface2);border:1px solid var(--border);border-left:2px solid var(--accent);border-radius:6px;padding:11px 13px;margin-bottom:8px;position:relative}
+.step-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:6px}
+.step-n{color:var(--accent);font-family:'JetBrains Mono',monospace}
+.step-code-wrap{position:relative}
+.step-code{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--dim);background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:8px 40px 8px 10px;white-space:pre-wrap;word-break:break-all;line-height:1.55}
+.copy-btn{position:absolute;top:6px;right:7px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'JetBrains Mono',monospace}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.copy-btn.copied{color:var(--green);border-color:var(--green-br);background:var(--green-bg)}
+.q-row{margin-bottom:13px}
+.q-head{display:flex;justify-content:space-between;margin-bottom:5px;font-size:14px}
+.q-lbl{color:var(--dim)}
+.q-bar{background:var(--surface2);border-radius:4px;height:6px}
+.q-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green))}
+.score-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center;margin-top:14px}
+.score-num{font-family:'Exo 2',sans-serif;font-weight:800;font-size:38px;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.score-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.score-bar{margin:12px 0 0;background:var(--surface3);border-radius:6px;height:8px}
+.score-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--green))}
+
+/* COMPARE OVERLAY */
+.cmp-overlay{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:stretch;animation:wm-fade .2s ease}
+.cmp-overlay.hidden{display:none}
+.cmp-box{background:var(--surface);width:100%;max-height:90vh;border-radius:14px 14px 0 0;overflow:hidden;display:flex;flex-direction:column;animation:slideup2 .25s ease;box-shadow:var(--sh-lg)}
+@media(min-width:700px){
+  .cmp-overlay{align-items:center;justify-content:center;padding:20px}
+  .cmp-box{border-radius:12px;max-height:85vh;max-width:1100px;width:100%}
+}
+.cmp-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.cmp-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:16px;color:var(--text)}
+.cmp-scroll{overflow:auto;flex:1;padding:0 4px 16px}
+.cmp-table{border-collapse:collapse;width:100%;min-width:500px;font-size:12px}
+.cmp-table th{background:var(--surface2);padding:9px 14px;text-align:left;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);border-bottom:1px solid var(--border);border-right:1px solid var(--border);position:sticky;top:0;z-index:2}
+.cmp-table th:first-child{min-width:130px;position:sticky;left:0;z-index:3;background:var(--surface2)}
+.cmp-table td{padding:8px 14px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);vertical-align:top;color:var(--text)}
+.cmp-table td:first-child{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;background:var(--surface2);position:sticky;left:0;z-index:1;white-space:nowrap}
+.cmp-table tr:last-child td{border-bottom:none}
+.cmp-table td:last-child,.cmp-table th:last-child{border-right:none}
+.cmp-win{color:var(--green);font-weight:700}
+
+/* MOBILE BOTTOM TAB BAR */
+.btm-bar{display:none}
+@media(max-width:760px){
+  :root{--btm:60px}
+  .btm-bar{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:190;
+    background:var(--surface);border-top:1px solid var(--border);
+    height:60px;align-items:stretch;
+  }
+  .btm-tab{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;background:none;border:none;color:var(--muted);
+    font-size:9px;font-family:'JetBrains Mono',monospace;text-transform:uppercase;
+    letter-spacing:.06em;padding:0;transition:color .15s;border-top:2px solid transparent;
+  }
+  .btm-tab.on{color:var(--accent);border-top-color:var(--accent)}
+  .btm-tab-ico{font-size:18px;line-height:1}
+  .sidebar{position:fixed;top:var(--hdr);left:0;bottom:60px;z-index:95;width:280px !important;transform:translateX(-100%);transition:transform .25s ease}
+  .sidebar.mob-open{transform:translateX(0)}
+  .sidebar.collapsed{width:280px !important;transform:translateX(-100%)}
+  .hdr-count{display:none}
+  .logo-sub{display:none}
+}
+@media(max-width:480px){
+  .main{padding:10px}
+  .hdr{padding:0 10px;gap:8px}
+  .panel-name{font-size:15px}
+  .grid{grid-template-columns:1fr}
+}
+
+/* HAMBURGER */
+.sb-toggle-wrap{position:relative;flex-shrink:0}
+.ham{display:flex;flex-direction:column;gap:4px;pointer-events:none}
+.ham span{display:block;height:2px;width:16px;background:currentColor;border-radius:2px;transition:all .2s}
+.ham.open span:first-child{transform:translateY(6px) rotate(45deg)}
+.ham.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham.open span:last-child{transform:translateY(-6px) rotate(-45deg)}
+.ham-pulse{position:absolute;top:4px;right:4px;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse-ring 1.6s ease-out infinite}
+.ham-pulse.hidden{display:none}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(56,189,248,.7)}70%{box-shadow:0 0 0 7px rgba(56,189,248,0)}100%{box-shadow:0 0 0 0 rgba(56,189,248,0)}}
+
+/* HELP FAB */
+.help-fab{position:fixed;bottom:calc(var(--btm) + 16px);right:18px;z-index:250;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(56,189,248,.35);border:none;transition:transform .15s,box-shadow .15s}
+.help-fab:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(56,189,248,.5)}
+.help-fab-label{position:absolute;right:50px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--text);white-space:nowrap;box-shadow:var(--sh-sm);opacity:0;pointer-events:none;transition:opacity .2s;font-family:'JetBrains Mono',monospace}
+.help-fab:hover .help-fab-label{opacity:1}
+
+/* INTRO BANNER */
+.intro-banner{background:var(--surface2);border-bottom:2px solid var(--border-b);border-top:3px solid var(--accent);padding:0;overflow:hidden}
+.intro-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 18px;cursor:pointer;transition:background .15s;user-select:none}
+.intro-summary:hover{background:var(--surface2)}
+.intro-short{display:flex;align-items:center;gap:10px;min-width:0}
+.intro-pill{flex-shrink:0;background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;font-family:'Exo 2',sans-serif;font-weight:700;font-size:9px;letter-spacing:.1em;text-transform:uppercase;border-radius:20px;padding:3px 10px;white-space:nowrap}
+.intro-tagline{font-size:14px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.intro-tagline strong{color:var(--text);font-weight:600}
+.intro-toggle-btn{display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);flex-shrink:0;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 10px;transition:all .15s}
+.intro-summary:hover .intro-toggle-btn{border-color:var(--accent);color:var(--accent)}
+.intro-arr{transition:transform .25s;display:inline-block}
+.intro-detail{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.intro-detail.open{max-height:400px}
+.intro-detail-inner{padding:0 18px 14px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.intro-detail-inner{grid-template-columns:1fr}}
+.intro-card{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 13px}
+.intro-card-title{font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:var(--text);margin-bottom:7px;display:flex;align-items:center;gap:6px}
+.intro-card p{font-size:14px;color:var(--dim);line-height:1.6}
+
+/* WELCOME MODAL */
+.wm-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+@keyframes wm-fade{from{opacity:0}to{opacity:1}}
+.wm-overlay.hidden{display:none}
+.wm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:680px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .25s ease}
+@keyframes wm-up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+.wm-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--surface)}
+.wm-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:20px;color:var(--text);line-height:1.25}
+.wm-title span{background:linear-gradient(90deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.wm-subtitle{font-size:15px;color:var(--dim);margin-top:5px;line-height:1.5}
+.wm-close{background:var(--surface3);border:1px solid var(--border-b);color:var(--text);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0;margin-left:12px;transition:all .15s;cursor:pointer}
+.wm-close:hover{border-color:var(--red);color:var(--red)}
+.wm-section-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:16px 20px 8px;display:block}
+.wm-scroll-body{overflow-y:auto;flex:1;padding-bottom:4px}
+.wm-steps{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 20px}
+@media(max-width:540px){.wm-steps{grid-template-columns:1fr}}
+.wm-step{display:flex;align-items:flex-start;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:11px 12px}
+.wm-step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;font-family:'Exo 2',sans-serif;font-weight:800;font-size:11px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.wm-step-t{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.wm-step-d{font-size:13px;color:var(--dim);line-height:1.55}
+.wm-role-context{padding:0 20px 10px;font-size:13px;color:var(--dim);line-height:1.5}
+.wm-role-context strong{color:var(--text)}
+.wm-roles{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;padding:0 20px}
+.wm-role{background:var(--surface2);border:2px solid var(--border);border-radius:10px;padding:13px 12px;cursor:pointer;text-align:center;transition:all .18s}
+.wm-role:hover{border-color:var(--accent);background:var(--accent-bg);transform:translateY(-2px)}
+.wm-role-icon{font-size:24px;margin-bottom:6px}
+.wm-role-name{font-family:'Exo 2',sans-serif;font-weight:700;font-size:12px;color:var(--text);margin-bottom:3px}
+.wm-role-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.wm-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 18px;flex-wrap:wrap;gap:10px;flex-shrink:0;border-top:1px solid var(--border);background:var(--surface)}
+.wm-skip{font-size:13px;color:var(--dim);background:var(--surface2);border:1px solid var(--border-b);border-radius:7px;padding:8px 14px;font-family:'JetBrains Mono',monospace;cursor:pointer;transition:all .15s}
+.wm-skip:hover{color:var(--dim)}
+.wm-start{background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;border:none;border-radius:8px;padding:9px 22px;font-size:13px;font-weight:700;font-family:'Exo 2',sans-serif;transition:opacity .15s,transform .15s}
+.wm-start:hover{opacity:.9;transform:scale(1.02)}
+.wm-no-show{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.wm-no-show input{accent-color:var(--accent);cursor:pointer}
+
+/* CHANGELOG MODAL */
+.cl-overlay{position:fixed;inset:0;z-index:410;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+.cl-overlay.hidden{display:none}
+.cl-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .22s ease}
+.cl-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
+.cl-hdr-left{}
+.cl-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:17px;color:var(--text)}
+.cl-subtitle{font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace}
+.cl-body{overflow-y:auto;padding:16px 20px;flex:1}
+.cl-entry{margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.cl-entry:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.cl-entry-hdr{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.cl-version{font-family:'Exo 2',sans-serif;font-weight:800;font-size:15px;color:var(--text)}
+.cl-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.cl-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;letter-spacing:.08em;border-radius:4px;padding:2px 7px;border:1px solid}
+.cl-label-feature{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-br)}
+.cl-label-fix{color:var(--orange);background:var(--orange-bg);border-color:var(--orange-br)}
+.cl-label-content{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
+.cl-label-major{color:var(--purple);background:var(--purple-bg);border-color:var(--purple-br)}
+.cl-latest-badge{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--green));color:#fff;border-radius:20px;padding:2px 8px;letter-spacing:.06em}
+.cl-changes{display:flex;flex-direction:column;gap:5px}
+.cl-change{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--dim);line-height:1.55}
+.cl-change-type{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.06em;flex-shrink:0;padding:1px 6px;border-radius:3px;border:1px solid}
+.cl-type-added{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
+.cl-type-fixed{color:var(--orange);background:var(--orange-bg);border-color:var(--orange-br)}
+.cl-type-changed{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-br)}
+.cl-type-removed{color:var(--red);background:var(--red-bg);border-color:var(--red-br)}
+.cl-type-improved{color:var(--purple);background:var(--purple-bg);border-color:var(--purple-br)}
+.cl-empty{text-align:center;padding:32px;color:var(--muted);font-size:13px}
+
+/* What's New header button */
+.whats-new-btn{position:relative;background:var(--surface2);border:1px solid var(--border-b);color:var(--dim);border-radius:7px;height:36px;padding:0 13px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'JetBrains Mono',monospace;transition:all .15s;white-space:nowrap;font-weight:600}
+.whats-new-btn:hover{border-color:var(--accent);color:var(--accent)}
+.whats-new-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--accent);border:2px solid var(--surface);animation:pulse-ring 1.6s ease-out infinite}
+.whats-new-dot.hidden{display:none}
+
+/* ROADMAP MODAL */
+.rm-overlay{position:fixed;inset:0;z-index:410;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+.rm-overlay.hidden{display:none}
+.rm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:640px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .22s ease}
+.rm-hdr{padding:20px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
+.rm-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:18px;color:var(--text)}
+.rm-subtitle{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.5}
+.rm-body{overflow-y:auto;padding:20px 22px;flex:1;display:flex;flex-direction:column;gap:18px}
+.rm-phase{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;position:relative}
+.rm-phase::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.rm-phase.done::before{background:var(--green)}
+.rm-phase.next::before{background:var(--accent)}
+.rm-phase.soon::before{background:var(--orange)}
+.rm-phase.future::before{background:var(--muted)}
+.rm-phase-hdr{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.rm-phase-num{font-family:'Exo 2',sans-serif;font-weight:800;font-size:11px;letter-spacing:.08em;color:#fff;border-radius:20px;padding:2px 10px}
+.rm-phase.done .rm-phase-num{background:var(--green)}
+.rm-phase.next .rm-phase-num{background:var(--accent)}
+.rm-phase.soon .rm-phase-num{background:var(--orange)}
+.rm-phase.future .rm-phase-num{background:var(--muted)}
+.rm-phase-title{font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:var(--text)}
+.rm-phase-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-left:auto}
+.rm-phase-desc{font-size:15px;color:var(--dim);line-height:1.65;margin-bottom:10px}
+.rm-items{display:flex;flex-direction:column;gap:5px}
+.rm-item{display:flex;align-items:baseline;gap:8px;font-size:14px;color:var(--dim)}
+.rm-item-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.rm-phase.done .rm-item-dot{background:var(--green)}
+.rm-phase.next .rm-item-dot{background:var(--accent)}
+.rm-phase.soon .rm-item-dot{background:var(--orange)}
+.rm-phase.future .rm-item-dot{background:var(--muted)}
+.rm-footer{padding:14px 22px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rm-footer-note{font-size:14px;color:var(--muted);flex:1}
+.rm-footer-note a{color:var(--accent)}
+.roadmap-btn{background:var(--surface2);border:1px solid var(--border-b);color:var(--dim);border-radius:7px;height:36px;padding:0 13px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'JetBrains Mono',monospace;transition:all .15s;white-space:nowrap;font-weight:600}
+.roadmap-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* MISC */
+.sb-backdrop{display:none;position:fixed;inset:0;top:var(--hdr);background:rgba(0,0,0,.5);z-index:90}
+.sb-backdrop.open{display:block}
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-ico{font-size:36px;margin-bottom:10px}
+.empty p{font-size:13px}
+.empty-suggest{margin-top:10px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.empty-sug-btn{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--dim);cursor:pointer;transition:all .15s;font-family:'JetBrains Mono',monospace}
+.empty-sug-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* FOOTER */
+.site-footer{
+  background:var(--surface);
+  border-top:2px solid var(--border-b);
+  padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:12px;
+  margin-bottom:var(--btm);
+}
+.footer-built{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.footer-built a{
+  color:var(--accent);font-weight:700;text-decoration:none;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:color .15s;
+}
+.footer-built a:hover{color:var(--green);text-decoration:underline}
+.footer-li-icon{width:16px;height:16px;vertical-align:middle;fill:currentColor}
+.footer-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.footer-link{font-size:13px;color:var(--muted);text-decoration:none;font-family:'JetBrains Mono',monospace;transition:color .15s}
+.footer-link:hover{color:var(--accent)}
+.footer-sep{color:var(--border-b);font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- WELCOME MODAL -->
+<div class="wm-overlay hidden" id="wm-overlay">
+  <div class="wm-box" role="dialog" aria-modal="true">
+
+    <!-- Sticky header — always visible, close button always reachable -->
+    <div class="wm-header">
+      <div>
+        <div class="wm-title">Welcome to the <span>Game Dev MCP Guide</span></div>
+        <div class="wm-subtitle">Model Context Protocols for game developers.</div>
+      </div>
+      <button class="wm-close" id="wm-close-x" title="Close and browse everything" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="wm-scroll-body">
+      <span class="wm-section-label">How to use this guide</span>
+      <div class="wm-steps">
+        <div class="wm-step"><div class="wm-step-num">1</div><div><div class="wm-step-t">Open the filter panel</div><div class="wm-step-d">Tap the <strong>☰ menu</strong> (top-left) or use the <strong>bottom tabs</strong> on mobile to filter by engine, tool, or complexity.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">2</div><div><div class="wm-step-t">Search or pick a role</div><div class="wm-step-d">Use the <strong>search bar</strong> for keywords, or tap a role below to pre-filter for your job.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">3</div><div><div class="wm-step-t">Click any MCP card</div><div class="wm-step-d">Opens a detail panel with full <strong>integration steps</strong>, copy-able commands, capabilities, and quality scores.</div></div></div>
+        <div class="wm-step"><div class="wm-step-num">4</div><div><div class="wm-step-t">Compare MCPs side-by-side</div><div class="wm-step-d">Tick the <strong>checkbox on 2 to 3 cards</strong> to open a comparison table showing setup time, docs score, capabilities and more.</div></div></div>
+      </div>
+
+      <span class="wm-section-label">Optional: start with a filtered example</span>
+      <div class="wm-role-context">Tap a role below to pre-load a relevant set of filters. You can change or clear them at any time. This is just a starting point, not a requirement.</div>
+      <div class="wm-roles" id="wm-roles">
+        <div class="wm-role" data-role="engine-programmer"><div class="wm-role-icon">⚙️</div><div class="wm-role-name">Engine Programmer</div><div class="wm-role-desc">Unity · Unreal · Godot integration &amp; C++/C# tooling</div></div>
+        <div class="wm-role" data-role="technical-artist"><div class="wm-role-icon">🎨</div><div class="wm-role-name">Technical Artist</div><div class="wm-role-desc">Shaders, materials, Blender &amp; Substance Painter pipelines</div></div>
+        <div class="wm-role" data-role="vfx-artist"><div class="wm-role-icon">✨</div><div class="wm-role-name">VFX / 3D Artist</div><div class="wm-role-desc">Maya, 3ds Max, Mixamo &amp; Quixel content creation</div></div>
+        <div class="wm-role" data-role="indie-dev"><div class="wm-role-icon">🕹️</div><div class="wm-role-name">Indie Developer</div><div class="wm-role-desc">Easiest-to-integrate tools across any engine</div></div>
+        <div class="wm-role" data-role="graphics-engineer"><div class="wm-role-icon">🖥️</div><div class="wm-role-name">Graphics Engineer</div><div class="wm-role-desc">NVIDIA DLSS, Nsight profiling &amp; RTX Remix</div></div>
+        <div class="wm-role" data-role="sim-engineer"><div class="wm-role-icon">🔬</div><div class="wm-role-name">Sim / Physics Dev</div><div class="wm-role-desc">PhysX, Omniverse &amp; USD simulation pipelines</div></div>
+        <div class="wm-role" data-role="roblox-creator"><div class="wm-role-icon">🧱</div><div class="wm-role-name">Roblox Creator</div><div class="wm-role-desc">Roblox Studio, Luau scripting &amp; publishing tools</div></div>
+        <div class="wm-role" data-role="just-browsing"><div class="wm-role-icon">👀</div><div class="wm-role-name">No Filter, Show All</div><div class="wm-role-desc">Browse everything unfiltered</div></div>
+      </div>
+    </div>
+
+    <!-- Sticky footer — always visible -->
+    <div class="wm-footer">
+      <label class="wm-no-show"><input type="checkbox" id="wm-no-show"> Don't show this again</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button class="wm-skip" id="wm-skip">Skip, show all</button>
+        <button class="wm-start" id="wm-start">Browse all MCPs</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMPARE OVERLAY -->
+<div class="cmp-overlay hidden" id="cmp-overlay">
+  <div class="cmp-box">
+    <div class="cmp-hdr">
+      <div class="cmp-title">Side-by-Side Comparison</div>
+      <button class="close-btn" id="cmp-close">✕</button>
+    </div>
+    <div class="cmp-scroll"><table class="cmp-table" id="cmp-table"></table></div>
+  </div>
+</div>
+
+<!-- COMPARE FLOATING BAR -->
+<div class="compare-bar hidden" id="compare-bar">
+  <span class="compare-bar-txt"><strong id="cmp-count">0</strong> MCPs selected</span>
+  <button class="compare-btn" id="cmp-open-btn">Compare →</button>
+  <button class="compare-clear" id="cmp-clear-btn" title="Clear selection">✕</button>
+</div>
+
+<!-- HELP FAB -->
+<button class="help-fab" id="help-fab" title="How to use this guide">?<span class="help-fab-label">How to use this guide</span></button>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="sb-toggle-wrap">
+    <button class="icon-btn" id="sb-toggle" title="Toggle filters" aria-label="Toggle filters">
+      <div class="ham" id="ham"><span></span><span></span><span></span></div>
+    </button>
+    <span class="ham-pulse hidden" id="ham-pulse"></span>
+  </div>
+  <a href="#" class="logo">
+    <div class="logo-box">GD</div>
+    <div class="logo-stack">
+      <span class="logo-name">Game Dev <em>MCP Guide</em></span>
+      <span class="logo-sub">Model Context Protocols for game developers</span>
+    </div>
+  </a>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="search" id="search" placeholder="Search MCPs, capabilities, tools… (press /)" autocomplete="off">
+  </div>
+  <div class="hdr-right">
+    <span class="hdr-count" id="hdr-count">15 MCPs</span>
+    <button class="roadmap-btn" id="roadmap-btn" title="Product Roadmap">◎ Roadmap</button>
+    <button class="whats-new-btn" id="whats-new-btn" title="What's New">
+      <span>★ What's New</span>
+      <span class="whats-new-dot hidden" id="wn-dot"></span>
+    </button>
+    <button class="theme-btn" id="theme-toggle"><span id="theme-ico">☀</span><span id="theme-lbl">Light</span></button>
+  </div>
+</header>
+
+<!-- ROADMAP MODAL -->
+<div class="rm-overlay hidden" id="rm-overlay">
+  <div class="rm-box" role="dialog" aria-modal="true" aria-label="Product Roadmap">
+    <div class="rm-hdr">
+      <div>
+        <div class="rm-title">Product Roadmap</div>
+        <div class="rm-subtitle">Where this tool is going, and what is honest about where it is now.</div>
+      </div>
+      <button class="close-btn" id="rm-close">✕</button>
+    </div>
+    <div class="rm-body">
+      <div class="rm-phase done">
+        <div class="rm-phase-hdr">
+          <span class="rm-phase-num">PHASE 1</span>
+          <span class="rm-phase-title">Foundation: Build the Thing</span>
+          <span class="rm-phase-status">✓ Complete</span>
+        </div>
+        <div class="rm-phase-desc">Get a working, searchable, filterable MCP reference tool out the door. Establish the data model, core features, and basic UX patterns.</div>
+        <div class="rm-items">
+          <div class="rm-item"><span class="rm-item-dot"></span>15 MCPs across Game Engines, 3D Content, and NVIDIA tools</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Search, filter, sort, and detail panel with copy-able integration steps</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Side-by-side comparison mode for up to 3 MCPs</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Light/dark mode, mobile bottom nav, collapsible sidebar</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Welcome modal with role-based quick starts</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>What's New changelog and this Roadmap</div>
+        </div>
+      </div>
+      <div class="rm-phase next">
+        <div class="rm-phase-hdr">
+          <span class="rm-phase-num">PHASE 2</span>
+          <span class="rm-phase-title">Integration with gamedevai.guide</span>
+          <span class="rm-phase-status">Up next</span>
+        </div>
+        <div class="rm-phase-desc">This tool becomes the 5th pillar of <a href="https://gamedevai.guide/" target="_blank" rel="noopener">gamedevai.guide</a>, sitting alongside the existing four tools as a fully integrated part of the platform.</div>
+        <div class="rm-items">
+          <div class="rm-item"><span class="rm-item-dot"></span>Unified navigation, auth, and visual language with gamedevai.guide</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Server-side MCP data with community submissions, versioned updates, and moderation queue</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>User accounts to save favourites, track MCPs you use, and leave reviews</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Cross-tool intelligence to surface relevant MCPs based on activity elsewhere on the platform</div>
+        </div>
+      </div>
+      <div class="rm-phase soon">
+        <div class="rm-phase-hdr">
+          <span class="rm-phase-num">PHASE 3</span>
+          <span class="rm-phase-title">Share &amp; Export</span>
+          <span class="rm-phase-status">Planned</span>
+        </div>
+        <div class="rm-phase-desc">Make it easy to share discoveries and hand off results to teammates, leads, or the wider community.</div>
+        <div class="rm-items">
+          <div class="rm-item"><span class="rm-item-dot"></span>Share filtered views on X, LinkedIn, Discord, and Reddit with a preview card</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Print to PDF with a clean print stylesheet for exporting filtered shortlists and comparisons</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Shareable comparison links to deep-link to a specific set of compared MCPs</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Embed widget to drop a filtered MCP card into any webpage or Notion doc</div>
+        </div>
+      </div>
+      <div class="rm-phase future">
+        <div class="rm-phase-hdr">
+          <span class="rm-phase-num">PHASE 4</span>
+          <span class="rm-phase-title">Visual Redesign: Escape the Baseline</span>
+          <span class="rm-phase-status">Future</span>
+        </div>
+        <div class="rm-phase-desc">Get past the AI slop design baseline.</div>
+        <div class="rm-items">
+          <div class="rm-item"><span class="rm-item-dot"></span>Custom visual identity including distinctive typography, colour system, and iconography</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Reimagined desktop layout with less overwhelming, stronger information hierarchy</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Proper motion design with purposeful transitions, not decoration</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Accessibility audit covering contrast, keyboard, and screen reader support</div>
+          <div class="rm-item"><span class="rm-item-dot"></span>Mobile-first layout rethink since the current design is desktop-adapted, not mobile-native</div>
+        </div>
+      </div>
+    </div>
+    <div class="rm-footer">
+      <span class="rm-footer-note">Part of <a href="https://gamedevai.guide/" target="_blank" rel="noopener">gamedevai.guide</a>, AI tools for game developers.</span>
+    </div>
+  </div>
+</div>
+
+<!-- WHATS NEW MODAL -->
+<div class="cl-overlay hidden" id="cl-overlay">
+  <div class="cl-box" role="dialog" aria-modal="true" aria-label="What's New">
+    <div class="cl-hdr">
+      <div class="cl-hdr-left">
+        <div class="cl-title">What's New</div>
+        <div class="cl-subtitle" id="cl-subtitle">Game Dev MCP Guide: update history</div>
+      </div>
+      <button class="close-btn" id="cl-close">✕</button>
+    </div>
+    <div class="cl-body" id="cl-body"></div>
+  </div>
+</div>
+
+<div class="sb-backdrop" id="sb-backdrop"></div>
+
+<!-- INTRO BANNER -->
+<div class="intro-banner">
+  <div class="intro-summary" id="intro-toggle-btn" role="button" aria-expanded="false">
+    <div class="intro-short">
+      <span class="intro-pill">What is this?</span>
+      <span class="intro-tagline"><strong>Model Context Protocols (MCPs)</strong> let AI assistants talk directly to your game dev tools. Search, filter and compare them here.</span>
+    </div>
+    <span class="intro-toggle-btn"><span class="intro-arr" id="intro-arr">▾</span> <span id="intro-more-lbl">More</span></span>
+  </div>
+  <div class="intro-detail" id="intro-detail">
+    <div class="intro-detail-inner">
+      <div class="intro-card"><div class="intro-card-title">🔌 What is an MCP?</div><p>A <strong>Model Context Protocol</strong> is a standardised bridge letting an AI model (like Claude) read and control external software such as a game engine, a 3D tool, or a GPU profiler, through a defined set of commands and data schemas.</p></div>
+      <div class="intro-card"><div class="intro-card-title">🎮 Why does it matter for game dev?</div><p>Instead of copy-pasting code between your editor and a chat window, an MCP lets the AI <em>directly</em> modify your scene, generate shaders, query assets, or run physics sims, all without leaving your tool.</p></div>
+      <div class="intro-card"><div class="intro-card-title">🔍 How to use this guide</div><p>Use the sidebar filters to narrow by engine, tool, status or complexity. Click any card to see full integration steps with one-click copy buttons, quality ratings, and community links.</p></div>
+      <div class="intro-card"><div class="intro-card-title">🟢 What's covered</div><p>Game engines <strong>(Unity, Unreal, Godot, Roblox)</strong>, 3D content tools <strong>(Blender, Maya, 3ds Max, Substance Painter, Quixel, Mixamo)</strong>, and NVIDIA tools <strong>(Omniverse, RTX Remix, DLSS, PhysX, Nsight)</strong>.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-inner">
+    <div class="stats-grid">
+      <div class="stat-cell stat-on" id="st-all" data-stat="all" title="Show all MCPs"><div class="stat-val" id="st-total">15</div><div class="stat-lbl">Total MCPs</div></div>
+      <div class="stat-cell" id="st-active-cell" data-stat="active" title="Filter: Active MCPs only"><div class="stat-val" id="st-active">7</div><div class="stat-lbl">Active</div></div>
+      <div class="stat-cell" id="st-beginner-cell" data-stat="beginner" title="Filter: Beginner Friendly (complexity ≤ 2)"><div class="stat-val" id="st-beginner">6</div><div class="stat-lbl">Beginner Friendly</div></div>
+      <div class="stat-cell" id="st-free-cell" data-stat="free" title="Filter: Free / Open Source"><div class="stat-val" id="st-free">9</div><div class="stat-lbl">Free / Open Source</div></div>
+    </div>
+    <div class="sb-divider"></div>
+    <div class="sb-group">
+      <span class="sb-section-title">Category</span>
+      <div class="cat-list" id="cat-list">
+        <button class="cat-btn on" data-cat="All"><span class="cat-btn-l"><span class="cdot" style="background:var(--dim)"></span>All</span><span class="cc" id="cc-all">15</span></button>
+        <button class="cat-btn" data-cat="Game Engine"><span class="cat-btn-l"><span class="cdot" style="background:var(--purple)"></span>Game Engine</span><span class="cc" id="cc-engine">4</span></button>
+        <button class="cat-btn" data-cat="3D Content"><span class="cat-btn-l"><span class="cdot" style="background:var(--accent)"></span>3D Content</span><span class="cc" id="cc-3d">6</span></button>
+        <button class="cat-btn" data-cat="NVIDIA"><span class="cat-btn-l"><span class="cdot" style="background:var(--nv)"></span>NVIDIA Tools</span><span class="cc" id="cc-nv">5</span></button>
+      </div>
+    </div>
+    <div class="sb-group"><span class="sb-section-title">Status</span><select class="sb-select" id="f-status"><option value="">All Statuses</option><option>Active</option><option>Stable</option><option>Beta</option><option>Deprecated</option></select></div>
+    <div class="sb-group"><span class="sb-section-title">Target Tool / Engine</span><select class="sb-select" id="f-target"><option value="">All Targets</option><option>Unity</option><option>Unreal Engine</option><option>Godot</option><option>Roblox</option><option>Blender</option><option>Maya</option><option>3ds Max</option><option>Substance Painter</option><option>Quixel Bridge</option><option>Mixamo</option><option>Omniverse</option><option>RTX Remix</option><option>Vulkan</option><option>DirectX</option><option>USD</option></select></div>
+    <div class="sb-group"><span class="sb-section-title">Max Complexity</span><select class="sb-select" id="f-complexity"><option value="">Any Complexity</option><option value="1">1: Plug &amp; Play</option><option value="2">≤ 2: Easy</option><option value="3">≤ 3: Moderate</option><option value="4">≤ 4: Advanced</option></select></div>
+    <div class="sb-group"><span class="sb-section-title">Min Documentation ★</span><select class="sb-select" id="f-docs"><option value="">Any</option><option value="3">3+ Stars</option><option value="4">4+ Stars</option><option value="5">5 Stars</option></select></div>
+    <div class="sb-divider"></div>
+    <div class="sb-group"><span class="sb-section-title">Sort By</span><select class="sb-select" id="f-sort"><option value="name">Name (A–Z)</option><option value="docs">Docs Quality</option><option value="community">Community</option><option value="setup">Setup Time (fastest)</option><option value="complexity">Complexity (easiest)</option><option value="updated">Recently Updated</option><option value="votes">Most Used</option></select></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="toolbar">
+    <div class="tb-left">
+      <span class="results-txt" id="results-txt">Showing 15 MCPs</span>
+      <div id="chips"></div>
+    </div>
+    <div class="tb-right">
+      <button class="icon-btn" id="clear-btn" title="Clear all filters" style="display:none;width:auto;padding:0 10px;font-size:11px;font-family:'JetBrains Mono',monospace">Clear all</button>
+    </div>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="overlay" id="overlay">
+  <div class="panel" id="panel">
+    <div class="panel-hdr">
+      <div class="panel-hdr-top">
+        <div><div class="panel-name" id="p-name"></div><div class="panel-ver" id="p-ver"></div></div>
+        <button class="close-btn" id="close-panel">✕</button>
+      </div>
+      <div class="panel-badges" id="p-badges"></div>
+      <div class="panel-desc" id="p-desc"></div>
+    </div>
+    <div class="ext-bar" id="p-links"></div>
+    <div class="panel-tabs">
+      <button class="p-tab on" data-tab="overview">Overview</button>
+      <button class="p-tab" data-tab="capabilities">Capabilities</button>
+      <button class="p-tab" data-tab="integration">Integration</button>
+      <button class="p-tab" data-tab="quality">Quality</button>
+    </div>
+    <div class="panel-body" id="panel-body"></div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM TAB BAR -->
+<nav class="btm-bar" id="btm-bar">
+  <button class="btm-tab on" data-btm="all"><span class="btm-tab-ico">⊞</span>All</button>
+  <button class="btm-tab" data-btm="engine"><span class="btm-tab-ico">🎮</span>Engine</button>
+  <button class="btm-tab" data-btm="3d"><span class="btm-tab-ico">🎨</span>3D Tools</button>
+  <button class="btm-tab" data-btm="nvidia"><span class="btm-tab-ico">🖥️</span>NVIDIA</button>
+  <button class="btm-tab" data-btm="filters"><span class="btm-tab-ico">⚙️</span>Filters</button>
+</nav>
+
+<script>
+/* ══ DATA ══ */
+const NOW = new Date("2026-04-12");
+const MCPS = [
+  {id:"unity-scene",name:"Unity Scene MCP",version:"2.1.4",category:"Game Engine",targets:["Unity"],desc:"Full scene graph manipulation, GameObject queries, component inspection and modification via natural language.",status:"Active",updated:"2025-03-01",license:"MIT",caps:["Scene Management","GameObject Query","Component Inspection","Prefab Instantiation","Physics Control","EditorCoroutines"],inputs:[".unity",".prefab","JSON"],outputs:[".unity",".prefab","JSON","C# snippet"],ctx:"Medium",streaming:true,tools:true,install:"Unity Package Manager",prereqs:["Unity 2022.3+","Anthropic API key",".NET 6"],setupTime:15,complexity:2,docs:5,community:5,stability:4,tags:["scene","editor","automation","official","C#"],steps:[{n:1,t:"Add package via URL",c:"com.anthropic.unity-mcp"},{n:2,t:"Configure API key",c:"Edit → Project Settings → Anthropic MCP → paste key"},{n:3,t:"Open MCP Panel",c:"Window → Anthropic → MCP Console"}],links:{docs:"https://github.com/CoderGamester/mcp-unity",github:"https://github.com/CoderGamester/mcp-unity",discord:"https://discord.com/invite/unity",reddit:"https://reddit.com/r/Unity3D",marketplace:"https://assetstore.unity.com"}},
+  {id:"unreal-blueprint",name:"Unreal Blueprint MCP",version:"1.3.0",category:"Game Engine",targets:["Unreal Engine"],desc:"AI-driven Blueprint graph generation, level streaming control, and Sequencer animation authoring for UE5.",status:"Beta",updated:"2025-02-18",license:"Apache 2.0",caps:["Blueprint Generation","Level Streaming","Sequencer Control","Material Authoring","Actor Spawning","C++ Stub Gen"],inputs:[".uasset",".umap","JSON"],outputs:[".uasset","C++ snippet","JSON"],ctx:"High",streaming:false,tools:true,install:"Manual Plugin",prereqs:["UE 5.3+","Python 3.11","Anthropic API key"],setupTime:45,complexity:4,docs:3,community:4,stability:3,tags:["blueprint","level-design","sequencer","UE5","C++"],steps:[{n:1,t:"Clone into Plugins folder",c:"git clone https://github.com/... Plugins/AnthropicMCP"},{n:2,t:"Enable in editor",c:"Edit → Plugins → search Anthropic → Enable → Restart"},{n:3,t:"Set API key",c:"Project Settings → Plugins → Anthropic → enter key"},{n:4,t:"Start Python server",c:'py "Plugins/AnthropicMCP/server.py"'}],links:{docs:"https://github.com/chongdashu/unreal-mcp",github:"https://github.com/chongdashu/unreal-mcp",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.fab.com"}},
+  {id:"godot-gdscript",name:"Godot GDScript MCP",version:"0.9.2",category:"Game Engine",targets:["Godot"],desc:"SceneTree traversal, GDScript generation, signal wiring, and Node property editing via conversational AI.",status:"Beta",updated:"2025-01-30",license:"MIT",caps:["SceneTree Query","GDScript Generation","Signal Wiring","Node Property Edit","Resource Loading","Shader Gen"],inputs:[".tscn",".gd",".tres"],outputs:[".tscn",".gd","JSON"],ctx:"Low",streaming:true,tools:true,install:"Addon (Manual)",prereqs:["Godot 4.2+","Python 3.10+","Anthropic API key"],setupTime:25,complexity:3,docs:3,community:3,stability:3,tags:["gdscript","open-source","indie","scene-tree"],steps:[{n:1,t:"Copy addon folder",c:"cp -r addons/anthropic_mcp your_project/addons/"},{n:2,t:"Enable plugin",c:"Project → Settings → Plugins → enable AnthropicMCP"},{n:3,t:"Add .env file",c:"ANTHROPIC_API_KEY=sk-ant-..."}],links:{docs:"https://github.com/Coding-Solo/godot-mcp",github:"https://github.com/Coding-Solo/godot-mcp",discord:"https://discord.gg/4JBkykG",reddit:"https://reddit.com/r/godot",marketplace:"https://godotengine.org/asset-library"}},
+  {id:"roblox-studio",name:"Roblox Studio MCP",version:"1.0.1",category:"Game Engine",targets:["Roblox"],desc:"DataModel inspection, Luau script generation, place publishing automation, and Explorer hierarchy queries.",status:"Active",updated:"2025-03-10",license:"Commercial",caps:["DataModel Query","Luau Generation","Place Publishing","UI Authoring","Team Create","DataStore API"],inputs:[".rbxl",".rbxm","JSON"],outputs:[".rbxl","Luau snippet","JSON"],ctx:"Medium",streaming:true,tools:true,install:"Studio Plugin (.rbxm)",prereqs:["Roblox Studio latest","Anthropic API key"],setupTime:20,complexity:2,docs:4,community:4,stability:4,tags:["luau","roblox","studio","publishing"],steps:[{n:1,t:"Download .rbxm plugin",c:"Releases page → download AnthropicMCP.rbxm"},{n:2,t:"Drag into Studio",c:"Drag .rbxm onto Studio viewport to install"},{n:3,t:"Configure API key",c:"Plugin toolbar → Anthropic → Settings → enter key"}],links:{docs:"https://create.roblox.com/docs/studio/mcp",github:"https://github.com/Roblox/studio-rust-mcp-server",discord:"https://discord.gg/roblox",reddit:"https://reddit.com/r/robloxgamedev",marketplace:"https://create.roblox.com/marketplace"}},
+  {id:"blender-mcp",name:"Blender MCP",version:"3.2.0",category:"3D Content",targets:["Blender"],desc:"Python-based Blender API bridge for mesh generation, material setup, rigging, rendering, and scene export via natural language.",status:"Active",updated:"2025-03-05",license:"GPL-3.0",caps:["Mesh Generation","Material Setup","Rigging","Render Control","Scene Export","Geometry Nodes","Python Scripting"],inputs:[".blend",".fbx",".obj",".gltf"],outputs:[".blend",".fbx",".obj",".gltf",".usd","Python"],ctx:"Medium",streaming:false,tools:true,install:"pip + Blender Addon",prereqs:["Blender 4.0+","Python 3.11","Anthropic API key"],setupTime:20,complexity:2,docs:5,community:5,stability:5,tags:["mesh","rigging","rendering","geometry-nodes","popular"],steps:[{n:1,t:"Install via pip",c:"pip install blender-mcp"},{n:2,t:"Install addon in Blender",c:"Edit → Preferences → Addons → Install from disk"},{n:3,t:"Set API key in addon prefs",c:"ANTHROPIC_API_KEY = sk-ant-..."},{n:4,t:"Start MCP Server",c:"N-panel → Anthropic tab → Start Server"}],links:{docs:"https://github.com/ahujasid/blender-mcp",github:"https://github.com/ahujasid/blender-mcp",discord:"https://discord.gg/blender",reddit:"https://reddit.com/r/blender",marketplace:"https://extensions.blender.org"}},
+  {id:"maya-mcp",name:"Autodesk Maya MCP",version:"1.4.1",category:"3D Content",targets:["Maya"],desc:"MEL/Python bridge for rig generation, deformer stacking, render layer management, and animation curve editing.",status:"Stable",updated:"2024-11-20",license:"Commercial",caps:["Rig Generation","Deformer Stacking","Render Layers","Animation Curves","Alembic Export","USD Export"],inputs:[".ma",".mb",".fbx",".abc"],outputs:[".ma",".mb",".fbx",".abc","MEL","Python"],ctx:"High",streaming:false,tools:true,install:"mayapy pip",prereqs:["Maya 2024+","Python 3.10","Anthropic API key"],setupTime:35,complexity:3,docs:4,community:3,stability:4,tags:["rigging","animation","vfx","studio-pipeline","MEL"],steps:[{n:1,t:"Install via mayapy",c:"mayapy -m pip install maya-anthropic-mcp"},{n:2,t:"Load plugin",c:"Window → Settings/Preferences → Plug-in Manager → AnthropicMCP.py"},{n:3,t:"Set env var in Maya.env",c:"ANTHROPIC_API_KEY=sk-ant-..."}],links:{docs:"https://help.autodesk.com/view/MAYAUL/2024",reddit:"https://reddit.com/r/Maya",marketplace:"https://apps.autodesk.com"}},
+  {id:"3dsmax-mcp",name:"3ds Max MCP",version:"1.1.0",category:"3D Content",targets:["3ds Max"],desc:"MaxScript and Python automation for scene hierarchy, modifier stack control, batch rendering, and arch-viz workflows.",status:"Stable",updated:"2024-10-14",license:"Commercial",caps:["Scene Hierarchy","Modifier Stack","Batch Rendering","Material Editor","Animation Layers","V-Ray Control"],inputs:[".max",".fbx",".obj",".abc"],outputs:[".max",".fbx",".obj","MaxScript","Python"],ctx:"High",streaming:false,tools:true,install:"3dsMaxPy pip",prereqs:["3ds Max 2024+","Python 3.11","Anthropic API key"],setupTime:40,complexity:4,docs:3,community:2,stability:3,tags:["maxscript","rendering","arch-viz","V-Ray"],steps:[{n:1,t:"Install via 3dsMaxPy",c:"3dsMaxPy -m pip install 3dsmax-anthropic-mcp"},{n:2,t:"Load via MAXScript Editor",c:"Scripting → MAXScript Editor → open init.ms → run"},{n:3,t:"Configure API key",c:'anthropic_mcp.configure key:"sk-ant-..."'}],links:{docs:"https://help.autodesk.com/view/3DSMAX/2024",reddit:"https://reddit.com/r/3dsmax",marketplace:"https://apps.autodesk.com"}},
+  {id:"substance-painter",name:"Substance Painter MCP",version:"1.0.0",category:"3D Content",targets:["Substance Painter"],desc:"AI-driven texture layering, smart material assignment, channel packing, and export preset automation for PBR workflows.",status:"Beta",updated:"2025-01-15",license:"MIT",caps:["Texture Layering","Smart Materials","Channel Packing","Export Presets","UV Query","Baking Control"],inputs:[".spp",".sbsar",".png",".exr"],outputs:[".png",".exr",".tga",".tiff","JSON"],ctx:"Low",streaming:false,tools:true,install:"Plugin (Manual)",prereqs:["Substance Painter 9.0+","Python 3.9+","Anthropic API key"],setupTime:30,complexity:3,docs:2,community:2,stability:3,tags:["texturing","PBR","smart-materials","export","Adobe"],steps:[{n:1,t:"Copy plugin folder",c:'cp -r AnthropicMCP/ "Documents/Adobe/SP/plugins/"'},{n:2,t:"Load plugin in SP",c:"Python → Plugins → AnthropicMCP → Load"},{n:3,t:"Enter API key",c:"Plugin settings panel → API Key field"}],links:{docs:"https://helpx.adobe.com/substance-3d-painter.html",discord:"https://discord.gg/substance3d",reddit:"https://reddit.com/r/gamedev",marketplace:"https://substance3d.adobe.com/assets"}},
+  {id:"quixel-bridge",name:"Quixel Bridge MCP",version:"0.8.0",category:"3D Content",targets:["Quixel Bridge","Unreal Engine","Unity"],desc:"Asset search, LOD selection, and batch export automation across the Megascans library using natural language queries.",status:"Beta",updated:"2024-12-01",license:"MIT",caps:["Asset Search","LOD Selection","Batch Export","Tag Filtering","Engine Push","Metadata Query"],inputs:["JSON","search query"],outputs:[".fbx",".abc","texture maps","JSON"],ctx:"Low",streaming:false,tools:true,install:"pip server",prereqs:["Quixel Bridge 2023+","Python 3.9+","Epic/Adobe account","Anthropic API key"],setupTime:25,complexity:3,docs:2,community:2,stability:2,tags:["megascans","asset-library","batch","automation"],steps:[{n:1,t:"Install pip server",c:"pip install quixel-anthropic-mcp"},{n:2,t:"Configure Bridge",c:"Bridge → Preferences → Scripts → add server path"},{n:3,t:"Start server",c:"python -m quixel_mcp --key YOUR_KEY"}],links:{docs:"https://quixel.com/bridge",discord:"https://discord.gg/epicgames",reddit:"https://reddit.com/r/quixel",marketplace:"https://quixel.com/megascans"}},
+  {id:"mixamo-mcp",name:"Mixamo MCP",version:"0.6.1",category:"3D Content",targets:["Mixamo","Blender","Unity","Unreal Engine"],desc:"Auto-rig triggering, animation pack selection, retargeting, and batch FBX export from the Mixamo character library.",status:"Beta",updated:"2024-09-20",license:"MIT",caps:["Auto-Rigging","Animation Selection","Batch FBX Export","Character Upload","Retargeting","Blend Shape Query"],inputs:[".fbx",".obj"],outputs:[".fbx","JSON"],ctx:"Low",streaming:false,tools:true,install:"pip server",prereqs:["Adobe account","Python 3.9+","Anthropic API key"],setupTime:20,complexity:2,docs:2,community:2,stability:2,tags:["animation","auto-rigging","character","Adobe"],steps:[{n:1,t:"Install",c:"pip install mixamo-mcp"},{n:2,t:"Authenticate Adobe",c:"mixamo-mcp auth --adobe-email user@example.com"},{n:3,t:"Set Anthropic key",c:"export ANTHROPIC_API_KEY=sk-ant-..."},{n:4,t:"Run server",c:"python -m mixamo_mcp"}],links:{docs:"https://helpx.adobe.com/creative-cloud/adobe-mixamo.html",reddit:"https://reddit.com/r/gamedev",marketplace:"https://www.mixamo.com"}},
+  {id:"nvidia-omniverse",name:"NVIDIA Omniverse MCP",version:"2.1.0",category:"NVIDIA",targets:["Omniverse","USD","Blender","Maya","Unreal Engine"],desc:"USD scene composition, multi-app collaboration pipeline, physics simulation, and real-time RTX rendering control via Omniverse Kit extensions.",status:"Active",updated:"2025-03-08",license:"NVIDIA SDK",caps:["USD Composition","Multi-App Sync","Physics Sim","RTX Rendering","Nucleus Sync","Python Scripting","USD Variant Sets","Hydra Render"],inputs:[".usd",".usda",".usdc",".usdz",".fbx",".gltf"],outputs:[".usd",".usdz",".fbx","Python","JSON"],ctx:"High",streaming:true,tools:true,install:"Omniverse Launcher Extension",prereqs:["NVIDIA GPU (RTX recommended)","Omniverse Kit 106+","Python 3.10","Anthropic API key"],setupTime:60,complexity:4,docs:4,community:4,stability:4,tags:["USD","RTX","simulation","multi-app","real-time","NVIDIA"],steps:[{n:1,t:"Install via Launcher",c:"NVIDIA Launcher → Exchange → search AnthropicMCP → Install"},{n:2,t:"Enable extension",c:"Window → Extensions → search anthropic.mcp → enable"},{n:3,t:"Configure API key",c:"Extension settings → ANTHROPIC_API_KEY field"},{n:4,t:"Open MCP Console",c:"Window → Anthropic MCP → Open Console"}],links:{docs:"https://docs.omniverse.nvidia.com",github:"https://github.com/NVIDIA-Omniverse/kit-usd-agents",discord:"https://discord.gg/nvidiaomniverse",reddit:"https://reddit.com/r/NvidiaOmniverse"}},
+  {id:"nvidia-rtx-remix",name:"NVIDIA RTX Remix MCP",version:"1.0.3",category:"NVIDIA",targets:["RTX Remix","Omniverse"],desc:"AI-assisted asset replacement, AI texture remastering with DLSS Super Resolution, and RTX lighting automation for classic game modding pipelines.",status:"Active",updated:"2025-02-25",license:"MIT",caps:["Asset Replacement","AI Texture Remaster","RTX Lighting","Material Conversion","DLSS Integration","Mod Packaging","Path Tracing Setup"],inputs:[".usd",".dds",".png","game assets"],outputs:[".usd",".dds",".png","mod package"],ctx:"Medium",streaming:false,tools:true,install:"pip + RTX Remix Runtime",prereqs:["NVIDIA RTX GPU","RTX Remix Runtime","Python 3.11","Anthropic API key"],setupTime:45,complexity:3,docs:4,community:4,stability:4,tags:["remastering","modding","RTX","DLSS","path-tracing","NVIDIA"],steps:[{n:1,t:"Download RTX Remix Runtime",c:"github.com/NVIDIAGameWorks/rtx-remix → Releases"},{n:2,t:"Install MCP package",c:"pip install rtx-remix-mcp"},{n:3,t:"Configure API key",c:"remix_mcp configure --api-key sk-ant-..."},{n:4,t:"Connect to Remix Toolkit",c:"remix_mcp connect --port 8011"}],links:{docs:"https://docs.omniverse.nvidia.com/kit/docs/rtx_remix/1.2.4/docs/howto/learning-mcp.html",github:"https://github.com/NVIDIAGameWorks/rtx-remix",discord:"https://discord.gg/rtxremix",reddit:"https://reddit.com/r/rtxremix"}},
+  {id:"nvidia-dlss",name:"NVIDIA DLSS Toolkit MCP",version:"1.2.0",category:"NVIDIA",targets:["Unity","Unreal Engine","Vulkan","DirectX"],desc:"Automated DLSS 4, DLAA, and NVIDIA Image Scaling integration with per-frame performance benchmarking and quality preset optimization.",status:"Active",updated:"2025-03-12",license:"NVIDIA SDK",caps:["DLSS 4 Integration","DLAA Setup","NIS Config","Frame Generation","Perf Benchmarking","Quality Presets","Multi-Frame Gen"],inputs:[".unity",".uproject","JSON config"],outputs:["C# snippet","C++ snippet","JSON","perf report"],ctx:"Medium",streaming:false,tools:true,install:"Unity Package / UE Plugin + pip",prereqs:["NVIDIA RTX GPU","DLSS SDK 3.7+","Anthropic API key"],setupTime:30,complexity:3,docs:5,community:4,stability:5,tags:["DLSS","upscaling","performance","frame-gen","RTX","NVIDIA"],steps:[{n:1,t:"Download DLSS SDK",c:"developer.nvidia.com/dlss → download SDK 3.7+"},{n:2,t:"Install MCP",c:"pip install nvidia-dlss-mcp"},{n:3,t:"Set API key",c:"export ANTHROPIC_API_KEY=sk-ant-..."},{n:4,t:"Run integration wizard",c:"dlss_mcp wizard --engine unity"}],links:{docs:"https://developer.nvidia.com/dlss",github:"https://github.com/NVIDIA/DLSS",discord:"https://discord.gg/nvidia-developers",reddit:"https://reddit.com/r/nvidia"}},
+  {id:"nvidia-physx",name:"NVIDIA PhysX MCP",version:"5.4.1",category:"NVIDIA",targets:["Unity","Unreal Engine","Omniverse","Godot"],desc:"Advanced rigid body, cloth, fluid, and GPU-accelerated destruction simulation authoring with natural language constraint and material setup.",status:"Active",updated:"2025-01-28",license:"BSD-3",caps:["Rigid Body Sim","Cloth Simulation","Fluid Dynamics","Destruction","Constraint Authoring","GPU Acceleration","Articulation","Blast Fracture"],inputs:[".usd",".fbx",".obj","JSON"],outputs:[".usd","C++ snippet","Python snippet","JSON"],ctx:"Medium",streaming:false,tools:true,install:"pip + PhysX SDK",prereqs:["NVIDIA GPU","PhysX SDK 5.4+","Python 3.10+","Anthropic API key"],setupTime:40,complexity:4,docs:4,community:3,stability:4,tags:["physics","simulation","destruction","cloth","fluid","NVIDIA"],steps:[{n:1,t:"Clone PhysX SDK",c:"git clone https://github.com/NVIDIA-Omniverse/PhysX"},{n:2,t:"Install MCP",c:"pip install nvidia-physx-mcp"},{n:3,t:"Configure SDK path",c:"physx_mcp configure --sdk-path /path/to/physx"},{n:4,t:"Set API key",c:"export ANTHROPIC_API_KEY=sk-ant-..."}],links:{docs:"https://nvidia-omniverse.github.io/PhysX",github:"https://github.com/NVIDIA-Omniverse/PhysX",discord:"https://discord.gg/nvidiaomniverse",reddit:"https://reddit.com/r/gamedev",marketplace:"https://developer.nvidia.com/physx-sdk"}},
+  {id:"nvidia-nsight",name:"NVIDIA Nsight MCP",version:"2024.3.0",category:"NVIDIA",targets:["Unity","Unreal Engine","Omniverse","Vulkan","DirectX"],desc:"AI-guided GPU profiling, shader debugging, frame capture analysis, and performance bottleneck identification via Nsight Graphics and Systems.",status:"Stable",updated:"2024-12-15",license:"NVIDIA SDK",caps:["GPU Profiling","Shader Debugging","Frame Capture","Perf Analysis","Memory Tracking","API Trace","Bottleneck Detection","Occupancy Analysis"],inputs:[".nsight-gfx",".qdrep","live capture"],outputs:["perf report","JSON","annotated shader","HTML report"],ctx:"High",streaming:false,tools:true,install:"Nsight Graphics + pip",prereqs:["NVIDIA GPU","Nsight Graphics 2024.3+","Python 3.10+","Anthropic API key"],setupTime:50,complexity:5,docs:4,community:3,stability:4,tags:["profiling","debugging","GPU","performance","shader","NVIDIA"],steps:[{n:1,t:"Install Nsight Graphics",c:"developer.nvidia.com/nsight-graphics → download"},{n:2,t:"Install MCP package",c:"pip install nvidia-nsight-mcp"},{n:3,t:"Configure Nsight path",c:'nsight_mcp configure --nsight-path "C:/Program Files/NVIDIA..."'},{n:4,t:"Launch with API key",c:"nsight_mcp run --key sk-ant-... --port 9001"}],links:{docs:"https://docs.nvidia.com/nsight-graphics",discord:"https://discord.gg/nvidia-developers",reddit:"https://reddit.com/r/GraphicsProgramming",marketplace:"https://developer.nvidia.com/nsight-graphics"}},
+];
+
+/* ══════════════════════════════════════════════════════════
+   CHANGELOG  ←  ADD NEW ENTRIES AT THE TOP OF THIS ARRAY
+   
+   version : semver string  e.g. "1.3.0"
+   date    : "YYYY-MM-DD"
+   label   : "Feature Update" | "Bug Fix" | "Content Update" | "Major Release"
+   changes : array of { type, text }
+     type  : "added" | "fixed" | "changed" | "improved" | "removed"
+══════════════════════════════════════════════════════════ */
+const CHANGELOG = [
+  {
+    version: "1.4.0",
+    date: "2026-04-12",
+    label: "Feature Update",
+    changes: [
+      { type: "added",   text: "What's New changelog now live and tracking all updates." },
+      { type: "added",   text: "Product Roadmap added with four phases covering integration, share/export, and visual redesign plans." },
+      { type: "added",   text: "favicon.svg and og-image.png added for browser tab and social sharing previews." },
+      { type: "fixed",   text: "OG image meta tag updated to use the full absolute URL at gamedevai.guide/mcp/og-image.png so social platforms can fetch it correctly." },
+      { type: "improved", text: "Minimum body font size raised to 16px throughout to prevent iOS auto-zoom and improve readability." },
+      { type: "improved", text: "Visual separation between sidebar, header, cards, and main content area using distinct background tones, stronger borders, and card shadows." },
+      { type: "improved", text: "Text contrast raised across both light and dark modes, particularly for description and label text that was getting lost in the background." },
+      { type: "improved", text: "Header buttons (Roadmap, What's New, Light/Dark) increased to 13px bold and are now clearly readable." },
+      { type: "improved", text: "Light mode is now the default for first-time visitors." },
+      { type: "improved", text: "Roadmap phase order updated: gamedevai.guide integration moved to Phase 2, visual redesign moved to Phase 4." },
+      { type: "fixed",   text: "Roadmap phase boxes were being clipped due to overflow:hidden on the phase container." },
+      { type: "fixed",   text: "Welcome modal close button was cut off on mobile. Header and footer are now sticky outside the scroll area so close and action buttons are always reachable." },
+      { type: "improved", text: "Welcome modal role cards now include a context note explaining they are optional filter presets, not a required selection." },
+      { type: "improved", text: "Role card section label changed to 'Optional: start with a filtered example' for clarity." },
+      { type: "improved", text: "Just Browsing role renamed to No Filter, Show All to better describe the action." },
+      { type: "fixed",   text: "Compare checkbox was overlapping the status badge in the top-right of each card. It now sits below the badge in the same column." },
+      { type: "fixed",   text: "Card template was missing description, tags, and footer after a previous edit truncated the render function. All sections restored." },
+    ]
+  },
+  {
+    version: "1.3.0",
+    date: "2026-04-12",
+    label: "Bug Fix",
+    changes: [
+      { type: "fixed", text: "Script errors on iOS when tapping bottom nav tabs, caused by history.replaceState on file:// protocol." },
+      { type: "fixed", text: "Clipboard copy buttons now fall back gracefully on restricted WebView environments." },
+      { type: "fixed", text: "Sidebar hamburger was firing toggleSidebar twice per click due to duplicate event listeners." },
+      { type: "fixed", text: "Intro banner 'More/Less' toggle crashed on second click after innerHTML replacement removed the arrow element's id." },
+    ]
+  },
+  {
+    version: "1.2.0",
+    date: "2026-04-11",
+    label: "Feature Update",
+    changes: [
+      { type: "added", text: "Side-by-side comparison mode. Tick 2 to 3 cards and compare setup time, docs, community score and capabilities in a table." },
+      { type: "added", text: "Copy buttons on every integration command. One tap to copy to clipboard with fallback for restricted environments." },
+      { type: "added", text: "URL-persistent filter state. Filters are encoded as query params so views can be bookmarked and shared." },
+      { type: "added", text: "Beginner Friendly ribbon on complexity ≤ 2 cards for faster visual scanning." },
+      { type: "added", text: "Keyboard navigation. Arrow keys move between cards, Enter opens detail panel." },
+      { type: "added", text: "Stale warning indicator. Amber dot on cards not updated in 6 or more months." },
+      { type: "added", text: "I use this vote button. Upvote MCPs you use, persisted in localStorage and sortable." },
+      { type: "added", text: "Mobile bottom tab bar. All, Engine, 3D Tools, NVIDIA, and Filters replaces hamburger-only navigation on small screens." },
+    ]
+  },
+  {
+    version: "1.1.0",
+    date: "2026-04-10",
+    label: "Feature Update",
+    changes: [
+      { type: "added", text: "Welcome modal with role-based quick-start cards (Engine Programmer, Technical Artist, Indie Dev, etc.)." },
+      { type: "added", text: "Hamburger pulse animation on first visit to draw attention to filter panel." },
+      { type: "added", text: "Persistent '?' help FAB to reopen the welcome guide at any time." },
+      { type: "added", text: "Light and dark mode with localStorage persistence." },
+      { type: "added", text: "Collapsible sidebar with mobile drawer support." },
+      { type: "added", text: "External links bar in detail panel covering Docs, GitHub, Discord, Reddit, and Marketplace per MCP." },
+      { type: "changed", text: "Renamed from MCP Registry to Game Dev MCP Guide." },
+      { type: "added", text: "Expandable 'What is this?' intro banner explaining MCPs to newcomers." },
+    ]
+  },
+  {
+    version: "1.0.0",
+    date: "2026-04-09",
+    label: "Major Release",
+    changes: [
+      { type: "added", text: "Hello Game Dev MCP World! New App! The Game Dev MCP Guide is live." },
+      { type: "added", text: "Searchable card grid with filters for category, status, target tool, complexity, and documentation quality." },
+      { type: "added", text: "Detail panel with Overview, Capabilities, Integration steps, and Quality tabs." },
+      { type: "added", text: "Star ratings for documentation, community support, and stability." },
+      { type: "added", text: "Category quick-filter sidebar with live result counts." },
+    ]
+  },
+];
+const state = {
+  search:"",category:"All",status:"",target:"",complexity:"",docs:"",sort:"name",_freeFilter:false,
+  selected:null,activeTab:"overview",
+  sidebarOpen:true,mobileSidebarOpen:false,
+  compareSet:new Set(),
+  focusedIdx:-1,
+};
+
+/* ══ VOTES (localStorage) ══ */
+function loadVotes(){try{return JSON.parse(localStorage.getItem("mcp-votes")||"{}")}catch{return{}}}
+function saveVotes(v){try{localStorage.setItem("mcp-votes",JSON.stringify(v))}catch{}}
+let votes = loadVotes();
+function getVote(id){return votes[id]||0}
+function toggleVote(id,e){
+  e.stopPropagation();
+  const hasVoted = votes[id+"_me"];
+  if(hasVoted){delete votes[id+"_me"];votes[id]=Math.max(0,(votes[id]||1)-1)}
+  else{votes[id+"_me"]=1;votes[id]=(votes[id]||0)+1}
+  saveVotes(votes);
+  renderCards();
+}
+
+/* ══ HELPERS ══ */
+const isMobile = ()=>window.innerWidth<=760;
+function monthsOld(dateStr){const d=new Date(dateStr);return (NOW-d)/(1000*60*60*24*30)}
+function isStale(m){return monthsOld(m.updated)>=6}
+function staleLabel(m){const mo=Math.floor(monthsOld(m.updated));return mo>=12?`${Math.floor(mo/12)}y old`:`${mo}mo old`}
+function stars(n,max=5){return Array.from({length:max},(_,i)=>`<span class="star ${i<n?'on':'off'}">★</span>`).join('')}
+function badge(text,cls){return `<span class="badge ${cls}">${text}</span>`}
+function catClass(cat){return cat==="Game Engine"?"b-engine":cat==="3D Content"?"b-3d":"b-nvidia"}
+function statusClass(s){return`b-${s.toLowerCase()}`}
+function complexityLabel(n){return["","Plug & Play","Easy","Moderate","Advanced","Expert"][n]||""}
+const EXT_ICONS={docs:"📄",github:"💻",discord:"💬",reddit:"🔴",marketplace:"🛒"};
+const EXT_LABELS={docs:"Docs",github:"GitHub",discord:"Discord",reddit:"Reddit",marketplace:"Marketplace"};
+
+/* ══ URL STATE ══ */
+function syncURL(){
+  const p=new URLSearchParams();
+  if(state.search) p.set("q",state.search);
+  if(state.category!=="All") p.set("cat",state.category);
+  if(state.status) p.set("status",state.status);
+  if(state.target) p.set("target",state.target);
+  if(state.complexity) p.set("cx",state.complexity);
+  if(state.docs) p.set("docs",state.docs);
+  if(state.sort!=="name") p.set("sort",state.sort);
+  const qs=p.toString();
+  try{history.replaceState(null,"",qs?"?"+qs:location.pathname)}catch(e){}
+}
+function readURL(){
+  const p=new URLSearchParams(location.search);
+  if(p.get("q")){state.search=p.get("q");document.getElementById("search").value=state.search}
+  if(p.get("cat")) state.category=p.get("cat");
+  if(p.get("status")){state.status=p.get("status");document.getElementById("f-status").value=state.status}
+  if(p.get("target")){state.target=p.get("target");document.getElementById("f-target").value=state.target}
+  if(p.get("cx")){state.complexity=p.get("cx");document.getElementById("f-complexity").value=state.complexity}
+  if(p.get("docs")){state.docs=p.get("docs");document.getElementById("f-docs").value=state.docs}
+  if(p.get("sort")){state.sort=p.get("sort");document.getElementById("f-sort").value=state.sort}
+  syncCatBtns();
+}
+
+/* ══ FILTER & SORT ══ */
+let lastFiltered=[];
+function filterMCPs(){
+  let list=MCPS;
+  const q=state.search.toLowerCase().trim();
+  if(q) list=list.filter(m=>m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q)||m.caps.some(c=>c.toLowerCase().includes(q))||m.tags.some(t=>t.toLowerCase().includes(q))||m.targets.some(t=>t.toLowerCase().includes(q)));
+  if(state.category!=="All") list=list.filter(m=>m.category===state.category);
+  if(state.status) list=list.filter(m=>m.status===state.status);
+  if(state.target) list=list.filter(m=>m.targets.includes(state.target));
+  if(state.complexity) list=list.filter(m=>m.complexity<=+state.complexity);
+  if(state.docs) list=list.filter(m=>m.docs>=+state.docs);
+  if(state._freeFilter){const fl=["MIT","GPL-3.0","Apache 2.0","BSD-3"];list=list.filter(m=>fl.some(l=>m.license.includes(l)));}
+  return [...list].sort((a,b)=>{
+    switch(state.sort){
+      case"docs":return b.docs-a.docs;
+      case"community":return b.community-a.community;
+      case"setup":return a.setupTime-b.setupTime;
+      case"complexity":return a.complexity-b.complexity;
+      case"updated":return b.updated.localeCompare(a.updated);
+      case"votes":return getVote(b.id)-getVote(a.id);
+      default:return a.name.localeCompare(b.name);
+    }
+  });
+}
+
+/* ══ RENDER CARDS ══ */
+function renderCards(){
+  const list=filterMCPs();
+  lastFiltered=list;
+  const grid=document.getElementById("grid");
+  const txt=document.getElementById("results-txt");
+  const chips=document.getElementById("chips");
+  const clrBtn=document.getElementById("clear-btn");
+  txt.textContent=`Showing ${list.length} of ${MCPS.length} MCPs`;
+  document.getElementById("hdr-count").textContent=`${MCPS.length} MCPs`;
+
+  // Chips
+  const af=[];
+  if(state.search) af.push({key:"search",label:`"${state.search}"`});
+  if(state.category!=="All") af.push({key:"category",label:state.category});
+  if(state.status) af.push({key:"status",label:state.status});
+  if(state.target) af.push({key:"target",label:state.target});
+  if(state.complexity) af.push({key:"complexity",label:`≤ Complexity ${state.complexity}`});
+  if(state.docs) af.push({key:"docs",label:`Docs ≥ ${state.docs}★`});
+  chips.innerHTML=af.map(f=>`<span class="chip">${f.label}<span class="x" data-chip="${f.key}">✕</span></span>`).join('');
+  clrBtn.style.display=af.length?"flex":"none";
+
+  // Empty state
+  if(!list.length){
+    const suggestions=[];
+    if(state.complexity&&+state.complexity<5) suggestions.push({key:"complexity",label:"Remove complexity filter",action:()=>{state.complexity="";document.getElementById("f-complexity").value="";renderCards();syncURL()}});
+    if(state.docs) suggestions.push({key:"docs",label:"Remove docs filter",action:()=>{state.docs="";document.getElementById("f-docs").value="";renderCards();syncURL()}});
+    if(state.status) suggestions.push({key:"status",label:"Remove status filter",action:()=>{state.status="";document.getElementById("f-status").value="";renderCards();syncURL()}});
+    suggestions.push({key:"all",label:"Clear all filters",action:clearAllFilters});
+    grid.innerHTML=`<div class="empty"><div class="empty-ico">⊘</div><p>No MCPs match your current filters.</p><div class="empty-suggest" id="empty-sug"></div></div>`;
+    const sug=document.getElementById("empty-sug");
+    suggestions.forEach(s=>{const b=document.createElement("button");b.className="empty-sug-btn";b.textContent=s.label;b.addEventListener("click",s.action);sug.appendChild(b)});
+    updateStats(list);return;
+  }
+
+  // Cards
+  grid.innerHTML=list.map((m,i)=>{
+    const voted=votes[m.id+"_me"];
+    const voteCount=getVote(m.id);
+    const stale=isStale(m);
+    const beginner=m.complexity<=2;
+    return `<div class="card${state.selected===m.id?" sel":""}${state.compareSet.has(m.id)?" in-compare":""}" data-id="${m.id}" data-idx="${i}" tabindex="0" style="animation-delay:${i*0.025}s">
+      ${beginner?'<div class="card-ribbon">Beginner Friendly</div>':''}
+      <div class="card-top">
+        <div class="card-name-area" style="margin-top:${beginner?18:0}px">
+          <div class="card-name">${m.name}</div>
+          <div class="card-ver">v${m.version} · ${m.license}</div>
+        </div>
+        <div class="card-top-right">
+          <span class="badge ${statusClass(m.status)}">${m.status}</span>
+          ${stale?`<span class="stale-dot" data-tip="${staleLabel(m)} check for updates" title="${staleLabel(m)} check for updates"></span>`:''}
+          <label class="compare-check-wrap" title="Add to comparison" onclick="event.stopPropagation()">
+            <input type="checkbox" class="compare-cb" data-cid="${m.id}" ${state.compareSet.has(m.id)?"checked":""} ${!state.compareSet.has(m.id)&&state.compareSet.size>=3?"disabled":""}>
+            <span class="compare-cb-label">Compare</span>
+          </label>
+        </div>
+      </div>
+      <div class="card-desc">${m.desc}</div>
+      <div class="card-tags">
+        ${badge(m.category,catClass(m.category))}
+        ${m.targets.slice(0,3).map(t=>`<span class="badge b-neutral b-sm">${t}</span>`).join('')}
+        ${m.targets.length>3?`<span class="badge b-neutral b-sm">+${m.targets.length-3}</span>`:''}
+      </div>
+      <div class="card-foot">
+        <div class="meta-item"><span class="meta-lbl">Docs</span><div class="stars">${stars(m.docs)}</div></div>
+        <div class="meta-item"><span class="meta-lbl">Community</span><div class="stars">${stars(m.community)}</div></div>
+        <div class="meta-item"><span class="meta-lbl">Setup</span>~${m.setupTime}m</div>
+        <button class="vote-btn${voted?" voted":""}" data-vote="${m.id}" title="${voted?"Remove your vote":"Mark as used"}"><span class="vote-ico">▲</span>${voteCount?" "+voteCount+" ·":""} I use this</button>
+      </div>
+    </div>`}).join('');
+
+  // Bind events
+  grid.querySelectorAll(".card").forEach(card=>{
+    card.addEventListener("click",e=>{
+      if(e.target.classList.contains("compare-cb")||e.target.closest(".vote-btn")) return;
+      openPanel(card.dataset.id);
+    });
+    card.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openPanel(card.dataset.id)}});
+  });
+  grid.querySelectorAll(".vote-btn").forEach(btn=>{
+    btn.addEventListener("click",e=>toggleVote(btn.dataset.vote,e));
+  });
+  grid.querySelectorAll(".compare-cb").forEach(cb=>{
+    cb.addEventListener("change",()=>{
+      if(cb.checked&&state.compareSet.size<3) state.compareSet.add(cb.dataset.cid);
+      else state.compareSet.delete(cb.dataset.cid);
+      updateCompareBar();
+      renderCards();
+    });
+  });
+  chips.querySelectorAll(".x").forEach(x=>x.addEventListener("click",e=>{e.stopPropagation();removeChip(x.dataset.chip)}));
+  updateStats(list);
+  syncURL();
+}
+
+function updateStats(filtered){
+  const freeLicenses=["MIT","GPL-3.0","Apache 2.0","BSD-3"];
+  document.getElementById("st-total").textContent=MCPS.length;
+  document.getElementById("st-active").textContent=MCPS.filter(m=>m.status==="Active").length;
+  document.getElementById("st-beginner").textContent=MCPS.filter(m=>m.complexity<=2).length;
+  document.getElementById("st-free").textContent=MCPS.filter(m=>freeLicenses.some(l=>m.license.includes(l))).length;
+  // Sync active highlight with current filter state
+  document.getElementById("st-all").classList.toggle("stat-on", state.category==="All"&&!state.status&&!state.complexity&&!state.docs);
+  document.getElementById("st-active-cell").classList.toggle("stat-on", state.status==="Active");
+  document.getElementById("st-beginner-cell").classList.toggle("stat-on", state.complexity==="2"&&!state.status);
+  document.getElementById("st-free-cell").classList.toggle("stat-on", state.docs===""&&state.status===""&&state._freeFilter===true);
+  const base=MCPS.filter(m=>{
+    const q=state.search.toLowerCase();
+    if(q&&!(m.name.toLowerCase().includes(q)||m.desc.toLowerCase().includes(q)||m.caps.some(c=>c.toLowerCase().includes(q))||m.tags.some(t=>t.toLowerCase().includes(q))||m.targets.some(t=>t.toLowerCase().includes(q)))) return false;
+    if(state.status&&m.status!==state.status) return false;
+    if(state.target&&!m.targets.includes(state.target)) return false;
+    if(state.complexity&&m.complexity>+state.complexity) return false;
+    if(state.docs&&m.docs<+state.docs) return false;
+    return true;
+  });
+  document.getElementById("cc-all").textContent=base.length;
+  document.getElementById("cc-engine").textContent=base.filter(m=>m.category==="Game Engine").length;
+  document.getElementById("cc-3d").textContent=base.filter(m=>m.category==="3D Content").length;
+  document.getElementById("cc-nv").textContent=base.filter(m=>m.category==="NVIDIA").length;
+}
+
+function removeChip(key){
+  if(key==="search"){state.search="";document.getElementById("search").value=""}
+  else if(key==="category"){state.category="All";syncCatBtns()}
+  else if(key==="status"){state.status="";document.getElementById("f-status").value=""}
+  else if(key==="target"){state.target="";document.getElementById("f-target").value=""}
+  else if(key==="complexity"){state.complexity="";document.getElementById("f-complexity").value=""}
+  else if(key==="docs"){state.docs="";document.getElementById("f-docs").value=""}
+  renderCards();
+}
+
+function clearAllFilters(){
+  state.search="";state.category="All";state.status="";state.target="";state.complexity="";state.docs="";
+  document.getElementById("search").value="";
+  document.getElementById("f-status").value="";
+  document.getElementById("f-target").value="";
+  document.getElementById("f-complexity").value="";
+  document.getElementById("f-docs").value="";
+  syncCatBtns();
+  renderCards();
+}
+
+/* ══ COMPARE ══ */
+function updateCompareBar(){
+  const bar=document.getElementById("compare-bar");
+  const cnt=state.compareSet.size;
+  document.getElementById("cmp-count").textContent=cnt;
+  bar.classList.toggle("hidden",cnt<2);
+}
+
+function openCompare(){
+  const ids=[...state.compareSet];
+  const mcps=ids.map(id=>MCPS.find(m=>m.id===id)).filter(Boolean);
+  if(mcps.length<2) return;
+  const rows=[
+    ["Category",m=>badge(m.category,catClass(m.category))],
+    ["Version",m=>`<span style="font-family:'JetBrains Mono',monospace">${m.version}</span>`],
+    ["Status",m=>badge(m.status,statusClass(m.status))],
+    ["Targets",m=>m.targets.slice(0,3).join(", ")+(m.targets.length>3?` +${m.targets.length-3}`:"")],
+    ["Install Method",m=>m.install],
+    ["Setup Time",m=>{const best=Math.min(...mcps.map(x=>x.setupTime));return`<span class="${m.setupTime===best?"cmp-win":""}">~${m.setupTime} min</span>`}],
+    ["Complexity",m=>{const best=Math.min(...mcps.map(x=>x.complexity));return`<span class="${m.complexity===best?"cmp-win":""}"> ${m.complexity}/5: ${complexityLabel(m.complexity)}</span>`}],
+    ["Docs Quality",m=>{const best=Math.max(...mcps.map(x=>x.docs));return`<span class="${m.docs===best?"cmp-win":""}">${stars(m.docs)}</span>`}],
+    ["Community",m=>{const best=Math.max(...mcps.map(x=>x.community));return`<span class="${m.community===best?"cmp-win":""}">${stars(m.community)}</span>`}],
+    ["Stability",m=>{const best=Math.max(...mcps.map(x=>x.stability));return`<span class="${m.stability===best?"cmp-win":""}">${stars(m.stability)}</span>`}],
+    ["Context Usage",m=>m.ctx],
+    ["Streaming",m=>m.streaming?"✓ Yes":"✗ No"],
+    ["License",m=>m.license],
+    ["Last Updated",m=>`<span${isStale(m)?` style="color:var(--amber)"`:""}>${m.updated}</span>`],
+    ["Capabilities",m=>m.caps.slice(0,4).map(c=>`<span class="badge ${catClass(m.category)} b-sm" style="margin:1px">${c}</span>`).join(' ')+(m.caps.length>4?` <span style="font-size:10px;color:var(--muted)">+${m.caps.length-4} more</span>`:"")],
+    ["Users",m=>{const best=Math.max(...mcps.map(x=>getVote(x.id)));const v=getVote(m.id);return`<span class="${v===best&&v>0?"cmp-win":""}">▲ ${v||0}</span>`}],
+  ];
+  const table=document.getElementById("cmp-table");
+  table.innerHTML=`<thead><tr><th>Field</th>${mcps.map(m=>`<th>${m.name}</th>`).join('')}</tr></thead><tbody>${rows.map(([label,fn])=>`<tr><td>${label}</td>${mcps.map(m=>`<td>${fn(m)}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  document.getElementById("cmp-overlay").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+}
+
+/* ══ DETAIL PANEL ══ */
+function openPanel(id){
+  const mcp=MCPS.find(m=>m.id===id);
+  if(!mcp) return;
+  state.selected=id;state.activeTab="overview";
+  document.getElementById("p-name").textContent=mcp.name;
+  document.getElementById("p-ver").textContent=`v${mcp.version} · ${mcp.updated} · ${mcp.license}${isStale(mcp)?" · ⚠ "+staleLabel(mcp)+" check for updates":""}`;
+  document.getElementById("p-desc").textContent=mcp.desc;
+  document.getElementById("p-badges").innerHTML=
+    badge(mcp.status,statusClass(mcp.status))+
+    badge(mcp.category,catClass(mcp.category))+
+    badge(mcp.install,"b-neutral")+
+    (mcp.complexity<=2?badge("Beginner Friendly","b-stable"):"")+
+    (mcp.streaming?badge("Streaming ✓","b-stable"):"")+
+    (mcp.tools?badge("Tool Calls ✓","b-stable"):"");
+  document.getElementById("p-links").innerHTML=Object.entries(mcp.links).map(([k,v])=>`<a href="${v}" target="_blank" rel="noopener" class="ext-a"><span class="ext-ico">${EXT_ICONS[k]||"🔗"}</span>${EXT_LABELS[k]||k}</a>`).join('');
+  document.querySelectorAll(".p-tab").forEach(t=>t.classList.remove("on"));
+  document.querySelector('.p-tab[data-tab="overview"]').classList.add("on");
+  renderPanelTab(mcp,"overview");
+  document.getElementById("overlay").classList.add("open");
+  document.body.style.overflow="hidden";
+  if(!isMobile()) document.querySelector(".main").style.marginRight="460px";
+  renderCards();
+}
+
+function closePanel(){
+  state.selected=null;
+  document.getElementById("overlay").classList.remove("open");
+  document.body.style.overflow="";
+  document.querySelector(".main").style.marginRight="";
+  document.querySelectorAll(".card.sel").forEach(c=>c.classList.remove("sel"));
+}
+
+function renderPanelTab(mcp,tab){
+  const body=document.getElementById("panel-body");
+  if(tab==="overview"){
+    body.innerHTML=`
+      <div class="det-row"><span class="det-lbl">Category</span><span class="det-val">${mcp.category}</span></div>
+      <div class="det-row"><span class="det-lbl">Targets</span><span class="det-val">${mcp.targets.join(", ")}</span></div>
+      <div class="det-row"><span class="det-lbl">Status</span><span class="det-val">${mcp.status}</span></div>
+      <div class="det-row"><span class="det-lbl">License</span><span class="det-val">${mcp.license}</span></div>
+      <div class="det-row"><span class="det-lbl">Last Updated</span><span class="det-val"${isStale(mcp)?` style="color:var(--amber)"`:""}>${mcp.updated}${isStale(mcp)?" ⚠":""}</span></div>
+      <div class="det-row"><span class="det-lbl">Context Usage</span><span class="det-val">${mcp.ctx}</span></div>
+      <div class="det-row"><span class="det-lbl">Streaming</span><span class="det-val">${mcp.streaming?"✓ Yes":"✗ No"}</span></div>
+      <div class="det-row"><span class="det-lbl">Tool Calls</span><span class="det-val">${mcp.tools?"✓ Yes":"✗ No"}</span></div>
+      <div class="det-sect"><div class="det-sect-lbl">Tags</div><div class="tag-wrap">${mcp.tags.map(t=>`<span class="badge b-neutral b-sm">${t}</span>`).join('')}</div></div>`;
+  } else if(tab==="capabilities"){
+    body.innerHTML=`
+      <div class="det-sect"><div class="det-sect-lbl">Capabilities</div><div class="tag-wrap">${mcp.caps.map(c=>`<span class="badge ${catClass(mcp.category)} b-sm">${c}</span>`).join('')}</div></div>
+      <div class="det-sect"><div class="det-sect-lbl">Input Formats</div><div class="tag-wrap">${mcp.inputs.map(f=>`<span class="badge b-neutral b-sm">${f}</span>`).join('')}</div></div>
+      <div class="det-sect"><div class="det-sect-lbl">Output Formats</div><div class="tag-wrap">${mcp.outputs.map(f=>`<span class="badge b-stable b-sm">${f}</span>`).join('')}</div></div>`;
+  } else if(tab==="integration"){
+    body.innerHTML=`
+      <div class="det-row"><span class="det-lbl">Install Method</span><span class="det-val">${mcp.install}</span></div>
+      <div class="det-row"><span class="det-lbl">Est. Setup Time</span><span class="det-val">~${mcp.setupTime} minutes</span></div>
+      <div class="det-row"><span class="det-lbl">Complexity</span><span class="det-val">${mcp.complexity}/5: ${complexityLabel(mcp.complexity)}</span></div>
+      <div class="det-sect"><div class="det-sect-lbl">Prerequisites</div>${mcp.prereqs.map(p=>`<div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--orange);margin-bottom:4px">› ${p}</div>`).join('')}</div>
+      <div class="det-sect"><div class="det-sect-lbl">Integration Steps</div>${mcp.steps.map(s=>`<div class="step"><div class="step-title"><span class="step-n">${s.n}.</span> ${s.t}</div><div class="step-code-wrap"><div class="step-code">${escHtml(s.c)}</div><button class="copy-btn" data-copy="${escAttr(s.c)}">Copy</button></div></div>`).join('')}</div>`;
+    body.querySelectorAll(".copy-btn").forEach(btn=>{
+      btn.addEventListener("click",e=>{
+        e.stopPropagation();
+        const txt=btn.dataset.copy;
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(txt).then(()=>{
+            btn.textContent="✓ Copied";btn.classList.add("copied");
+            setTimeout(()=>{btn.textContent="Copy";btn.classList.remove("copied")},2000);
+          }).catch(()=>fallbackCopy(btn,txt));
+        } else {
+          fallbackCopy(btn,txt);
+        }
+      });
+    });
+  } else if(tab==="quality"){
+    const avg=((mcp.docs+mcp.community+mcp.stability)/3).toFixed(1);
+    const pct=(avg/5*100).toFixed(0);
+    body.innerHTML=`
+      <div class="q-row"><div class="q-head"><span class="q-lbl">Documentation Quality</span><div class="stars">${stars(mcp.docs)}</div></div><div class="q-bar"><div class="q-fill" style="width:${mcp.docs/5*100}%"></div></div></div>
+      <div class="q-row"><div class="q-head"><span class="q-lbl">Community Support</span><div class="stars">${stars(mcp.community)}</div></div><div class="q-bar"><div class="q-fill" style="width:${mcp.community/5*100}%"></div></div></div>
+      <div class="q-row"><div class="q-head"><span class="q-lbl">Stability</span><div class="stars">${stars(mcp.stability)}</div></div><div class="q-bar"><div class="q-fill" style="width:${mcp.stability/5*100}%"></div></div></div>
+      <div class="q-row"><div class="q-head"><span class="q-lbl">Setup Ease (inverted complexity)</span><span style="font-size:12px;color:var(--dim)">${6-mcp.complexity}/5</span></div><div class="q-bar"><div class="q-fill" style="width:${(1-mcp.complexity/5)*100}%;background:linear-gradient(90deg,var(--green),var(--accent))"></div></div></div>
+      <div class="score-box"><div class="score-num">${avg}</div><div class="score-sub">Overall quality score out of 5.0</div><div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div></div>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px">
+        <div style="font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Community Links</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <a href="${mcp.links.discord}" target="_blank" class="ext-a">💬 Discord</a>
+          <a href="${mcp.links.reddit}" target="_blank" class="ext-a">🔴 Reddit</a>
+          <a href="${mcp.links.docs}" target="_blank" class="ext-a">📄 Docs</a>
+          ${mcp.links.github?`<a href="${mcp.links.github}" target="_blank" class="ext-a">💻 GitHub</a>`:""}
+        </div>
+      </div>`;
+  }
+}
+
+function escHtml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function escAttr(s){return s.replace(/"/g,"&quot;")}
+
+/* ══ SIDEBAR ══ */
+function toggleSidebar(){
+  if(isMobile()){
+    state.mobileSidebarOpen=!state.mobileSidebarOpen;
+    document.getElementById("sidebar").classList.toggle("mob-open",state.mobileSidebarOpen);
+    document.getElementById("sb-backdrop").classList.toggle("open",state.mobileSidebarOpen);
+    // sync bottom tab
+    document.querySelectorAll(".btm-tab").forEach(t=>t.classList.remove("on"));
+    if(state.mobileSidebarOpen) document.querySelector('.btm-tab[data-btm="filters"]').classList.add("on");
+  } else {
+    state.sidebarOpen=!state.sidebarOpen;
+    document.getElementById("sidebar").classList.toggle("collapsed",!state.sidebarOpen);
+  }
+  document.getElementById("ham").classList.toggle("open",isMobile()?state.mobileSidebarOpen:!state.sidebarOpen);
+}
+
+function syncCatBtns(){
+  document.querySelectorAll(".cat-btn").forEach(b=>b.classList.toggle("on",b.dataset.cat===state.category));
+}
+
+/* ══ KEYBOARD NAV ══ */
+function handleArrow(e){
+  if(document.getElementById("wm-overlay")&&!document.getElementById("wm-overlay").classList.contains("hidden")) return;
+  if(document.activeElement&&document.activeElement.tagName==="INPUT") return;
+  const cards=Array.from(document.querySelectorAll(".card"));
+  if(!cards.length) return;
+  if(e.key==="ArrowRight"||e.key==="ArrowDown"){
+    e.preventDefault();
+    state.focusedIdx=Math.min(state.focusedIdx+1,cards.length-1);
+    cards[state.focusedIdx].focus();
+  } else if(e.key==="ArrowLeft"||e.key==="ArrowUp"){
+    e.preventDefault();
+    state.focusedIdx=Math.max(state.focusedIdx-1,0);
+    cards[state.focusedIdx].focus();
+  }
+}
+
+/* ══ THEME ══ */
+function setTheme(dark){
+  document.documentElement.setAttribute("data-theme",dark?"dark":"light");
+  document.getElementById("theme-ico").textContent=dark?"☀":"☽";
+  document.getElementById("theme-lbl").textContent=dark?"Light":"Dark";
+  try{localStorage.setItem("mcp-theme",dark?"dark":"light")}catch(e){}
+}
+
+/* ══ ROLE PRESETS ══ */
+const ROLE_PRESETS={
+  "engine-programmer":{category:"Game Engine",sort:"docs"},
+  "technical-artist":{category:"3D Content",sort:"docs"},
+  "vfx-artist":{category:"3D Content",sort:"community"},
+  "indie-dev":{category:"All",complexity:"2",sort:"complexity"},
+  "graphics-engineer":{category:"NVIDIA",sort:"docs"},
+  "sim-engineer":{category:"NVIDIA",sort:"name"},
+  "roblox-creator":{category:"Game Engine",target:"Roblox",sort:"name"},
+  "just-browsing":{category:"All",sort:"name"},
+};
+
+function applyRole(roleKey){
+  const p=ROLE_PRESETS[roleKey];if(!p) return;
+  clearAllFilters();
+  if(p.category) state.category=p.category;
+  if(p.target){state.target=p.target;document.getElementById("f-target").value=p.target}
+  if(p.complexity){state.complexity=p.complexity;document.getElementById("f-complexity").value=p.complexity}
+  if(p.sort){state.sort=p.sort;document.getElementById("f-sort").value=p.sort}
+  syncCatBtns();renderCards();dismissModal(false);
+  if(!isMobile()&&!state.sidebarOpen){state.sidebarOpen=true;document.getElementById("sidebar").classList.remove("collapsed");document.getElementById("ham").classList.remove("open")}
+}
+
+/* ══ MODAL ══ */
+function dismissModal(save){
+  document.getElementById("wm-overlay").classList.add("hidden");
+  if(save||document.getElementById("wm-no-show").checked){try{localStorage.setItem("mcp-wm-seen","1")}catch(e){}}
+}
+
+/* ══ CHANGELOG ══ */
+const LABEL_CLASS = {
+  "Feature Update":"cl-label-feature",
+  "Bug Fix":"cl-label-fix",
+  "Content Update":"cl-label-content",
+  "Major Release":"cl-label-major",
+};
+const TYPE_CLASS = {
+  added:"cl-type-added",fixed:"cl-type-fixed",
+  changed:"cl-type-changed",improved:"cl-type-improved",removed:"cl-type-removed",
+};
+
+function getLastSeenVersion(){try{return localStorage.getItem("mcp-cl-seen")||""}catch{return""}}
+function setLastSeenVersion(v){try{localStorage.setItem("mcp-cl-seen",v)}catch{}}
+
+function hasUnreadChangelog(){
+  if(!CHANGELOG.length) return false;
+  return getLastSeenVersion()!==CHANGELOG[0].version;
+}
+
+function renderChangelog(){
+  const body=document.getElementById("cl-body");
+  const latest=CHANGELOG[0];
+  document.getElementById("cl-subtitle").textContent=
+    `Game Dev MCP Guide · ${CHANGELOG.length} release${CHANGELOG.length!==1?"s":""} · Latest: v${latest.version}`;
+  if(!CHANGELOG.length){body.innerHTML=`<div class="cl-empty">No updates logged yet.</div>`;return;}
+  body.innerHTML=CHANGELOG.map((entry,i)=>{
+    const isLatest=i===0;
+    const labelCls=LABEL_CLASS[entry.label]||"cl-label-feature";
+    return `<div class="cl-entry">
+      <div class="cl-entry-hdr">
+        <span class="cl-version">v${entry.version}</span>
+        <span class="cl-date">${entry.date}</span>
+        <span class="cl-label ${labelCls}">${entry.label}</span>
+        ${isLatest?'<span class="cl-latest-badge">LATEST</span>':""}
+      </div>
+      <div class="cl-changes">
+        ${entry.changes.map(c=>`
+          <div class="cl-change">
+            <span class="cl-change-type ${TYPE_CLASS[c.type]||"cl-type-changed"}">${c.type}</span>
+            <span>${c.text}</span>
+          </div>`).join("")}
+      </div>
+    </div>`;
+  }).join("");
+}
+
+function openChangelog(){
+  renderChangelog();
+  document.getElementById("cl-overlay").classList.remove("hidden");
+  document.body.style.overflow="hidden";
+  // Mark as seen
+  if(CHANGELOG.length){
+    setLastSeenVersion(CHANGELOG[0].version);
+    document.getElementById("wn-dot").classList.add("hidden");
+  }
+}
+
+function closeChangelog(){
+  document.getElementById("cl-overlay").classList.add("hidden");
+  document.body.style.overflow="";
+}
+
+/* ══ CLIPBOARD FALLBACK ══ */
+function fallbackCopy(btn,txt){
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=txt;ta.style.cssText="position:fixed;opacity:0;top:0;left:0";
+    document.body.appendChild(ta);ta.focus();ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    btn.textContent="✓ Copied";btn.classList.add("copied");
+    setTimeout(()=>{btn.textContent="Copy";btn.classList.remove("copied")},2000);
+  }catch(e){btn.textContent="Error";}
+}
+
+/* ══ INIT ══ */
+function init(){
+  // Roadmap
+  document.getElementById("roadmap-btn").addEventListener("click",()=>{
+    document.getElementById("rm-overlay").classList.remove("hidden");
+    document.body.style.overflow="hidden";
+  });
+  document.getElementById("rm-close").addEventListener("click",()=>{
+    document.getElementById("rm-overlay").classList.add("hidden");
+    document.body.style.overflow="";
+  });
+  document.getElementById("rm-overlay").addEventListener("click",e=>{
+    if(e.target===document.getElementById("rm-overlay")){
+      document.getElementById("rm-overlay").classList.add("hidden");
+      document.body.style.overflow="";
+    }
+  });
+
+  // What's New
+  if(hasUnreadChangelog()) document.getElementById("wn-dot").classList.remove("hidden");
+  document.getElementById("whats-new-btn").addEventListener("click", openChangelog);
+  document.getElementById("cl-close").addEventListener("click", closeChangelog);
+  document.getElementById("cl-overlay").addEventListener("click",e=>{
+    if(e.target===document.getElementById("cl-overlay")) closeChangelog();
+  });
+
+  // Theme
+  let savedTheme="light";try{savedTheme=localStorage.getItem("mcp-theme")||"light"}catch(e){}
+  setTheme(savedTheme==="dark");
+  document.getElementById("theme-toggle").addEventListener("click",()=>{setTheme(document.documentElement.getAttribute("data-theme")==="dark"?false:true)});
+
+  // URL state
+  readURL();
+
+  // Modal
+  let seen=false;try{seen=localStorage.getItem("mcp-wm-seen")==="1"}catch(e){}
+  if(!seen) document.getElementById("wm-overlay").classList.remove("hidden");
+  document.getElementById("wm-close-x").addEventListener("click",()=>dismissModal(false));
+  document.getElementById("wm-skip").addEventListener("click",()=>dismissModal(false));
+  document.getElementById("wm-start").addEventListener("click",()=>dismissModal(false));
+  document.getElementById("wm-overlay").addEventListener("click",e=>{if(e.target===document.getElementById("wm-overlay")) dismissModal(false)});
+  document.querySelectorAll(".wm-role").forEach(card=>card.addEventListener("click",()=>applyRole(card.dataset.role)));
+  document.getElementById("help-fab").addEventListener("click",()=>document.getElementById("wm-overlay").classList.remove("hidden"));
+
+  // Hamburger pulse
+  let sbUsed=false;try{sbUsed=localStorage.getItem("mcp-sb-used")==="1"}catch(e){}
+  if(!sbUsed&&!seen) document.getElementById("ham-pulse").classList.remove("hidden");
+  document.getElementById("sb-toggle").addEventListener("click",()=>{
+    toggleSidebar();
+    document.getElementById("ham-pulse").classList.add("hidden");
+    try{localStorage.setItem("mcp-sb-used","1")}catch(e){}
+  });
+
+  // Sidebar backdrop
+  document.getElementById("sb-backdrop").addEventListener("click",()=>{
+    state.mobileSidebarOpen=false;
+    document.getElementById("sidebar").classList.remove("mob-open");
+    document.getElementById("sb-backdrop").classList.remove("open");
+    document.getElementById("ham").classList.remove("open");
+    document.querySelectorAll(".btm-tab").forEach(t=>t.classList.remove("on"));
+    document.querySelector('.btm-tab[data-btm="all"]').classList.add("on");
+  });
+
+  // Search
+  let st;
+  document.getElementById("search").addEventListener("input",e=>{
+    clearTimeout(st);st=setTimeout(()=>{state.search=e.target.value;state.focusedIdx=-1;renderCards()},180)
+  });
+
+  // Filters
+  document.getElementById("f-status").addEventListener("change",e=>{state.status=e.target.value;renderCards()});
+  document.getElementById("f-target").addEventListener("change",e=>{state.target=e.target.value;renderCards()});
+  document.getElementById("f-complexity").addEventListener("change",e=>{state.complexity=e.target.value;renderCards()});
+  document.getElementById("f-docs").addEventListener("change",e=>{state.docs=e.target.value;renderCards()});
+  document.getElementById("f-sort").addEventListener("change",e=>{state.sort=e.target.value;renderCards()});
+  document.getElementById("clear-btn").addEventListener("click",clearAllFilters);
+
+  // Stat cell click filters
+  document.querySelectorAll(".stat-cell[data-stat]").forEach(cell=>{
+    cell.addEventListener("click",()=>{
+      const stat=cell.dataset.stat;
+      // Reset all filters first
+      state.search=""; state.category="All"; state.status="";
+      state.target=""; state.complexity=""; state.docs="";
+      state._freeFilter=false;
+      document.getElementById("search").value="";
+      document.getElementById("f-status").value="";
+      document.getElementById("f-target").value="";
+      document.getElementById("f-complexity").value="";
+      document.getElementById("f-docs").value="";
+      // Apply the relevant filter
+      if(stat==="active"){
+        state.status="Active";
+        document.getElementById("f-status").value="Active";
+      } else if(stat==="beginner"){
+        state.complexity="2";
+        document.getElementById("f-complexity").value="2";
+      } else if(stat==="free"){
+        state._freeFilter=true;
+      }
+      // all: no filters needed, already reset above
+      syncCatBtns();
+      renderCards();
+    });
+  });
+
+  // Category buttons
+  document.querySelectorAll(".cat-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{state.category=btn.dataset.cat;syncCatBtns();renderCards()});
+  });
+
+  // Panel tabs
+  document.querySelectorAll(".p-tab").forEach(tab=>{
+    tab.addEventListener("click",()=>{
+      document.querySelectorAll(".p-tab").forEach(t=>t.classList.remove("on"));
+      tab.classList.add("on");state.activeTab=tab.dataset.tab;
+      const mcp=MCPS.find(m=>m.id===state.selected);
+      if(mcp) renderPanelTab(mcp,tab.dataset.tab);
+    });
+  });
+
+  // Close detail panel
+  document.getElementById("close-panel").addEventListener("click",closePanel);
+  document.getElementById("overlay").addEventListener("click",e=>{if(e.target===document.getElementById("overlay")) closePanel()});
+
+  // Compare
+  document.getElementById("cmp-open-btn").addEventListener("click",openCompare);
+  document.getElementById("cmp-clear-btn").addEventListener("click",()=>{state.compareSet.clear();updateCompareBar();renderCards()});
+  document.getElementById("cmp-close").addEventListener("click",()=>{document.getElementById("cmp-overlay").classList.add("hidden");document.body.style.overflow=""});
+  document.getElementById("cmp-overlay").addEventListener("click",e=>{if(e.target===document.getElementById("cmp-overlay")){document.getElementById("cmp-overlay").classList.add("hidden");document.body.style.overflow=""}});
+
+  // Intro banner
+  const introBtn=document.getElementById("intro-toggle-btn");
+  const introDetail=document.getElementById("intro-detail");
+  const introArr=document.getElementById("intro-arr");
+  const introMoreLbl=document.getElementById("intro-more-lbl");
+  let introOpen=false;
+  introBtn.addEventListener("click",()=>{
+    introOpen=!introOpen;
+    introDetail.classList.toggle("open",introOpen);
+    introArr.style.transform=introOpen?"rotate(180deg)":"";
+    introMoreLbl.textContent=introOpen?"Less":"More";
+  });
+
+  // Mobile bottom tabs
+  document.querySelectorAll(".btm-tab").forEach(tab=>{
+    tab.addEventListener("click",()=>{
+      const key=tab.dataset.btm;
+      if(key==="filters"){
+        toggleSidebar();
+        if(state.mobileSidebarOpen){
+          document.querySelectorAll(".btm-tab").forEach(t=>t.classList.remove("on"));
+          tab.classList.add("on");
+        } else {
+          tab.classList.remove("on");
+          const catMap={"all":"All","engine":"Game Engine","3d":"3D Content","nvidia":"NVIDIA"};
+          const active=Object.entries(catMap).find(([k,v])=>v===state.category);
+          if(active) document.querySelector(`.btm-tab[data-btm="${active[0]}"]`).classList.add("on");
+        }
+        return;
+      }
+      // Close sidebar if open
+      if(state.mobileSidebarOpen){
+        state.mobileSidebarOpen=false;
+        document.getElementById("sidebar").classList.remove("mob-open");
+        document.getElementById("sb-backdrop").classList.remove("open");
+        document.getElementById("ham").classList.remove("open");
+      }
+      document.querySelectorAll(".btm-tab").forEach(t=>t.classList.remove("on"));
+      tab.classList.add("on");
+      const catMap={"all":"All","engine":"Game Engine","3d":"3D Content","nvidia":"NVIDIA"};
+      state.category=catMap[key]||"All";
+      syncCatBtns();renderCards();
+    });
+  });
+
+  // Keyboard
+  document.addEventListener("keydown",e=>{
+    const modalOpen=!document.getElementById("wm-overlay").classList.contains("hidden");
+    const cmpOpen=!document.getElementById("cmp-overlay").classList.contains("hidden");
+    if(e.key==="Escape"){
+      if(cmpOpen){document.getElementById("cmp-overlay").classList.add("hidden");document.body.style.overflow="";return}
+      if(!document.getElementById("rm-overlay").classList.contains("hidden")){document.getElementById("rm-overlay").classList.add("hidden");document.body.style.overflow="";return}
+      if(!document.getElementById("cl-overlay").classList.contains("hidden")){closeChangelog();return}
+      if(modalOpen){dismissModal(false);return}
+      if(state.selected){closePanel();return}
+    }
+    if(e.key==="/"&&document.activeElement.tagName!=="INPUT"){e.preventDefault();document.getElementById("search").focus();return}
+    if(!modalOpen&&!cmpOpen&&!state.selected) handleArrow(e);
+  });
+
+  // Resize
+  window.addEventListener("resize",()=>{
+    if(!isMobile()&&state.mobileSidebarOpen){
+      state.mobileSidebarOpen=false;
+      document.getElementById("sidebar").classList.remove("mob-open");
+      document.getElementById("sb-backdrop").classList.remove("open");
+    }
+  });
+
+  renderCards();
+}
+
+document.addEventListener("DOMContentLoaded",init);
+</script>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-built">
+    Built by&nbsp;
+    <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener">
+      <svg class="footer-li-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+      </svg>
+      Halp
+    </a>
+  </div>
+  <div class="footer-right">
+    <a href="https://gamedevai.guide/" target="_blank" rel="noopener" class="footer-link">gamedevai.guide</a>
+    <span class="footer-sep">·</span>
+    <span class="footer-link">Game Dev MCP Guide v1.3.0</span>
+  </div>
+</footer>
+</body>
+</html>

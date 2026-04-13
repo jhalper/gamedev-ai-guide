@@ -1,0 +1,4164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Game Dev Job Search Guide by HALP</title>
+<meta name="description" content="An interactive tool helping game developers navigate job searching with AI tools. Personalized recommendations for job boards, AI tools, and honest pitfalls based on your discipline and situation.">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230F1923'/%3E%3Crect x='2' y='2' width='28' height='28' rx='5' stroke='%234F98A3' stroke-width='1.5' fill='none'/%3E%3Ccircle cx='10' cy='16' r='3' fill='%234F98A3'/%3E%3Cpath d='M16 10l3 6h-6z' fill='%234F98A3' opacity='0.7'/%3E%3Cpath d='M22 13v6' stroke='%234F98A3' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Game Dev Job Search Guide by HALP">
+<meta property="og:description" content="Cut through the noise. Find where the jobs are, use AI tools that actually help, and avoid the traps.">
+<meta property="og:image" content="https://gamedevai.guide/jobs/og-image.png">
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
+    authDomain: "gamedev-ai-guide.firebaseapp.com",
+    databaseURL: "https://gamedev-ai-guide-default-rtdb.firebaseio.com",
+    projectId: "gamedev-ai-guide",
+    storageBucket: "gamedev-ai-guide.firebasestorage.app",
+    messagingSenderId: "256487705979",
+    appId: "1:256487705979:web:6ff552e046926bd59141de",
+    measurementId: "G-ZBGDRYKQXB"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var analytics = firebase.analytics();
+  var db = firebase.database();
+  window.gaEvent = function(name, params) {
+    try { analytics.logEvent(name, params); } catch(e) {}
+  };
+  // Check survey response count — show results links only above threshold
+  var SURVEY_THRESHOLD = 10;
+  db.ref('survey_responses').once('value').then(function(snap) {
+    var count = snap.numChildren();
+    if (count >= SURVEY_THRESHOLD) {
+      var fl = document.getElementById('footerResultsLink');
+      var sl = document.getElementById('surveyResultsLink');
+      if (fl) fl.style.display = '';
+      if (sl) sl.style.display = '';
+    }
+  }).catch(function() {});
+</script>
+
+<!-- Fonts from Fontshare -->
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   DESIGN TOKENS (matching main guide exactly)
+   ============================================ */
+:root {
+  --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.8125rem);
+  --text-sm:   clamp(0.8125rem, 0.78rem + 0.2vw, 0.875rem);
+  --text-base: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --text-lg:   clamp(1rem, 0.95rem + 0.3vw, 1.25rem);
+  --text-xl:   clamp(1.25rem, 1.1rem + 0.75vw, 1.75rem);
+  --text-2xl:  clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-med:  250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --font-body: 'General Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Cabinet Grotesk', 'General Sans', -apple-system, sans-serif;
+
+  --content-max: 680px;
+}
+
+/* DARK MODE (PRIMARY) */
+:root, [data-theme="dark"] {
+  --color-bg:         #0F1923;
+  --color-surface:    #162029;
+  --color-surface-2:  #1B2A36;
+  --color-surface-3:  #223344;
+  --color-border:     #2A3A4A;
+  --color-border-hover: #3A5060;
+  --color-divider:    #1E2D3A;
+
+  --color-text:       #D8E0E8;
+  --color-text-muted: #8899AA;
+  --color-text-faint: #556677;
+
+  --color-primary:       #D4943A;
+  --color-primary-hover: #E5A94E;
+  --color-primary-bg:    rgba(212, 148, 58, 0.12);
+  --color-primary-border: rgba(212, 148, 58, 0.25);
+
+  --color-accent:    #B87A2A;
+
+  --color-success:       #4AAA6B;
+  --color-success-bg:    rgba(74, 170, 107, 0.12);
+  --color-warning:       #D4A04A;
+  --color-warning-bg:    rgba(212, 160, 74, 0.12);
+  --color-danger:        #D45A5A;
+  --color-danger-bg:     rgba(212, 90, 90, 0.12);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
+
+  color-scheme: dark;
+}
+
+/* LIGHT MODE */
+[data-theme="light"] {
+  --color-bg:         #F0F2F5;
+  --color-surface:    #FFFFFF;
+  --color-surface-2:  #F7F8FA;
+  --color-surface-3:  #EBEEF2;
+  --color-border:     #D0D6DD;
+  --color-border-hover: #B0BBC5;
+  --color-divider:    #E0E4E8;
+
+  --color-text:       #1A2A3A;
+  --color-text-muted: #5A6A7A;
+  --color-text-faint: #8A98A8;
+
+  --color-primary:       #A16E1F;
+  --color-primary-hover: #8A5E18;
+  --color-primary-bg:    rgba(161, 110, 31, 0.08);
+  --color-primary-border: rgba(161, 110, 31, 0.2);
+
+  --color-accent:    #A16E1F;
+
+  --color-success:       #2E8B57;
+  --color-success-bg:    rgba(46, 139, 87, 0.08);
+  --color-warning:       #B8860B;
+  --color-warning-bg:    rgba(184, 134, 11, 0.08);
+  --color-danger:        #C0392B;
+  --color-danger-bg:     rgba(192, 57, 43, 0.08);
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+
+  color-scheme: light;
+}
+
+/* RESET & BASE */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+a { color: var(--color-primary); text-decoration: none; }
+a:hover { color: var(--color-primary-hover); }
+input, select, textarea { font: inherit; color: inherit; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection {
+  background: rgba(79, 152, 163, 0.3);
+  color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* LAYOUT */
+.app-container {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--space-4);
+  padding-bottom: var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .app-container {
+    padding: var(--space-8);
+    padding-bottom: var(--space-16);
+  }
+}
+
+/* HEADER */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.app-logo svg { flex-shrink: 0; }
+
+.app-logo-text {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.app-logo-text span { color: var(--color-primary); }
+
+.app-logo-text .logo-byline {
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-size: var(--text-sm);
+  letter-spacing: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+/* SHARE DROPDOWN */
+.share-dropdown {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2);
+  min-width: 200px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.share-dropdown.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.share-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--transition-fast);
+}
+
+.share-dropdown-item:hover {
+  background: var(--color-surface-2);
+}
+
+.share-dropdown-item svg {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.share-dropdown-item .share-icon-li { color: #0A66C2; }
+.share-dropdown-item .share-icon-x { color: var(--color-text-muted); }
+.share-dropdown-item .share-icon-bs { color: #0085FF; }
+.share-dropdown-item .share-icon-rd { color: #FF4500; }
+.share-dropdown-item .share-icon-cp { color: var(--color-primary); }
+
+.share-copied {
+  color: var(--color-primary) !important;
+}
+
+.header-actions {
+  position: relative;
+}
+
+/* SCREENS */
+.screen {
+  display: none;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.screen.active {
+  display: block;
+  animation: fadeInUp 0.35s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* FORM INTRO */
+.form-intro {
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.form-intro h1 {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  margin-bottom: var(--space-2);
+  letter-spacing: -0.03em;
+}
+
+.form-intro p {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  max-width: 50ch;
+}
+
+.form-intro .form-blurb {
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  max-width: 55ch;
+  margin-bottom: var(--space-3);
+}
+
+.stat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+.stat-pill strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.stat-pill.stat-warning {
+  border-color: rgba(212, 160, 74, 0.3);
+  background: var(--color-warning-bg);
+}
+
+.stat-pill.stat-warning strong {
+  color: var(--color-warning);
+}
+
+.stat-pill.stat-good {
+  border-color: rgba(74, 170, 107, 0.3);
+  background: var(--color-success-bg);
+}
+
+.stat-pill.stat-good strong {
+  color: var(--color-success);
+}
+
+.creator-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+.creator-line a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.15s ease;
+}
+.creator-line a:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.cross-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-3);
+  padding: 6px 12px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.cross-link:hover {
+  background: rgba(79, 152, 163, 0.18);
+  color: var(--color-primary);
+}
+
+/* WHAT'S NEW */
+.whats-new {
+  margin-top: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.whats-new-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: none;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  transition: background var(--transition-fast);
+}
+.whats-new-toggle:hover {
+  background: var(--color-surface-2);
+}
+.whats-new-toggle-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.whats-new-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+.whats-new-chevron {
+  width: 16px;
+  height: 16px;
+  color: var(--color-text-muted);
+  transition: transform var(--transition-med);
+}
+.whats-new.open .whats-new-chevron {
+  transform: rotate(180deg);
+}
+.whats-new-content {
+  display: none;
+  padding: 0 var(--space-4) var(--space-4);
+  background: var(--color-surface);
+}
+.whats-new.open .whats-new-content {
+  display: block;
+}
+.whats-new-version {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+  margin-top: var(--space-3);
+}
+.whats-new-version:first-child {
+  margin-top: 0;
+}
+.whats-new-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.whats-new-list li {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-1);
+}
+.whats-new-list li::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 7px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0.6;
+}
+
+/* WIZARD */
+.wizard-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  padding: 0 var(--space-1);
+}
+
+.wizard-progress-step {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-border);
+  transition: background var(--transition-med), opacity var(--transition-med), transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.wizard-progress-step.active {
+  background: var(--color-primary);
+  transform: scaleY(1.5);
+}
+
+.wizard-progress-step.completed {
+  background: var(--color-primary);
+  opacity: 0.6;
+  transform: scaleY(1);
+}
+
+.wizard-progress-step.just-completed {
+  animation: stepPulse 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes stepPulse {
+  0% { transform: scaleY(1); }
+  40% { transform: scaleY(2.5); background: var(--color-primary-hover); }
+  100% { transform: scaleY(1); }
+}
+
+.wizard-step-counter {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-bottom: var(--space-4);
+  font-weight: 500;
+}
+
+.wizard-step {
+  display: none;
+  animation: wizardFadeIn 0.25s ease-out;
+}
+
+.wizard-step.active { display: block; }
+
+@keyframes wizardFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* QUESTION */
+.question-section { margin-bottom: var(--space-6); }
+
+.question-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.question-number {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  line-height: 1;
+}
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.question-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-3);
+}
+
+/* OPTION GRID */
+.option-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+@media (min-width: 480px) {
+  .option-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.option-item { position: relative; }
+
+.option-item input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.option-item label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  line-height: 1.3;
+}
+
+.option-item label:hover {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-2);
+}
+
+.option-item input:checked + label {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+  color: var(--color-text);
+}
+
+.option-item input:focus-visible + label {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.radio-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.option-item input:checked + label .radio-dot { border-color: var(--color-primary); }
+
+.option-item input:checked + label .radio-dot::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.check-box {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.option-item input:checked + label .check-box {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+}
+
+.option-item input:checked + label .check-box svg { display: block; }
+.check-box svg { display: none; width: 10px; height: 10px; }
+
+/* WIZARD NAV */
+.wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-6);
+  gap: var(--space-3);
+}
+
+.wizard-nav-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.wizard-nav-back:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text);
+}
+
+.wizard-nav-back.hidden { visibility: hidden; }
+
+.wizard-nav-next {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  border: none;
+}
+
+.wizard-nav-next:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.wizard-nav-next:active { transform: translateY(0); }
+
+.wizard-nav-next:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.validation-msg {
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+  margin-top: var(--space-2);
+  display: none;
+}
+
+.validation-msg.visible { display: block; }
+
+/* RESULTS */
+/* RESULTS SECTION NAV */
+.results-nav {
+  position: sticky;
+  top: 52px; /* below hub-nav */
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-divider);
+  padding: var(--space-2) 0;
+  margin: 0 calc(-1 * var(--space-4));
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  display: flex;
+  gap: var(--space-1);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  transition: box-shadow var(--transition-fast);
+}
+
+.results-nav::-webkit-scrollbar { display: none; }
+
+.results-nav.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+[data-theme="light"] .results-nav.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.results-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.results-nav-btn:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.results-nav-btn.active {
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary-border);
+}
+
+.results-nav-btn .nav-count {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* SHOW MORE EXPANDER */
+.show-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3);
+  margin-top: var(--space-2);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  background: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.show-more-btn:hover {
+  border-color: var(--color-primary-border);
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.show-more-btn svg {
+  transition: transform var(--transition-fast);
+}
+
+.rec-card.hidden-card {
+  display: none;
+}
+
+.rec-card.hidden-card.revealed {
+  display: block;
+}
+
+.pitfall-card.hidden-card {
+  display: none;
+}
+
+.pitfall-card.hidden-card.revealed {
+  display: block;
+}
+
+.results-header {
+  margin-bottom: var(--space-6);
+}
+
+.results-header h1 {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  margin-bottom: var(--space-1);
+  letter-spacing: -0.02em;
+}
+
+.results-summary {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.results-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+}
+
+/* MARKET SNAPSHOT */
+.market-snapshot {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.market-snapshot-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.market-snapshot-title svg {
+  color: var(--color-primary);
+}
+
+.market-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .market-stats-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.market-stat {
+  text-align: center;
+  padding: var(--space-2);
+}
+
+.market-stat-value {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.market-stat-value.stat-bad { color: var(--color-danger); }
+.market-stat-value.stat-ok { color: var(--color-warning); }
+.market-stat-value.stat-good { color: var(--color-success); }
+
+.market-stat-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+.market-stat-source {
+  font-size: 10px;
+  color: var(--color-text-faint);
+  margin-top: 2px;
+}
+.market-stat-source a {
+  color: var(--color-text-faint);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.market-stat-source a:hover {
+  color: var(--color-primary);
+}
+
+/* ACTION PLAN */
+.action-plan {
+  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-primary);
+  background: var(--color-primary-bg);
+}
+
+.action-plan-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.action-plan ol {
+  list-style: none;
+  counter-reset: action;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.action-plan li {
+  counter-increment: action;
+  position: relative;
+  padding-left: 34px;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.action-plan li::before {
+  content: counter(action);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.action-plan li a,
+.pitfall-instead a,
+.pitfall-card-msg a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.action-plan li a:hover,
+.pitfall-instead a:hover,
+.pitfall-card-msg a:hover {
+  color: var(--color-primary-hover);
+  text-decoration-style: solid;
+}
+
+/* SECTION HEADERS */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.section-header:first-of-type {
+  margin-top: 0;
+}
+
+.section-header h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.section-count {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-text-faint);
+  margin-left: var(--space-1);
+}
+
+.section-header svg { color: var(--color-primary); flex-shrink: 0; }
+
+.section-header.warning-header svg { color: var(--color-warning); }
+.section-header.warning-header h2 { color: var(--color-warning); }
+
+/* Section accent colors */
+:root {
+  --sec-boards: #4F98A3;
+  --sec-tools: #9C7BDB;
+  --sec-pitfalls: var(--color-warning);
+  --sec-communities: #5B9F5B;
+}
+
+[data-theme="light"] {
+  --sec-boards: #3A7A85;
+  --sec-tools: #7B5FBB;
+  --sec-communities: #4A8A4A;
+}
+
+/* Board cards */
+.rec-card[data-section="boards"] {
+  border-left: 3px solid var(--sec-boards) !important;
+}
+.rec-card[data-section="boards"] .rec-card-rank {
+  color: var(--sec-boards);
+  background: rgba(79, 152, 163, 0.12);
+  border-color: rgba(79, 152, 163, 0.25);
+}
+#sec-boards .section-header svg { color: var(--sec-boards); }
+
+/* Tool cards */
+.rec-card[data-section="tools"] {
+  border-left: 3px solid var(--sec-tools) !important;
+}
+.rec-card[data-section="tools"] .rec-card-rank {
+  color: var(--sec-tools);
+  background: rgba(156, 123, 219, 0.12);
+  border-color: rgba(156, 123, 219, 0.25);
+}
+#sec-tools .section-header svg { color: var(--sec-tools); }
+
+/* Community cards */
+.rec-card[data-section="communities"] {
+  border-left: 3px solid var(--sec-communities) !important;
+}
+.rec-card[data-section="communities"] .rec-card-rank {
+  color: var(--sec-communities);
+  background: rgba(91, 159, 91, 0.12);
+  border-color: rgba(91, 159, 91, 0.25);
+}
+#sec-communities .section-header svg { color: var(--sec-communities); }
+
+/* Tool stage pipeline */
+.badge-stage-pipe {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.badge-stage-pipe.stage-resume { background: rgba(156,123,219,0.15); color: #B89EE8; }
+.badge-stage-pipe.stage-interview { background: rgba(219,170,80,0.15); color: #DBA950; }
+.badge-stage-pipe.stage-tracking { background: rgba(79,152,163,0.15); color: #6BB5C0; }
+.badge-stage-pipe.stage-portfolio { background: rgba(91,159,91,0.15); color: #7BC07B; }
+
+[data-theme="light"] .badge-stage-pipe.stage-resume { background: rgba(123,95,187,0.12); color: #6B4FB5; }
+[data-theme="light"] .badge-stage-pipe.stage-interview { background: rgba(180,130,40,0.12); color: #8B6520; }
+[data-theme="light"] .badge-stage-pipe.stage-tracking { background: rgba(58,122,133,0.12); color: #2E6E78; }
+[data-theme="light"] .badge-stage-pipe.stage-portfolio { background: rgba(74,138,74,0.12); color: #3A753A; }
+
+/* Community platform icon inline */
+.comm-platform-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.boards-disclaimer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* RESULT CARDS */
+.rec-card {
+  margin-bottom: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.rec-card:hover {
+  border-top-color: var(--color-border-hover);
+  border-right-color: var(--color-border-hover);
+  border-bottom-color: var(--color-border-hover);
+}
+
+.rec-card-header {
+  padding: var(--space-4);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.rec-card-header:hover { background: var(--color-surface-2); }
+
+.rec-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.rec-card-rank {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.rec-card-title {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.rec-card-chevron {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-faint);
+  transition: transform var(--transition-med);
+}
+
+.rec-card.expanded .rec-card-chevron { transform: rotate(180deg); }
+
+.rec-card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.badge-free {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.badge-paid {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.badge-stage {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary-border);
+}
+
+.badge-difficulty {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.badge-bestfor {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+}
+
+.badge-size {
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+.caveat-preview {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: var(--space-2);
+  line-height: 1.4;
+  padding: 0 var(--space-2);
+}
+
+/* Expandable details */
+.rec-card-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow);
+}
+
+.rec-card.expanded .rec-card-details { max-height: 1200px; }
+
+.rec-card-body {
+  padding: 0 var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+
+.detail-row {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.detail-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+.detail-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.detail-label::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.detail-value.caveat {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.detail-value a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary-border);
+  text-underline-offset: 2px;
+}
+
+.detail-value a:hover {
+  text-decoration-color: var(--color-primary);
+}
+
+/* PITFALL CARDS */
+.pitfall-card {
+  margin-bottom: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 3px solid var(--color-warning);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pitfall-card.severity-high { border-left-color: var(--color-danger); }
+
+.pitfall-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pitfall-card-msg {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin-bottom: var(--space-3);
+}
+
+.pitfall-instead {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.5;
+  padding: var(--space-2) var(--space-3);
+  border-left: 2px solid var(--color-primary);
+  background: var(--color-primary-bg);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.pitfall-instead strong {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* RESTART */
+.restart-section {
+  margin-top: var(--space-8);
+  text-align: center;
+}
+
+.restart-section .restart-prompt {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-3);
+}
+
+.share-cta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.share-cta-text {
+  flex: 1;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.share-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: #0F1923;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition-fast);
+}
+
+.share-cta-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+[data-theme="light"] .share-cta-btn {
+  color: #fff;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+/* DISCLAIMER */
+.results-disclaimer {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-4);
+  padding: var(--space-2) var(--space-4);
+  line-height: 1.5;
+  opacity: 0.7;
+}
+
+/* MODAL */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-4);
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+.modal-overlay.active { display: flex; }
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  max-width: 500px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal h2 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+}
+
+.modal p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
+.modal p:last-child { margin-bottom: 0; }
+
+.modal a {
+  color: var(--color-primary);
+}
+
+.modal-close {
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+
+/* FOOTER */
+.app-footer {
+  margin-top: var(--space-12);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-divider);
+  text-align: center;
+}
+
+.app-footer p {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-2);
+}
+
+.app-footer a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.app-footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* EMPATHY BANNER */
+.empathy-banner {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--sec-boards);
+  background: rgba(79, 152, 163, 0.06);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+[data-theme="light"] .empathy-banner {
+  background: rgba(58, 122, 133, 0.06);
+}
+.empathy-banner svg {
+  flex-shrink: 0;
+  color: var(--sec-boards);
+  margin-top: 2px;
+}
+.empathy-banner p {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CHALLENGE TAGS */
+.meta-tag-challenge {
+  background: var(--color-warning-bg);
+  border-color: rgba(212, 160, 74, 0.3);
+  color: var(--color-warning);
+  font-size: 11px;
+}
+
+/* COPY PLAN BUTTON */
+.action-plan-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+.action-plan-title-row .action-plan-title {
+  margin-bottom: 0;
+}
+.copy-plan-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-primary-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+.copy-plan-btn:hover {
+  background: var(--color-primary-bg);
+  border-color: var(--color-primary);
+}
+
+/* TIME FRAMES */
+.action-timeframe {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 4px;
+}
+
+/* START HERE HIGHLIGHT */
+.rec-card.start-here {
+  border-color: var(--color-primary-border);
+  position: relative;
+}
+.rec-card.start-here::before {
+  content: 'START HERE';
+  position: absolute;
+  top: -1px;
+  right: var(--space-3);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #fff;
+  background: var(--color-primary);
+  padding: 2px 8px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  z-index: 1;
+}
+
+/* SURVEY */
+.survey-card {
+  margin-top: var(--space-8);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.survey-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-1);
+}
+.survey-card-header h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+.survey-card-header svg { color: var(--color-primary); flex-shrink: 0; }
+.survey-card-subtitle {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+}
+.survey-q {
+  margin-bottom: var(--space-4);
+}
+.survey-q:last-of-type {
+  margin-bottom: var(--space-5);
+}
+.survey-q-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.survey-q-label .sq-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-primary-bg);
+  border: 1px solid var(--color-primary-border);
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  line-height: 1.3;
+}
+.survey-q-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-bottom: var(--space-2);
+}
+.survey-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.survey-opt {
+  position: relative;
+}
+.survey-opt input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.survey-opt label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+  -webkit-user-select: none;
+  line-height: 1.5;
+}
+.survey-opt label:hover {
+  border-color: var(--color-border-hover);
+}
+.survey-opt input:checked + label {
+  border-color: var(--color-primary);
+  background: var(--color-primary-bg);
+  color: var(--color-text);
+}
+.survey-textarea {
+  width: 100%;
+  min-height: 60px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-2);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  resize: vertical;
+  color: var(--color-text);
+}
+.survey-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+.survey-textarea::placeholder {
+  color: var(--color-text-faint);
+}
+.survey-submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.survey-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.survey-submit:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+.survey-submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+.survey-results-link {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+.survey-results-link a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+}
+.survey-thanks {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+.survey-thanks h3 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+.survey-thanks p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+.survey-thanks a {
+  color: var(--color-primary);
+}
+.survey-val-msg {
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+  margin-top: var(--space-2);
+  display: none;
+}
+.survey-val-msg.visible { display: block; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+</style>
+</head>
+<body>
+<style id="hub-nav-styles">
+  @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@700&f[]=satoshi@400,500&display=swap');
+  .hub-nav{position:sticky;top:0;z-index:9999;background:rgba(17,17,16,0.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid #2e2d2b;padding:0.75rem 0;font-family:'Satoshi','Inter',sans-serif}
+  .hub-nav-inner{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 1.5rem;flex-wrap:nowrap}
+  .hub-nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:#d4d0c8}
+  .hub-nav-logo svg{width:28px;height:28px;flex-shrink:0}
+  .hub-nav-logo-text{font-family:'Cabinet Grotesk','Trebuchet MS',sans-serif;font-weight:700;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);letter-spacing:-0.01em;white-space:nowrap}
+  .hub-nav-right{display:flex;align-items:center;gap:0.25rem;flex-shrink:0}
+  .hub-nav-links{display:flex;align-items:center;gap:0.25rem;list-style:none;margin:0;padding:0}
+  .hub-nav-links a{display:inline-flex;align-items:center;gap:0.25rem;padding:0.5rem 0.75rem;border-radius:0.5rem;font-size:clamp(0.875rem,0.8rem + 0.35vw,1rem);font-weight:500;color:#8a8680;text-decoration:none;transition:color 180ms ease,background 180ms ease}
+  .hub-nav-links a:hover{color:#d4d0c8;background:#222120}
+  .hub-nav-links a.active{color:#d4943c;background:rgba(212,148,60,0.08)}
+  .hub-nav-dot{display:inline-block;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .hub-nav-mobile-toggle{display:none;padding:0.5rem;color:#8a8680;cursor:pointer;background:none;border:none}
+  @media(max-width:640px){.hub-nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:#1a1918;border-bottom:1px solid #3a3836;padding:0.5rem;gap:0.25rem}.hub-nav-links.open{display:flex}.hub-nav-links a{width:100%;padding:0.75rem 1rem}.hub-nav-mobile-toggle{display:flex;align-items:center}}
+</style>
+
+<nav class="hub-nav" role="navigation" aria-label="Site navigation">
+  <div class="hub-nav-inner">
+    <a href="../" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
+      <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="2" y="2" width="28" height="28" rx="6" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 22V10l6 5 6-5v12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+        <circle cx="16" cy="16" r="2" fill="#d4943c"/>
+      </svg>
+      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
+    </a>
+    <div class="hub-nav-right">
+      <ul class="hub-nav-links" id="hubNavLinks">
+        <li><a href="../">Home</a></li>
+        <li><a href="../ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
+        <li><a href="../perspectives/"><span class="hub-nav-dot" style="background:#7b8ff5"></span> Perspectives</a></li>
+        <li><a href="../jobs/" class="active"><span class="hub-nav-dot" style="background:#d4943c"></span> Job Search</a></li>
+        <li><a href="../nvidia-toolkit/"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
+      </ul>
+      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+
+<div class="app-container">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="app-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="6" fill="var(--color-surface-2)"/>
+        <rect x="1" y="1" width="26" height="26" rx="5" stroke="var(--color-primary)" stroke-width="1.2" fill="none"/>
+        <circle cx="9" cy="14" r="2.5" fill="var(--color-primary)"/>
+        <path d="M14.5 9.5L17.5 14.5H11.5z" fill="var(--color-primary)" opacity="0.7"/>
+        <path d="M21 11v6" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="app-logo-text">
+        <span>Job Search</span> Guide
+        <div class="logo-byline">by HALP</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="shareBtn" aria-label="Share this tool" title="Share">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </button>
+      <div class="share-dropdown" id="shareDropdown">
+        <a class="share-dropdown-item" id="shareLI" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="share-icon-li" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a class="share-dropdown-item" id="shareX" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="share-icon-x" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X / Twitter
+        </a>
+        <a class="share-dropdown-item" id="shareBS" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="share-icon-bs" viewBox="0 0 24 24" fill="currentColor"><path d="M6.335 3.836a47.632 47.632 0 0 1 4.354 4.678C12.842 6.48 15.089 4.26 17.665 3.836c3.469-.571 5.942 1.202 5.942 4.358 0 3.478-3.04 6.234-7.044 8.075-1.2.552-2.054.772-2.563.772s-1.363-.22-2.563-.772C7.433 14.428 4.393 11.672 4.393 8.194c0-3.156 2.473-4.93 5.942-4.358z"/></svg>
+          Bluesky
+        </a>
+        <a class="share-dropdown-item" id="shareRD" href="#" target="_blank" rel="noopener noreferrer">
+          <svg class="share-icon-rd" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 0-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>
+          Reddit
+        </a>
+        <button class="share-dropdown-item" id="shareCopy">
+          <svg class="share-icon-cp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="copyLinkLabel">Copy link</span>
+        </button>
+      </div>
+      <button class="icon-btn" id="aboutBtn" aria-label="About this tool" title="About">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </button>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle dark/light mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- FORM SCREEN -->
+  <div id="formScreen" class="screen active">
+    <div class="form-intro">
+      <h1>Game Dev Job Search Guide</h1>
+      <p class="form-blurb">Cut through the noise. Find where the jobs are, use AI tools that actually help, and avoid the traps.</p>
+
+      <div class="stat-pills">
+        <span class="stat-pill stat-warning"><strong>33%</strong> of US game devs laid off in past 2 years</span>
+        <span class="stat-pill stat-warning"><strong>48%</strong> still haven't found work</span>
+        <span class="stat-pill stat-good"><strong>~50%</strong> referral interview rate</span>
+      </div>
+
+      <p>The game dev job market is fragmented across 10+ platforms, and AI tools can either help or hurt your chances. Answer 4 questions and get a personalized action plan based on your discipline and situation.</p>
+
+      <div class="whats-new" id="whatsNew">
+        <button class="whats-new-toggle" onclick="document.getElementById('whatsNew').classList.toggle('open')">
+          <span class="whats-new-toggle-left">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            What's New
+            <span class="whats-new-badge">v1.6</span>
+          </span>
+          <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="whats-new-content">
+          <div class="whats-new-version">v1.6 &mdash; April 7, 2026</div>
+          <ul class="whats-new-list">
+            <li>Market snapshot updated: Q1 2026 logged ~2,700 layoffs &mdash; the highest single quarter since early 2024</li>
+            <li>New pitfall: &ldquo;Waiting for an Identical Role&rdquo; &mdash; covers structurally contracting areas (manual QA, traditional art, generalist Unity dev) and where to pivot</li>
+            <li>Awesome People List (ex-Epic) added to Communities section &mdash; surfaces for recently laid-off devs</li>
+            <li>Godot tip added to action plans for entry-level and indie/freelance engineers and designers</li>
+          </ul>
+          <div class="whats-new-version">v1.5 &mdash; March 27, 2026</div>
+          <ul class="whats-new-list">
+            <li>Sticky section nav on results page &mdash; jump between Action Plan, Boards, Tools, Pitfalls, and Communities with one click</li>
+            <li>Scroll spy highlights the active section as you scroll</li>
+            <li>Collapsible sections &mdash; top 3 results shown by default with "Show all" expander for each section</li>
+            <li>Visual section differentiation &mdash; each section has a unique accent color (teal for boards, purple for tools, amber for pitfalls, green for communities)</li>
+            <li>Color-coded stage badges on AI tools (Resume, Interview, Tracking, Portfolio)</li>
+            <li>Inline platform icons on community cards (Discord, Reddit, mental health, mentorship)</li>
+            <li>Share prompt after action plan to encourage sharing</li>
+            <li>"Run it again" prompt at page bottom encourages exploring different profiles</li>
+            <li>Animated wizard progress bar with step completion pulse</li>
+            <li>Improved card detail labels with amber accent styling</li>
+            <li>Share button with LinkedIn, X, Bluesky, Reddit, and copy link</li>
+          </ul>
+          <div class="whats-new-version">v1.4 &mdash; March 25, 2026</div>
+          <ul class="whats-new-list">
+            <li>New section: Communities &amp; Support &mdash; 14 Discord servers, Reddit communities, mentorship programs, mental health resources, and professional organizations, scored and filtered to your profile</li>
+            <li>Community cards show type badges (Discord, Reddit, Mental Health, Mentorship, etc.) with direct join links</li>
+            <li>Take This mental health resources surfaced for recently laid-off developers</li>
+            <li>GameDevMap studio discovery tool integrated for relocation-focused profiles</li>
+          </ul>
+          <div class="whats-new-version">v1.3 &mdash; March 21, 2026</div>
+          <ul class="whats-new-list">
+            <li>Copy Plan button: save your personalized action plan to clipboard</li>
+            <li>New challenge option: "Worried AI is replacing my role"</li>
+            <li>Time framing on action plan steps (This week / Ongoing / Within 30 days)</li>
+            <li>Challenge selections now shown in results profile tags</li>
+            <li>"Start Here" badge highlights top-ranked board and AI tool</li>
+            <li>Updated market data with latest GDC 2026 and Satvat tracking figures</li>
+            <li>Improved pitfall card language for clarity</li>
+            <li>60-second community survey with live public results</li>
+          </ul>
+          <div class="whats-new-version">v1.2 &mdash; March 20, 2026</div>
+          <ul class="whats-new-list">
+            <li>Added Outscal to job boards (entry-level and international coverage)</li>
+            <li>Added curation note explaining board selection philosophy</li>
+            <li>Fixed duplicate LinkedIn link in action plan for senior profiles</li>
+            <li>Renamed from "Game Dev AI Job Search Guide" to "Game Dev Job Search Guide"</li>
+            <li>Simplified footer (cross-links now handled by site navigation)</li>
+          </ul>
+          <div class="whats-new-version">v1.1 &mdash; March 19, 2026</div>
+          <ul class="whats-new-list">
+            <li>Action plan steps now link directly to recommended tools and platforms</li>
+            <li>Pitfall cards now include hyperlinks to resources mentioned in recommendations</li>
+            <li>Market snapshot sources linked to original reports</li>
+            <li>Added this changelog</li>
+          </ul>
+          <div class="whats-new-version">v1.0 &mdash; March 19, 2026</div>
+          <ul class="whats-new-list">
+            <li>Initial release: 4-step wizard with personalized job board, AI tool, and pitfall recommendations</li>
+            <li>13 job boards scored by discipline, experience, and situation (now 14)</li>
+            <li>12 AI tools evaluated for game-dev-specific relevance</li>
+            <li>10 market pitfalls with honest assessments and concrete alternatives</li>
+            <li>5-step personalized action plan generator</li>
+            <li>Market snapshot with 2025-2026 industry data</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIZARD -->
+    <div class="wizard-progress" id="wizardProgress">
+      <div class="wizard-progress-step active" data-step="1"></div>
+      <div class="wizard-progress-step" data-step="2"></div>
+      <div class="wizard-progress-step" data-step="3"></div>
+      <div class="wizard-progress-step" data-step="4"></div>
+    </div>
+
+    <div class="wizard-step-counter" id="wizardCounter">Step 1 of 4</div>
+
+    <!-- STEP 1: Discipline -->
+    <div class="wizard-step active" data-step="1">
+      <div class="question-section">
+        <div class="question-label">
+          <span class="question-number">Q1</span>
+          <span class="question-text">Your Discipline</span>
+        </div>
+        <div class="option-grid cols-3" id="disciplineGrid"></div>
+        <div class="validation-msg" id="valStep1">Select your primary discipline</div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Experience -->
+    <div class="wizard-step" data-step="2">
+      <div class="question-section">
+        <div class="question-label">
+          <span class="question-number">Q2</span>
+          <span class="question-text">Experience Level</span>
+        </div>
+        <div class="option-grid" id="experienceGrid"></div>
+        <div class="validation-msg" id="valStep2">Select your experience level</div>
+      </div>
+    </div>
+
+    <!-- STEP 3: Situation -->
+    <div class="wizard-step" data-step="3">
+      <div class="question-section">
+        <div class="question-label">
+          <span class="question-number">Q3</span>
+          <span class="question-text">Your Situation</span>
+        </div>
+        <p class="question-hint">Select all that apply</p>
+        <div class="option-grid" id="situationGrid"></div>
+        <div class="validation-msg" id="valStep3">Select at least one situation</div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Challenges -->
+    <div class="wizard-step" data-step="4">
+      <div class="question-section">
+        <div class="question-label">
+          <span class="question-number">Q4</span>
+          <span class="question-text">Biggest Challenges</span>
+        </div>
+        <p class="question-hint">Pick up to 3</p>
+        <div class="option-grid" id="challengeGrid"></div>
+        <div class="validation-msg" id="valStep4">Select at least one challenge</div>
+      </div>
+    </div>
+
+    <div class="wizard-nav">
+      <button class="wizard-nav-back hidden" id="wizardBack">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="wizard-nav-next" id="wizardNext" disabled>
+        Next
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="resultsScreen" class="screen">
+    <div id="resultsContent"></div>
+  </div>
+</div>
+
+<!-- ABOUT MODAL -->
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal">
+    <h2>About This Tool</h2>
+    <p>The <strong>Game Dev Job Search Guide</strong> is a companion to the <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">Game Dev AI Guide</a>. It helps game developers navigate the job search landscape with personalized, scored recommendations.</p>
+    <p><strong>What it covers:</strong> 14 job boards, 12 AI tools, 10 market pitfalls, 14 communities and support resources, and a 5-step action plan &mdash; all scored and ranked by your discipline, experience level, and situation.</p>
+    <p><strong>How scoring works:</strong> Every recommendation is matched against your profile. Boards, tools, communities, and pitfalls each have discipline, experience, and situation tags. The tool scores each item based on how many of your selections it matches, with special boosts for strong fits (e.g., ASGC for laid-off devs, ArtStation for artists, Take This for mental health support).</p>
+    <p><strong>Philosophy:</strong> AI tools augment your search &mdash; they don't replace doing the real work. A referral from a former colleague is still worth more than 100 AI-optimized cold applications. No motivational fluff. Concrete, honest, practical.</p>
+    <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
+    <p style="font-size:var(--text-xs);color:var(--color-text-muted);"><strong>Data sources:</strong> GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends 2024, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025, Take This Mental Health in Games 2025. All URLs verified March 2026.</p>
+    <button class="modal-close" id="closeModal">Close</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="app-footer">
+  <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
+  <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: April 7, 2026 (v1.6) &bull; Research data subject to change</p>
+</footer>
+
+<script>
+/* ============================================
+   DATA: JOB BOARDS
+   ============================================ */
+var JOB_BOARDS = [
+  {
+    id: 'gamejobs',
+    name: 'GameJobs.co',
+    url: 'https://gamejobs.co',
+    description: 'Pure aggregator pulling from hundreds of studio career pages. Updated multiple times daily. No ads, no sponsored listings.',
+    cost: 'Free',
+    costType: 'free',
+    size: '~5,500-5,900 listings',
+    bestFor: ['All disciplines'],
+    hasRemoteFilter: true,
+    bestForTags: ['Volume', 'Aggregator', 'Studio jobs'],
+    strengths: 'Best pure aggregator for studio-posted game dev jobs. No pay-to-play dynamics. Clean, fast interface.',
+    caveats: 'Aggregation quality is uneven; some listings stale. No community, profiles, or portfolio integration. Skews mid/senior.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','freelance','relocation','remote','international']
+  },
+  {
+    id: 'hitmarker',
+    name: 'Hitmarker',
+    url: 'https://hitmarker.net',
+    description: 'Largest dedicated gaming & esports jobs platform. 5,700+ listings, 335k registered candidates. Covers both dev and business roles.',
+    cost: 'Free',
+    costType: 'free',
+    size: '5,700+ listings',
+    bestFor: ['All disciplines', 'Esports'],
+    hasRemoteFilter: true,
+    bestForTags: ['Volume', 'Esports', 'Career advice'],
+    strengths: 'Highest volume of game-industry-specific listings. Strong career advice content. Covers esports roles uniquely.',
+    caveats: 'Esports and business roles dilute pure game dev results. No AI matching. Some listings aggregated and may be stale.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','freelance','relocation','remote','international']
+  },
+  {
+    id: 'linkedin',
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/jobs',
+    description: 'Largest professional network. Most studios post here as standard practice. The network effect and referral channel make it essential.',
+    cost: 'Free (Premium ~$40/mo)',
+    costType: 'freemium',
+    size: 'Tens of thousands',
+    bestFor: ['Networking', 'Senior roles'],
+    hasRemoteFilter: true,
+    bestForTags: ['Networking', 'Referrals', 'Senior roles'],
+    strengths: 'Where referrals happen. Recruiters actively scout profiles. Breadth means even obscure studios post here.',
+    caveats: 'Signal-to-noise is terrible for game dev. Popular listings attract 200-500+ applicants. Easy Apply floods create low-quality applicant pools.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['laid_off','employed_looking','relocation','remote']
+  },
+  {
+    id: 'asgc',
+    name: "Amir Satvat's ASGC",
+    url: 'https://asgc.gg',
+    description: 'Volunteer-run community by industry veteran Amir Satvat. Jobs workbook, Discord, mentorship matching, portfolio reviews. Has helped ~4,000 people land jobs.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Thousands (curated)',
+    bestFor: ['Entry-level', 'Career changers', 'Mentorship'],
+    hasRemoteFilter: false,
+    bestForTags: ['Mentorship', 'Community', 'Referrals'],
+    strengths: 'Arguably the most impactful single resource for game job seekers. Human-curated job listings, mentorship matching, portfolio reviews. Free.',
+    caveats: 'Discord-based, opaque to outsiders. Must actively participate. Scale (500k+ monthly users) means popular channels are high-volume.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','first_job','freelance','remote','international']
+  },
+  {
+    id: 'artstation',
+    name: 'ArtStation Jobs',
+    url: 'https://www.artstation.com/jobs',
+    description: 'Industry-standard portfolio platform with integrated job listings. Recruiters can view applicant portfolios alongside listings. The platform for visual artists.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Large (art-focused)',
+    bestFor: ['Art', 'Animation', 'VFX'],
+    hasRemoteFilter: true,
+    bestForTags: ['Art roles', 'Portfolio integration'],
+    strengths: 'Portfolio integration is the key differentiator. Recruiters immediately view your work. Being discoverable via portfolio gets inbound contact.',
+    caveats: 'Almost irrelevant for non-art disciplines. $149+ listing cost means only studios with budget post. Discoverability depends on portfolio optimization and tagging.',
+    disciplines: ['art','animation','tech_art','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','freelance','relocation','remote','international']
+  },
+  {
+    id: 'workwithindies',
+    name: 'Work With Indies',
+    url: 'https://workwithindies.com',
+    description: 'Curated board focused exclusively on indie studios. Community-oriented with Discord. Quality over quantity.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Small (curated)',
+    bestFor: ['Indie studios', 'Remote'],
+    hasRemoteFilter: true,
+    bestForTags: ['Indie', 'Remote-friendly'],
+    strengths: 'Only major board genuinely focused on indie studios. Community feel. Listings are genuine. Remote roles dominate.',
+    caveats: 'Low volume (tens, not hundreds of fresh listings). Not ideal for juniors. Limited filtering.',
+    disciplines: ['engineering','art','animation','game_design','production','audio','uiux'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['freelance','remote','employed_looking']
+  },
+  {
+    id: 'remotegamejobs',
+    name: 'Remote Game Jobs',
+    url: 'https://remotegamejobs.com',
+    description: 'Niche board exclusively for remote game industry positions. Discord webhooks + RSS feed for monitoring.',
+    cost: 'Free',
+    costType: 'free',
+    size: '~27-50 active listings',
+    bestFor: ['Remote-only seekers'],
+    hasRemoteFilter: true,
+    bestForTags: ['Remote-only', 'Discord alerts'],
+    strengths: 'If remote is non-negotiable, this filters everything else. Discord webhooks and RSS make monitoring easy. No sponsored listings.',
+    caveats: 'Very low volume. Not a standalone solution. Must combine with other platforms.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['remote']
+  },
+  {
+    id: 'gracklehq',
+    name: 'Grackle HQ',
+    url: 'https://gracklehq.com',
+    description: 'Volunteer-operated aggregator that monitors game company career pages. No ads, no sponsored listings. Community-driven.',
+    cost: 'Free',
+    costType: 'free',
+    size: '~2,970 listings',
+    bestFor: ['Aggregated studio jobs'],
+    hasRemoteFilter: true,
+    bestForTags: ['Aggregator', 'Community-built'],
+    strengths: 'No pay-to-play dynamics. Genuinely aggregates from company career pages with useful geographic filtering. Clean UI.',
+    caveats: 'Coverage depends on which studios have been scripted. Volunteer-operated means no SLA on freshness. Less well-known.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['laid_off','employed_looking','relocation']
+  },
+  {
+    id: 'studio_pages',
+    name: 'Studio Career Pages',
+    url: '#',
+    description: 'Direct from the source. Career pages are updated first, before syndication to boards. Internships often posted only here.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Varies per studio',
+    bestFor: ['Freshest listings', 'Dream studios'],
+    hasRemoteFilter: false,
+    bestForTags: ['Direct apply', 'Freshest listings'],
+    strengths: 'No middleman. Freshest listings, appearing days before boards. Shows genuine interest. Internships found only here.',
+    caveats: 'Not scalable. Requires knowing which studios to monitor. Use aggregators (GameJobs.co, Grackle HQ) to catch listings at scale.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','relocation']
+  },
+  {
+    id: 'indeed',
+    name: 'Indeed / Glassdoor',
+    url: 'https://www.indeed.com',
+    description: 'Massive general aggregators. Use Indeed to catch listings that slip through specialized boards. Glassdoor for company reviews and salary data.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Millions (mixed)',
+    bestFor: ['Catch-all', 'Company research'],
+    hasRemoteFilter: true,
+    bestForTags: ['Catch-all', 'Salary data'],
+    strengths: 'Catches listings from small studios that only post on Indeed. Glassdoor reviews are essential for studio culture research before interviews.',
+    caveats: 'High noise-to-signal for game dev. Use as a weekly sweep, not a primary search tool.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','relocation','remote','international']
+  },
+  {
+    id: 'gamedevclassifieds',
+    name: 'GameDev Classifieds',
+    url: 'https://www.gamedevmap.com/classifieds',
+    description: 'Reddit-style board (r/gamedev classifieds). Strong for freelance, contract, and student/intern postings.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Small-medium',
+    bestFor: ['Freelance', 'Entry-level', 'Contracts'],
+    hasRemoteFilter: false,
+    bestForTags: ['Freelance', 'Entry-level', 'Contracts'],
+    strengths: 'Community-driven. Strong for freelance and contract. Entry-level friendly with student/intern postings.',
+    caveats: 'Inconsistent quality. No verification. Budget rates common in freelance posts.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid'],
+    situations: ['freelance','first_job','remote']
+  },
+  {
+    id: 'gamesjobsdirect',
+    name: 'Games Jobs Direct',
+    url: 'https://www.gamesjobsdirect.com',
+    description: 'UK/Europe-focused dedicated game dev board. Salary checker built in. Strong for international and AAA European studios.',
+    cost: 'Free',
+    costType: 'free',
+    size: '1,500+ listings',
+    bestFor: ['UK/Europe', 'AAA', 'Salary data'],
+    hasRemoteFilter: true,
+    bestForTags: ['UK/Europe', 'Salary checker', 'AAA'],
+    strengths: 'If you\'re in or targeting UK/Europe, this is essential. Salary checker provides market data. Strong AAA coverage.',
+    caveats: 'Less relevant for US-only search. Some listings cross-post from other boards.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['laid_off','employed_looking','relocation','international']
+  },
+  {
+    id: 'gijobs',
+    name: 'GI.biz Jobs',
+    url: 'https://jobs.gamesindustry.biz',
+    description: 'Jobs board from GamesIndustry.biz (the leading B2B games publication). Senior and leadership roles. Strong credibility signal.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Medium (curated)',
+    bestFor: ['Senior/Lead', 'International', 'Leadership'],
+    hasRemoteFilter: true,
+    bestForTags: ['Senior roles', 'International', 'Leadership'],
+    strengths: 'High credibility due to GI.biz brand. International reach. Skews senior/leadership. Good for management and production roles.',
+    caveats: 'Lower volume than aggregators. Less useful for junior/mid individual contributor roles.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['senior','lead'],
+    situations: ['laid_off','employed_looking','relocation','international']
+  },
+  {
+    id: 'outscal',
+    name: 'Outscal',
+    url: 'https://outscal.com/jobs',
+    description: 'Game dev learning + job platform. Strong entry-level and international coverage. Integrated courses and job readiness tools.',
+    cost: 'Free',
+    costType: 'free',
+    size: 'Growing (1,000+ listings)',
+    bestFor: ['Entry-level', 'International', 'Learning'],
+    hasRemoteFilter: true,
+    bestForTags: ['Entry-level', 'International', 'Learning path'],
+    strengths: 'Integrated learning + job board is unique. Strong international reach. Entry-level friendly. Growing community.',
+    caveats: 'Newer platform with less brand recognition than established boards. Course upsells prominent. Community less established than ASGC.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid'],
+    situations: ['first_job','international','laid_off','remote']
+  }
+];
+
+/* ============================================
+   DATA: AI TOOLS
+   ============================================ */
+var AI_TOOLS = [
+  {
+    id: 'chatgpt_interview',
+    name: 'ChatGPT Voice Mode (Interview Prep)',
+    url: 'https://chat.openai.com',
+    description: 'Use Voice Mode for live mock interviews. Upload your resume + a target JD, then ask it to simulate a specific interview format (portfolio review, behavioral, technical).',
+    cost: 'Free',
+    costType: 'free',
+    stage: 'Interview',
+    challenges: ['interview_prep'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'High. Can simulate portfolio reviews for artists, design critiques for designers, behavioral interviews for production. You control the specificity by the context you provide.',
+    caveats: 'Quality depends entirely on prompt quality. Ask for harsh feedback explicitly. Does not know actual interviewer preferences at specific studios.'
+  },
+  {
+    id: 'teal',
+    name: 'Teal',
+    url: 'https://www.tealhq.com',
+    description: 'All-in-one platform: ATS-optimized resume builder, job tracker, LinkedIn optimizer, and AI resume tailoring. Best-in-class for tracking applications.',
+    cost: 'Free (basic); Pro $29/mo',
+    costType: 'freemium',
+    stage: 'Resume',
+    challenges: ['ats_trouble','getting_ghosted','finding_jobs'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic but solid. No game-industry-specific knowledge. Resume tailoring AI is template-based. Best value is the integrated tracker + LinkedIn optimizer combo.',
+    caveats: 'AI tailoring still requires your manual editing for specificity. $29/mo Pro is a lot for what it offers vs. Jobscan free trial + Huntr free.'
+  },
+  {
+    id: 'jobscan',
+    name: 'Jobscan',
+    url: 'https://www.jobscan.co',
+    description: 'Compares resume against job descriptions for keyword gaps and ATS formatting issues. Use free trial to audit your base resume.',
+    cost: 'Free (5 scans/mo); Premium $49.95/mo',
+    costType: 'freemium',
+    stage: 'Resume',
+    challenges: ['ats_trouble','getting_ghosted'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic. Knows common keywords (Unity, Unreal, C++) from JDs but has no intrinsic game industry knowledge. Cannot evaluate shipped titles or portfolio conventions.',
+    caveats: '"One Click Optimize" can stuff keywords awkwardly. Main value is teaching you what keywords matter. Use free trial, don\'t pay monthly.'
+  },
+  {
+    id: 'kickresume',
+    name: 'Kickresume',
+    url: 'https://www.kickresume.com',
+    description: 'GPT-4-powered resume builder with personal website builder feature. Ranked #1 for tailoring quality in a Reddit comparison.',
+    cost: 'Free (limited); ~$8/mo annual',
+    costType: 'freemium',
+    stage: 'Resume',
+    challenges: ['ats_trouble','portfolio_needs_work','getting_ghosted'],
+    disciplines: ['engineering','qa','game_design','level_design','uiux','narrative','production','community'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic builder, but the personal website feature is useful for disciplines that need a portfolio page (designers, producers, narrative).',
+    caveats: 'Free tier very limited. Best value at ~$8/mo annual pricing. No game-specific features beyond what you prompt.'
+  },
+  {
+    id: 'resume_worded',
+    name: 'Resume Worded',
+    url: 'https://www.resumeworded.com',
+    description: 'Line-by-line resume feedback across Impact, Brevity, Style, Soft Skills, and ATS compatibility. Also scores LinkedIn profiles.',
+    cost: 'Free (basic); $19/mo annual',
+    costType: 'freemium',
+    stage: 'Resume',
+    challenges: ['ats_trouble','getting_ghosted'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic. Catches vague language and weak impact statements. Cannot evaluate shipped titles presentation. Trustpilot: 4.8/5 (highest reviewed).',
+    caveats: 'Best for polish after tailoring, not keyword-stuffing. Annual plan at $19/mo is good value. Free tier works for a quick pass.'
+  },
+  {
+    id: 'simplify',
+    name: 'Simplify',
+    url: 'https://simplify.jobs',
+    description: 'Browser extension that autofills repetitive application fields. Does NOT auto-submit. Saves time on data entry across boards.',
+    cost: 'Free',
+    costType: 'free',
+    stage: 'Tracking',
+    challenges: ['finding_jobs','getting_ghosted'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Useful for admin overhead. Does not solve the customization problem (each game dev app needs tailored portfolio link and cover letter).',
+    caveats: 'Does not replace tailoring each application. Only handles logistics. Free and worth installing.'
+  },
+  {
+    id: 'huntr',
+    name: 'Huntr',
+    url: 'https://www.huntr.co',
+    description: 'Kanban-style job tracker with best-in-class Chrome extension. Auto-extracts job details from any website. Contact tracking and follow-up reminders.',
+    cost: 'Free (100 jobs); Pro $40/mo',
+    costType: 'freemium',
+    stage: 'Tracking',
+    challenges: ['finding_jobs','getting_ghosted'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Chrome extension works well across game job boards (Hitmarker, Work With Indies, studio pages). Free 100-job tier covers most searches.',
+    caveats: 'Most expensive tracker at $40/mo for Pro. Free tier sufficient for most active searches.'
+  },
+  {
+    id: 'yoodli',
+    name: 'Yoodli',
+    url: 'https://www.yoodli.ai',
+    description: 'AI communication coach focused on delivery: pacing, filler words, clarity. Live roleplay interviews with real-time feedback.',
+    cost: 'Free (5 roleplays); Pro $8/mo annual',
+    costType: 'freemium',
+    stage: 'Interview',
+    challenges: ['interview_prep'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic communication tool. Most valuable if you know your content but struggle with presentation. 5 free sessions identify worst delivery habits.',
+    caveats: 'Does not know game industry interview formats. Helps with how you say things, not what you say. Skip if content is your problem.'
+  },
+  {
+    id: 'big_interview',
+    name: 'Big Interview',
+    url: 'https://www.biginterview.com',
+    description: '200+ video training lessons, unlimited AI mock interviews, STAR method answer builder, salary negotiation coaching.',
+    cost: '$39/mo; Lifetime $299',
+    costType: 'paid',
+    stage: 'Interview',
+    challenges: ['interview_prep','salary_negotiation'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Moderate',
+    gameDevRelevance: 'Generic but generates questions dynamically from your resume + JD. Most useful for behavioral questions (ship crises, design disagreements).',
+    caveats: 'Lifetime $299 plan is the best deal. Monthly is overpriced. Covers behavioral well; less useful for technical/art test prep.'
+  },
+  {
+    id: 'chatgpt_cover',
+    name: 'ChatGPT/Claude (Cover Letters)',
+    url: 'https://chat.openai.com',
+    description: 'Use as a drafting tool: provide resume, JD, and 2-3 specific highlights. Then heavily rewrite in your own voice with specific studio knowledge.',
+    cost: 'Free',
+    costType: 'free',
+    stage: 'Resume',
+    challenges: ['getting_ghosted','ats_trouble'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'High potential if used correctly. Must add specific game titles, mechanic examples, and studio knowledge. Never submit raw AI output.',
+    caveats: '65% of hiring managers have caught AI-generated applications. 39% consider it a deal-breaker. Always rewrite with your voice and specific details.'
+  },
+  {
+    id: 'chatgpt_portfolio',
+    name: 'ChatGPT/Claude (Portfolio Writing)',
+    url: 'https://chat.openai.com',
+    description: 'Write project descriptions, README files, GDD language, and portfolio case study structure. You provide the work; AI helps document it.',
+    cost: 'Free',
+    costType: 'free',
+    stage: 'Portfolio',
+    challenges: ['portfolio_needs_work','no_shipped_titles'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'High for writing project context. Cannot replace actual portfolio work. Useful for disciplines where writing about your process matters (design, production, engineering).',
+    caveats: 'AI cannot generate genuine portfolio content. It helps document and present YOUR work, not create work from nothing.'
+  },
+  {
+    id: 'rezi',
+    name: 'Rezi',
+    url: 'https://www.rezi.ai',
+    description: 'ATS-focused resume builder with real-time scoring against 23 criteria. The $149 lifetime plan removes recurring costs for career-long use.',
+    cost: 'Free (limited); Lifetime $149',
+    costType: 'freemium',
+    stage: 'Resume',
+    challenges: ['ats_trouble'],
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    difficulty: 'Easy',
+    gameDevRelevance: 'Generic. Lifetime plan is smart for anyone expecting to job search again. Trustpilot: 4.6/5.',
+    caveats: 'AI content generic, requires manual editing. Skip monthly ($29/mo). Only the lifetime plan makes financial sense.'
+  }
+];
+
+/* ============================================
+   DATA: PITFALLS
+   ============================================ */
+var PITFALLS = [
+  {
+    id: 'spray_pray',
+    title: 'The Mass-Apply Trap',
+    severity: 'high',
+    explanation: 'AI tools make it easy to apply to 100+ jobs. But application volume has tripled since 2022 while offer rates dropped 70% (2 in 1,000). In game dev, studios track applications across postings. Applying to 20 roles at the same studio via a bot is a red flag in a community where everyone knows each other.',
+    whatToDoInstead: 'Apply to 20-40 roles, carefully researched. Customize each portfolio presentation to match the studio\'s aesthetic. Use <a href="https://www.huntr.co" target="_blank" rel="noopener noreferrer">Huntr</a> or a spreadsheet to track every application. A cover letter that references a specific design decision in their game outperforms 50 generic applications.',
+    situations: ['laid_off','first_job'],
+    challenges: ['finding_jobs','getting_ghosted','ats_trouble']
+  },
+  {
+    id: 'ai_cover_letter',
+    title: 'AI Cover Letters Get Detected',
+    severity: 'high',
+    explanation: '74% of hiring managers say they can tell when a cover letter was AI-generated. 39% consider it a deal-breaker. Game studio recruiters read closely for genuine passion and knowledge of their games. A letter that says "I am excited to contribute to your innovative projects" instead of naming a specific game is noticed immediately.',
+    whatToDoInstead: 'Use AI to draft, then heavily rewrite with your voice. Add specific studio knowledge: name their games, comment on a design choice, reference a <a href="https://gdconf.com" target="_blank" rel="noopener noreferrer">GDC</a> talk by their team. The human signal is what recruiters need.',
+    situations: ['laid_off','employed_looking','first_job'],
+    challenges: ['getting_ghosted','ats_trouble']
+  },
+  {
+    id: 'remote_myth',
+    title: 'Remote Roles Have Collapsed',
+    severity: 'medium',
+    explanation: 'Remote-friendly game dev roles have gone from 80%+ in 2020 to under 15% by 2025, with most large studios now requiring some in-office presence. That said, remote and hybrid roles still exist — especially at indie studios and in contract/freelance work. The search takes more effort but the options are real.',
+    whatToDoInstead: 'Expand to hybrid roles and consider relocation if permanent studio employment is the goal. Contract/freelance and indie studio roles remain more remote-friendly. Check <a href="https://remotegamejobs.com" target="_blank" rel="noopener noreferrer">Remote Game Jobs</a> and <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a> for remaining remote-friendly positions.',
+    situations: ['remote'],
+    challenges: ['finding_jobs']
+  },
+  {
+    id: 'seniors_taking_mids',
+    title: 'Seniors Are Taking Mid-Level Jobs',
+    severity: 'high',
+    explanation: 'Competition is intense at every level right now. Experienced candidates are applying for roles below their previous title, which compresses opportunity across the board. Entry-level hiring is slow, but it has not stopped. The path takes longer and requires more creative approaches than it did two years ago.',
+    whatToDoInstead: 'For juniors: Build portfolio through game jams (<a href="https://globalgamejam.org" target="_blank" rel="noopener noreferrer">Global Game Jam</a>, <a href="https://ldjam.com" target="_blank" rel="noopener noreferrer">Ludum Dare</a>), contribute to open source (<a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a>), or ship a small game on <a href="https://itch.io" target="_blank" rel="noopener noreferrer">itch.io</a>. For experienced candidates: Target the 5-15 year experience sweet spot that makes up the bulk of openings.',
+    situations: ['first_job','laid_off'],
+    challenges: ['no_shipped_titles','getting_ghosted','finding_jobs']
+  },
+  {
+    id: 'generic_portfolio',
+    title: 'Generic Portfolios Get Ignored',
+    severity: 'medium',
+    explanation: 'Studios hire for specific roles with specific aesthetic/technical needs. An environment artist applying to a dark fantasy studio should lead with dark fantasy environments. "Beautiful art with no context" is the most common portfolio mistake recruiters cite.',
+    whatToDoInstead: 'Tailor your portfolio top 8-12 pieces to match the studio\'s visual style and needs on <a href="https://www.artstation.com/jobs" target="_blank" rel="noopener noreferrer">ArtStation</a>. Add context: what you did, why, your process. Show wireframes, breakdowns, and engine context — not just beauty renders.',
+    situations: ['laid_off','employed_looking','first_job'],
+    challenges: ['portfolio_needs_work','getting_ghosted','no_shipped_titles']
+  },
+  {
+    id: 'ats_myths',
+    title: 'ATS Systems Don\'t Auto-Reject Resumes',
+    severity: 'medium',
+    explanation: 'A 3-month investigation found that NO major ATS (Greenhouse, Lever, Workday, iCIMS) auto-rejects resumes. They organize and surface resumes; humans decide. White text keyword stuffing is detected in ~10% of scanned resumes by ManpowerGroup, and modern ATS down-weights isolated keywords.',
+    whatToDoInstead: 'Use clean formatting (standard headers, PDF, no tables/graphics for skills). Include real engine names and tools you genuinely use. Run a free scan through <a href="https://www.jobscan.co" target="_blank" rel="noopener noreferrer">Jobscan</a> to check keyword alignment, but remember it\'s for humans finding you in search, not surviving a robot filter.',
+    situations: ['laid_off','first_job','employed_looking'],
+    challenges: ['ats_trouble','getting_ghosted']
+  },
+  {
+    id: 'art_test_exploit',
+    title: 'Art Tests Have Expanded Significantly',
+    severity: 'medium',
+    explanation: 'Art tests that were once quick skill checks have grown into multi-day assignments at some studios. In a competitive market, candidates often feel pressure to accept any scope without pushback. It\'s worth understanding what you\'re agreeing to before starting.',
+    whatToDoInstead: 'Set scope expectations upfront: "I can commit to 4-6 hours. What should I prioritize?" For tests requiring 3+ days of work, it\'s reasonable to ask about scope, deliverables, and whether the work will be used in production. Senior candidates can propose showing relevant shipped work as an alternative.',
+    situations: ['laid_off','employed_looking'],
+    challenges: ['interview_prep','portfolio_needs_work']
+  },
+  {
+    id: 'ignore_career_pages',
+    title: 'Ignoring Studio Career Pages',
+    severity: 'medium',
+    explanation: 'Many game dev roles are posted to internal career pages days or weeks before boards. Some never reach boards at all. Senior/director roles are often headhunted and filled before any public posting. Early applications (first 48-72 hours) have dramatically higher response rates.',
+    whatToDoInstead: 'Build a target list of 30-50 studios, bookmark their career pages, check weekly. Use aggregators like <a href="https://gamejobs.co" target="_blank" rel="noopener noreferrer">GameJobs.co</a> and <a href="https://gracklehq.com" target="_blank" rel="noopener noreferrer">Grackle HQ</a> to catch listings at scale. Follow talent managers at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> — they post about roles first.',
+    situations: ['laid_off','employed_looking'],
+    challenges: ['finding_jobs','getting_ghosted']
+  },
+  {
+    id: 'no_networking',
+    title: 'Cold Applications Are the Worst Odds',
+    severity: 'high',
+    explanation: 'Cold application offer rate is roughly 0.2% (2 in 1,000), while referral interview rates run above 50%. Many game dev roles are filled through referrals or direct recruiter outreach before a public listing goes up. The takeaway is not to stop applying — it is to diversify how you spend your search time.',
+    whatToDoInstead: 'Shift 20-30% of job search time to relationship building. Join <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat\'s ASGC Discord</a>. Engage with 5-10 people at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for 2-4 weeks, then reach out with specific context. One real conversation at <a href="https://gdconf.com" target="_blank" rel="noopener noreferrer">GDC</a> beats months of messages.',
+    situations: ['laid_off','first_job','employed_looking'],
+    challenges: ['getting_ghosted','finding_jobs']
+  },
+  {
+    id: 'discipline_switch',
+    title: 'The Transferable Skills Gap',
+    severity: 'medium',
+    explanation: 'Studios often fail to recognize transferable skills from adjacent industries (VFX, simulation, XR, interactive media). Career switchers who don\'t make the parallel explicit get filtered out, even when their skills directly apply.',
+    whatToDoInstead: 'Explicitly map your experience to game dev terms. "Wrote shaders for real-time architectural visualization" becomes "Real-time shader development (translates directly to game rendering pipelines)." Make the connection obvious.',
+    situations: ['first_job'],
+    challenges: ['switching_from_nongames','switching_disciplines']
+  },
+  {
+    id: 'ai_anxiety',
+    title: 'AI and Job Security Are Separate Conversations',
+    severity: 'medium',
+    explanation: 'Layoffs in the games industry are driven by restructuring, declining revenues, market shifts, and over-hiring during the pandemic boom. The GDC 2025 survey found that 22% of layoffs cited restructuring, 18% declining revenues, and 15% market shifts. AI adoption is increasing at studios, but the layoff wave predates widespread AI tool deployment and correlates with broader business decisions, not automation of specific roles.',
+    whatToDoInstead: 'Focus your job search energy on what you can control: portfolio, networking, and targeting studios that match your skills. If AI tools come up in interviews, be honest about your experience with them rather than performing enthusiasm or opposition. Studios are still figuring this out too.',
+    situations: ['laid_off','employed_looking','first_job'],
+    challenges: ['ai_replacing_role','getting_ghosted','finding_jobs']
+  },
+  {
+    id: 'waiting_for_identical_role',
+    title: 'Waiting for an Identical Role to Open Up',
+    severity: 'high',
+    explanation: 'The Q1 2026 layoff wave — over 2,700 jobs lost in three months — has flooded the market with highly qualified candidates competing for fewer open roles. Some specific areas have structurally contracted: manual QA, traditional 2D/3D art production at large studios, and generalist Unity programming (Unity programmer salaries have dropped an estimated 50% since 2022). Holding out for the exact same title at the same studio type can mean months of waiting for a role that may no longer exist at scale.',
+    whatToDoInstead: 'Identify adjacent roles where your skills transfer. QA → QA automation or product analytics. Traditional artist → technical art or real-time pipeline. Generalist programmer → tools engineering or live ops. Growing areas right now: AI integration roles, live operations, cross-platform dev, and data analytics. A lateral move that gets you employed beats a perfect title that stays unfilled.',
+    situations: ['laid_off','employed_looking'],
+    challenges: ['finding_jobs','getting_ghosted','switching_disciplines']
+  }
+];
+
+/* ============================================
+   DATA: COMMUNITIES & SUPPORT
+   ============================================ */
+var COMMUNITIES = [
+  {
+    id: 'asgc_community',
+    name: 'ASGC (Always Supporting the Games Community)',
+    url: 'https://asgc.gg',
+    discordUrl: 'https://discord.gg/asgc',
+    type: 'discord',
+    description: 'The largest career-focused game dev community. 600K+ unique monthly members, 4,600+ people placed. Free resume reviews, mentorship, job leads, and career coaching led by Amir Satvat.',
+    size: '14,000+ Discord / 600K+ monthly',
+    bestForTags: ['Career help', 'Resume reviews', 'Job placement'],
+    strengths: 'Unmatched career placement track record. Covers 20+ professional disciplines. Active coaches and mentors. Completely free.',
+    caveats: 'Skews toward early-to-mid career. Very large server can feel overwhelming. Not a social community — focused on career outcomes.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote','international']
+  },
+  {
+    id: 'game_dev_league',
+    name: 'Game Dev League',
+    url: 'https://discord.com/invite/gamedev',
+    type: 'discord',
+    description: 'One of the largest general game dev Discords. Channels for every discipline, portfolio feedback, job postings, and project collaboration. A decade-old community.',
+    size: '130,000+ members',
+    bestForTags: ['All disciplines', 'Portfolio feedback', 'Networking'],
+    strengths: 'Massive, active community with channels for every discipline. Good for networking, getting portfolio feedback, and finding collaborators.',
+    caveats: 'General purpose — not career-focused. Job postings mixed in with general chat. Quality of feedback varies.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote']
+  },
+  {
+    id: 'game_dev_network',
+    name: 'Game Dev Network (GDN)',
+    url: 'https://discord.gg/gdn',
+    type: 'discord',
+    description: 'Active 61,000+ member Discord focused entirely on game development. Channels for job postings, portfolio reviews, and discipline-specific discussion.',
+    size: '61,000+ members',
+    bestForTags: ['General dev', 'Job postings', 'Community'],
+    strengths: 'Large and active. Good balance between social interaction and professional discussion. Dedicated job posting channels.',
+    caveats: 'General purpose community. Less structured career support than ASGC.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['laid_off','first_job','employed_looking','freelance','remote']
+  },
+  {
+    id: 'work_with_indies_disc',
+    name: 'Work With Indies (Discord)',
+    url: 'https://workwithindies.com/discord',
+    type: 'discord',
+    description: 'Community arm of the Work With Indies job board. Monthly showcases, weekly dev streams, and a Discord webhook that pushes new indie job listings automatically.',
+    size: '42,000+ members',
+    bestForTags: ['Indie jobs', 'Showcases', 'Freelance'],
+    strengths: 'Direct pipeline to indie job listings. Monthly showcases let you get your work in front of hiring indie studios. Strong freelance culture.',
+    caveats: 'Indie-focused — less useful for AAA job seekers. Smaller studios mean lower budgets.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','vfx'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['freelance','laid_off','first_job','remote']
+  },
+  {
+    id: 'igda',
+    name: 'IGDA (International Game Developers Association)',
+    url: 'https://igda.org',
+    discordUrl: 'https://discord.gg/igda',
+    type: 'organization',
+    description: 'The game industry\'s main professional association. Local chapters worldwide, GDC networking events, Special Interest Groups (SIGs), and a resource library. Discord has 9,500+ members.',
+    size: '9,500+ Discord / global chapters',
+    bestForTags: ['Professional org', 'GDC networking', 'Local chapters'],
+    strengths: 'Chapters in most major game dev cities provide local networking. GDC presence. SIGs for specific disciplines. Advocacy on industry issues.',
+    caveats: 'Membership not required for many resources. Local chapter activity varies greatly by location. More networking than direct job placement.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job','relocation','international']
+  },
+  {
+    id: 'funsmith',
+    name: 'Funsmith Club',
+    url: 'https://gamedesignskills.com',
+    discordUrl: 'https://discord.gg/funsmith',
+    type: 'discord',
+    description: 'Game design-focused community with courses, challenges, and a Build a Game Challenge. Regular talks, job listings, and curated design resources. Run by Game Design Skills.',
+    size: '7,000+ members',
+    bestForTags: ['Game design', 'Courses', 'Challenges'],
+    strengths: 'Unique learning + community model. Build a Game Challenge provides portfolio-ready project experience. Curated job listings and regular expert talks.',
+    caveats: 'Primarily game design focused — less relevant for engineering, art, or audio roles. Some paid course content.',
+    disciplines: ['game_design','level_design','uiux','narrative','production'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'design_den',
+    name: 'The Design Den',
+    url: 'https://discord.com/invite/thedesignden',
+    type: 'discord',
+    description: 'Level design and game design community with practical knowledge sharing. Active YouTube channel with tutorials. Good for portfolio feedback on design work.',
+    size: '8,900+ members',
+    bestForTags: ['Level design', 'Design feedback', 'Tutorials'],
+    strengths: 'Focused community where design-specific feedback is high quality. YouTube tutorials provide portfolio-building knowledge.',
+    caveats: 'Narrow focus on level/game design. Small community means less activity than larger servers.',
+    disciplines: ['game_design','level_design'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'd3v_central',
+    name: 'D3v Central Station',
+    url: 'https://discord.com/invite/d3v-central-station-1008240363334545428',
+    type: 'discord',
+    description: 'Unique community with channels for visa/immigration info, salary transparency, and labor organizing discussion alongside standard dev channels.',
+    size: '2,200+ members',
+    bestForTags: ['Visa info', 'Salary data', 'Labor rights'],
+    strengths: 'Rare resource for visa and immigration questions. Salary transparency channels help with negotiation research. Progressive labor perspective.',
+    caveats: 'Small community. Less active than larger servers. More discussion-oriented than career placement.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['mid','senior','lead'],
+    situations: ['international','relocation','employed_looking','laid_off']
+  },
+  {
+    id: 'reddit_gamedev',
+    name: 'r/gamedev',
+    url: 'https://www.reddit.com/r/gamedev/',
+    type: 'reddit',
+    description: 'The largest game development subreddit. Career threads, postmortems, industry news, and an active community of both hobbyist and professional developers.',
+    size: '1.5M+ members',
+    bestForTags: ['Career advice', 'Industry news', 'Postmortems'],
+    strengths: 'Huge knowledge base. Search archives for discipline-specific career advice. Postmortems provide portfolio inspiration. Active community.',
+    caveats: 'Noisy. Hobbyist content mixed with professional. Career advice quality varies — verify claims. Moderation is general-purpose.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior'],
+    situations: ['first_job','laid_off','employed_looking','freelance']
+  },
+  {
+    id: 'reddit_classifieds',
+    name: 'r/gameDevClassifieds',
+    url: 'https://www.reddit.com/r/gameDevClassifieds/',
+    type: 'reddit',
+    description: 'Reddit\'s game industry job board. Freelance gigs, contract work, team recruitment, and job listings. Especially strong for entry-level and indie opportunities.',
+    size: '200K+ members',
+    bestForTags: ['Freelance gigs', 'Entry-level', 'Team building'],
+    strengths: 'Direct access to indie hiring. Good for building freelance client base. Entry-level friendly.',
+    caveats: 'No quality control on listings. Budget rates common. Verify legitimacy of any offer. Rev-share projects rarely pay.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','vfx'],
+    experienceLevels: ['entry','mid'],
+    situations: ['freelance','first_job','remote']
+  },
+  {
+    id: 'take_this',
+    name: 'Take This',
+    url: 'https://www.takethis.org',
+    type: 'mental_health',
+    description: 'The game industry\'s dedicated mental health nonprofit (501(c)(3)). Provides crisis resources, research reports on developer wellbeing, and GDC programming. Their 2025 white paper surveyed developer stressors and coping strategies.',
+    size: 'Nonprofit org',
+    bestForTags: ['Mental health', 'Crisis resources', 'Research'],
+    strengths: 'Only mental health org specifically for the game industry. Crisis line list, research white papers, and GDC sessions. Understands crunch, layoffs, and industry-specific stressors.',
+    caveats: 'Not a community in the traditional sense — more of a resource hub. Does not provide 1:1 counseling directly (connects to crisis lines and resources).',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','employed_looking','first_job']
+  },
+  {
+    id: 'gamedev_mentors',
+    name: 'Game Dev Mentors',
+    url: 'https://www.gamedevmentors.com',
+    type: 'mentorship',
+    description: 'Paid 1:1 mentorship marketplace connecting aspiring devs with industry professionals. Mentors across concept art, Unity, Unreal, game design, and more. Rates from $15-$150/hr.',
+    size: 'Marketplace',
+    bestForTags: ['1:1 mentorship', 'Portfolio review', 'Paid'],
+    strengths: 'Direct access to working professionals. Choose mentors by discipline and shipped titles. Structured 1:1 format for targeted career advice.',
+    caveats: 'Paid service ($15-$150/hr). Quality varies by mentor. Research mentor backgrounds before committing. Not free career support.',
+    disciplines: ['engineering','art','animation','tech_art','game_design','level_design','uiux','vfx'],
+    experienceLevels: ['entry','mid'],
+    situations: ['first_job','laid_off','employed_looking']
+  },
+  {
+    id: 'gamedevmap',
+    name: 'GameDevMap',
+    url: 'https://www.gamedevmap.com',
+    type: 'tool',
+    description: 'Interactive world map of game studios. Filter by location, company type, and remote-friendliness. Essential for relocation research and finding studios near you that you may not know about.',
+    size: '100+ countries mapped',
+    bestForTags: ['Studio map', 'Relocation', 'Discovery'],
+    strengths: 'Reveals studios you didn\'t know existed in your area. Remote-friendly filter. Useful for relocation planning and targeting applications geographically.',
+    caveats: 'Data currency depends on community updates. Does not list job openings — use for studio discovery, then check career pages.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['relocation','laid_off','employed_looking','first_job','international']
+  },
+  {
+    id: 'awesome_people_list',
+    name: 'Awesome People List (ex-Epic)',
+    url: 'https://awesomepeoplelist.replit.app/',
+    type: 'tool',
+    description: 'Directory of ex-Epic Games employees from the March 2026 layoffs, organized for recruiters and hiring managers. Created by Lee Graham within hours of being laid off. A reference point for networking with fellow displaced Epic talent.',
+    size: 'Ex-Epic directory',
+    bestForTags: ['Ex-Epic network', 'Peer connections', 'Recruiter visibility'],
+    strengths: 'Direct roster of ex-Epic talent from the March 2026 layoffs. If you worked at Epic, getting listed here puts you in front of recruiters actively searching this directory. Also useful for finding peers to network with.',
+    caveats: 'Specific to ex-Epic employees from the March 2026 round. Not a general job board or community \u2014 narrow scope by design.',
+    disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
+    experienceLevels: ['entry','mid','senior','lead'],
+    situations: ['laid_off','first_job','employed_looking','remote','relocation']
+  },
+  {
+    id: 'gameheads',
+    name: 'Gameheads',
+    url: 'https://gameheadsoakland.org',
+    type: 'mentorship',
+    description: 'Youth mentorship program (ages 15-24) preparing underrepresented youth for game industry careers through game design, coding, art, and sound design training. Year-long program with industry mentor pairing.',
+    size: 'Oakland-based program',
+    bestForTags: ['Youth program', 'Mentorship', 'Underrepresented'],
+    strengths: 'Structured year-long program with real industry mentors. Focuses on underrepresented communities. Produces portfolio-ready projects.',
+    caveats: 'Age-restricted (15-24). Oakland-based, though expanding. Competitive admission. Not for established professionals.',
+    disciplines: ['engineering','art','animation','game_design','level_design','audio'],
+    experienceLevels: ['entry'],
+    situations: ['first_job']
+  }
+];
+
+/* ============================================
+   CONFIG DATA
+   ============================================ */
+var DISCIPLINES = [
+  { id: 'engineering', label: 'Engineering' },
+  { id: 'qa', label: 'QA' },
+  { id: 'art', label: 'Art' },
+  { id: 'animation', label: 'Animation' },
+  { id: 'audio', label: 'Audio' },
+  { id: 'tech_art', label: 'Technical Art' },
+  { id: 'game_design', label: 'Game Design' },
+  { id: 'level_design', label: 'Level Design' },
+  { id: 'uiux', label: 'UI/UX' },
+  { id: 'narrative', label: 'Narrative' },
+  { id: 'production', label: 'Production/PM' },
+  { id: 'community', label: 'Community/Marketing' },
+  { id: 'vfx', label: 'VFX' },
+  { id: 'cinematics', label: 'Cinematics' }
+];
+
+var EXPERIENCE_LEVELS = [
+  { id: 'entry', label: 'Entry-level / Student', desc: '0-2 years, no shipped titles' },
+  { id: 'mid', label: 'Mid-level', desc: '2-5 years, 1-2 shipped titles' },
+  { id: 'senior', label: 'Senior', desc: '5-10 years, 3+ shipped titles' },
+  { id: 'lead', label: 'Lead / Director', desc: '10+ years, management experience' }
+];
+
+var SITUATIONS = [
+  { id: 'laid_off', label: 'Recently laid off' },
+  { id: 'employed_looking', label: 'Employed but looking' },
+  { id: 'first_job', label: 'First job in games' },
+  { id: 'freelance', label: 'Freelance / contract work' },
+  { id: 'relocation', label: 'Open to relocation' },
+  { id: 'remote', label: 'Remote only' },
+  { id: 'international', label: 'International (outside US/Canada/UK)' }
+];
+
+var CHALLENGES = [
+  { id: 'finding_jobs', label: "Don't know where to find game dev jobs" },
+  { id: 'getting_ghosted', label: 'Getting ghosted / no responses' },
+  { id: 'ats_trouble', label: "Resume isn't getting past ATS" },
+  { id: 'portfolio_needs_work', label: 'Portfolio needs work' },
+  { id: 'interview_prep', label: 'Interview prep' },
+  { id: 'salary_negotiation', label: 'Salary negotiation' },
+  { id: 'no_shipped_titles', label: "Don't have shipped titles yet" },
+  { id: 'switching_disciplines', label: 'Switching disciplines within games' },
+  { id: 'switching_from_nongames', label: 'Switching from non-games tech to games' },
+  { id: 'ai_replacing_role', label: 'Worried AI is replacing my role' }
+];
+
+/* ============================================
+   APP STATE
+   ============================================ */
+var state = {
+  step: 1,
+  totalSteps: 4,
+  discipline: null,
+  experience: null,
+  situations: [],
+  challenges: []
+};
+
+var _ls;
+try { _ls = window['local'+'Storage']; } catch(e) { _ls = null; }
+
+/* ============================================
+   THEME
+   ============================================ */
+(function initTheme() {
+  var saved = _ls ? _ls.getItem('jsg-theme') : null;
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+  }
+})();
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+  var current = document.documentElement.getAttribute('data-theme');
+  var next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  if (_ls) _ls.setItem('jsg-theme', next);
+});
+
+/* ============================================
+   SHARE
+   ============================================ */
+(function() {
+  var SHARE_URL = 'https://gamedevai.guide/jobs/';
+  var SHARE_TITLE = 'Game Dev Job Search Guide';
+  var SHARE_TEXT = 'Free tool for game devs navigating layoffs and job searching. Personalized job boards, AI tools, communities, and pitfall warnings based on your discipline and situation.';
+
+  var btn = document.getElementById('shareBtn');
+  var dropdown = document.getElementById('shareDropdown');
+
+  // Toggle dropdown
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    dropdown.classList.toggle('open');
+    gaEvent('share_open', {});
+  });
+
+  // Close on outside click
+  document.addEventListener('click', function(e) {
+    if (!dropdown.contains(e.target) && e.target !== btn) {
+      dropdown.classList.remove('open');
+    }
+  });
+
+  // LinkedIn
+  document.getElementById('shareLI').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(SHARE_URL), '_blank', 'width=600,height=600');
+    gaEvent('share_click', { platform: 'linkedin' });
+    dropdown.classList.remove('open');
+  });
+
+  // X / Twitter
+  document.getElementById('shareX').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(SHARE_URL) + '&text=' + encodeURIComponent(SHARE_TEXT), '_blank', 'width=600,height=400');
+    gaEvent('share_click', { platform: 'x' });
+    dropdown.classList.remove('open');
+  });
+
+  // Bluesky
+  document.getElementById('shareBS').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open('https://bsky.app/intent/compose?text=' + encodeURIComponent(SHARE_TEXT + '\n\n' + SHARE_URL), '_blank', 'width=600,height=400');
+    gaEvent('share_click', { platform: 'bluesky' });
+    dropdown.classList.remove('open');
+  });
+
+  // Reddit
+  document.getElementById('shareRD').addEventListener('click', function(e) {
+    e.preventDefault();
+    window.open('https://www.reddit.com/submit?url=' + encodeURIComponent(SHARE_URL) + '&title=' + encodeURIComponent(SHARE_TITLE), '_blank', 'width=600,height=600');
+    gaEvent('share_click', { platform: 'reddit' });
+    dropdown.classList.remove('open');
+  });
+
+  // Copy link
+  document.getElementById('shareCopy').addEventListener('click', function() {
+    var label = document.getElementById('copyLinkLabel');
+    navigator.clipboard.writeText(SHARE_URL).then(function() {
+      label.textContent = 'Copied!';
+      label.classList.add('share-copied');
+      setTimeout(function() { label.textContent = 'Copy link'; label.classList.remove('share-copied'); }, 2000);
+    }).catch(function() {
+      var ta = document.createElement('textarea');
+      ta.value = SHARE_URL;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      label.textContent = 'Copied!';
+      setTimeout(function() { label.textContent = 'Copy link'; }, 2000);
+    });
+    gaEvent('share_click', { platform: 'copy' });
+    dropdown.classList.remove('open');
+  });
+})();
+
+/* ============================================
+   MODAL
+   ============================================ */
+document.getElementById('aboutBtn').addEventListener('click', function() {
+  document.getElementById('aboutModal').classList.add('active');
+});
+document.getElementById('closeModal').addEventListener('click', function() {
+  document.getElementById('aboutModal').classList.remove('active');
+});
+document.getElementById('aboutModal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('active');
+});
+
+/* ============================================
+   BUILD WIZARD OPTIONS
+   ============================================ */
+function buildRadioGrid(containerId, items, name, hasDesc) {
+  var grid = document.getElementById(containerId);
+  items.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'option-item';
+    var lbl = hasDesc
+      ? '<span class="radio-dot"></span><span>' + item.label + '<br><small style="color:var(--color-text-faint);font-size:var(--text-xs)">' + item.desc + '</small></span>'
+      : '<span class="radio-dot"></span>' + item.label;
+    div.innerHTML = '<input type="radio" name="' + name + '" value="' + item.id + '" id="' + name + '_' + item.id + '">' +
+                    '<label for="' + name + '_' + item.id + '">' + lbl + '</label>';
+    grid.appendChild(div);
+  });
+}
+
+function buildCheckboxGrid(containerId, items, name, maxSelect) {
+  var grid = document.getElementById(containerId);
+  items.forEach(function(item) {
+    var div = document.createElement('div');
+    div.className = 'option-item';
+    div.innerHTML = '<input type="checkbox" name="' + name + '" value="' + item.id + '" id="' + name + '_' + item.id + '"' + (maxSelect ? ' data-max="' + maxSelect + '"' : '') + '>' +
+                    '<label for="' + name + '_' + item.id + '"><span class="check-box"><svg viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>' + item.label + '</label>';
+    grid.appendChild(div);
+  });
+
+  if (maxSelect) {
+    grid.addEventListener('change', function(e) {
+      var checked = grid.querySelectorAll('input:checked');
+      if (checked.length > maxSelect) {
+        e.target.checked = false;
+      }
+    });
+  }
+}
+
+buildRadioGrid('disciplineGrid', DISCIPLINES, 'discipline', false);
+buildRadioGrid('experienceGrid', EXPERIENCE_LEVELS, 'experience', true);
+buildCheckboxGrid('situationGrid', SITUATIONS, 'situation');
+buildCheckboxGrid('challengeGrid', CHALLENGES, 'challenge', 3);
+
+/* ============================================
+   WIZARD NAVIGATION
+   ============================================ */
+var wizardNext = document.getElementById('wizardNext');
+var wizardBack = document.getElementById('wizardBack');
+
+function updateProgress() {
+  var steps = document.querySelectorAll('.wizard-progress-step');
+  steps.forEach(function(s, i) {
+    var wasActive = s.classList.contains('active');
+    s.classList.remove('active', 'completed', 'just-completed');
+    if (i + 1 === state.step) {
+      s.classList.add('active');
+    } else if (i + 1 < state.step) {
+      s.classList.add('completed');
+      if (wasActive) {
+        s.classList.add('just-completed');
+        setTimeout(function() { s.classList.remove('just-completed'); }, 500);
+      }
+    }
+  });
+  document.getElementById('wizardCounter').textContent = 'Step ' + state.step + ' of ' + state.totalSteps;
+
+  wizardBack.classList.toggle('hidden', state.step === 1);
+
+  if (state.step === state.totalSteps) {
+    wizardNext.innerHTML = 'Get Results <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+  } else {
+    wizardNext.innerHTML = 'Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+  }
+
+  var wizSteps = document.querySelectorAll('.wizard-step');
+  wizSteps.forEach(function(s) { s.classList.remove('active'); });
+  document.querySelector('.wizard-step[data-step="' + state.step + '"]').classList.add('active');
+
+  updateNextEnabled();
+}
+
+function updateNextEnabled() {
+  var enabled = false;
+  switch(state.step) {
+    case 1: enabled = !!document.querySelector('input[name="discipline"]:checked'); break;
+    case 2: enabled = !!document.querySelector('input[name="experience"]:checked'); break;
+    case 3: enabled = document.querySelectorAll('input[name="situation"]:checked').length > 0; break;
+    case 4: enabled = document.querySelectorAll('input[name="challenge"]:checked').length > 0; break;
+  }
+  wizardNext.disabled = !enabled;
+}
+
+document.addEventListener('change', function(e) {
+  if (['discipline','experience','situation','challenge'].indexOf(e.target.name) >= 0) {
+    updateNextEnabled();
+    // hide validation
+    var valMsg = document.getElementById('valStep' + state.step);
+    if (valMsg) valMsg.classList.remove('visible');
+  }
+});
+
+wizardNext.addEventListener('click', function() {
+  if (wizardNext.disabled) return;
+
+  // collect data
+  switch(state.step) {
+    case 1:
+      var d = document.querySelector('input[name="discipline"]:checked');
+      if (!d) { document.getElementById('valStep1').classList.add('visible'); return; }
+      state.discipline = d.value;
+      break;
+    case 2:
+      var e = document.querySelector('input[name="experience"]:checked');
+      if (!e) { document.getElementById('valStep2').classList.add('visible'); return; }
+      state.experience = e.value;
+      break;
+    case 3:
+      var sits = document.querySelectorAll('input[name="situation"]:checked');
+      if (sits.length === 0) { document.getElementById('valStep3').classList.add('visible'); return; }
+      state.situations = Array.from(sits).map(function(s) { return s.value; });
+      break;
+    case 4:
+      var challs = document.querySelectorAll('input[name="challenge"]:checked');
+      if (challs.length === 0) { document.getElementById('valStep4').classList.add('visible'); return; }
+      state.challenges = Array.from(challs).map(function(c) { return c.value; });
+      break;
+  }
+
+  gaEvent('step_navigation', { step: state.step, direction: 'next' });
+
+  if (state.step < state.totalSteps) {
+    state.step++;
+    updateProgress();
+  } else {
+    showResults();
+  }
+});
+
+wizardBack.addEventListener('click', function() {
+  if (state.step > 1) {
+    gaEvent('step_navigation', { step: state.step, direction: 'back' });
+    state.step--;
+    updateProgress();
+  }
+});
+
+updateProgress();
+
+/* ============================================
+   SCORING & RESULTS
+   ============================================ */
+function scoreBoards() {
+  var scored = JOB_BOARDS.map(function(board) {
+    var score = 0;
+
+    // discipline match
+    if (board.disciplines.indexOf(state.discipline) >= 0) score += 3;
+
+    // experience match
+    if (board.experienceLevels.indexOf(state.experience) >= 0) score += 2;
+
+    // situation matches
+    state.situations.forEach(function(s) {
+      if (board.situations.indexOf(s) >= 0) score += 2;
+    });
+
+    // special boosts
+    var isArtDiscipline = ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0;
+    if (board.id === 'artstation' && isArtDiscipline) score += 5;
+    if (board.id === 'artstation' && !isArtDiscipline) score -= 10;
+
+    if (board.id === 'remotegamejobs' && state.situations.indexOf('remote') >= 0) score += 5;
+    if (board.id === 'remotegamejobs' && state.situations.indexOf('remote') < 0) score -= 5;
+
+    if (board.id === 'asgc' && state.experience === 'entry') score += 4;
+    if (board.id === 'asgc' && state.situations.indexOf('first_job') >= 0) score += 3;
+
+    if (board.id === 'workwithindies' && state.situations.indexOf('freelance') >= 0) score += 4;
+    if (board.id === 'workwithindies' && state.situations.indexOf('remote') >= 0) score += 2;
+
+    if (board.id === 'gamedevclassifieds' && state.situations.indexOf('freelance') >= 0) score += 4;
+    if (board.id === 'gamedevclassifieds' && state.experience === 'entry') score += 3;
+
+    if (board.id === 'linkedin' && ['senior','lead'].indexOf(state.experience) >= 0) score += 3;
+
+    if (board.id === 'gamesjobsdirect' && state.situations.indexOf('international') >= 0) score += 4;
+    if (board.id === 'gijobs' && state.situations.indexOf('international') >= 0) score += 3;
+    if (board.id === 'gijobs' && ['senior','lead'].indexOf(state.experience) >= 0) score += 3;
+
+    if (board.id === 'studio_pages' && state.situations.indexOf('employed_looking') >= 0) score += 3;
+
+    if (board.id === 'outscal' && state.experience === 'entry') score += 4;
+    if (board.id === 'outscal' && state.situations.indexOf('first_job') >= 0) score += 3;
+    if (board.id === 'outscal' && state.situations.indexOf('international') >= 0) score += 3;
+
+    if (board.id === 'gamejobs') score += 2; // always a good base recommendation
+
+    return { board: board, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.filter(function(s) { return s.score > 0; }).slice(0, 6);
+}
+
+function scoreTools() {
+  var scored = AI_TOOLS.map(function(tool) {
+    var score = 0;
+
+    // discipline match
+    if (tool.disciplines.indexOf(state.discipline) >= 0) score += 2;
+
+    // challenge match
+    state.challenges.forEach(function(c) {
+      if (tool.challenges.indexOf(c) >= 0) score += 3;
+    });
+
+    // special boosts
+    if (tool.id === 'chatgpt_interview' && state.challenges.indexOf('interview_prep') >= 0) score += 4;
+    if (tool.id === 'chatgpt_portfolio' && state.challenges.indexOf('portfolio_needs_work') >= 0) score += 4;
+    if (tool.id === 'chatgpt_portfolio' && state.challenges.indexOf('no_shipped_titles') >= 0) score += 3;
+
+    if (tool.id === 'jobscan' && state.challenges.indexOf('ats_trouble') >= 0) score += 4;
+    if (tool.id === 'teal' && state.challenges.indexOf('ats_trouble') >= 0) score += 3;
+
+    if (tool.id === 'big_interview' && state.challenges.indexOf('salary_negotiation') >= 0) score += 3;
+    if (tool.id === 'yoodli' && state.challenges.indexOf('interview_prep') >= 0) score += 3;
+
+    if (tool.id === 'huntr' && state.challenges.indexOf('finding_jobs') >= 0) score += 2;
+    if (tool.id === 'simplify' && state.challenges.indexOf('finding_jobs') >= 0) score += 2;
+
+    if (tool.stage === 'Resume' && state.challenges.indexOf('ats_trouble') >= 0) score += 1;
+
+    return { tool: tool, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.filter(function(s) { return s.score > 0; }).slice(0, 8);
+}
+
+function scorePitfalls() {
+  var scored = PITFALLS.map(function(pit) {
+    var score = 0;
+
+    state.situations.forEach(function(s) {
+      if (pit.situations.indexOf(s) >= 0) score += 2;
+    });
+
+    state.challenges.forEach(function(c) {
+      if (pit.challenges.indexOf(c) >= 0) score += 3;
+    });
+
+    // special boosts
+    if (pit.id === 'remote_myth' && state.situations.indexOf('remote') >= 0) score += 5;
+    if (pit.id === 'seniors_taking_mids' && state.experience === 'entry') score += 5;
+    if (pit.id === 'art_test_exploit' && ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0) score += 4;
+    if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_from_nongames') >= 0) score += 5;
+    if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_disciplines') >= 0) score += 4;
+    if (pit.id === 'no_networking' && state.challenges.indexOf('getting_ghosted') >= 0) score += 3;
+    if (pit.id === 'ai_anxiety' && state.challenges.indexOf('ai_replacing_role') >= 0) score += 6;
+
+    return { pitfall: pit, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.filter(function(s) { return s.score > 0; }).slice(0, 5);
+}
+
+function scoreCommunities() {
+  var scored = COMMUNITIES.map(function(comm) {
+    var score = 0;
+
+    // discipline match
+    if (comm.disciplines.indexOf(state.discipline) >= 0) score += 2;
+
+    // experience match
+    if (comm.experienceLevels.indexOf(state.experience) >= 0) score += 2;
+
+    // situation matches
+    state.situations.forEach(function(s) {
+      if (comm.situations.indexOf(s) >= 0) score += 2;
+    });
+
+    // special boosts
+    if (comm.id === 'asgc_community') score += 4; // universally valuable career resource
+    if (comm.id === 'asgc_community' && state.situations.indexOf('laid_off') >= 0) score += 4;
+    if (comm.id === 'asgc_community' && state.experience === 'entry') score += 3;
+    if (comm.id === 'asgc_community' && state.situations.indexOf('first_job') >= 0) score += 3;
+
+    if (comm.id === 'take_this' && state.situations.indexOf('laid_off') >= 0) score += 5;
+
+    if (comm.id === 'igda' && state.situations.indexOf('relocation') >= 0) score += 3;
+    if (comm.id === 'igda' && state.situations.indexOf('international') >= 0) score += 3;
+    if (comm.id === 'igda' && ['senior','lead'].indexOf(state.experience) >= 0) score += 2;
+
+    if (comm.id === 'work_with_indies_disc' && state.situations.indexOf('freelance') >= 0) score += 4;
+    if (comm.id === 'work_with_indies_disc' && state.situations.indexOf('remote') >= 0) score += 2;
+
+    if (comm.id === 'gamedevmap' && state.situations.indexOf('relocation') >= 0) score += 5;
+    if (comm.id === 'gamedevmap' && state.situations.indexOf('international') >= 0) score += 3;
+
+    if (comm.id === 'reddit_classifieds' && state.situations.indexOf('freelance') >= 0) score += 3;
+    if (comm.id === 'reddit_classifieds' && state.experience === 'entry') score += 2;
+
+    if (comm.id === 'd3v_central' && state.situations.indexOf('international') >= 0) score += 4;
+    if (comm.id === 'd3v_central' && state.situations.indexOf('relocation') >= 0) score += 3;
+    if (comm.id === 'd3v_central' && state.challenges.indexOf('salary_negotiation') >= 0) score += 3;
+
+    if (comm.id === 'gamedev_mentors' && state.experience === 'entry') score += 3;
+    if (comm.id === 'gamedev_mentors' && state.situations.indexOf('first_job') >= 0) score += 3;
+    if (comm.id === 'gamedev_mentors' && state.challenges.indexOf('portfolio_needs_work') >= 0) score += 3;
+
+    if (comm.id === 'gameheads' && state.experience === 'entry') score += 3;
+    if (comm.id === 'gameheads' && state.situations.indexOf('first_job') >= 0) score += 5;
+
+    // Awesome People List — heavily boosted for recently laid off
+    if (comm.id === 'awesome_people_list' && state.situations.indexOf('laid_off') >= 0) score += 8;
+    if (comm.id === 'awesome_people_list' && state.experience === 'lead') score += 3;
+    if (comm.id === 'awesome_people_list' && state.experience === 'senior') score += 2;
+
+    var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
+    if (comm.id === 'funsmith' && isDesign) score += 4;
+    if (comm.id === 'design_den' && isDesign) score += 4;
+
+    return { community: comm, score: score };
+  });
+
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored.filter(function(s) { return s.score > 0; }).slice(0, 8);
+}
+
+/* ============================================
+   ACTION PLAN GENERATOR
+   ============================================ */
+function generateActionPlan(boards, tools) {
+  var steps = [];
+  var disc = DISCIPLINES.find(function(d) { return d.id === state.discipline; });
+  var discLabel = disc ? disc.label : 'your discipline';
+  var isArt = ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0;
+  var isCode = state.discipline === 'engineering';
+  var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
+  var isNarrative = state.discipline === 'narrative';
+  var isAudio = state.discipline === 'audio';
+  var isQA = state.discipline === 'qa';
+  var isEntry = state.experience === 'entry';
+  var isSenior = ['senior','lead'].indexOf(state.experience) >= 0;
+
+  // Step 1: Portfolio/Resume
+  if (isArt) {
+    steps.push('Update your <a href="https://www.artstation.com/jobs" target="_blank" rel="noopener noreferrer">ArtStation</a> portfolio with your 3-5 strongest pieces. Add breakdowns showing wireframes, texture sheets, and your process for each.');
+  } else if (isCode) {
+    steps.push('Clean up your top 3 <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a> repos: add clear READMEs explaining architecture decisions, what problems you solved, and what you would improve.');
+  } else if (isDesign) {
+    steps.push('Prepare 2-3 playable demos or detailed design documents showing your decision-making process and iteration, not just final results.');
+  } else if (isNarrative) {
+    steps.push('Curate writing samples in interactive formats (<a href="https://www.inklestudios.com/ink/" target="_blank" rel="noopener noreferrer">Inkle</a>, <a href="https://twinery.org" target="_blank" rel="noopener noreferrer">Twine</a>, <a href="https://www.articy.com/en/" target="_blank" rel="noopener noreferrer">Articy Draft</a>) showing branching narrative and player agency, not just linear prose.');
+  } else if (isAudio) {
+    steps.push('Build an audio reel with before/after comparisons and at least one demo showing adaptive implementation in a game engine (<a href="https://www.audiokinetic.com/en/wwise/overview/" target="_blank" rel="noopener noreferrer">Wwise</a>/<a href="https://www.fmod.com/" target="_blank" rel="noopener noreferrer">FMOD</a>).');
+  } else if (isQA) {
+    steps.push('Prepare 2-3 sample test plans and bug reports (anonymized) showing clear repro steps, severity classifications, and testing methodology.');
+  } else {
+    steps.push('Update your portfolio/resume highlighting shipped titles, specific contributions (not just duties), and engine/tool proficiency relevant to ' + discLabel + ' roles.');
+  }
+
+  // Godot tip for entry-level and indie/freelance profiles
+  var isIndie = state.situations.indexOf('freelance') >= 0;
+  if ((isEntry || state.situations.indexOf('first_job') >= 0 || isIndie) && (isCode || isDesign)) {
+    steps.push('Consider a small portfolio project in <a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a> — it\'s free, open source, and growing fast among indie studios. A small shipped Godot project demonstrates engine adaptability, which matters to interviewers at smaller studios and startups.');
+  }
+
+  // Step 2: Resume optimization
+  if (state.challenges.indexOf('ats_trouble') >= 0) {
+    steps.push('Run your resume through <a href="https://www.jobscan.co" target="_blank" rel="noopener noreferrer">Jobscan</a> (free trial) against 3-5 target job descriptions. Fix keyword gaps for engine names, tools, and role-specific terms you genuinely have.');
+  } else {
+    steps.push('Tailor your resume for each application: include shipped titles explicitly ("Shipped X on Y platform"), engine names, and specific system/feature contributions.');
+  }
+
+  // Step 3: Networking
+  if (isEntry || state.situations.indexOf('first_job') >= 0) {
+    steps.push('Join <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat\'s ASGC Discord</a> and introduce yourself in the ' + discLabel + ' channel. Request a mentorship match and attend portfolio review sessions.');
+  } else if (isSenior) {
+    steps.push('Identify 5-10 people at target studios via <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a>. Engage with their content for 2 weeks, then reach out referencing their specific work. One warm referral beats 100 cold applications.');
+  } else {
+    steps.push('Join 2-3 Discord communities (<a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">ASGC</a>, Game Dev Network, <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a>) and contribute genuinely. Set up a target list of 10-20 studios and follow their talent managers on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a>.');
+  }
+
+  // Step 4: Job monitoring
+  var topBoard = boards.length > 0 ? boards[0].board : { name: 'GameJobs.co', url: 'https://gamejobs.co' };
+  var topBoardLink = '<a href="' + topBoard.url + '" target="_blank" rel="noopener noreferrer">' + topBoard.name + '</a>';
+  if (state.situations.indexOf('remote') >= 0) {
+    steps.push('Set up daily alerts on <a href="https://remotegamejobs.com" target="_blank" rel="noopener noreferrer">Remote Game Jobs</a> and ' + topBoardLink + ' for ' + discLabel + ' roles. Also check <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a> (indie studios are more remote-friendly).');
+  } else {
+    if (topBoard.id === 'linkedin') {
+      steps.push('Set up alerts on ' + topBoardLink + ' and <a href="https://gamejobs.co" target="_blank" rel="noopener noreferrer">GameJobs.co</a> for ' + discLabel + ' roles. Bookmark career pages of your top 5-10 target studios and check weekly.');
+    } else {
+      steps.push('Set up alerts on ' + topBoardLink + ' and <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for ' + discLabel + ' roles. Bookmark career pages of your top 5-10 target studios and check weekly.');
+    }
+  }
+
+  // Step 5: Action
+  if (state.challenges.indexOf('interview_prep') >= 0) {
+    steps.push('Practice with <a href="https://chat.openai.com" target="_blank" rel="noopener noreferrer">ChatGPT Voice Mode</a>: upload your resume + a target JD, simulate the specific interview format for ' + discLabel + ' roles, and ask for harsh feedback after each answer.');
+  } else if (state.challenges.indexOf('no_shipped_titles') >= 0) {
+    steps.push('Ship something small within 2-4 weeks: a game jam entry (<a href="https://ldjam.com" target="_blank" rel="noopener noreferrer">Ludum Dare</a>, <a href="https://globalgamejam.org" target="_blank" rel="noopener noreferrer">Global Game Jam</a>), an <a href="https://itch.io" target="_blank" rel="noopener noreferrer">itch.io</a> release, or open source contribution to <a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a>. Completed small projects beat large unfinished ones.');
+  } else if (state.challenges.indexOf('getting_ghosted') >= 0) {
+    steps.push('Send a professional follow-up 1-2 weeks after each application. Track every application with dates and contacts. Shift 30% of your search time from applications to direct outreach and networking.');
+  } else if (state.challenges.indexOf('salary_negotiation') >= 0) {
+    steps.push('Research salary ranges on <a href="https://www.glassdoor.com" target="_blank" rel="noopener noreferrer">Glassdoor</a> and <a href="https://www.gamesjobsdirect.com" target="_blank" rel="noopener noreferrer">Games Jobs Direct</a> salary checker. The 2025 US game dev average is $142K (median $129K). Never give a number first — ask for their range.');
+  } else {
+    steps.push('Apply to 3-5 well-researched roles this week. For each, write a cover letter that references a specific game, design decision, or GDC talk from that studio. Quality over quantity.');
+  }
+
+  return steps;
+}
+
+/* ============================================
+   RENDER RESULTS
+   ============================================ */
+function showResults() {
+  gaEvent('wizard_complete', {
+    discipline: state.discipline,
+    experience: state.experience,
+    situations: state.situations.join(','),
+    challenges: state.challenges.join(',')
+  });
+
+  var boards = scoreBoards();
+  var tools = scoreTools();
+  var pitfalls = scorePitfalls();
+  var communities = scoreCommunities();
+  var actionPlan = generateActionPlan(boards, tools);
+
+  var disc = DISCIPLINES.find(function(d) { return d.id === state.discipline; });
+  var exp = EXPERIENCE_LEVELS.find(function(e) { return e.id === state.experience; });
+
+  var html = '';
+
+  // Header
+  html += '<div class="results-header">';
+  html += '<h1>Your Job Search Plan</h1>';
+  html += '<p class="results-summary">Personalized for a ' + exp.label + ' ' + disc.label + ' professional</p>';
+  html += '<div class="results-meta">';
+  html += '<span class="meta-tag">' + disc.label + '</span>';
+  html += '<span class="meta-tag">' + exp.label + '</span>';
+  state.situations.forEach(function(s) {
+    var sit = SITUATIONS.find(function(x) { return x.id === s; });
+    if (sit) html += '<span class="meta-tag">' + sit.label + '</span>';
+  });
+  state.challenges.forEach(function(c) {
+    var ch = CHALLENGES.find(function(x) { return x.id === c; });
+    if (ch) html += '<span class="meta-tag meta-tag-challenge">' + ch.label + '</span>';
+  });
+  html += '</div></div>';
+
+  // Emotional acknowledgment for recently laid off
+  if (state.situations.indexOf('laid_off') >= 0) {
+    html += '<div class="empathy-banner">';
+    html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+    html += '<p>One in three US game developers has been through this in the past two years. There are more tools and communities than ever to help you move forward \u2014 the plan below focuses on concrete next steps.</p>';
+    html += '</div>';
+  }
+
+  // Section Nav
+  html += '<nav class="results-nav" id="resultsNav">';
+  html += '<button class="results-nav-btn active" data-target="sec-plan">Action Plan</button>';
+  html += '<button class="results-nav-btn" data-target="sec-boards">Boards <span class="nav-count">' + boards.length + '</span></button>';
+  html += '<button class="results-nav-btn" data-target="sec-tools">Tools <span class="nav-count">' + tools.length + '</span></button>';
+  html += '<button class="results-nav-btn" data-target="sec-pitfalls">Pitfalls <span class="nav-count">' + pitfalls.length + '</span></button>';
+  if (communities.length > 0) {
+    html += '<button class="results-nav-btn" data-target="sec-communities">Communities <span class="nav-count">' + communities.length + '</span></button>';
+  }
+  html += '</nav>';
+
+  // Market Snapshot
+  html += '<div id="sec-plan">';
+  html += '<div class="market-snapshot">';
+  html += '<div class="market-snapshot-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg> Market Snapshot (2025-2026)</div>';
+  html += '<div class="market-stats-grid">';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">33%</div><div class="market-stat-label">US game devs laid off in 2 years</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">48%</div><div class="market-stat-label">Of laid-off devs still without work</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~2,700</div><div class="market-stat-label">Q1 2026 layoffs alone</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~0.2%</div><div class="market-stat-label">Cold application offer rate</div><div class="market-stat-source"><a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby 2024</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
+  html += '</div></div>';
+
+  // Action Plan
+  var timeFrames = ['This week', 'This week', 'Ongoing', 'Ongoing', 'Within 30 days'];
+  html += '<div class="action-plan">';
+  html += '<div class="action-plan-title-row">';
+  html += '<div class="action-plan-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Your 5-Step Action Plan</div>';
+  html += '<button class="copy-plan-btn" id="copyPlanBtn" title="Copy plan to clipboard"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> <span class="copy-plan-label">Copy Plan</span></button>';
+  html += '</div>';
+  html += '<ol>';
+  actionPlan.forEach(function(step, i) {
+    var tf = timeFrames[i] || '';
+    html += '<li><span class="action-timeframe">' + tf + '</span>' + step + '</li>';
+  });
+  html += '</ol></div>';
+
+  // Share CTA
+  html += '<div class="share-cta">';
+  html += '<div class="share-cta-text">Know someone navigating a layoff or job search? This plan is personalized \u2014 share the tool so they can get their own.</div>';
+  html += '<button class="share-cta-btn" onclick="document.getElementById(\'shareBtn\').click()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</button>';
+  html += '</div>';
+
+  html += '</div>'; // close sec-plan
+
+  // Section 1: Where to Look
+  html += '<div id="sec-boards">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h2>Where to Look <span class="section-count">(' + boards.length + ')</span></h2></div>';
+
+  boards.forEach(function(item, i) {
+    var b = item.board;
+    var isStartHere = (i === 0);
+    var hiddenClass = (i >= 3) ? ' hidden-card' : '';
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + hiddenClass + '" data-card-id="board_' + b.id + '" data-section="boards">';
+    html += '<div class="rec-card-header" onclick="toggleCard(this)">';
+    html += '<div class="rec-card-top">';
+    html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
+    html += '<span class="rec-card-title">' + b.name + '</span>';
+    html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    html += '</div>';
+    html += '<div class="rec-card-badges">';
+    html += '<span class="badge badge-' + b.costType + '">' + b.cost + '</span>';
+    html += '<span class="badge badge-size">' + b.size + '</span>';
+    b.bestForTags.forEach(function(tag) {
+      html += '<span class="badge badge-bestfor">' + tag + '</span>';
+    });
+    html += '</div>';
+    html += '<div class="caveat-preview">' + b.caveats.split('.')[0] + '.</div>';
+    html += '</div>';
+    html += '<div class="rec-card-details"><div class="rec-card-body">';
+    html += '<div class="detail-row"><div class="detail-label">Why for you</div><div class="detail-value">' + b.strengths + '</div></div>';
+    if (b.url !== '#') {
+      html += '<div class="detail-row"><div class="detail-label">Link</div><div class="detail-value"><a href="' + b.url + '" target="_blank" rel="noopener noreferrer" onclick="gaEvent(\'board_click\',{board:\'' + b.id + '\'})">' + b.url + '</a></div></div>';
+    }
+    html += '<div class="detail-row"><div class="detail-label">Honest caveat</div><div class="detail-value caveat">' + b.caveats + '</div></div>';
+    html += '</div></div></div>';
+  });
+
+  if (boards.length > 3) {
+    html += '<button class="show-more-btn" data-section="boards" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + boards.length + ' boards</button>';
+  }
+
+  html += '<p class="boards-disclaimer">These boards are selected and ranked based on your profile. This is a curated list, not an exhaustive directory. We prioritize boards with active listings, strong community reputation, and relevance to your specific situation.</p>';
+  html += '</div>'; // close sec-boards
+
+  // Section 2: AI Tools
+  html += '<div id="sec-tools">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg><h2>AI Tools for Your Search <span class="section-count">(' + tools.length + ')</span></h2></div>';
+
+  tools.forEach(function(item, i) {
+    var t = item.tool;
+    var isStartHere = (i === 0);
+    var hiddenTool = (i >= 3) ? ' hidden-card' : '';
+    html += '<div class="rec-card' + (isStartHere ? ' start-here' : '') + hiddenTool + '" data-card-id="tool_' + t.id + '" data-section="tools">';
+    html += '<div class="rec-card-header" onclick="toggleCard(this)">';
+    html += '<div class="rec-card-top">';
+    html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
+    html += '<span class="rec-card-title">' + t.name + '</span>';
+    html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    html += '</div>';
+    html += '<div class="rec-card-badges">';
+    html += '<span class="badge badge-' + t.costType + '">' + t.cost + '</span>';
+    var stageClass = 'stage-' + t.stage.toLowerCase();
+    html += '<span class="badge-stage-pipe ' + stageClass + '">' + t.stage + '</span>';
+    html += '<span class="badge badge-difficulty">' + t.difficulty + '</span>';
+    html += '</div>';
+    html += '<div class="caveat-preview">' + t.description + '</div>';
+    html += '</div>';
+    html += '<div class="rec-card-details"><div class="rec-card-body">';
+    html += '<div class="detail-row"><div class="detail-label">Game dev relevance</div><div class="detail-value">' + t.gameDevRelevance + '</div></div>';
+    html += '<div class="detail-row"><div class="detail-label">Link</div><div class="detail-value"><a href="' + t.url + '" target="_blank" rel="noopener noreferrer" onclick="gaEvent(\'tool_click\',{tool:\'' + t.id + '\'})">' + t.url + '</a></div></div>';
+    html += '<div class="detail-row"><div class="detail-label">Honest caveat</div><div class="detail-value caveat">' + t.caveats + '</div></div>';
+    html += '</div></div></div>';
+  });
+
+  if (tools.length > 3) {
+    html += '<button class="show-more-btn" data-section="tools" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + tools.length + ' tools</button>';
+  }
+  html += '</div>'; // close sec-tools
+
+  // Section 3: Watch Out For
+  html += '<div id="sec-pitfalls">';
+  html += '<div class="section-header warning-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><h2>Watch Out For <span class="section-count">(' + pitfalls.length + ')</span></h2></div>';
+
+  pitfalls.forEach(function(item, pi) {
+    var p = item.pitfall;
+    var hiddenPit = (pi >= 3) ? ' hidden-card' : '';
+    html += '<div class="pitfall-card' + (p.severity === 'high' ? ' severity-high' : '') + hiddenPit + '" data-section="pitfalls">';
+    html += '<div class="pitfall-card-title">';
+    if (p.severity === 'high') {
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+    }
+    html += p.title + '</div>';
+    html += '<div class="pitfall-card-msg">' + p.explanation + '</div>';
+    html += '<div class="pitfall-instead"><strong>Instead:</strong> ' + p.whatToDoInstead + '</div>';
+    html += '</div>';
+  });
+
+  if (pitfalls.length > 3) {
+    html += '<button class="show-more-btn" data-section="pitfalls" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + pitfalls.length + ' pitfalls</button>';
+  }
+  html += '</div>'; // close sec-pitfalls
+
+  // Section 4: Communities & Support
+  if (communities.length > 0) {
+    html += '<div id="sec-communities">';
+    html += '<div class="section-header communities-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Communities &amp; Support <span class="section-count">(' + communities.length + ')</span></h2></div>';
+
+    var TYPE_LABELS = { discord: 'Discord', reddit: 'Reddit', organization: 'Organization', mental_health: 'Mental Health', mentorship: 'Mentorship', tool: 'Tool' };
+    var TYPE_COLORS = { discord: '#5865F2', reddit: '#FF4500', organization: '#D4943A', mental_health: '#4CAF50', mentorship: '#9C27B0', tool: '#00BCD4' };
+
+    communities.forEach(function(item, i) {
+      var c = item.community;
+      var isFirst = (i === 0);
+      var typeLabel = TYPE_LABELS[c.type] || c.type;
+      var typeColor = TYPE_COLORS[c.type] || 'var(--color-primary)';
+      var hiddenComm = (i >= 3) ? ' hidden-card' : '';
+      // Inline platform icons
+      var PLATFORM_ICONS = {
+        discord: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="#5865F2" width="16" height="16"><path d="M20.317 4.369a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>',
+        reddit: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="#FF4500" width="16" height="16"><circle cx="12" cy="12" r="10"/><path fill="#fff" d="M17.5 12.3c0-.6-.5-1.1-1.1-1.1-.3 0-.6.1-.8.3-.8-.6-1.9-.9-3.1-1l.5-2.5 1.7.4c0 .5.4.9.9.9s.9-.4.9-.9-.4-.9-.9-.9c-.4 0-.7.2-.8.5l-1.9-.4c-.1 0-.2 0-.2.1l-.6 2.8c-1.2.1-2.3.4-3.2 1-.2-.2-.5-.3-.8-.3-.6 0-1.1.5-1.1 1.1 0 .4.2.8.6 1-.1.5-.1 1-.1 1.5 0 2.1 2.4 3.8 5.4 3.8s5.4-1.7 5.4-3.8c0-.5 0-1-.1-1.5.3-.2.5-.6.5-1zm-8 1.3c0-.5.4-.9.9-.9s.9.4.9.9-.4.9-.9.9-.9-.4-.9-.9zm5.2 2.5c-.6.6-1.8.7-2.7.7s-2-.1-2.7-.7c-.1-.1-.1-.2 0-.3.1-.1.2-.1.3 0 .5.4 1.5.6 2.4.6s1.8-.2 2.4-.6c.1-.1.2-.1.3 0 .1.1.1.2 0 .3zm-.2-1.6c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9z"/></svg>',
+        organization: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#D4943A" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        mental_health: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+        mentorship: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#9C27B0" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
+        tool: '<svg class="comm-platform-icon" viewBox="0 0 24 24" fill="none" stroke="#00BCD4" stroke-width="2" width="16" height="16" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>'
+      };
+      var platformIcon = PLATFORM_ICONS[c.type] || '';
+      html += '<div class="rec-card' + (isFirst ? ' start-here' : '') + hiddenComm + '" data-card-id="comm_' + c.id + '" data-section="communities">';
+      html += '<div class="rec-card-header" onclick="toggleCard(this)">';
+      html += '<div class="rec-card-top">';
+      html += '<span class="rec-card-rank">' + (i + 1) + '</span>';
+      html += '<span class="rec-card-title">' + platformIcon + ' ' + c.name + '</span>';
+      html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '</div>';
+      html += '<div class="rec-card-badges">';
+      html += '<span class="badge" style="background:' + typeColor + ';color:#fff;">' + typeLabel + '</span>';
+      html += '<span class="badge badge-size">' + c.size + '</span>';
+      c.bestForTags.forEach(function(tag) {
+        html += '<span class="badge badge-bestfor">' + tag + '</span>';
+      });
+      html += '</div>';
+      html += '<div class="caveat-preview">' + c.description + '</div>';
+      html += '</div>';
+      html += '<div class="rec-card-details"><div class="rec-card-body">';
+      html += '<div class="detail-row"><div class="detail-label">Why for you</div><div class="detail-value">' + c.strengths + '</div></div>';
+      var linkUrl = c.discordUrl || c.url;
+      var linkLabel = c.discordUrl ? 'Discord' : c.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+      html += '<div class="detail-row"><div class="detail-label">Link</div><div class="detail-value"><a href="' + linkUrl + '" target="_blank" rel="noopener noreferrer" onclick="gaEvent(\'community_click\',{community:\'' + c.id + '\'})">' + linkLabel + '</a>';
+      if (c.discordUrl && c.url !== c.discordUrl) {
+        html += ' &bull; <a href="' + c.url + '" target="_blank" rel="noopener noreferrer">Website</a>';
+      }
+      html += '</div></div>';
+      html += '<div class="detail-row"><div class="detail-label">Honest caveat</div><div class="detail-value caveat">' + c.caveats + '</div></div>';
+      html += '</div></div></div>';
+    });
+
+    if (communities.length > 3) {
+      html += '<button class="show-more-btn" data-section="communities" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + communities.length + ' communities</button>';
+    }
+    html += '<p class="boards-disclaimer">Communities are ranked by relevance to your profile. This is a curated selection — we prioritize active communities with genuine value for job seekers over sheer size.</p>';
+    html += '</div>'; // close sec-communities
+  }
+
+  // Disclaimer
+  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified March 2026.</p>';
+
+  // Survey
+  var alreadySubmitted = _ls ? _ls.getItem('jsg-survey-done') : null;
+  html += '<div class="survey-card" id="surveyCard">';
+  if (alreadySubmitted) {
+    html += '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded.</p></div>';
+  } else {
+    html += '<div class="survey-card-header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><h3>60-Second Survey</h3></div>';
+    html += '<p class="survey-card-subtitle">Help improve this tool. Results will be shared publicly once enough responses are collected.</p>';
+
+    // Q1: Usefulness
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">1</span> How useful was this tool?</div><div class="survey-options">';
+    ['Very useful \u2014 I have a clear next step','Somewhat useful \u2014 gave me a few ideas','Not very useful \u2014 didn\'t tell me much new','Not useful at all'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq1" id="sq1_'+i+'" value="'+opt+'"><label for="sq1_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q2: Purpose
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">2</span> What brought you here today?</div><div class="survey-options">';
+    ['Recently laid off','Employed but exploring','Breaking into games','Helping someone else','Just curious'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq2" id="sq2_'+i+'" value="'+opt+'"><label for="sq2_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q3: Source
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">3</span> Where did you hear about this?</div><div class="survey-options">';
+    ['LinkedIn','Twitter/X','Discord','Reddit','Friend or colleague','Search engine','Game Dev AI Guide','Other'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq3" id="sq3_'+i+'" value="'+opt+'"><label for="sq3_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q4: Most valuable section
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">4</span> Which section was most valuable?</div><div class="survey-options">';
+    ['Action plan','Job boards','AI tools','Pitfall warnings','Communities','Market snapshot'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="radio" name="sq4" id="sq4_'+i+'" value="'+opt+'"><label for="sq4_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q5: Improvements (multi-select)
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">5</span> What should we add?</div><p class="survey-q-hint">Select all that apply (optional)</p><div class="survey-options">';
+    ['More job boards','More AI tools','Salary data by discipline','Interview prep resources','Freelance/contract guidance','Mental health resources','Company culture reviews','Networking events'].forEach(function(opt,i){
+      html += '<div class="survey-opt"><input type="checkbox" name="sq5" id="sq5_'+i+'" value="'+opt+'"><label for="sq5_'+i+'">'+opt+'</label></div>';
+    });
+    html += '</div></div>';
+
+    // Q6: Open text
+    html += '<div class="survey-q"><div class="survey-q-label"><span class="sq-num">6</span> Anything else?</div><p class="survey-q-hint">Optional, 280 characters max</p>';
+    html += '<textarea class="survey-textarea" id="sq6" maxlength="280" placeholder="What would make this tool more useful for you?"></textarea></div>';
+
+    html += '<div class="survey-val-msg" id="surveyValMsg">Please answer questions 1\u20134 before submitting.</div>';
+    html += '<div class="survey-submit-row">';
+    html += '<button class="survey-submit" id="surveySubmitBtn">Submit Feedback</button>';
+    html += '<span class="survey-results-link" id="surveyResultsLink" style="display:none;"><a href="survey-results.html">View community results</a></span>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  // Restart
+  html += '<div class="restart-section"><button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button><p class="restart-prompt">Searching for a different discipline or situation? Run it again \u2014 results change based on your profile.</p></div>';
+
+  document.getElementById('resultsContent').innerHTML = html;
+  document.getElementById('formScreen').classList.remove('active');
+  document.getElementById('resultsScreen').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Copy plan button
+  var copyBtn = document.getElementById('copyPlanBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      var planOl = document.querySelector('.action-plan ol');
+      var planItems = planOl ? planOl.querySelectorAll('li') : [];
+      var text = 'Game Dev Job Search Plan (' + exp.label + ' ' + disc.label + ')\n';
+      text += '='.repeat(40) + '\n\n';
+      planItems.forEach(function(li, idx) {
+        var tf = timeFrames[idx] || '';
+        var liText = li.textContent.replace(tf, '').trim();
+        text += (idx + 1) + '. [' + tf + '] ' + liText + '\n\n';
+      });
+      text += 'Top boards: ';
+      boards.slice(0, 3).forEach(function(item, idx) {
+        text += item.board.name + ' (' + item.board.url + ')';
+        if (idx < 2 && idx < boards.length - 1) text += ', ';
+      });
+      text += '\n\nGenerated at gamedevai.guide/jobs/';
+
+      navigator.clipboard.writeText(text).then(function() {
+        var label = copyBtn.querySelector('.copy-plan-label');
+        label.textContent = 'Copied!';
+        setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
+      }).catch(function() {
+        // fallback
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        var label = copyBtn.querySelector('.copy-plan-label');
+        label.textContent = 'Copied!';
+        setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
+      });
+      gaEvent('copy_plan', { discipline: state.discipline, experience: state.experience });
+    });
+  }
+
+  // Survey submit handler
+  var surveyBtn = document.getElementById('surveySubmitBtn');
+  if (surveyBtn) {
+    surveyBtn.addEventListener('click', function() {
+      var q1 = document.querySelector('input[name="sq1"]:checked');
+      var q2 = document.querySelector('input[name="sq2"]:checked');
+      var q3 = document.querySelector('input[name="sq3"]:checked');
+      var q4 = document.querySelector('input[name="sq4"]:checked');
+      var valMsg = document.getElementById('surveyValMsg');
+
+      // Validate required questions 1-4
+      if (!q1 || !q2 || !q3 || !q4) {
+        valMsg.classList.add('visible');
+        return;
+      }
+      valMsg.classList.remove('visible');
+
+      // Gather multi-select Q5
+      var q5Checked = document.querySelectorAll('input[name="sq5"]:checked');
+      var q5Vals = [];
+      q5Checked.forEach(function(cb) { q5Vals.push(cb.value); });
+
+      // Gather Q6 free text
+      var q6El = document.getElementById('sq6');
+      var q6Val = q6El ? q6El.value.trim().substring(0, 280) : '';
+
+      var payload = {
+        q1_useful: q1.value,
+        q2_purpose: q2.value,
+        q3_source: q3.value,
+        q4_valuable: q4.value,
+        q5_improve: q5Vals,
+        q6_freetext: q6Val,
+        discipline: state.discipline || '',
+        experience: state.experience || '',
+        timestamp: Date.now()
+      };
+
+      // Disable button while submitting
+      surveyBtn.disabled = true;
+      surveyBtn.textContent = 'Submitting...';
+
+      db.ref('survey_responses').push(payload).then(function() {
+        if (_ls) _ls.setItem('jsg-survey-done', '1');
+        var card = document.getElementById('surveyCard');
+        if (card) {
+          card.innerHTML = '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded. <a href="survey-results.html">View community results</a></p></div>';
+        }
+        gaEvent('survey_submit', { discipline: state.discipline, experience: state.experience });
+      }).catch(function(err) {
+        surveyBtn.disabled = false;
+        surveyBtn.textContent = 'Submit Feedback';
+        valMsg.textContent = 'Something went wrong. Please try again.';
+        valMsg.classList.add('visible');
+      });
+    });
+  }
+}
+
+function toggleCard(header) {
+  var card = header.parentElement;
+  card.classList.toggle('expanded');
+}
+
+function revealCards(btn) {
+  var section = btn.getAttribute('data-section');
+  var cards = document.querySelectorAll('[data-section="' + section + '"].hidden-card');
+  cards.forEach(function(c) { c.classList.add('revealed'); });
+  btn.style.display = 'none';
+  gaEvent('show_more', { section: section });
+}
+
+// Section nav: click to scroll
+(function() {
+  function initResultsNav() {
+    var nav = document.getElementById('resultsNav');
+    if (!nav) return;
+
+    var btns = nav.querySelectorAll('.results-nav-btn');
+    var navHeight = 110; // hub-nav + results-nav offset
+
+    btns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetId = btn.getAttribute('data-target');
+        var target = document.getElementById(targetId);
+        if (target) {
+          var y = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+          btns.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          gaEvent('nav_click', { section: targetId });
+        }
+      });
+    });
+
+    // Scroll spy: update active nav button based on scroll position
+    var sectionIds = [];
+    btns.forEach(function(b) { sectionIds.push(b.getAttribute('data-target')); });
+
+    var ticking = false;
+    window.addEventListener('scroll', function() {
+      if (!ticking) {
+        requestAnimationFrame(function() {
+          var scrollY = window.pageYOffset + navHeight + 40;
+          var activeId = sectionIds[0];
+          for (var i = sectionIds.length - 1; i >= 0; i--) {
+            var el = document.getElementById(sectionIds[i]);
+            if (el && el.offsetTop <= scrollY) {
+              activeId = sectionIds[i];
+              break;
+            }
+          }
+          btns.forEach(function(b) {
+            b.classList.toggle('active', b.getAttribute('data-target') === activeId);
+          });
+
+          // Shadow when scrolled past initial position
+          if (nav.getBoundingClientRect().top <= 53) {
+            nav.classList.add('has-shadow');
+          } else {
+            nav.classList.remove('has-shadow');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    });
+  }
+
+  // Re-init after results are rendered
+  var origShowResults = window.showResults;
+  if (typeof origShowResults === 'undefined') {
+    // Will be called manually after showResults
+  }
+  var observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      if (m.target.id === 'resultsContent' && m.addedNodes.length > 0) {
+        setTimeout(initResultsNav, 50);
+      }
+    });
+  });
+  var rc = document.getElementById('resultsContent');
+  if (rc) observer.observe(rc, { childList: true });
+})();
+
+function restart() {
+  state.step = 1;
+  state.discipline = null;
+  state.experience = null;
+  state.situations = [];
+  state.challenges = [];
+
+  // clear form
+  document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function(inp) {
+    inp.checked = false;
+  });
+
+  document.getElementById('resultsScreen').classList.remove('active');
+  document.getElementById('formScreen').classList.add('active');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+<script data-pplx-inline-edit>
+(function(){
+  if(window===window.top)return;
+  function inlineAll(orig,clone){
+    if(orig.nodeType!==1)return;
+    try{
+      var cs=getComputedStyle(orig);
+      var t='';
+      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
+      clone.style.cssText=t;
+    }catch(e){}
+    var oc=orig.children,cc=clone.children;
+    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
+  }
+  function stripExternal(clone){
+    var imgs=clone.querySelectorAll('img');
+    for(var i=0;i<imgs.length;i++){
+      var s=imgs[i].getAttribute('src');
+      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
+    }
+    var all=clone.querySelectorAll('*');
+    for(var i=0;i<all.length;i++){
+      var st=all[i].style.cssText;
+      if(st&&st.indexOf('url(')>=0){
+        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
+      }
+    }
+  }
+  window.addEventListener('message',function(e){
+    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
+    var scrollX=window.scrollX||window.pageXOffset||0;
+    var scrollY=window.scrollY||window.pageYOffset||0;
+    var w=window.innerWidth,h=window.innerHeight;
+    try{
+      var clone=document.documentElement.cloneNode(true);
+      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
+      for(var i=0;i<rm.length;i++){rm[i].remove();}
+      inlineAll(document.documentElement,clone);
+      stripExternal(clone);
+      var html=new XMLSerializer().serializeToString(clone);
+      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
+        +'<foreignObject width="100%" height="100%">'
+        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
+        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
+        +html+'</div></div></foreignObject></svg>';
+      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+      var img=new Image();
+      img.onload=function(){
+        var c=document.createElement('canvas');c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0);
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.onerror=function(){
+        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+      };
+      img.src=svgUrl;
+    }catch(err){
+      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
+    }
+  });
+})();
+</script></body>
+</html>
