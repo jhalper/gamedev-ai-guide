@@ -13,11 +13,17 @@
   'use strict';
 
   // ── Active state detection ────────────────────────────────────────────────
+  // Uses indexOf so it works under any base folder (/alphatest/, /, etc.)
   var path = window.location.pathname;
 
   function isActive(href) {
-    if (href === '/') return path === '/' || path === '/index.html';
-    return path.indexOf(href) === 0;
+    if (href === '/') {
+      // Home is active only when no other tool path appears in the URL
+      return !navItems.slice(1).some(function (item) {
+        return path.indexOf(item.href) !== -1;
+      });
+    }
+    return path.indexOf(href) !== -1;
   }
 
   // ── Nav items ─────────────────────────────────────────────────────────────
