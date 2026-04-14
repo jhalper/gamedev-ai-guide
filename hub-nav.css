@@ -81,42 +81,6 @@
   flex-shrink: 0;
 }
 
-/* Divider — used in NVIDIA Toolkit nav for section links */
-.hub-nav-divider {
-  width: 1px;
-  height: 18px;
-  background: #3a3836;
-  margin: 0 0.25rem;
-  flex-shrink: 0;
-}
-
-/* Section links (in-page anchors, used by NVIDIA Toolkit) */
-.hub-section-link {
-  color: #6a6a80 !important;
-  font-size: clamp(0.75rem, 0.7rem + 0.25vw, 0.85rem) !important;
-}
-.hub-section-link:hover { color: #d4d0c8 !important; }
-
-/* Theme toggle (used by NVIDIA Toolkit) */
-.hub-nav .theme-toggle {
-  background: none;
-  border: 1px solid #3a3836;
-  color: #8a8680;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 180ms ease;
-  margin-left: 0.25rem;
-  flex-shrink: 0;
-}
-.hub-nav .theme-toggle:hover { color: #76b900; border-color: #76b900; }
-[data-theme="dark"]  .hub-nav .icon-moon { display: none; }
-[data-theme="light"] .hub-nav .icon-sun  { display: none; }
-
 /* Mobile toggle */
 .hub-nav-mobile-toggle {
   display: none;
@@ -129,8 +93,7 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .hub-nav-divider,
-  .hub-section-link { display: none !important; }
+  /* section bar handles in-page nav on tablet */
 }
 
 @media (max-width: 640px) {
@@ -153,6 +116,4 @@
     border-radius: 0;
   }
   .hub-nav-mobile-toggle { display: flex; align-items: center; }
-  /* Section links reappear in mobile dropdown */
-  .hub-section-link { display: inline-flex !important; }
 }

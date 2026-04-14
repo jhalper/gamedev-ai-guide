@@ -10,12 +10,16 @@
 <meta name="description" content="Cut through the noise. Find the NVIDIA tools that matter for your game. 83 tools mapped to real game dev workflows.">
 <meta property="og:title" content="NVIDIA Game Dev Toolkit">
 <meta property="og:description" content="Cut through the noise. 83+ NVIDIA tools mapped to real game dev workflows — rendering, AI, physics, profiling, cloud gaming, and more.">
-<meta property="og:image" content="og-image.png">
+<meta property="og:image" content="https://happymanic.com/gamedev/nvidia-toolkit/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Game Dev AI Guide">
+<meta property="og:url" content="https://gamedevai.guide/nvidia-toolkit/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NVIDIA Game Dev Toolkit">
 <meta name="twitter:description" content="Cut through the noise. 83+ NVIDIA tools mapped to real game dev workflows.">
-<meta name="twitter:image" content="og-image.png">
+<meta name="twitter:image" content="https://happymanic.com/gamedev/nvidia-toolkit/og-image.png">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
@@ -25,56 +29,118 @@
 
 <link rel="stylesheet" href="./style.css">
 
-<!-- Shared nav styles -->
-<link rel="stylesheet" href="/hub-nav.css">
+<!-- Shared nav styles + component (same as all other tools) -->
+<link rel="stylesheet" href="../hub-nav.css">
+<script src="../nav-component.js"></script>
+
+<style>
+/* ── NVIDIA Secondary Nav Bar ─────────────────────────────────────── */
+/* Sits below the hub nav, NVIDIA page only. Sticky, subordinate. */
+.nv-section-bar {
+  position: sticky;
+  top: 44px; /* hub nav height */
+  z-index: 9998;
+  background: rgba(13, 15, 10, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(118, 185, 0, 0.18);
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+}
+
+.nv-section-links {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nv-section-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 14px;
+  height: 38px;
+  font-family: 'Cabinet Grotesk', 'Trebuchet MS', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6a8a60;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.nv-section-links a:hover {
+  color: #76b900;
+  border-bottom-color: rgba(118, 185, 0, 0.4);
+}
+
+.nv-section-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Theme toggle — moved from main nav to section bar */
+.nv-theme-toggle {
+  background: none;
+  border: 1px solid rgba(118, 185, 0, 0.25);
+  color: #6a8a60;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 180ms ease;
+  flex-shrink: 0;
+}
+.nv-theme-toggle:hover {
+  color: #76b900;
+  border-color: #76b900;
+}
+[data-theme="dark"]  .nv-theme-toggle .icon-moon { display: none; }
+[data-theme="light"] .nv-theme-toggle .icon-sun  { display: none; }
+
+/* Hide section bar on mobile — filters handle navigation there */
+@media (max-width: 640px) {
+  .nv-section-bar { display: none; }
+}
+
+/* ── Offset overrides for dual nav (hub 44px + section bar 38px = 82px) ── */
+html { scroll-padding-top: 90px; }
+.filter-bar { top: 82px; }
+</style>
 
 </head>
 <body>
 
-<nav class="hub-nav" role="navigation" aria-label="Site navigation">
-  <div class="hub-nav-inner">
-    <a href="/" class="hub-nav-logo" aria-label="Game Dev AI Guide home">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" aria-hidden="true">
-        <defs>
-          <linearGradient id="gdai-nav-g" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#76b900"/>
-            <stop offset="100%" stop-color="#a3e635"/>
-          </linearGradient>
-        </defs>
-        <rect width="32" height="32" rx="7" fill="url(#gdai-nav-g)"/>
-        <text x="16" y="22" font-family="'Exo 2',Arial,sans-serif" font-weight="800" font-size="14" fill="white" text-anchor="middle" letter-spacing="-0.5">GD</text>
+<!-- nav injected by /nav-component.js -->
+
+<!-- NVIDIA Section Bar -->
+<div class="nv-section-bar" role="navigation" aria-label="Page sections">
+  <ul class="nv-section-links">
+    <li><a href="#where-to-start">Where to Start</a></li>
+    <li><a href="#engine-matrix">Engine Matrix</a></li>
+    <li><a href="#tools">All Tools</a></li>
+  </ul>
+  <div class="nv-section-bar-right">
+    <button class="nv-theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
       </svg>
-      <span class="hub-nav-logo-text">Game Dev AI Guide</span>
-    </a>
-    <div class="hub-nav-right">
-      <ul class="hub-nav-links" id="hubNavLinks">
-        <li><a href="/">Home</a></li>
-        <li><a href="/ai-tools/"><span class="hub-nav-dot" style="background:#d4943c"></span> AI Tools</a></li>
-        <li><a href="/perspectives/"><span class="hub-nav-dot" style="background:#6699ff"></span> Perspectives</a></li>
-        <li><a href="/jobs/"><span class="hub-nav-dot" style="background:#e8695c"></span> Job Search</a></li>
-        <li><a href="/mcp/"><span class="hub-nav-dot" style="background:#35ceae"></span> MCP Guide</a></li>
-        <li><a href="/nvidia-toolkit/" class="active"><span class="hub-nav-dot" style="background:#76b900"></span> NVIDIA Toolkit</a></li>
-        <li class="hub-nav-divider" aria-hidden="true"></li>
-        <li><a href="#where-to-start" class="hub-section-link">Where to Start</a></li>
-        <li><a href="#engine-matrix" class="hub-section-link">Engine Matrix</a></li>
-        <li><a href="#tools" class="hub-section-link">All Tools</a></li>
-      </ul>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode" title="Toggle theme">
-        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
-      </button>
-      <button class="hub-nav-mobile-toggle" onclick="document.getElementById('hubNavLinks').classList.toggle('open')" aria-label="Toggle menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-      </button>
-    </div>
+      <svg class="icon-moon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
   </div>
-</nav>
+</div>
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
 

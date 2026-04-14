@@ -12,13 +12,24 @@
 (function () {
   'use strict';
 
+  // ── Base path detection ───────────────────────────────────────────────────
+  // Detects the folder nav-component.js lives in, so paths work on any server
+  // regardless of whether the site is hosted at the domain root or a subdirectory.
+  // e.g. happymanic.com/gamedev/ → BASE = '/gamedev'
+  //      gamedevai.guide/        → BASE = ''
+  var BASE = (function () {
+    var s = document.currentScript && document.currentScript.src;
+    if (!s) return '';
+    var path = s.replace(window.location.origin, '');
+    return path.replace('/nav-component.js', '').replace(/\/$/, '');
+  })();
+
   // ── Active state detection ────────────────────────────────────────────────
-  // Uses indexOf so it works under any base folder (/alphatest/, /, etc.)
+  // Uses indexOf so it works under any base folder (/gamedev/, /alphatest/, etc.)
   var path = window.location.pathname;
 
   function isActive(href) {
-    if (href === '/') {
-      // Home is active only when no other tool path appears in the URL
+    if (href === BASE + '/') {
       return !navItems.slice(1).some(function (item) {
         return path.indexOf(item.href) !== -1;
       });
@@ -27,16 +38,13 @@
   }
 
   // ── Nav items ─────────────────────────────────────────────────────────────
-  // dot:      colored circle next to label (null = no dot)
-  // color:    active link text + dot color
-  // gradient: [stop1, stop2] for the logo icon when on this page
   var navItems = [
-    { href: '/',                label: 'Home',           dot: null,      color: '#a4e6ff', gradient: ['#a4e6ff', '#6ec6f5'] },
-    { href: '/ai-tools/',       label: 'AI Tools',       dot: '#d4943c', color: '#d4943c', gradient: ['#d4943c', '#e8a84e'] },
-    { href: '/perspectives/',   label: 'Perspectives',   dot: '#a78bfa', color: '#a78bfa', gradient: ['#a78bfa', '#7c5cbf'] },
-    { href: '/jobs/',           label: 'Job Search',     dot: '#e8695c', color: '#e8695c', gradient: ['#e8695c', '#c0392b'] },
-    { href: '/mcp/',            label: 'MCP Guide',      dot: '#35ceae', color: '#35ceae', gradient: ['#38bdf8', '#35ceae'] },
-    { href: '/nvidia-toolkit/', label: 'NVIDIA Toolkit', dot: '#76b900', color: '#76b900', gradient: ['#76b900', '#a3e635'] },
+    { href: BASE + '/',                label: 'Home',           dot: null,      color: '#a4e6ff', gradient: ['#a4e6ff', '#6ec6f5'] },
+    { href: BASE + '/ai-tools/',       label: 'AI Tools',       dot: '#d4943c', color: '#d4943c', gradient: ['#d4943c', '#e8a84e'] },
+    { href: BASE + '/perspectives/',   label: 'Perspectives',   dot: '#a78bfa', color: '#a78bfa', gradient: ['#a78bfa', '#7c5cbf'] },
+    { href: BASE + '/jobs/',           label: 'Job Search',     dot: '#e8695c', color: '#e8695c', gradient: ['#e8695c', '#c0392b'] },
+    { href: BASE + '/mcp/',            label: 'MCP Guide',      dot: '#35ceae', color: '#35ceae', gradient: ['#38bdf8', '#35ceae'] },
+    { href: BASE + '/nvidia-toolkit/', label: 'NVIDIA Toolkit', dot: '#76b900', color: '#76b900', gradient: ['#76b900', '#a3e635'] },
   ];
 
   // ── Helpers ───────────────────────────────────────────────────────────────
@@ -89,7 +97,7 @@
   var navHTML = [
     '<nav class="hub-nav" role="navigation" aria-label="Main navigation" id="gdai-hub-nav">',
     '  <div class="hub-nav-inner">',
-    '    <a href="/" class="hub-nav-logo" aria-label="Game Dev AI Guide home">',
+    '    <a href="' + BASE + '/" class="hub-nav-logo" aria-label="Game Dev AI Guide home">',
     '      ' + logoSVG,
     '      <span class="hub-nav-logo-text">Game Dev AI Guide</span>',
     '    </a>',
