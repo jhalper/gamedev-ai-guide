@@ -3674,7 +3674,7 @@ document.getElementById('scenario-own-btn').addEventListener('click', (e) => {
   var heroCards = document.querySelectorAll('#scenarios-grid-hero [data-scenario]');
   heroCards.forEach(function(card) {
     card.addEventListener('click', function() {
-      var id = this.getAttribute('data-scenario');
+      var id = card.getAttribute('data-scenario');
       var scenario = SCENARIOS.find(function(s) { return s.id === id; });
       if (!scenario) return;
       gaEvent('scenario_click', { scenario: id });
