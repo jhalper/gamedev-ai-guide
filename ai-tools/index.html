@@ -34,11 +34,16 @@
     appId: "1:256487705979:web:6ff552e046926bd59141de",
     measurementId: "G-ZBGDRYKQXB"
   };
-  firebase.initializeApp(firebaseConfig);
-  var _ga = firebase.analytics();
-  window.gaEvent = function(name, params) {
-    try { _ga.logEvent(name, params || {}); } catch(e) {}
-  };
+  try {
+    firebase.initializeApp(firebaseConfig);
+    var _ga = firebase.analytics();
+    window.gaEvent = function(name, params) {
+      try { _ga.logEvent(name, params || {}); } catch(e) {}
+    };
+  } catch(e) {
+    // Firebase failed to load — app continues without analytics
+    window.gaEvent = function() {};
+  }
 </script>
 
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -3413,8 +3418,8 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
    ============================================ */
 (function() {
   var POLL_VOTE_KEY = 'gdai_sentiment_vote';
-  var db = firebase.database();
-  var votesRef = db.ref('poll/votes');
+  var db, votesRef;
+  try { db = firebase.database(); votesRef = db.ref('poll/votes'); } catch(e) {}
   var OPTIONS = [
     { id: 'optimistic',  emoji: '🚀', label: 'Optimistic — AI is a game-changer for dev workflows',      bar: 'bar-optimistic' },
     { id: 'cautious',    emoji: '🤔', label: 'Cautiously curious — useful in some areas, overhyped in others', bar: 'bar-cautious' },
@@ -3536,7 +3541,7 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
     }, 5000);
 
     // Listen for real-time vote updates from Firebase
-    votesRef.on('value', function(snapshot) {
+    votesRef && votesRef.on('value', function(snapshot) {
       clearTimeout(loadTimeout);
       var votes = snapshot.val() || { optimistic: 0, cautious: 0, wait: 0, skeptical: 0, against: 0 };
       var userVote = getUserVote();
