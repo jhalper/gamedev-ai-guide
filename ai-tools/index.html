@@ -1532,9 +1532,10 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Space Grotesk', sans-serif; line-height: 
 // Mobile nav toggle for the site nav (not hub-nav)
 (function() {
   var toggle = document.getElementById('mobile-nav-toggle');
-  if (toggle) {
+  var mobileNav = document.getElementById('mobile-nav');
+  if (toggle && mobileNav) {
     toggle.addEventListener('click', function() {
-      document.getElementById('mobile-nav').classList.toggle('hidden');
+      mobileNav.classList.toggle('hidden');
     });
   }
 })();
@@ -3575,17 +3576,17 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
   const openBtn = document.getElementById('info-btn');
   const closeBtn = document.getElementById('modal-close');
 
-  openBtn.addEventListener('click', () => modal.classList.add('visible'));
-  closeBtn.addEventListener('click', () => modal.classList.remove('visible'));
+  if (openBtn) openBtn.addEventListener('click', () => modal.classList.add('visible'));
+  if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('visible'));
 
   // Close on overlay click (not modal body)
-  modal.addEventListener('click', (e) => {
+  if (modal) modal.addEventListener('click', (e) => {
     if (e.target === modal) modal.classList.remove('visible');
   });
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('visible')) {
+    if (e.key === 'Escape' && modal && modal.classList.contains('visible')) {
       modal.classList.remove('visible');
     }
   });
@@ -3649,7 +3650,8 @@ document.addEventListener('keydown', (e) => {
 
 // "Start the Wizard" hero button — outside the IIFE so it always registers
 // regardless of whether #scenarios-grid exists in the DOM
-document.getElementById('hero-start-wizard').addEventListener('click', (e) => {
+var _hsw = document.getElementById('hero-start-wizard');
+if (_hsw) _hsw.addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('screen-results').classList.remove('active');
   document.getElementById('screen-feedback').classList.remove('active');
@@ -3661,7 +3663,8 @@ document.getElementById('hero-start-wizard').addEventListener('click', (e) => {
 });
 
 // "Run with your own answers" from scenario banner — same fix
-document.getElementById('scenario-own-btn').addEventListener('click', (e) => {
+var _sob = document.getElementById('scenario-own-btn');
+if (_sob) _sob.addEventListener('click', (e) => {
   e.preventDefault();
   document.getElementById('scenario-banner').classList.remove('visible');
   window._isScenario = false;
