@@ -843,6 +843,13 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.3', date: '2026-04-16', changes: [
+      'Added RTX Neural Shaders / Cooperative Vectors — new Rendering & Graphics tool entry covering Neural Texture Compression (NTC), Neural Radiance Cache, and Neural Materials',
+      'DX12 Cooperative Vectors preview shipped in Agility SDK 1.717.x-preview — Tensor Cores now accessible from HLSL shaders cross-vendor',
+      'NTC benchmarks show up to 85% VRAM reduction vs BCn compression with 2–4x inference throughput on Ada/Blackwell via Cooperative Vectors',
+      'Added engine matrix entry for RTX Neural Shaders',
+      'Tool count: 83 → 84'
+    ]},
     { version: 'v1.9.2', date: '2026-04-10', changes: [
       'Updated Omniverse entry — modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC',
       'Updated DLSS SR entry — Dynamic Multi Frame Generation confirmed live since March 31',

@@ -311,6 +311,17 @@ const NVIDIA_DATA = {
       "godotType": "N/A",
       "custom": 4,
       "customType": "C/C++ SDK"
+    },
+    {
+      "name": "RTX Neural Shaders / Cooperative Vectors",
+      "unreal": 1,
+      "unrealType": "Manual/API",
+      "unity": 0,
+      "unityType": "N/A",
+      "godot": 0,
+      "godotType": "N/A",
+      "custom": 3,
+      "customType": "DX12 / Vulkan / Slang SDK"
     }
   ],
   "tools": [
@@ -4127,6 +4138,58 @@ const NVIDIA_DATA = {
       "hiddenGem": 3,
       "id": 83,
       "whyGameDev": "Build AI characters and game systems that reason, plan, and act autonomously over long play sessions — moving beyond scripted behavior into truly intelligent agents."
+    },
+    {
+      "name": "RTX Neural Shaders / Cooperative Vectors",
+      "category": "Rendering & Graphics",
+      "oneLiner": "Run small neural networks directly inside HLSL shaders, hardware-accelerated by RTX Tensor Cores — enabling neural texture compression, neural materials, and neural radiance cache in real-time game rendering.",
+      "description": "RTX Neural Shaders is NVIDIA's framework for embedding ML inference directly into the graphics pipeline. Instead of writing complex shader math, developers train a small neural network to approximate the computation, then execute it per-pixel at frame time using Tensor Cores. Microsoft and NVIDIA shipped the Cooperative Vectors extension to DirectX 12 via the Agility SDK preview (April 2025, DX12 Agility SDK 1.717.x-preview), making the technique accessible through standard HLSL alongside existing Vulkan and Slang paths.\n\nThree production-ready use cases are available today:\n\n**RTX Neural Texture Compression (NTC)** — Encodes textures as neural network weights rather than block-compressed pixels. Delivers up to 7x VRAM savings vs BCn compression, up to 85% VRAM reduction in benchmarks, with 2–4x inference throughput improvement on Ada/Blackwell via Cooperative Vectors. Supports up to 16 texture channels simultaneously. Two modes: Inference on Sample (decode at read time, lowest VRAM) and Inference on Load (decode to BCn at load, lowest runtime cost). SDK: github.com/NVIDIA-RTX/RTXNTC.\n\n**RTX Neural Radiance Cache (NRC)** — A neural network that learns indirect lighting during a play session and provides real-time estimates of path-traced global illumination. Improves indirect lighting quality and performance in path-traced titles. First shipped in RTX Remix (all mods include NRC as of GDC 2025 release).\n\n**RTX Neural Materials** — Replaces complex physically-based BRDF shaders with compact neural approximations. Same visual quality, smaller instruction count. Particularly valuable for layered materials with expensive evaluation loops.\n\nThe overall SDK (RTXNS, github.com/NVIDIA-RTX/RTXNS) uses the Slang shading language as the primary authoring path, with HLSL output for DX12 deployment. Cooperative Vectors is cross-vendor in the DX12 spec — AMD and Intel have also committed driver support — but NVIDIA RTX GPUs (RTX 20XX+ for Vulkan, Ada/Blackwell for peak DX12 Cooperative Vectors performance) are the current primary target. Shader Model 6.9 and NVIDIA Developer Driver 590.26 are required for the DX12 Cooperative Vectors path.",
+      "useCases": [
+        "Neural texture compression — ship more texture detail in the same VRAM budget, up to 7x smaller than BCn",
+        "Inline neural materials replacing complex layered BRDF shaders with compact trained approximations",
+        "Neural radiance cache for path-traced games — faster and more accurate indirect lighting",
+        "Custom neural shaders trained on studio-proprietary surface appearance data",
+        "Replacing expensive real-time volumetric computation with neural approximations",
+        "VRAM pressure reduction for open-world titles with large texture budgets",
+        "Prototype next-generation material systems using Python + SlangPy for fast iteration"
+      ],
+      "phases": [
+        "Pre-production",
+        "Production",
+        "Polish"
+      ],
+      "engines": [
+        "Custom Engine",
+        "Unreal Engine"
+      ],
+      "teamSizes": [
+        "AAA (50+)",
+        "Mid-size (10-50)"
+      ],
+      "pricing": "Free",
+      "maturity": "Preview",
+      "difficulty": "Complex",
+      "limitations": "DX12 Cooperative Vectors path requires Agility SDK 1.717.x-preview and NVIDIA Developer Driver 590.26 (Shader Model 6.9 preview) — not shipping drivers yet; Vulkan path requires driver ≥ 572.16 and is available on RTX 20XX+, but the DX12 path targets Ada/Blackwell for full performance; Cross-vendor Cooperative Vectors support (AMD, Intel) is specified and drivers are in progress, but performance on non-NVIDIA hardware is unproven for games; Neural network training pipeline (compression, BRDF fitting) adds a content pipeline step — baking times vary; NTC Inference on Sample mode adds per-frame shader cost (~0.5–0.7 ms on RTX 5070 at 1440p) — must be profiled against VRAM savings; Slang shading language required for the RTXNS SDK authoring path — not a pure HLSL workflow yet; CUDA 13 is currently incompatible with the 590.26 developer preview driver — use CUDA 12.9 for NTC SDK builds; Console support not expected; Preview status means APIs and tooling are still evolving",
+      "url": "https://github.com/NVIDIA-RTX/RTXNS",
+      "officialPage": "https://developer.nvidia.com/rtx/neural-shading",
+      "hiddenGem": 4,
+      "engineIntegration": {
+        "unreal": {
+          "type": "Manual/API",
+          "setup": "No official UE5 plugin yet. Integration requires DX12 Agility SDK 1.717.x-preview and custom RHI work to call Cooperative Vector instructions from within UE5 material/shader pipelines. RTX Kit is the recommended starting point for UE5 neural rendering integration context. Watch RTX Kit and NvRTX branches for future plugin support.",
+          "quality": 1,
+          "issues": "No official plugin as of April 2026. Requires engine modification to expose Cooperative Vector shader instructions. Best suited for studios with custom rendering teams willing to work at the RHI layer.",
+          "version": "Preview — UE5 plugin TBD"
+        },
+        "custom": {
+          "apiType": "DX12 Agility SDK / Vulkan / Slang",
+          "setupComplexity": 4,
+          "docsQuality": 3,
+          "notes": "DX12 path: Agility SDK 1.717.x-preview + Shader Model 6.9 driver + HLSL Cooperative Vector intrinsics. Vulkan path: VK_NV_cooperative_vector extension + driver ≥ 572.16. Slang is recommended for cross-API authoring — it compiles to HLSL, GLSL, SPIR-V, and CUDA. RTXNS SDK on GitHub (github.com/NVIDIA-RTX/RTXNS) provides samples, helper functions, and a SlangPy path for Python-driven iteration. NTC SDK (github.com/NVIDIA-RTX/RTXNTC) is a separate, more production-focused package for texture compression specifically."
+        }
+      },
+      "id": 84,
+      "whyGameDev": "Ship more visual quality per VRAM byte — neural texture compression and inline neural materials put Tensor Core acceleration directly in your shader pipeline."
     }
   ]
 };

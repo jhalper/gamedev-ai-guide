@@ -1,5 +1,13 @@
 # NVIDIA Game Dev Toolkit — Changelog
 
+## v1.9.3 — 2026-04-16
+- Added RTX Neural Shaders / Cooperative Vectors as new tool entry in Rendering & Graphics
+- Entry covers all three production-ready use cases: Neural Texture Compression (NTC), Neural Radiance Cache (NRC), and Neural Materials
+- DX12 Cooperative Vectors preview shipped in Agility SDK 1.717.x-preview — Tensor Cores now callable from standard HLSL shaders; cross-vendor (AMD, Intel drivers in progress)
+- NTC benchmarks (Tom's Hardware, April 2026): up to 85% VRAM reduction vs BCn; 2–4x inference throughput improvement on Ada/Blackwell via Cooperative Vectors
+- Added engine matrix row for RTX Neural Shaders (Manual/API for UE5, DX12/Vulkan/Slang SDK for custom engines)
+- Tool count: 83 → 84
+
 ## v1.9.2 — 2026-04-10
 - Updated Omniverse entry: modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC with C/Python APIs
 - Omniverse shift: developers can now embed RTX rendering or PhysX simulation standalone, without the full Omniverse container stack
