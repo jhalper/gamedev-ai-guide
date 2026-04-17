@@ -44,7 +44,7 @@
     { href: BASE + '/perspectives/',   label: 'Perspectives',   dot: '#a78bfa', color: '#a78bfa', gradient: ['#a78bfa', '#7c5cbf'] },
     { href: BASE + '/jobs/',           label: 'Job Search',     dot: '#e8695c', color: '#e8695c', gradient: ['#e8695c', '#c0392b'] },
     { href: BASE + '/mcp/',            label: 'MCP Guide',      dot: '#35ceae', color: '#35ceae', gradient: ['#38bdf8', '#35ceae'] },
-    { href: BASE + '/nvidia-toolkit/', label: 'NVIDIA Toolkit', dot: '#76b900', color: '#76b900', gradient: ['#76b900', '#a3e635'] },
+    { href: BASE + '/nvidia-toolkit/', label: 'NVIDIA GameDev', dot: '#76b900', color: '#76b900', gradient: ['#76b900', '#a3e635'] },
   ];
 
   // ── Helpers ───────────────────────────────────────────────────────────────
