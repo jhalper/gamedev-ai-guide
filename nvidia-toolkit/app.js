@@ -1,5 +1,5 @@
 // ============================================================
-// NVIDIA Game Dev Toolkit — Application Logic
+// NVIDIA GameDev Guide — Application Logic
 // ============================================================
 
 (function () {
@@ -844,10 +844,10 @@
   // ---------- What's New Panel ----------
   const CHANGELOG = [
     { version: 'v1.9.3', date: '2026-04-16', changes: [
-      'Added RTX Neural Shaders / Cooperative Vectors — new Rendering & Graphics tool entry covering Neural Texture Compression (NTC), Neural Radiance Cache, and Neural Materials',
-      'DX12 Cooperative Vectors preview shipped in Agility SDK 1.717.x-preview — Tensor Cores now accessible from HLSL shaders cross-vendor',
-      'NTC benchmarks show up to 85% VRAM reduction vs BCn compression with 2–4x inference throughput on Ada/Blackwell via Cooperative Vectors',
-      'Added engine matrix entry for RTX Neural Shaders',
+      'Renamed to NVIDIA GameDev Guide — clearer independent positioning, nav label updated to "NVIDIA GameDev"',
+      'Added non-affiliation disclosure to hero: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."',
+      'Added RTX Neural Shaders / Cooperative Vectors — new Rendering & Graphics entry covering NTC, NRC, and Neural Materials',
+      'DX12 Cooperative Vectors live in Agility SDK 1.717.x-preview — Tensor Cores accessible from HLSL shaders, cross-vendor',
       'Tool count: 83 → 84'
     ]},
     { version: 'v1.9.2', date: '2026-04-10', changes: [
@@ -1020,7 +1020,7 @@
       if (useCases) text += '\nUse Cases:\n' + useCases + '\n';
       if (limitations) text += '\nThings to Know:\n' + limitations + '\n';
       if (tool.url) text += '\nDocumentation: ' + tool.url + '\n';
-      text += '\n---\nExported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper\n';
+      text += '\n---\nExported from NVIDIA GameDev Guide (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper\n';
 
       // Download as .txt file
       const blob = new Blob([text], { type: 'text/plain' });
