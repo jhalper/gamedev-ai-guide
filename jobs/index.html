@@ -28,33 +28,43 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
-  var firebaseConfig = {
-    apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
-    authDomain: "gamedev-ai-guide.firebaseapp.com",
-    databaseURL: "https://gamedev-ai-guide-default-rtdb.firebaseio.com",
-    projectId: "gamedev-ai-guide",
-    storageBucket: "gamedev-ai-guide.firebasestorage.app",
-    messagingSenderId: "256487705979",
-    appId: "1:256487705979:web:6ff552e046926bd59141de",
-    measurementId: "G-ZBGDRYKQXB"
-  };
-  firebase.initializeApp(firebaseConfig);
-  var analytics = firebase.analytics();
-  var db = firebase.database();
-  window.gaEvent = function(name, params) {
-    try { analytics.logEvent(name, params); } catch(e) {}
-  };
-  // Check survey response count — show results links only above threshold
-  var SURVEY_THRESHOLD = 10;
-  db.ref('survey_responses').once('value').then(function(snap) {
-    var count = snap.numChildren();
-    if (count >= SURVEY_THRESHOLD) {
-      var fl = document.getElementById('footerResultsLink');
-      var sl = document.getElementById('surveyResultsLink');
-      if (fl) fl.style.display = '';
-      if (sl) sl.style.display = '';
-    }
-  }).catch(function() {});
+  // Safe fallback - fires before Firebase attempt so gaEvent always exists
+  window.gaEvent = function() {};
+  window.db = null;
+
+  try {
+    var firebaseConfig = {
+      apiKey: "AIzaSyA_VUS9XItMe0rQWVyrQRz3-UrUx__ZTV8",
+      authDomain: "gamedev-ai-guide.firebaseapp.com",
+      databaseURL: "https://gamedev-ai-guide-default-rtdb.firebaseio.com",
+      projectId: "gamedev-ai-guide",
+      storageBucket: "gamedev-ai-guide.firebasestorage.app",
+      messagingSenderId: "256487705979",
+      appId: "1:256487705979:web:6ff552e046926bd59141de",
+      measurementId: "G-ZBGDRYKQXB"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var analytics = firebase.analytics();
+    var db = firebase.database();
+    window.db = db;
+    // Override the no-op fallback with the real logger
+    window.gaEvent = function(name, params) {
+      try { analytics.logEvent(name, params); } catch(e) {}
+    };
+    // Check survey response count - show results links only above threshold
+    var SURVEY_THRESHOLD = 10;
+    db.ref('survey_responses').once('value').then(function(snap) {
+      var count = snap.numChildren();
+      if (count >= SURVEY_THRESHOLD) {
+        var fl = document.getElementById('footerResultsLink');
+        var sl = document.getElementById('surveyResultsLink');
+        if (fl) fl.style.display = '';
+        if (sl) sl.style.display = '';
+      }
+    }).catch(function() {});
+  } catch(e) {
+    // Firebase CDN failed to load or init failed - tool continues without analytics
+  }
 </script>
 
 <!-- Fonts from Fontshare -->
@@ -1949,6 +1959,165 @@ h1, h2, h3, h4, h5, h6 {
 }
 .survey-val-msg.visible { display: block; }
 
+
+
+/* LANDING SCREEN */
+.landing-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-2);
+  line-height: 1.15;
+}
+.landing-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 52ch;
+  line-height: 1.55;
+  margin-bottom: var(--space-5);
+}
+.btn-start {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-8);
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-base);
+  border-radius: var(--radius-lg);
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin: var(--space-5) 0;
+  letter-spacing: -0.01em;
+}
+.btn-start:hover {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn-start:active {
+  transform: translateY(0);
+  transition-duration: 80ms;
+}
+.btn-start svg {
+  flex-shrink: 0;
+}
+
+/* IRON GALAXY FRAMING QUOTE */
+.market-framing-quote {
+  margin: var(--space-4) 0 var(--space-5) 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--color-warning);
+  background: var(--color-warning-bg);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.market-framing-quote p {
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  line-height: 1.6;
+  margin-bottom: 0;
+  font-style: italic;
+  max-width: none;
+}
+.market-framing-quote cite {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: normal;
+}
+
+/* ADJACENT INDUSTRIES SECTION */
+.adjacent-intro-note {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-4);
+  line-height: 1.6;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+.adjacent-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--space-3);
+  transition: border-color var(--transition-fast);
+}
+.adjacent-card:hover { border-color: var(--color-border-hover); }
+.adjacent-card-header {
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.adjacent-card-header:hover { background: var(--color-surface-2); }
+.adjacent-industry-name {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+.adjacent-signal {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.adjacent-signal-good  { background: var(--color-success-bg); color: var(--color-success); }
+.adjacent-signal-neutral { background: var(--color-surface-3); color: var(--color-text-muted); }
+.adjacent-card.open .adjacent-card-header { background: var(--color-surface-2); }
+.adjacent-card.open .rec-card-chevron { transform: rotate(180deg); }
+.adjacent-card-body {
+  display: none;
+  padding: 0 var(--space-4) var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+.adjacent-card.open .adjacent-card-body { display: block; }
+.adjacent-detail-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+  margin-top: var(--space-3);
+}
+.adjacent-detail-value {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+.adjacent-caveat {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-sm);
+}
+.adjacent-framing {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-6);
+  line-height: 1.6;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-divider);
+}
+
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -1969,12 +2138,16 @@ h1, h2, h3, h4, h5, h6 {
   <!-- HEADER -->
   <header class="app-header">
     <div class="app-logo">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
         <rect width="28" height="28" rx="6" fill="var(--color-surface-2)"/>
-        <rect x="1" y="1" width="26" height="26" rx="5" stroke="var(--color-primary)" stroke-width="1.2" fill="none"/>
-        <circle cx="9" cy="14" r="2.5" fill="var(--color-primary)"/>
-        <path d="M14.5 9.5L17.5 14.5H11.5z" fill="var(--color-primary)" opacity="0.7"/>
-        <path d="M21 11v6" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round"/>
+        <!-- Briefcase body -->
+        <rect x="4" y="12" width="20" height="12" rx="2" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <!-- Handle -->
+        <path d="M10 12V10a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <!-- Center divider -->
+        <line x1="4" y1="17" x2="24" y2="17" stroke="var(--color-primary)" stroke-width="1.5"/>
+        <!-- Clasp -->
+        <rect x="12" y="15" width="4" height="4" rx="1" fill="var(--color-primary)"/>
       </svg>
       <div class="app-logo-text">
         <span>Job Search</span> Guide
@@ -2016,43 +2189,57 @@ h1, h2, h3, h4, h5, h6 {
     </div>
   </header>
 
-  <!-- FORM SCREEN -->
-  <div id="formScreen" class="screen active">
-    <div class="form-intro">
-      <h1>Game Dev Job Search Guide</h1>
-      <p class="form-blurb">Cut through the noise. Find where the jobs are, use AI tools that actually help, and avoid the traps.</p>
+  <!-- LANDING SCREEN -->
+  <div id="landingScreen" class="screen active">
+    <h1 class="landing-title">Game Dev Job Search Guide</h1>
+    <p class="landing-subtitle">Personalized job boards, AI tools, and honest market context based on your discipline and situation. 4 questions, one plan.</p>
 
-      <div class="stat-pills">
-        <span class="stat-pill stat-warning"><strong>33%</strong> of US game devs laid off in past 2 years</span>
-        <span class="stat-pill stat-warning"><strong>48%</strong> still haven't found work</span>
-        <span class="stat-pill stat-good"><strong>~50%</strong> referral interview rate</span>
-      </div>
+    <div class="stat-pills">
+      <span class="stat-pill stat-warning"><strong>33%</strong> of US game devs laid off in past 2 years</span>
+      <span class="stat-pill stat-warning"><strong>48%</strong> still haven't found work</span>
+      <span class="stat-pill stat-good"><strong>~50%</strong> referral interview rate</span>
+    </div>
 
-      <p>The game dev job market is fragmented across 10+ platforms, and AI tools can either help or hurt your chances. Answer 4 questions and get a personalized action plan based on your discipline and situation.</p>
+    <blockquote class="market-framing-quote">
+      <p>&#8220;Ever since 2020, when everything about making video games started to change, people have been waiting for business to get back to normal. This year, we&#8217;re adopting a new posture to accept these current market conditions as permanent.&#8221;</p>
+      <cite>&#8212; Iron Galaxy Studios, April 17, 2026, announcing their second round of layoffs in under two years</cite>
+    </blockquote>
+
+    <button class="btn-start" id="startWizardBtn">
+      Get My Plan
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
 
       <div class="whats-new" id="whatsNew">
         <button class="whats-new-toggle" onclick="document.getElementById('whatsNew').classList.toggle('open')">
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.6</span>
+            <span class="whats-new-badge">v1.7</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
-          <div class="whats-new-version">v1.6 &mdash; April 7, 2026</div>
+          <div class="whats-new-version">v1.7, April 20, 2026</div>
           <ul class="whats-new-list">
-            <li>Market snapshot updated: Q1 2026 logged ~2,700 layoffs &mdash; the highest single quarter since early 2024</li>
-            <li>New pitfall: &ldquo;Waiting for an Identical Role&rdquo; &mdash; covers structurally contracting areas (manual QA, traditional art, generalist Unity dev) and where to pivot</li>
-            <li>Awesome People List (ex-Epic) added to Communities section &mdash; surfaces for recently laid-off devs</li>
+            <li>New section: Where Your Skills Transfer, discipline-specific breakdown of adjacent industries actively hiring game devs (defense simulation, automotive, film/VFX, product design, and more)</li>
+            <li>Market context updated: Iron Galaxy (up to 90, second round in under two years), AppLovin/Machine Zone (97), Polyarc Games (30, two-thirds of studio), Eidos Montreal (124 + studio head departure after 7-year project cancellation), Piranha Games (30%), Rec Room closure announced for June 2026</li>
+            <li>Iron Galaxy&#8217;s statement added to the intro as market framing: &#8220;accept these current market conditions as permanent&#8221;</li>
+            <li>Restructured intro as a proper landing screen with a single CTA, context first, wizard after you choose to start</li>
+          </ul>
+                    <div class="whats-new-version">v1.6, April 7, 2026</div>
+          <ul class="whats-new-list">
+            <li>Market snapshot updated: Q1 2026 logged ~2,700 layoffs, the highest single quarter since early 2024</li>
+            <li>New pitfall: &ldquo;Waiting for an Identical Role&rdquo;, covers structurally contracting areas (manual QA, traditional art, generalist Unity dev) and where to pivot</li>
+            <li>Awesome People List (ex-Epic) added to Communities section, surfaces for recently laid-off devs</li>
             <li>Godot tip added to action plans for entry-level and indie/freelance engineers and designers</li>
           </ul>
-          <div class="whats-new-version">v1.5 &mdash; March 27, 2026</div>
+          <div class="whats-new-version">v1.5, March 27, 2026</div>
           <ul class="whats-new-list">
-            <li>Sticky section nav on results page &mdash; jump between Action Plan, Boards, Tools, Pitfalls, and Communities with one click</li>
+            <li>Sticky section nav on results page, jump between Action Plan, Boards, Tools, Pitfalls, and Communities with one click</li>
             <li>Scroll spy highlights the active section as you scroll</li>
-            <li>Collapsible sections &mdash; top 3 results shown by default with "Show all" expander for each section</li>
-            <li>Visual section differentiation &mdash; each section has a unique accent color (teal for boards, purple for tools, amber for pitfalls, green for communities)</li>
+            <li>Collapsible sections, top 3 results shown by default with "Show all" expander for each section</li>
+            <li>Visual section differentiation, each section has a unique accent color (teal for boards, purple for tools, amber for pitfalls, green for communities)</li>
             <li>Color-coded stage badges on AI tools (Resume, Interview, Tracking, Portfolio)</li>
             <li>Inline platform icons on community cards (Discord, Reddit, mental health, mentorship)</li>
             <li>Share prompt after action plan to encourage sharing</li>
@@ -2061,14 +2248,14 @@ h1, h2, h3, h4, h5, h6 {
             <li>Improved card detail labels with amber accent styling</li>
             <li>Share button with LinkedIn, X, Bluesky, Reddit, and copy link</li>
           </ul>
-          <div class="whats-new-version">v1.4 &mdash; March 25, 2026</div>
+          <div class="whats-new-version">v1.4, March 25, 2026</div>
           <ul class="whats-new-list">
-            <li>New section: Communities &amp; Support &mdash; 14 Discord servers, Reddit communities, mentorship programs, mental health resources, and professional organizations, scored and filtered to your profile</li>
+            <li>New section: Communities &amp; Support, 14 Discord servers, Reddit communities, mentorship programs, mental health resources, and professional organizations, scored and filtered to your profile</li>
             <li>Community cards show type badges (Discord, Reddit, Mental Health, Mentorship, etc.) with direct join links</li>
             <li>Take This mental health resources surfaced for recently laid-off developers</li>
             <li>GameDevMap studio discovery tool integrated for relocation-focused profiles</li>
           </ul>
-          <div class="whats-new-version">v1.3 &mdash; March 21, 2026</div>
+          <div class="whats-new-version">v1.3, March 21, 2026</div>
           <ul class="whats-new-list">
             <li>Copy Plan button: save your personalized action plan to clipboard</li>
             <li>New challenge option: "Worried AI is replacing my role"</li>
@@ -2079,7 +2266,7 @@ h1, h2, h3, h4, h5, h6 {
             <li>Improved pitfall card language for clarity</li>
             <li>60-second community survey with live public results</li>
           </ul>
-          <div class="whats-new-version">v1.2 &mdash; March 20, 2026</div>
+          <div class="whats-new-version">v1.2, March 20, 2026</div>
           <ul class="whats-new-list">
             <li>Added Outscal to job boards (entry-level and international coverage)</li>
             <li>Added curation note explaining board selection philosophy</li>
@@ -2087,14 +2274,14 @@ h1, h2, h3, h4, h5, h6 {
             <li>Renamed from "Game Dev AI Job Search Guide" to "Game Dev Job Search Guide"</li>
             <li>Simplified footer (cross-links now handled by site navigation)</li>
           </ul>
-          <div class="whats-new-version">v1.1 &mdash; March 19, 2026</div>
+          <div class="whats-new-version">v1.1, March 19, 2026</div>
           <ul class="whats-new-list">
             <li>Action plan steps now link directly to recommended tools and platforms</li>
             <li>Pitfall cards now include hyperlinks to resources mentioned in recommendations</li>
             <li>Market snapshot sources linked to original reports</li>
             <li>Added this changelog</li>
           </ul>
-          <div class="whats-new-version">v1.0 &mdash; March 19, 2026</div>
+          <div class="whats-new-version">v1.0, March 19, 2026</div>
           <ul class="whats-new-list">
             <li>Initial release: 4-step wizard with personalized job board, AI tool, and pitfall recommendations</li>
             <li>13 job boards scored by discipline, experience, and situation (now 14)</li>
@@ -2105,7 +2292,10 @@ h1, h2, h3, h4, h5, h6 {
           </ul>
         </div>
       </div>
-    </div>
+  </div>
+
+  <!-- FORM SCREEN (wizard only) -->
+  <div id="formScreen" class="screen">
 
     <!-- WIZARD -->
     <div class="wizard-progress" id="wizardProgress">
@@ -2190,11 +2380,11 @@ h1, h2, h3, h4, h5, h6 {
   <div class="modal">
     <h2>About This Tool</h2>
     <p>The <strong>Game Dev Job Search Guide</strong> is a companion to the <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">Game Dev AI Guide</a>. It helps game developers navigate the job search landscape with personalized, scored recommendations.</p>
-    <p><strong>What it covers:</strong> 14 job boards, 12 AI tools, 10 market pitfalls, 14 communities and support resources, and a 5-step action plan &mdash; all scored and ranked by your discipline, experience level, and situation.</p>
+    <p><strong>What it covers:</strong> 14 job boards, 12 AI tools, 11 market pitfalls, 14 community and support resources, a 5-step action plan, and an adjacent industries guide mapping your discipline to roles outside games. All scored and ranked by your discipline, experience level, and situation.</p>
     <p><strong>How scoring works:</strong> Every recommendation is matched against your profile. Boards, tools, communities, and pitfalls each have discipline, experience, and situation tags. The tool scores each item based on how many of your selections it matches, with special boosts for strong fits (e.g., ASGC for laid-off devs, ArtStation for artists, Take This for mental health support).</p>
-    <p><strong>Philosophy:</strong> AI tools augment your search &mdash; they don't replace doing the real work. A referral from a former colleague is still worth more than 100 AI-optimized cold applications. No motivational fluff. Concrete, honest, practical.</p>
+    <p><strong>Philosophy:</strong> AI tools augment your search. They don't replace doing the real work. A referral from a former colleague is still worth more than 100 AI-optimized cold applications. No motivational fluff. Concrete, honest, practical.</p>
     <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
-    <p style="font-size:var(--text-xs);color:var(--color-text-muted);"><strong>Data sources:</strong> GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends 2024, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025, Take This Mental Health in Games 2025. All URLs verified March 2026.</p>
+    <p style="font-size:var(--text-xs);color:var(--color-text-muted);"><strong>Data sources:</strong> GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends 2024, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025, Take This Mental Health in Games 2025. All URLs verified April 2026.</p>
     <button class="modal-close" id="closeModal">Close</button>
   </div>
 </div>
@@ -2203,7 +2393,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: April 7, 2026 (v1.6) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: April 20, 2026 (v1.7) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -2651,7 +2841,7 @@ var PITFALLS = [
     id: 'remote_myth',
     title: 'Remote Roles Have Collapsed',
     severity: 'medium',
-    explanation: 'Remote-friendly game dev roles have gone from 80%+ in 2020 to under 15% by 2025, with most large studios now requiring some in-office presence. That said, remote and hybrid roles still exist — especially at indie studios and in contract/freelance work. The search takes more effort but the options are real.',
+    explanation: 'Remote-friendly game dev roles have gone from 80%+ in 2020 to under 15% by 2025, with most large studios now requiring some in-office presence. That said, remote and hybrid roles still exist - especially at indie studios and in contract/freelance work. The search takes more effort but the options are real.',
     whatToDoInstead: 'Expand to hybrid roles and consider relocation if permanent studio employment is the goal. Contract/freelance and indie studio roles remain more remote-friendly. Check <a href="https://remotegamejobs.com" target="_blank" rel="noopener noreferrer">Remote Game Jobs</a> and <a href="https://workwithindies.com" target="_blank" rel="noopener noreferrer">Work With Indies</a> for remaining remote-friendly positions.',
     situations: ['remote'],
     challenges: ['finding_jobs']
@@ -2670,7 +2860,7 @@ var PITFALLS = [
     title: 'Generic Portfolios Get Ignored',
     severity: 'medium',
     explanation: 'Studios hire for specific roles with specific aesthetic/technical needs. An environment artist applying to a dark fantasy studio should lead with dark fantasy environments. "Beautiful art with no context" is the most common portfolio mistake recruiters cite.',
-    whatToDoInstead: 'Tailor your portfolio top 8-12 pieces to match the studio\'s visual style and needs on <a href="https://www.artstation.com/jobs" target="_blank" rel="noopener noreferrer">ArtStation</a>. Add context: what you did, why, your process. Show wireframes, breakdowns, and engine context — not just beauty renders.',
+    whatToDoInstead: 'Tailor your portfolio top 8-12 pieces to match the studio\'s visual style and needs on <a href="https://www.artstation.com/jobs" target="_blank" rel="noopener noreferrer">ArtStation</a>. Add context: what you did, why, your process. Show wireframes, breakdowns, and engine context - not just beauty renders.',
     situations: ['laid_off','employed_looking','first_job'],
     challenges: ['portfolio_needs_work','getting_ghosted','no_shipped_titles']
   },
@@ -2697,7 +2887,7 @@ var PITFALLS = [
     title: 'Ignoring Studio Career Pages',
     severity: 'medium',
     explanation: 'Many game dev roles are posted to internal career pages days or weeks before boards. Some never reach boards at all. Senior/director roles are often headhunted and filled before any public posting. Early applications (first 48-72 hours) have dramatically higher response rates.',
-    whatToDoInstead: 'Build a target list of 30-50 studios, bookmark their career pages, check weekly. Use aggregators like <a href="https://gamejobs.co" target="_blank" rel="noopener noreferrer">GameJobs.co</a> and <a href="https://gracklehq.com" target="_blank" rel="noopener noreferrer">Grackle HQ</a> to catch listings at scale. Follow talent managers at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> — they post about roles first.',
+    whatToDoInstead: 'Build a target list of 30-50 studios, bookmark their career pages, check weekly. Use aggregators like <a href="https://gamejobs.co" target="_blank" rel="noopener noreferrer">GameJobs.co</a> and <a href="https://gracklehq.com" target="_blank" rel="noopener noreferrer">Grackle HQ</a> to catch listings at scale. Follow talent managers at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> - they post about roles first.',
     situations: ['laid_off','employed_looking'],
     challenges: ['finding_jobs','getting_ghosted']
   },
@@ -2705,7 +2895,7 @@ var PITFALLS = [
     id: 'no_networking',
     title: 'Cold Applications Are the Worst Odds',
     severity: 'high',
-    explanation: 'Cold application offer rate is roughly 0.2% (2 in 1,000), while referral interview rates run above 50%. Many game dev roles are filled through referrals or direct recruiter outreach before a public listing goes up. The takeaway is not to stop applying — it is to diversify how you spend your search time.',
+    explanation: 'Cold application offer rate is roughly 0.2% (2 in 1,000), while referral interview rates run above 50%. Many game dev roles are filled through referrals or direct recruiter outreach before a public listing goes up. The takeaway is not to stop applying - it is to diversify how you spend your search time.',
     whatToDoInstead: 'Shift 20-30% of job search time to relationship building. Join <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat\'s ASGC Discord</a>. Engage with 5-10 people at target studios on <a href="https://www.linkedin.com/jobs" target="_blank" rel="noopener noreferrer">LinkedIn</a> for 2-4 weeks, then reach out with specific context. One real conversation at <a href="https://gdconf.com" target="_blank" rel="noopener noreferrer">GDC</a> beats months of messages.',
     situations: ['laid_off','first_job','employed_looking'],
     challenges: ['getting_ghosted','finding_jobs']
@@ -2732,7 +2922,7 @@ var PITFALLS = [
     id: 'waiting_for_identical_role',
     title: 'Waiting for an Identical Role to Open Up',
     severity: 'high',
-    explanation: 'The Q1 2026 layoff wave — over 2,700 jobs lost in three months — has flooded the market with highly qualified candidates competing for fewer open roles. Some specific areas have structurally contracted: manual QA, traditional 2D/3D art production at large studios, and generalist Unity programming (Unity programmer salaries have dropped an estimated 50% since 2022). Holding out for the exact same title at the same studio type can mean months of waiting for a role that may no longer exist at scale.',
+    explanation: 'The Q1 2026 layoff wave - over 2,700 jobs lost in three months - has flooded the market with highly qualified candidates competing for fewer open roles. Some specific areas have structurally contracted: manual QA, traditional 2D/3D art production at large studios, and generalist Unity programming (Unity programmer salaries have dropped an estimated 50% since 2022). Holding out for the exact same title at the same studio type can mean months of waiting for a role that may no longer exist at scale.',
     whatToDoInstead: 'Identify adjacent roles where your skills transfer. QA → QA automation or product analytics. Traditional artist → technical art or real-time pipeline. Generalist programmer → tools engineering or live ops. Growing areas right now: AI integration roles, live operations, cross-platform dev, and data analytics. A lateral move that gets you employed beats a perfect title that stays unfilled.',
     situations: ['laid_off','employed_looking'],
     challenges: ['finding_jobs','getting_ghosted','switching_disciplines']
@@ -2753,7 +2943,7 @@ var COMMUNITIES = [
     size: '14,000+ Discord / 600K+ monthly',
     bestForTags: ['Career help', 'Resume reviews', 'Job placement'],
     strengths: 'Unmatched career placement track record. Covers 20+ professional disciplines. Active coaches and mentors. Completely free.',
-    caveats: 'Skews toward early-to-mid career. Very large server can feel overwhelming. Not a social community — focused on career outcomes.',
+    caveats: 'Skews toward early-to-mid career. Very large server can feel overwhelming. Not a social community - focused on career outcomes.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior','lead'],
     situations: ['laid_off','first_job','employed_looking','freelance','remote','international']
@@ -2767,7 +2957,7 @@ var COMMUNITIES = [
     size: '130,000+ members',
     bestForTags: ['All disciplines', 'Portfolio feedback', 'Networking'],
     strengths: 'Massive, active community with channels for every discipline. Good for networking, getting portfolio feedback, and finding collaborators.',
-    caveats: 'General purpose — not career-focused. Job postings mixed in with general chat. Quality of feedback varies.',
+    caveats: 'General purpose - not career-focused. Job postings mixed in with general chat. Quality of feedback varies.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior'],
     situations: ['laid_off','first_job','employed_looking','freelance','remote']
@@ -2795,7 +2985,7 @@ var COMMUNITIES = [
     size: '42,000+ members',
     bestForTags: ['Indie jobs', 'Showcases', 'Freelance'],
     strengths: 'Direct pipeline to indie job listings. Monthly showcases let you get your work in front of hiring indie studios. Strong freelance culture.',
-    caveats: 'Indie-focused — less useful for AAA job seekers. Smaller studios mean lower budgets.',
+    caveats: 'Indie-focused - less useful for AAA job seekers. Smaller studios mean lower budgets.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','vfx'],
     experienceLevels: ['entry','mid','senior'],
     situations: ['freelance','laid_off','first_job','remote']
@@ -2825,7 +3015,7 @@ var COMMUNITIES = [
     size: '7,000+ members',
     bestForTags: ['Game design', 'Courses', 'Challenges'],
     strengths: 'Unique learning + community model. Build a Game Challenge provides portfolio-ready project experience. Curated job listings and regular expert talks.',
-    caveats: 'Primarily game design focused — less relevant for engineering, art, or audio roles. Some paid course content.',
+    caveats: 'Primarily game design focused - less relevant for engineering, art, or audio roles. Some paid course content.',
     disciplines: ['game_design','level_design','uiux','narrative','production'],
     experienceLevels: ['entry','mid','senior'],
     situations: ['first_job','laid_off','employed_looking']
@@ -2867,7 +3057,7 @@ var COMMUNITIES = [
     size: '1.5M+ members',
     bestForTags: ['Career advice', 'Industry news', 'Postmortems'],
     strengths: 'Huge knowledge base. Search archives for discipline-specific career advice. Postmortems provide portfolio inspiration. Active community.',
-    caveats: 'Noisy. Hobbyist content mixed with professional. Career advice quality varies — verify claims. Moderation is general-purpose.',
+    caveats: 'Noisy. Hobbyist content mixed with professional. Career advice quality varies - verify claims. Moderation is general-purpose.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior'],
     situations: ['first_job','laid_off','employed_looking','freelance']
@@ -2895,7 +3085,7 @@ var COMMUNITIES = [
     size: 'Nonprofit org',
     bestForTags: ['Mental health', 'Crisis resources', 'Research'],
     strengths: 'Only mental health org specifically for the game industry. Crisis line list, research white papers, and GDC sessions. Understands crunch, layoffs, and industry-specific stressors.',
-    caveats: 'Not a community in the traditional sense — more of a resource hub. Does not provide 1:1 counseling directly (connects to crisis lines and resources).',
+    caveats: 'Not a community in the traditional sense - more of a resource hub. Does not provide 1:1 counseling directly (connects to crisis lines and resources).',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior','lead'],
     situations: ['laid_off','employed_looking','first_job']
@@ -2923,7 +3113,7 @@ var COMMUNITIES = [
     size: '100+ countries mapped',
     bestForTags: ['Studio map', 'Relocation', 'Discovery'],
     strengths: 'Reveals studios you didn\'t know existed in your area. Remote-friendly filter. Useful for relocation planning and targeting applications geographically.',
-    caveats: 'Data currency depends on community updates. Does not list job openings — use for studio discovery, then check career pages.',
+    caveats: 'Data currency depends on community updates. Does not list job openings - use for studio discovery, then check career pages.',
     disciplines: ['engineering','qa','art','animation','audio','tech_art','game_design','level_design','uiux','narrative','production','community','vfx','cinematics'],
     experienceLevels: ['entry','mid','senior','lead'],
     situations: ['relocation','laid_off','employed_looking','first_job','international']
@@ -3008,6 +3198,74 @@ var CHALLENGES = [
   { id: 'ai_replacing_role', label: 'Worried AI is replacing my role' }
 ];
 
+
+/* ============================================
+   DATA: ADJACENT INDUSTRIES
+   ============================================ */
+var ADJACENT_INDUSTRIES = {
+  engineering: [
+    { industry: 'Defense & Simulation', signal: 'High demand', signalType: 'good', description: 'Defense contractors actively recruit from game studios. Real-time systems, physics, networking, and C++ all translate directly. Companies like L3Harris, CAE, Bohemia Interactive Simulations, SAIC, and Leidos build training simulators using game engines and recognize game dev backgrounds.', roles: 'Simulation engineer, real-time software engineer, tools developer', caveat: 'Security clearance requirements can add 6\u201318 months to the hiring timeline. Plan for that if you go this route.' },
+    { industry: 'Automotive / Digital Twins', signal: 'Growing', signalType: 'good', description: 'BMW, Ford, Rivian, and automotive visualization agencies use Unreal Engine for vehicle configurators and digital twin work. Game engine expertise is a recognized entry point and UE5 is now standard in this space.', roles: 'Real-time software developer, visualization engineer, digital twin developer', caveat: 'Automotive culture moves slower than games. Interview processes are typically 2\u20133x longer.' },
+    { industry: 'Film / Virtual Production', signal: 'Active hiring', signalType: 'good', description: 'ILM, Weta FX, Framestore, DNEG, and MPC have formalized Unreal Engine engineering teams following the LED volume wave. Real-time pipeline engineering is in demand and game dev backgrounds are recognized.', roles: 'Pipeline engineer, real-time rendering engineer, tools developer', caveat: 'Film pipeline culture differs from game dev. Less agile iteration, longer review cadences. Expect a real adjustment period.' },
+    { industry: 'AI Tooling Companies', signal: 'Hiring now', signalType: 'good', description: 'Game engineers understand performance-critical real-time systems better than most software engineers. AI tool companies building for creative industries actively recruit game devs for infrastructure and application engineering.', roles: 'Software engineer, ML infrastructure engineer, developer tools engineer', caveat: 'Significant culture shift. More general software engineering fundamentals expected, less domain-specific game knowledge valued.' }
+  ],
+  qa: [
+    { industry: 'Software QA (Broad)', signal: 'Direct path', signalType: 'good', description: 'Game QA skills require essentially no resume reframing for software QA roles. Edge-case thinking, repro documentation, severity classification, and systematic test design are universally valued across industries.', roles: 'QA engineer, software tester, quality engineer', caveat: 'Compensation in software QA is often comparable to or higher than game QA, without the passion premium game studios apply.' },
+    { industry: 'Test Automation Engineering', signal: 'High demand', signalType: 'good', description: 'If you have scripting or automation experience, test automation is one of the highest-demand adjacent roles. Python, Selenium, and CI/CD familiarity from game pipelines transfers directly.', roles: 'QA automation engineer, SDET (software development engineer in test)', caveat: 'Requires scripting or automation experience. Manual-only QA backgrounds will need to upskill in Python or JavaScript first.' }
+  ],
+  art: [
+    { industry: 'Film & TV VFX', signal: 'Active hiring', signalType: 'good', description: 'VFX houses have formalized Unreal Engine teams following the LED volume and virtual production wave. Real-time environment and character art from games is increasingly valued. Portfolio pivot is often required.', roles: 'Environment artist, character artist, look dev artist', caveat: 'Film art direction differs from games. Rendering targets, review cycles, and style conventions all shift. Expect a portfolio adjustment period.' },
+    { industry: 'Theme Parks & Location-Based Entertainment', signal: 'Steady demand', signalType: 'neutral', description: 'Disney, Universal, and their vendor networks actively hire game artists for attraction design, visualization, and interactive experience development. Real-time tools are standard here.', roles: 'Concept artist, environment artist, experience designer', caveat: 'Harder to break in without a referral. Conference networking matters more than cold applications in this space.' },
+    { industry: 'Advertising & Brand CGI', signal: 'Available', signalType: 'neutral', description: 'Product visualization and brand campaigns increasingly use real-time tools. Agencies and in-house brand teams value game art skills for product hero shots and environmental rendering.', roles: 'CG artist, visualization artist, 3D generalist', caveat: 'Project-based work is common. Creative direction from brand teams can be less technically informed than game or film leads.' }
+  ],
+  animation: [
+    { industry: 'Film & TV Animation', signal: 'Active hiring', signalType: 'good', description: 'The same core tools (Maya, MotionBuilder, Unreal Engine) are used in both industries. Real-time animation and facial rigging experience is particularly valued as studios adopt real-time pipelines.', roles: 'Animator, rigging artist, facial animation artist', caveat: 'Film animation culture is different \u2014 less iteration velocity, more polish focus. Different pace, not faster.' },
+    { industry: 'Virtual Production', signal: 'Growing', signalType: 'good', description: 'LED volume stages and real-time production pipelines need animators who understand real-time constraints and engine-based workflows. This is one of the faster-growing adjacent fields.', roles: 'Virtual production animator, real-time animator, stage technical director', caveat: 'Relatively new field with varying company stability. Demand follows production volume, which can be cyclical.' }
+  ],
+  audio: [
+    { industry: 'Film & TV Audio Post-Production', signal: 'Established path', signalType: 'good', description: 'Game audio engineers have strong fundamentals that translate to film and TV post-production. The shift is from interactive and adaptive systems to linear editing workflows.', roles: 'Sound designer, audio post-production engineer, dialogue editor', caveat: 'Adaptive audio system skills are game-specific and have no direct equivalent in linear post. Expect a relearning curve.' },
+    { industry: 'Spatial Audio & XR', signal: 'Growing', signalType: 'good', description: 'Enterprise XR applications for training and simulation actively need audio engineers who understand 3D spatial audio and real-time implementation. Game audio engineers are well-prepared here.', roles: 'Spatial audio engineer, XR audio designer, audio developer', caveat: 'Smaller market than film or games overall. Contract work is more common than stable full-time roles.' }
+  ],
+  tech_art: [
+    { industry: 'Film / VFX (Real-Time Pipelines)', signal: 'High demand', signalType: 'good', description: 'VFX studios transitioning to Unreal Engine pipelines specifically need technical artists who understand real-time constraints, shader authoring, and pipeline tooling. This is the clearest adjacent path for Tech Art.', roles: 'Pipeline TD, real-time technical director, look dev artist', caveat: 'VFX technical pipelines differ from game engine pipelines. Python and USD experience helps significantly in this transition.' },
+    { industry: 'Automotive Visualization', signal: 'Active hiring', signalType: 'good', description: 'Automotive agencies use Unreal Engine for vehicle configurators, marketing visualization, and showroom experiences. Technical artists who understand PBR pipelines and real-time performance are in demand.', roles: 'Technical artist, visualization artist, real-time TD', caveat: 'Output targets and timelines differ from game dev. Less iteration velocity, more precision requirements on every deliverable.' }
+  ],
+  game_design: [
+    { industry: 'Product Management', signal: 'Strong fit', signalType: 'good', description: 'Game designers make strong product managers. Systems thinking, understanding user motivation, managing creative tradeoffs, and designing feedback loops are all core PM skills. The thinking transfers directly.', roles: 'Product manager, associate product manager, product analyst', caveat: 'PM interviews are structured around metrics-driven behavioral questions. Demonstrating data-informed decisions alongside design thinking is required.' },
+    { industry: 'UX & Product Design', signal: 'Transferable', signalType: 'neutral', description: 'Game designers and UX designers share core skills: systems thinking, user behavior modeling, feedback loop design, and structured iteration. Requires deliberate portfolio reframing in UX language.', roles: 'UX designer, product designer, UX researcher', caveat: 'Game design portfolios do not speak directly to product hiring managers. Translation takes real effort and usually requires new case study framing.' },
+    { industry: 'EdTech & Serious Games', signal: 'Steady demand', signalType: 'neutral', description: 'Companies like Schell Games, Filament Games, and enterprise L&D teams hire game designers directly. Gamification and interactive learning design are well-established and growing fields.', roles: 'Game designer, learning experience designer, instructional designer', caveat: 'Compensation is often lower than commercial game studios. Meaningful work, but not a salary upgrade path.' }
+  ],
+  level_design: [
+    { industry: 'UX / Experience Design', signal: 'Transferable', signalType: 'neutral', description: 'Level designers understand how people navigate and experience spaces \u2014 a skill that transfers to UX, architectural visualization, and theme park design. Portfolio reframing is the main barrier.', roles: 'UX designer, spatial designer, experience designer', caveat: 'Significant reframing required. Level design portfolios need active translation into UX or spatial design language to be legible to non-games hiring managers.' },
+    { industry: 'Architectural Visualization', signal: 'Available', signalType: 'neutral', description: 'Real estate and architectural firms use Unreal Engine for walkthroughs and client presentations. Level design skills \u2014 spatial composition, lighting, environmental storytelling \u2014 transfer well here.', roles: 'Architectural visualization artist, environment designer', caveat: 'Smaller market than games. Often project-based or contract work rather than stable full-time employment.' }
+  ],
+  uiux: [
+    { industry: 'Product Design (Tech)', signal: 'Clear path', signalType: 'good', description: 'The cleanest pivot of any creative discipline. Game UI requires controller input, HUD legibility, accessibility design, and fast feedback loops \u2014 all directly valued in product design at tech companies.', roles: 'Product designer, UX designer, UI designer', caveat: 'Portfolio reframing is required. Focus on interaction systems, accessibility work, and user research over visual polish for games hiring managers.' },
+    { industry: 'Health Tech & Medical Device UI', signal: 'Underserved', signalType: 'good', description: 'Regulated industries need people who understand real-time interface feedback and accessibility at a deep level. Game UI engineers often exceed baseline requirements and stand out here.', roles: 'UX designer, UI engineer, accessibility specialist', caveat: 'FDA compliance, HIPAA, and clinical workflows are new domains to learn. Regulatory process adds overhead at every step.' },
+    { industry: 'Automotive HMI Design', signal: 'Growing', signalType: 'good', description: 'Automotive Human-Machine Interface design actively wants people who understand real-time feedback systems and how users process information under stress \u2014 a direct fit for game UI designers.', roles: 'HMI designer, UX engineer, automotive UI designer', caveat: 'Long development cycles (3\u20135 years per vehicle program). Very different pace from game dev sprints.' }
+  ],
+  narrative: [
+    { industry: 'UX Writing & Content Design', signal: 'Transferable', signalType: 'neutral', description: 'Narrative designers who have worked on dialogue systems and information hierarchy can translate those skills to UX writing and content design at product companies. The craft of clarity under constraint is shared.', roles: 'UX writer, content designer, content strategist', caveat: 'Significant reframing needed. Game narrative portfolios require active curation to be legible to product hiring managers.' },
+    { industry: 'Technical Writing', signal: 'Available', signalType: 'neutral', description: 'Developer tools companies hire writers with technical credibility. Narrative designers who worked in engine-adjacent roles or wrote documentation have a real advantage here.', roles: 'Technical writer, documentation specialist, developer advocate (writing track)', caveat: 'Technical writing is a different craft from narrative design. It rewards clarity and structure over voice and creativity.' }
+  ],
+  production: [
+    { industry: 'Technical Program Management', signal: 'Strong fit', signalType: 'good', description: 'Game production is harder than most software PM roles. Milestone tracking under creative ambiguity, cross-discipline communication, and scope management under pressure all transfer directly and are respected in tech.', roles: 'Technical program manager, project manager, program manager', caveat: 'Tech PM interviews are structured around metrics-driven behavioral questions. Quantifying delivery outcomes from your game projects is the main prep work.' },
+    { industry: 'Film / TV Production Operations', signal: 'Adjacent culture', signalType: 'neutral', description: 'Game production experience maps closely to film and TV production coordination. Both manage creative teams, milestones, and external vendors under changing constraints with high stakes.', roles: 'Production coordinator, post-production supervisor, line producer', caveat: 'Union dynamics are significant in film/TV. Understanding of SAG-AFTRA, IATSE, and guild structures is expected knowledge in this space.' }
+  ],
+  community: [
+    { industry: 'Developer Relations', signal: 'Good fit', signalType: 'good', description: 'Community managers with developer-facing experience map well to DevRel roles at platform companies, SDK providers, and tools companies. Technical empathy and community health experience are the key transferable skills.', roles: 'Developer advocate, developer relations manager, technical community manager', caveat: 'Strong overlap but requires building technical credibility through speaking, writing, or code samples alongside community experience.' },
+    { industry: 'Brand & Social at Tech Companies', signal: 'Available', signalType: 'neutral', description: 'Community management skills \u2014 audience building, crisis communication, sentiment analysis, and large-scale moderation \u2014 are valued broadly at tech companies with large user communities.', roles: 'Community manager, social media manager, brand community lead', caveat: 'Game community experience needs recontextualization. Demonstrating data-driven decisions matters more than audience size or passion stories.' }
+  ],
+  vfx: [
+    { industry: 'Film & TV VFX', signal: 'Direct path', signalType: 'good', description: 'The most natural adjacent path for game VFX artists. Film VFX studios increasingly use game engines for real-time work, and the tool overlap (Houdini, Maya, Unreal Engine) is significant and growing.', roles: 'VFX artist, FX artist, simulation artist', caveat: 'Real-time VFX performance constraints differ substantially from offline rendering quality bars. Expect adjustment in both directions.' },
+    { industry: 'Advertising & Commercial Production', signal: 'Available', signalType: 'neutral', description: 'CGI advertising and product visualization work frequently needs VFX skills for simulations, product hero shots, and environmental effects. Agency timelines are fast and creative direction is client-driven.', roles: 'FX artist, 3D generalist, motion graphics artist', caveat: 'Project-based work is the norm. Creative direction from brand teams can be less technically informed than game or film leads.' }
+  ],
+  cinematics: [
+    { industry: 'Film & TV Previsualization', signal: 'Direct path', signalType: 'good', description: 'Cinematic artists from games are well-positioned for previz and production visualization roles. Real-time workflow advantages are increasingly valued by directors and production designers working on complex sequences.', roles: 'Previs artist, production designer (visualization), motion designer', caveat: 'Film previz culture moves to director requests and notes, not design documents. Different client relationship dynamic than game dev.' },
+    { industry: 'Advertising & Brand Storytelling', signal: 'Available', signalType: 'neutral', description: 'Real-time cinematics skills transfer to brand storytelling and commercial production, particularly for product launches using game engines for final-pixel output.', roles: 'Creative director, motion designer, 3D generalist', caveat: 'Agency timelines are fast and feedback cycles are client-driven. Less creative control than game cinematics roles.' }
+  ]
+};
+
 /* ============================================
    APP STATE
    ============================================ */
@@ -3039,6 +3297,19 @@ document.getElementById('themeToggle').addEventListener('click', function() {
   document.documentElement.setAttribute('data-theme', next);
   if (_ls) _ls.setItem('jsg-theme', next);
 });
+
+
+/* ============================================
+   LANDING → WIZARD TRANSITION
+   ============================================ */
+function startWizard() {
+  document.getElementById('landingScreen').classList.remove('active');
+  document.getElementById('formScreen').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  gaEvent('wizard_start', {});
+}
+
+document.getElementById('startWizardBtn').addEventListener('click', startWizard);
 
 /* ============================================
    SHARE
@@ -3447,7 +3718,7 @@ function scoreCommunities() {
     if (comm.id === 'gameheads' && state.experience === 'entry') score += 3;
     if (comm.id === 'gameheads' && state.situations.indexOf('first_job') >= 0) score += 5;
 
-    // Awesome People List — heavily boosted for recently laid off
+    // Awesome People List - heavily boosted for recently laid off
     if (comm.id === 'awesome_people_list' && state.situations.indexOf('laid_off') >= 0) score += 8;
     if (comm.id === 'awesome_people_list' && state.experience === 'lead') score += 3;
     if (comm.id === 'awesome_people_list' && state.experience === 'senior') score += 2;
@@ -3499,7 +3770,7 @@ function generateActionPlan(boards, tools) {
   // Godot tip for entry-level and indie/freelance profiles
   var isIndie = state.situations.indexOf('freelance') >= 0;
   if ((isEntry || state.situations.indexOf('first_job') >= 0 || isIndie) && (isCode || isDesign)) {
-    steps.push('Consider a small portfolio project in <a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a> — it\'s free, open source, and growing fast among indie studios. A small shipped Godot project demonstrates engine adaptability, which matters to interviewers at smaller studios and startups.');
+    steps.push('Consider a small portfolio project in <a href="https://godotengine.org" target="_blank" rel="noopener noreferrer">Godot</a> - it\'s free, open source, and growing fast among indie studios. A small shipped Godot project demonstrates engine adaptability, which matters to interviewers at smaller studios and startups.');
   }
 
   // Step 2: Resume optimization
@@ -3539,7 +3810,7 @@ function generateActionPlan(boards, tools) {
   } else if (state.challenges.indexOf('getting_ghosted') >= 0) {
     steps.push('Send a professional follow-up 1-2 weeks after each application. Track every application with dates and contacts. Shift 30% of your search time from applications to direct outreach and networking.');
   } else if (state.challenges.indexOf('salary_negotiation') >= 0) {
-    steps.push('Research salary ranges on <a href="https://www.glassdoor.com" target="_blank" rel="noopener noreferrer">Glassdoor</a> and <a href="https://www.gamesjobsdirect.com" target="_blank" rel="noopener noreferrer">Games Jobs Direct</a> salary checker. The 2025 US game dev average is $142K (median $129K). Never give a number first — ask for their range.');
+    steps.push('Research salary ranges on <a href="https://www.glassdoor.com" target="_blank" rel="noopener noreferrer">Glassdoor</a> and <a href="https://www.gamesjobsdirect.com" target="_blank" rel="noopener noreferrer">Games Jobs Direct</a> salary checker. The 2025 US game dev average is $142K (median $129K). Never give a number first - ask for their range.');
   } else {
     steps.push('Apply to 3-5 well-researched roles this week. For each, write a cover letter that references a specific game, design decision, or GDC talk from that studio. Quality over quantity.');
   }
@@ -3603,6 +3874,10 @@ function showResults() {
   if (communities.length > 0) {
     html += '<button class="results-nav-btn" data-target="sec-communities">Communities <span class="nav-count">' + communities.length + '</span></button>';
   }
+  var _discAdj = ADJACENT_INDUSTRIES[state.discipline] || [];
+  if (_discAdj.length > 0) {
+    html += '<button class="results-nav-btn" data-target="sec-adjacent">Adjacent Industries</button>';
+  }
   html += '</nav>';
 
   // Market Snapshot
@@ -3612,7 +3887,7 @@ function showResults() {
   html += '<div class="market-stats-grid">';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">33%</div><div class="market-stat-label">US game devs laid off in 2 years</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">48%</div><div class="market-stat-label">Of laid-off devs still without work</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
-  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~2,700</div><div class="market-stat-label">Q1 2026 layoffs alone</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~3,000+</div><div class="market-stat-label">Layoffs Jan–Apr 2026 (and counting)</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">~0.2%</div><div class="market-stat-label">Cold application offer rate</div><div class="market-stat-source"><a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby 2024</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
@@ -3794,12 +4069,38 @@ function showResults() {
     if (communities.length > 3) {
       html += '<button class="show-more-btn" data-section="communities" onclick="revealCards(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> Show all ' + communities.length + ' communities</button>';
     }
-    html += '<p class="boards-disclaimer">Communities are ranked by relevance to your profile. This is a curated selection — we prioritize active communities with genuine value for job seekers over sheer size.</p>';
+    html += '<p class="boards-disclaimer">Communities are ranked by relevance to your profile. This is a curated selection - we prioritize active communities with genuine value for job seekers over sheer size.</p>';
     html += '</div>'; // close sec-communities
   }
 
+
+  // Section 5: Adjacent Industries
+  var _adj = ADJACENT_INDUSTRIES[state.discipline] || [];
+  if (_adj.length > 0) {
+    html += '<div id="sec-adjacent">';
+    html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><h2>Where Your Skills Transfer</h2></div>';
+    html += '<p class="adjacent-intro-note">The game industry has shed tens of thousands of jobs since 2022. A lot of that talent has skills that are genuinely in demand elsewhere \u2014 not because "game dev teaches you everything," but because specific disciplines map cleanly onto specific adjacent roles. These are the paths most relevant to your discipline.</p>';
+    _adj.forEach(function(adj, i) {
+      html += '<div class="adjacent-card" id="adj_' + i + '">';
+      html += '<div class="adjacent-card-header" onclick="this.parentElement.classList.toggle(\'open\')">';
+      html += '<div class="adjacent-industry-name">' + adj.industry + '</div>';
+      html += '<span class="adjacent-signal adjacent-signal-' + adj.signalType + '">' + adj.signal + '</span>';
+      html += '<svg class="rec-card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '</div>';
+      html += '<div class="adjacent-card-body">';
+      html += '<div class="adjacent-detail-label">Why it fits</div>';
+      html += '<div class="adjacent-detail-value">' + adj.description + '</div>';
+      html += '<div class="adjacent-detail-label">Roles to search</div>';
+      html += '<div class="adjacent-detail-value">' + adj.roles + '</div>';
+      html += '<div class="adjacent-caveat"><strong>Caveat:</strong> ' + adj.caveat + '</div>';
+      html += '</div></div>';
+    });
+    html += '<p class="adjacent-framing">These pivots are easier with shipped titles to point to. Before you apply anywhere, translate your work into the language of that industry \u2014 the same skills, different vocabulary. Contract work is legitimate bridge employment right now, not a fallback. Studios and tech companies are running lean on headcount and expanding contractor relationships.</p>';
+    html += '</div>'; // close sec-adjacent
+  }
+
   // Disclaimer
-  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified March 2026.</p>';
+  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified April 2026.</p>';
 
   // Survey
   var alreadySubmitted = _ls ? _ls.getItem('jsg-survey-done') : null;
@@ -3949,7 +4250,15 @@ function showResults() {
       surveyBtn.disabled = true;
       surveyBtn.textContent = 'Submitting...';
 
-      db.ref('survey_responses').push(payload).then(function() {
+      if (!window.db) {
+        if (_ls) _ls.setItem('jsg-survey-done', '1');
+        var card = document.getElementById('surveyCard');
+        if (card) {
+          card.innerHTML = '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded.</p></div>';
+        }
+        return;
+      }
+      window.db.ref('survey_responses').push(payload).then(function() {
         if (_ls) _ls.setItem('jsg-survey-done', '1');
         var card = document.getElementById('surveyCard');
         if (card) {
@@ -4065,7 +4374,8 @@ function restart() {
   });
 
   document.getElementById('resultsScreen').classList.remove('active');
-  document.getElementById('formScreen').classList.add('active');
+  document.getElementById('formScreen').classList.remove('active');
+  document.getElementById('landingScreen').classList.add('active');
   updateProgress();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
