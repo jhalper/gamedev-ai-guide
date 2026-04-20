@@ -3909,8 +3909,8 @@ function showResults() {
 
   // Share CTA
   html += '<div class="share-cta">';
-  html += '<div class="share-cta-text">Know someone navigating a layoff or job search? This plan is personalized \u2014 share the tool so they can get their own.</div>';
-  html += '<button class="share-cta-btn" onclick="document.getElementById(\'shareBtn\').click()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</button>';
+  html += '<div class="share-cta-text">Know someone navigating a layoff or job search? This plan is personalized. Share the tool so they can get their own.</div>';
+  html += '<button class="share-cta-btn" id="sharePlanBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> <span id="sharePlanLabel">Share</span></button>';
   html += '</div>';
 
   html += '</div>'; // close sec-plan
@@ -4165,6 +4165,35 @@ function showResults() {
   document.getElementById('formScreen').classList.remove('active');
   document.getElementById('resultsScreen').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Share plan button - own handler avoids conflict with header dropdown outside-click listener
+  var sharePlanBtn = document.getElementById('sharePlanBtn');
+  if (sharePlanBtn) {
+    sharePlanBtn.addEventListener('click', function() {
+      var SHARE_URL = 'https://gamedevai.guide/jobs/';
+      var SHARE_TEXT = 'Free tool for game devs navigating layoffs and job searching. Personalized job boards, AI tools, communities, and pitfall warnings based on your discipline and situation.';
+      if (navigator.share) {
+        navigator.share({ title: 'Game Dev Job Search Guide', text: SHARE_TEXT, url: SHARE_URL }).catch(function() {});
+        gaEvent('share_click', { platform: 'native', source: 'plan_cta' });
+      } else {
+        var label = document.getElementById('sharePlanLabel');
+        navigator.clipboard.writeText(SHARE_URL).then(function() {
+          if (label) { label.textContent = 'Link Copied!'; setTimeout(function() { label.textContent = 'Share'; }, 2000); }
+        }).catch(function() {
+          // fallback
+          var ta = document.createElement('textarea');
+          ta.value = SHARE_URL;
+          ta.style.cssText = 'position:fixed;left:-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (label) { label.textContent = 'Link Copied!'; setTimeout(function() { label.textContent = 'Share'; }, 2000); }
+        });
+        gaEvent('share_click', { platform: 'copy', source: 'plan_cta' });
+      }
+    });
+  }
 
   // Copy plan button
   var copyBtn = document.getElementById('copyPlanBtn');
