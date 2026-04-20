@@ -327,6 +327,14 @@ button{cursor:pointer;font-family:inherit}
 .intro-card-title{font-family:'Exo 2',sans-serif;font-weight:700;font-size:15px;color:var(--text);margin-bottom:7px;display:flex;align-items:center;gap:6px}
 .intro-card p{font-size:14px;color:var(--dim);line-height:1.6}
 
+/* SECURITY NOTICE */
+.sec-notice{background:rgba(200,100,40,.08);border-bottom:1px solid rgba(200,100,40,.25);border-left:3px solid #c86428;padding:9px 18px;display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.55;color:var(--text)}
+.sec-notice-icon{flex-shrink:0;margin-top:1px;color:#c86428}
+.sec-notice strong{color:#c86428;font-weight:700}
+.sec-notice a{color:#c86428;text-decoration:underline;text-underline-offset:2px}
+.sec-notice a:hover{opacity:.8}
+@media(max-width:600px){.sec-notice{font-size:12px;padding:8px 12px}}
+
 /* WELCOME MODAL */
 .wm-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
 @keyframes wm-fade{from{opacity:0}to{opacity:1}}
@@ -682,6 +690,11 @@ button{cursor:pointer;font-family:inherit}
   </div>
 </div>
 
+<div class="sec-notice" role="note">
+  <svg class="sec-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+  <span><strong>Security notice (April 16, 2026):</strong> Ox Security researchers disclosed a design-level vulnerability in the MCP protocol affecting an estimated 200,000 servers and packages with 150M+ downloads. The attack vector is prompt injection through tool descriptions, enabling server takeover. Anthropic updated its guidance to treat STDIO-based MCP adapters with caution but declined to patch the protocol architecture. <strong>Practical steps:</strong> only install MCP servers from sources you trust, review what file system and network permissions each server requests, and prefer servers with active maintenance. Read the full disclosure: <a href="https://www.ox.security/blog/the-mother-of-all-ai-supply-chains-critical-systemic-vulnerability-at-the-core-of-the-mcp/" target="_blank" rel="noopener noreferrer">Ox Security</a> &middot; <a href="https://www.theregister.com/2026/04/16/anthropic_mcp_design_flaw/" target="_blank" rel="noopener noreferrer">The Register</a></span>
+</div>
+
 <div class="layout">
 <!-- SIDEBAR -->
 <aside class="sidebar" id="sidebar">
@@ -795,6 +808,7 @@ const CHANGELOG = [
     date: "2026-04-16",
     label: "Content Update",
     changes: [
+      { type: "added", text: "Security notice added to the page (April 16, 2026): Ox Security researchers disclosed a design-level vulnerability in the MCP protocol. Estimated 200,000 servers and packages with 150M+ combined downloads are at risk. Attack vector is prompt injection via tool descriptions, enabling server takeover. Anthropic updated its STDIO adapter guidance but declined to patch the protocol architecture. Practical mitigations added to the notice: only install from trusted sources, review file system and network permissions, prefer actively-maintained servers. Links to the Ox Security disclosure and The Register coverage." },
       { type: "added", text: "Godot MCP (PurpleJelly) — free MCP server with 77 tools across 15 categories released April 12. Covers scene editing, GDScript creation and validation, run/debug with breakpoints and step-through, test runner integration (GUT, GdUnit4, built-in), screenshots, asset import, file management, and UID handling (Godot 4.4+). Hybrid mode: uses the live editor when it's open, falls back to reading .tscn/.tres files directly when it's not. No copy-pasting required. Install via Node.js + optional editor plugin." },
       { type: "added", text: "Godot MCP Pro — $5 one-time premium server with 163 tools across 23 categories, listed on the Godot Asset Library (Asset #4961) April 15. Expands on the free options with animation track authoring, AnimationTree state machines, 3D scene control, physics bodies and collision shapes, GPU particles, navigation mesh baking, audio bus layout, TileMap/TileSet, shader editing, input simulation, and runtime recording and replay. Includes --lite and --minimal (35 tools) modes for AI clients with tool count limits. WebSocket connection to the Godot editor plugin on port 6505." },
       { type: "improved", text: "NOW constant updated to 2026-04-16 so stale indicators reflect the correct date for new entries." },
