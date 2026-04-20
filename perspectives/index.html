@@ -5,8 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Perspectives | Game Dev AI Guide</title>
 <meta name="description" content="A practical guide to AI adoption in game development. Understand how five roles see the same tools differently so your team can move from arguments to decisions.">
-
-<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Game Dev AI Guide">
 <meta property="og:url" content="https://gamedevai.guide/perspectives/">
@@ -19,11 +17,8 @@
 <meta name="twitter:title" content="Perspectives | Game Dev AI Guide">
 <meta name="twitter:description" content="AI adoption works better when you understand the room. Five roles, five realities, one guide for teams making AI decisions in game dev.">
 <meta name="twitter:image" content="https://happymanic.com/gamedev/perspectives/og-image.png">
-
-<!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-analytics-compat.js"></script>
@@ -41,19 +36,12 @@
   try {
     firebase.initializeApp(firebaseConfig);
     var _ga = firebase.analytics();
-    window.gaEvent = function(name, params) {
-      try { _ga.logEvent(name, params || {}); } catch(e) {}
-    };
-  } catch(e) {
-    window.gaEvent = function() {};
-  }
+    window.gaEvent = function(name, params) { try { _ga.logEvent(name, params || {}); } catch(e) {} };
+  } catch(e) { window.gaEvent = function() {}; }
 </script>
 
-<!-- Shared nav styles + component -->
 <link rel="stylesheet" href="../hub-nav.css">
 <script src="../nav-component.js"></script>
-
-<!-- Fonts: Cabinet Grotesk (display) + Satoshi (body) -->
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
 
@@ -62,599 +50,701 @@
    RESET
    ============================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html {
-  -moz-text-size-adjust: none; -webkit-text-size-adjust: none; text-size-adjust: none;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility; scroll-behavior: smooth; scroll-padding-top: 5rem;
 }
-
 body {
-  min-height: 100dvh; line-height: 1.6;
-  font-family: var(--font-body, sans-serif); font-size: var(--text-base);
-  color: var(--color-text); background-color: var(--color-bg);
-  display: flex; flex-direction: column;
+  min-height: 100dvh; font-family: var(--font-body); font-size: var(--text-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 0% 0%, rgba(88,60,196,0.16) 0%, transparent 52%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(139,108,246,0.11) 0%, transparent 48%),
+    radial-gradient(ellipse 40% 30% at 60% 20%, rgba(107,158,245,0.04) 0%, transparent 40%);
+  background-attachment: fixed;
+  display: flex; flex-direction: column; line-height: 1.6;
 }
-
-img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
 ul[role="list"], ol[role="list"] { list-style: none; }
 input, button, textarea, select { font: inherit; color: inherit; }
-h1, h2, h3, h4, h5, h6 { text-wrap: balance; line-height: 1.15; }
-p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
-
-::selection { background: rgba(212, 148, 60, 0.25); color: var(--color-text); }
-:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: var(--radius-sm); }
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
-}
-
 button { cursor: pointer; background: none; border: none; }
-table { border-collapse: collapse; width: 100%; }
-
-a, button, [role="button"] {
-  transition: color 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+a { transition: color 180ms ease; }
+::selection { background: rgba(212,148,60,0.3); color: var(--color-text); }
+:focus-visible { outline: 2px solid var(--color-amber); outline-offset: 3px; border-radius: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
-
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0; }
 
 /* ============================================
    DESIGN TOKENS
    ============================================ */
 :root {
-  --text-xs: 0.85rem; --text-sm: 0.95rem; --text-base: 1.05rem;
-  --text-lg: 1.3rem; --text-xl: 1.75rem;
-  --text-2xl: clamp(1.8rem, 1.2rem + 2vw, 2.8rem);
-  --text-3xl: clamp(2.4rem, 1rem + 4vw, 4.2rem);
+  --color-bg:        #0d1526;
+  --color-surface:   #162034;
+  --color-surface-2: #1c2a40;
+  --color-surface-3: #21304a;
+  --color-border:    #2e4a72;
+  --color-border-2:  #243d64;
 
-  --space-1: 0.25rem; --space-2: 0.5rem; --space-3: 0.75rem;
-  --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
-  --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem;
-  --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+  --color-text:   #f4f6fd;
+  --color-text-2: #c0cce6;
+  --color-text-3: #9aaac8;
+  --color-text-4: #7488aa;
 
-  --radius-sm: 3px; --radius-md: 6px; --radius-lg: 10px;
-  --content-wide: 1100px;
+  --color-amber:        #d4943c;
+  --color-amber-bright: #f0a84a;
+  --color-amber-dim:    rgba(212,148,60,0.10);
+  --color-amber-glow:   rgba(212,148,60,0.04);
+
+  --color-violet:     #8b6cf6;
+  --color-violet-dim: rgba(139,108,246,0.11);
+
+  --c-exec:       #6b9ef5;
+  --c-creative:   #f07068;
+  --c-engineer:   #4eca7a;
+  --c-indie:      #b87cf8;
+  --c-enterprise: #8a9fc0;
 
   --font-display: 'Cabinet Grotesk', 'Trebuchet MS', sans-serif;
   --font-body: 'Satoshi', 'Inter', sans-serif;
 
-  --color-bg: #0f0f0e;
-  --color-surface: #181716;
-  --color-surface-2: #1f1e1c;
-  --color-surface-3: #272625;
-  --color-border: #333130;
-  --color-border-subtle: #252423;
+  --text-2xs: 0.875rem;
+  --text-xs:  0.95rem;
+  --text-sm:  1rem;
+  --text-base: 1.0625rem;
+  --text-lg:  1.2rem;
+  --text-xl:  1.5rem;
+  --text-2xl: clamp(1.8rem, 2vw + 1rem, 2.6rem);
+  --text-3xl: clamp(2.8rem, 4vw + 1rem, 5rem);
+  --text-stat: clamp(2.4rem, 4vw + 0.5rem, 4rem);
 
-  --color-text: #f0ece6;
-  --color-text-secondary: #cdc8c0;
-  --color-text-muted: #a39e96;
-  --color-text-faint: #7a756e;
+  --sp-1: 0.25rem; --sp-2: 0.5rem; --sp-3: 0.75rem; --sp-4: 1rem;
+  --sp-5: 1.25rem; --sp-6: 1.5rem; --sp-8: 2rem; --sp-10: 2.5rem;
+  --sp-12: 3rem; --sp-16: 4rem; --sp-20: 5rem; --sp-24: 6rem;
 
-  --color-primary: #d4943c;
-  --color-primary-hover: #e8a84e;
-
-  /* Persona colors */
-  --c-exec: #5b8def;
-  --c-creative: #e8695c;
-  --c-engineer: #4eca7a;
-  --c-indie: #b07ce8;
-  --c-enterprise: #8a9bae;
+  --r-sm: 4px; --r-md: 8px; --r-lg: 14px; --r-xl: 20px;
+  --content: 1120px;
+  --section-pad: clamp(var(--sp-12), 6vw, var(--sp-20));
 }
 
 /* ============================================
    LAYOUT
    ============================================ */
-.container { width: 100%; max-width: var(--content-wide); margin: 0 auto; padding-inline: var(--space-6); }
+.wrap { width: 100%; max-width: var(--content); margin: 0 auto; padding-inline: clamp(var(--sp-4), 4vw, var(--sp-10)); }
 
 /* ============================================
    HERO
    ============================================ */
 .hero {
-  padding: clamp(var(--space-8), 4vw, var(--space-12)) 0 clamp(var(--space-6), 3vw, var(--space-10));
-  border-bottom: 1px solid var(--color-border-subtle);
-  background: linear-gradient(180deg, rgba(212,148,60,0.03) 0%, transparent 60%);
+  padding: clamp(var(--sp-10), 6vw, var(--sp-16)) 0 clamp(var(--sp-8), 4vw, var(--sp-12));
+  border-bottom: 1px solid var(--color-border-2);
+  position: relative; overflow: hidden;
 }
-.hero-content { max-width: 680px; }
-.hero-label { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600; color: var(--color-primary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-5); }
-.hero h1 { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--color-text); margin-bottom: var(--space-6); }
-.hero-sub { font-size: var(--text-base); color: var(--color-text-secondary); line-height: 1.7; margin-bottom: var(--space-3); max-width: 54ch; }
-
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 70% at 85% 10%, rgba(212,148,60,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 5% 80%, rgba(139,108,246,0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 40% 50%, rgba(107,158,245,0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: var(--font-body); font-size: var(--text-2xs); font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-amber);
+  margin-bottom: var(--sp-4);
+}
+.hero h1 {
+  font-family: var(--font-display); font-weight: 800;
+  font-size: var(--text-3xl); letter-spacing: -0.04em; line-height: 1;
+  color: var(--color-text); margin-bottom: var(--sp-5); max-width: 12ch;
+}
+.hero-sub {
+  font-size: var(--text-base); color: var(--color-text-2); line-height: 1.65;
+  max-width: 46ch; margin-bottom: var(--sp-6);
+}
+.hero-actions { display: flex; align-items: center; gap: var(--sp-4); flex-wrap: wrap; }
 
 /* Changelog */
-.changelog-toggle {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  margin-top: var(--space-5); padding: 6px 12px;
-  font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.03em;
-  color: var(--color-primary);
-  background: rgba(212,148,60,0.08); border: 1px solid rgba(212,148,60,0.25);
-  border-radius: var(--radius-sm); cursor: pointer;
-  transition: background 150ms ease, border-color 150ms ease;
+.changelog-btn {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: 7px 14px; font-size: var(--text-xs); font-weight: 600;
+  color: var(--color-amber); background: var(--color-amber-dim);
+  border: 1px solid rgba(212,148,60,0.22); border-radius: var(--r-sm);
+  transition: background 150ms, border-color 150ms, transform 150ms;
 }
-.changelog-toggle:hover { background: rgba(212,148,60,0.14); border-color: var(--color-primary); }
-.changelog-toggle svg { transition: transform 0.2s ease; }
-.changelog-toggle.open svg { transform: rotate(180deg); }
-.changelog-badge {
+.changelog-btn:hover { background: rgba(212,148,60,0.18); border-color: var(--color-amber); }
+.changelog-btn:active { transform: scale(0.97); transition-duration: 0.06s; }
+.changelog-btn svg { transition: transform 0.2s ease; }
+.changelog-btn.open svg { transform: rotate(180deg); }
+.cl-badge {
   display: inline-flex; align-items: center; justify-content: center;
   min-width: 18px; height: 18px; padding: 0 5px;
-  font-size: 11px; font-weight: 700; line-height: 1;
-  color: #fff; background: var(--color-primary); border-radius: 9px;
+  font-size: 10px; font-weight: 800; color: var(--color-bg);
+  background: var(--color-amber); border-radius: 10px;
 }
-.changelog-panel {
+.changelog-drawer {
   max-height: 0; overflow: hidden; opacity: 0;
-  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+  transition: max-height 0.32s ease, opacity 0.22s ease, margin 0.32s ease;
   margin-top: 0;
 }
-.changelog-panel.open { max-height: 500px; overflow-y: auto; opacity: 1; margin-top: var(--space-3); }
-.changelog-panel.open::-webkit-scrollbar { width: 4px; }
-.changelog-panel.open::-webkit-scrollbar-track { background: transparent; }
-.changelog-panel.open::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
-.changelog-list { list-style: none; padding: 0; margin: 0; background: var(--color-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); overflow: hidden; }
-.changelog-entry { display: flex; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); font-size: var(--text-xs); line-height: 1.5; }
-.changelog-entry:last-child { border-bottom: none; }
-.changelog-version { flex-shrink: 0; font-size: 0.78rem; font-weight: 700; color: var(--color-text-faint); white-space: nowrap; min-width: 90px; padding-top: 1px; }
-.changelog-tag {
-  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.04em; padding: 2px 5px; border-radius: 3px;
-  margin-right: 5px; vertical-align: middle; position: relative; top: -1px;
-}
-.changelog-tag.tag-new { color: #4eca7a; background: rgba(78,202,122,0.1); }
-.changelog-tag.tag-updated { color: var(--color-primary); background: rgba(212,148,60,0.1); }
-.changelog-text { color: var(--color-text-muted); }
+.changelog-drawer.open { max-height: 520px; overflow-y: auto; opacity: 1; margin-top: var(--sp-4); }
+.changelog-drawer::-webkit-scrollbar { width: 3px; }
+.changelog-drawer::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+.cl-list { list-style: none; border: 1px solid var(--color-border-2); border-radius: var(--r-md); overflow: hidden; }
+.cl-item { display: flex; gap: var(--sp-3); padding: var(--sp-3) var(--sp-4); border-bottom: 1px solid var(--color-border-2); font-size: var(--text-xs); }
+.cl-item:last-child { border-bottom: none; }
+.cl-ver { flex-shrink: 0; font-size: 0.875rem; font-weight: 700; color: var(--color-text-4); white-space: nowrap; min-width: 96px; padding-top: 1px; }
+.cl-tag { display: inline-block; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 5px; border-radius: 3px; margin-right: 5px; vertical-align: middle; position: relative; top: -1px; }
+.cl-tag.new { color: #4eca7a; background: rgba(78,202,122,0.1); }
+.cl-tag.updated { color: var(--color-amber); background: var(--color-amber-dim); }
+.cl-text { color: var(--color-text-3); }
 
 /* ============================================
-   PERSONA SELECTOR
+   SECTION ANATOMY
    ============================================ */
-.persona-section { padding: var(--space-12) 0 var(--space-8); }
-.section-label { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-6); letter-spacing: -0.01em; }
-
-.persona-grid {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-3);
+.section { padding: var(--section-pad) 0; border-top: 1px solid var(--color-border-2); }
+.section-tag {
+  font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-amber); margin-bottom: var(--sp-3);
 }
-@media (max-width: 860px) { .persona-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 540px) { .persona-grid { grid-template-columns: 1fr 1fr; gap: var(--space-2); } }
+.section-heading {
+  font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;
+  letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--sp-4); line-height: 1.05;
+}
+.section-sub { font-size: var(--text-sm); color: var(--color-text-3); line-height: 1.65; max-width: 56ch; }
+
+/* ============================================
+   PERSONA CARDS
+   ============================================ */
+.persona-grid {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--sp-3); margin-top: var(--sp-8);
+}
+@media (max-width: 900px) { .persona-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .persona-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-2); } }
 
 .persona-card {
-  position: relative; padding: var(--space-5) var(--space-4) var(--space-4);
-  background: var(--color-surface); border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-lg); cursor: pointer; text-align: left;
-  display: flex; flex-direction: column; gap: var(--space-2);
-  overflow: hidden;
-  transition: all 200ms ease;
+  position: relative; overflow: hidden;
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-top: 3px solid var(--persona-color, var(--color-border));
+  border-radius: var(--r-lg); cursor: pointer; text-align: left;
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
+  transition: transform 200ms cubic-bezier(0.22,1,0.36,1), border-color 200ms ease, box-shadow 200ms ease, background 200ms ease;
 }
-.persona-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  background: var(--persona-color); opacity: 0.5;
-  transition: opacity 200ms ease;
+.persona-card-num {
+  position: absolute; top: 6px; right: 12px;
+  font-family: var(--font-display); font-size: 3.8rem; font-weight: 800;
+  color: var(--persona-color, #fff); opacity: 0.06; line-height: 1;
+  pointer-events: none; letter-spacing: -0.04em; user-select: none;
 }
-.persona-card:hover { background: var(--color-surface-2); border-color: var(--color-border); transform: translateY(-2px); }
-.persona-card:hover::before { opacity: 0.8; }
-.persona-card.active { border-color: var(--persona-color); }
-.persona-card.active::before { opacity: 1; }
-
-.persona-card-icon { width: 32px; height: 32px; margin-bottom: var(--space-1); }
-.persona-card-title { font-family: var(--font-display); font-size: var(--text-sm); font-weight: 700; color: var(--color-text); line-height: 1.3; }
+.persona-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--persona-color);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25), 0 0 0 1px var(--persona-color);
+  background: var(--color-surface-2);
+}
+.persona-card:active { transform: translateY(0); transition-duration: 0.06s; }
+.persona-card.active {
+  border-color: var(--persona-color);
+  background: var(--color-surface-2);
+  box-shadow: 0 0 0 1px var(--persona-color), 0 8px 24px rgba(0,0,0,0.3);
+}
+.persona-card-icon { width: 26px; height: 26px; margin-bottom: var(--sp-1); }
+.persona-card-title {
+  font-family: var(--font-display); font-size: 1.05rem; font-weight: 700;
+  color: var(--color-text); line-height: 1.25;
+  transition: color 180ms;
+}
 .persona-card.active .persona-card-title { color: var(--persona-color); }
-.persona-card-quote { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.4; font-style: italic; }
+.persona-card-quote { font-size: var(--text-2xs); color: var(--color-text-3); font-style: italic; line-height: 1.4; margin-top: var(--sp-1); }
 
 /* ============================================
    PERSONA DETAIL
    ============================================ */
-.persona-detail-wrapper {
+.persona-detail-wrap {
   overflow: hidden; max-height: 0; opacity: 0;
-  transition: max-height 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 350ms ease;
+  transition: max-height 500ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease;
+  border-top: 1px solid var(--color-border-2);
 }
-.persona-detail-wrapper.visible { max-height: 5000px; opacity: 1; }
-.persona-detail { padding: var(--space-6) 0 var(--space-10); }
+.persona-detail-wrap.open { max-height: 6000px; opacity: 1; }
 
-.persona-detail-header {
-  display: flex; align-items: center; gap: var(--space-4);
-  margin-bottom: var(--space-6); padding-bottom: var(--space-4);
-  border-bottom: 2px solid var(--active-color, var(--color-border-subtle));
+.persona-detail { padding: var(--sp-12) 0 var(--sp-16); }
+
+/* Big name header */
+.pd-header { margin-bottom: var(--sp-10); padding-bottom: var(--sp-8); border-bottom: 1px solid var(--color-border-2); }
+.pd-role-label {
+  font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--active-color, var(--color-amber));
+  margin-bottom: var(--sp-3); display: flex; align-items: center; gap: var(--sp-3);
 }
-.persona-detail-icon { width: 48px; height: 48px; flex-shrink: 0; }
-.persona-detail-header-text { flex: 1; }
-.persona-detail-name { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; color: var(--color-text); margin-bottom: 2px; letter-spacing: -0.02em; }
-.persona-detail-stance { font-size: var(--text-sm); color: var(--color-text-muted); font-style: italic; }
-
-/* Persona quotes */
-.persona-quotes { margin-bottom: var(--space-6); }
-.persona-quotes-label { font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-4); }
-.persona-quote-card { padding: var(--space-4) var(--space-5); background: var(--color-surface); border-left: 2px solid var(--color-primary); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--space-3); }
-.persona-quote-text { font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.65; font-style: italic; margin-bottom: var(--space-2); }
-.persona-quote-attr { font-size: var(--text-xs); color: var(--color-text-faint); }
-.persona-quote-attr a { color: var(--color-text-muted); text-decoration: underline; }
-.persona-quote-attr a:hover { color: var(--color-primary); }
-
-/* Common positions tags */
-.believe-header { display: flex; align-items: baseline; gap: var(--space-3); margin-bottom: var(--space-3); }
-.believe-header-label { font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-.believe-header-note { font-size: var(--text-xs); color: var(--color-text-faint); font-style: italic; }
-
-.believe-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6); }
-.believe-tag {
-  font-size: var(--text-xs); color: var(--color-text-secondary);
-  background: var(--color-surface); border: 1px solid var(--color-border-subtle);
-  border-left: 3px solid var(--active-color, var(--color-border));
-  border-radius: var(--radius-md); padding: var(--space-2) var(--space-3); line-height: 1.5;
+.pd-role-label::after { content: ''; flex: 1; height: 1px; background: var(--color-border-2); }
+.pd-name {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -0.04em;
+  font-size: clamp(2.2rem, 4vw + 0.5rem, 4.5rem); line-height: 1;
+  color: var(--color-text); margin-bottom: var(--sp-5);
+}
+.pd-stance {
+  font-size: var(--text-lg); color: var(--color-text-2); line-height: 1.5;
+  font-style: italic; padding-left: var(--sp-5);
+  border-left: 3px solid var(--active-color, var(--color-amber));
+  max-width: 60ch;
 }
 
-/* 3-column detail grid */
-.detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-4); }
-@media (max-width: 860px) { .detail-grid { grid-template-columns: 1fr; gap: var(--space-4); } }
-
-.detail-block {
-  padding: var(--space-5); background: var(--color-surface);
-  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
-  border-top: 3px solid var(--block-color, var(--color-border));
+/* Real voices */
+.pd-voices { margin-bottom: var(--sp-10); }
+.pd-voices-label {
+  font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-text-4); margin-bottom: var(--sp-5);
 }
-.detail-block-label {
+.pd-quote {
+  position: relative; padding: var(--sp-6) var(--sp-6) var(--sp-5) var(--sp-8);
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--r-lg); margin-bottom: var(--sp-3); overflow: hidden;
+}
+.pd-quote::before {
+  content: '\201C';
+  position: absolute; top: -8px; left: 16px;
+  font-family: var(--font-display); font-size: 5rem; font-weight: 800; line-height: 1;
+  color: var(--active-color, var(--color-amber)); opacity: 0.18;
+  pointer-events: none;
+}
+.pd-quote-text {
+  font-size: var(--text-base); color: var(--color-text-2); line-height: 1.7;
+  font-style: italic; margin-bottom: var(--sp-3); position: relative; z-index: 1;
+}
+.pd-quote-attr { font-size: var(--text-2xs); color: var(--color-text-4); }
+.pd-quote-attr a { color: var(--color-text-3); text-decoration: underline; text-underline-offset: 2px; }
+.pd-quote-attr a:hover { color: var(--color-amber); }
+
+/* Believe tags */
+.pd-beliefs { margin-bottom: var(--sp-10); }
+.pd-beliefs-label {
+  font-size: var(--text-2xs); font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--color-text-4); margin-bottom: var(--sp-4);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.pd-beliefs-note { font-size: var(--text-2xs); color: var(--color-text-4); font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.pd-tags { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.pd-tag {
+  font-size: var(--text-xs); color: var(--color-text-2);
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: 100px; padding: 6px 14px; line-height: 1.4;
+  transition: border-color 150ms, color 150ms;
+}
+.pd-tag:hover { border-color: var(--active-color, var(--color-amber)); color: var(--color-text); }
+
+/* Three columns */
+.pd-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); }
+@media (max-width: 860px) { .pd-grid { grid-template-columns: 1fr; } }
+
+.pd-block {
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--r-lg); overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  transition: border-color 200ms ease;
+}
+.pd-block-head {
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--color-border-2);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.pd-block-head-label {
   font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em;
-  margin-bottom: var(--space-3); padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--color-border-subtle);
-  display: flex; align-items: center; gap: var(--space-2);
 }
-.detail-block-label svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-.detail-block--right { --block-color: #4eca7a; }
-.detail-block--right .detail-block-label { color: #4eca7a; }
-.detail-block--blindspots { --block-color: #e8695c; }
-.detail-block--blindspots .detail-block-label { color: #e8695c; }
-.detail-block--missing { --block-color: #5b8def; }
-.detail-block--missing .detail-block-label { color: #5b8def; }
-
-.detail-block ul { list-style: none; padding: 0; margin: 0; }
-.detail-block li {
-  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.65;
-  padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-subtle); max-width: none;
+.pd-block-head svg { width: 14px; height: 14px; flex-shrink: 0; }
+.pd-block--right .pd-block-head { color: #4eca7a; }
+.pd-block--wrong .pd-block-head { color: #e8695c; }
+.pd-block--missing .pd-block-head { color: #5b8def; }
+.pd-block-body { padding: var(--sp-4) var(--sp-5); }
+.pd-block-body ul { list-style: none; padding: 0; margin: 0; }
+.pd-block-body li {
+  font-size: var(--text-sm); color: var(--color-text-2); line-height: 1.7;
+  padding: var(--sp-3) 0; border-bottom: 1px solid var(--color-border-2);
 }
-.detail-block li:last-child { border-bottom: none; padding-bottom: 0; }
-.detail-block li:first-child { padding-top: 0; }
-.detail-block .stat { color: var(--color-primary); font-weight: 600; }
-
+.pd-block-body li:last-child { border-bottom: none; padding-bottom: 0; }
+.pd-block-body li:first-child { padding-top: 0; }
+.pd-block-body .stat { color: var(--color-amber); font-weight: 600; }
 .missing-source {
-  display: inline-block; font-size: 0.78rem; font-weight: 600;
-  color: #5b8def; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.04em;
+  display: block; font-size: 0.875rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #5b8def; margin-bottom: 3px;
 }
 
-/* View matrix CTA */
-.view-matrix-cta {
-  display: inline-flex; align-items: center; gap: var(--space-2);
-  margin-top: var(--space-5); padding: var(--space-2) var(--space-4);
-  font-family: var(--font-display); font-size: var(--text-xs); font-weight: 600;
-  color: var(--color-primary); background: transparent;
-  border: 1px solid var(--color-primary); border-radius: var(--radius-md);
+/* Matrix CTA */
+.pd-cta {
+  display: inline-flex; align-items: center; gap: var(--sp-2); margin-top: var(--sp-8);
+  padding: 10px 20px; font-family: var(--font-display); font-size: var(--text-xs);
+  font-weight: 700; color: var(--color-amber); border: 1px solid rgba(212,148,60,0.3);
+  border-radius: var(--r-sm); text-transform: uppercase; letter-spacing: 0.06em;
+  transition: background 150ms, border-color 150ms, transform 150ms;
 }
-.view-matrix-cta:hover { background: rgba(212,148,60,0.08); color: var(--color-primary-hover); border-color: var(--color-primary-hover); }
-.view-matrix-cta svg { width: 14px; height: 14px; }
-.view-matrix-cta:hover svg { transform: translateX(3px); }
+.pd-cta:hover { background: var(--color-amber-dim); border-color: var(--color-amber); }
+.pd-cta:active { transform: scale(0.97); transition-duration: 0.06s; }
+.pd-cta svg { width: 14px; height: 14px; transition: transform 200ms ease; }
+.pd-cta:hover svg { transform: translateX(4px); }
 
 /* ============================================
-   EXPERIENCE GAP SECTION
+   STATS BAR
    ============================================ */
-.gap-section {
-  padding: var(--space-12) 0;
-  border-top: 1px solid var(--color-border-subtle);
-  background: linear-gradient(180deg, rgba(212,148,60,0.02) 0%, transparent 50%);
+.stats-bar {
+  padding: var(--sp-12) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
-.gap-eyebrow {
-  font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600;
-  color: var(--color-primary); letter-spacing: 0.1em; text-transform: uppercase;
-  margin-bottom: var(--space-3);
+.stats-bar-inner {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: var(--sp-6);
 }
-.gap-heading {
-  font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;
-  letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--space-4);
+@media (max-width: 900px) { .stats-bar-inner { grid-template-columns: repeat(3, 1fr); gap: var(--sp-8) var(--sp-4); } }
+@media (max-width: 560px) { .stats-bar-inner { grid-template-columns: repeat(2, 1fr); } }
+.stat-item {}
+.stat-num {
+  font-family: var(--font-display); font-size: var(--text-stat); font-weight: 800;
+  letter-spacing: -0.05em; color: var(--color-amber); line-height: 1;
+  margin-bottom: var(--sp-2); display: block;
 }
-.gap-intro {
-  font-size: var(--text-base); color: var(--color-text-secondary); line-height: 1.7;
-  margin-bottom: var(--space-8); max-width: 62ch;
+.stat-lbl {
+  font-size: var(--text-2xs); font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-text-3); line-height: 1.4;
 }
-.gap-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);
-  margin-bottom: var(--space-8);
-}
-@media (max-width: 680px) { .gap-grid { grid-template-columns: 1fr; } }
+
+/* ============================================
+   EXPERIENCE GAP
+   ============================================ */
+.gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); margin: var(--sp-8) 0; }
+@media (max-width: 700px) { .gap-grid { grid-template-columns: 1fr; } }
 
 .gap-card {
-  padding: var(--space-6); border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--r-lg); overflow: hidden;
+  border: 1px solid var(--color-border-2);
+  transition: border-color 200ms ease;
 }
-.gap-card--shallow {
-  background: var(--color-surface);
-  border-top: 3px solid #e8695c;
+.gap-card--shallow:hover { border-color: rgba(232,105,92,0.3); }
+.gap-card--deep:hover { border-color: rgba(78,202,122,0.3); }
+.gap-card-head {
+  padding: var(--sp-5) var(--sp-6);
+  display: flex; align-items: center; gap: var(--sp-3);
 }
-.gap-card--deep {
-  background: var(--color-surface);
-  border-top: 3px solid #4eca7a;
-}
+.gap-card--shallow .gap-card-head { background: rgba(232,105,92,0.08); border-bottom: 1px solid rgba(232,105,92,0.12); }
+.gap-card--deep .gap-card-head { background: rgba(78,202,122,0.08); border-bottom: 1px solid rgba(78,202,122,0.12); }
 .gap-card-label {
   font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle);
+  text-transform: uppercase; letter-spacing: 0.08em;
 }
 .gap-card--shallow .gap-card-label { color: #e8695c; }
 .gap-card--deep .gap-card-label { color: #4eca7a; }
-
-.gap-card ul { list-style: none; padding: 0; margin: 0; }
-.gap-card li {
-  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.65;
-  padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-subtle);
+.gap-card-body { background: var(--color-surface); padding: 0; }
+.gap-card-body ul { list-style: none; padding: 0; margin: 0; }
+.gap-card-body li {
+  font-size: var(--text-sm); color: var(--color-text-2); line-height: 1.65;
+  padding: var(--sp-3) var(--sp-6);
+  border-bottom: 1px solid var(--color-border-2);
+  display: flex; align-items: flex-start; gap: var(--sp-3);
 }
-.gap-card li:last-child { border-bottom: none; padding-bottom: 0; }
-.gap-card li:first-child { padding-top: 0; }
-.gap-card li::before { content: ''; }
+.gap-card-body li:last-child { border-bottom: none; }
+.gap-card-body li::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 8px;
+}
+.gap-card--shallow li::before { background: rgba(232,105,92,0.5); }
+.gap-card--deep li::before { background: rgba(78,202,122,0.5); }
 
 .gap-callout {
-  background: var(--color-surface); border: 1px solid var(--color-border-subtle);
-  border-left: 3px solid var(--color-primary);
-  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
-  padding: var(--space-6); max-width: 780px;
+  padding: var(--sp-8) var(--sp-8); background: var(--color-surface);
+  border: 1px solid var(--color-border-2); border-radius: var(--r-lg);
+  border-left: 3px solid var(--color-amber);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
 }
 .gap-callout p {
-  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.75;
-  margin-bottom: var(--space-4);
+  font-size: var(--text-base); color: var(--color-text-2); line-height: 1.75;
+  margin-bottom: var(--sp-4); max-width: 72ch;
 }
-.gap-callout p:last-child { margin-bottom: 0; color: var(--color-text-muted); }
+.gap-callout p:last-child { margin-bottom: 0; color: var(--color-text-3); font-size: var(--text-sm); }
 
 /* ============================================
-   PLAYER SIGNAL SECTION
+   MATRIX
    ============================================ */
-.player-section {
-  padding: var(--space-12) 0;
-  border-top: 1px solid var(--color-border-subtle);
-}
-.player-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4);
-  margin-top: var(--space-8);
-}
-@media (max-width: 860px) { .player-grid { grid-template-columns: 1fr; } }
+.matrix-section { background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%); }
+.matrix-lede { max-width: 560px; margin-bottom: var(--sp-8); }
 
-.player-block {
-  padding: var(--space-5); background: var(--color-surface);
-  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
+.matrix-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+.matrix-row {
+  border: 1px solid var(--color-border-2); border-radius: var(--r-lg);
+  background: var(--color-bg);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 0% 0%, rgba(88,60,196,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 100% 100%, rgba(139,108,246,0.10) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(8,13,24,1) 30%, transparent 100%); overflow: hidden;
+  transition: border-color 200ms ease;
 }
-.player-block-label {
-  font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--color-text-muted); margin-bottom: var(--space-4);
-  padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle);
-}
-.player-block p {
-  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7;
-  margin-bottom: var(--space-3); max-width: none;
-}
-.player-block p:last-child { margin-bottom: 0; color: var(--color-text-muted); }
+.matrix-row.open { border-color: var(--color-border); box-shadow: 0 2px 16px rgba(0,0,0,0.2); }
 
-.player-stat-row {
-  display: flex; flex-wrap: wrap; gap: var(--space-3);
-  margin-top: var(--space-6);
-  padding: var(--space-4); background: var(--color-surface);
-  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
-}
-.player-stat {
-  display: flex; align-items: baseline; gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-surface-2); border: 1px solid var(--color-border-subtle);
-  border-radius: var(--radius-md);
-}
-.player-stat-value {
-  font-family: var(--font-display); font-size: var(--text-base);
-  font-weight: 800; color: var(--color-primary); letter-spacing: -0.02em;
-}
-.player-stat-label { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.3; }
-
-/* ============================================
-   MATRIX ACCORDION
-   ============================================ */
-.matrix-section {
-  padding: var(--space-12) 0; border-top: 1px solid var(--color-border-subtle);
-  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-bg) 100%);
-}
-.matrix-header { margin-bottom: var(--space-6); max-width: 600px; }
-.matrix-header h2 { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--space-2); }
-.matrix-header p { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
-
-.matrix-accordion { display: flex; flex-direction: column; gap: var(--space-2); }
-
-.matrix-topic {
-  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
-  background: var(--color-bg); overflow: hidden;
-  transition: border-color 200ms ease, box-shadow 200ms ease;
-}
-.matrix-topic.open { border-color: var(--color-border); box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
-
-.matrix-topic-btn {
+.matrix-row-btn {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-4) var(--space-5);
-  font-family: var(--font-display); font-size: var(--text-sm); font-weight: 700;
-  color: var(--color-text); text-align: left; cursor: pointer; background: none; border: none;
+  padding: var(--sp-4) var(--sp-6); text-align: left;
+  font-family: var(--font-display); font-size: var(--text-base); font-weight: 700;
+  color: var(--color-text); transition: background 150ms;
 }
-.matrix-topic-btn:hover { background: var(--color-surface-2); }
-.matrix-topic.open .matrix-topic-btn { border-bottom: 1px solid var(--color-border-subtle); }
-
-.matrix-topic-btn-left { display: flex; align-items: center; gap: var(--space-3); }
-.matrix-topic-btn-icon { width: 20px; height: 20px; color: var(--color-primary); flex-shrink: 0; }
-
-.matrix-topic-chevron {
-  width: 16px; height: 16px; color: var(--color-text-faint); flex-shrink: 0;
-  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+.matrix-row-btn:hover { background: var(--color-surface); }
+.matrix-row.open .matrix-row-btn { border-bottom: 1px solid var(--color-border-2); background: var(--color-surface); }
+.matrix-row-left { display: flex; align-items: center; gap: var(--sp-3); }
+.matrix-row-icon { width: 18px; height: 18px; color: var(--color-amber); flex-shrink: 0; }
+.matrix-row-chevron {
+  width: 16px; height: 16px; color: var(--color-text-4); flex-shrink: 0;
+  transition: transform 280ms cubic-bezier(0.16,1,0.3,1);
 }
-.matrix-topic.open .matrix-topic-chevron { transform: rotate(180deg); }
+.matrix-row.open .matrix-row-chevron { transform: rotate(180deg); }
 
-.matrix-topic-body { max-height: 0; overflow: hidden; transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1); }
-.matrix-topic.open .matrix-topic-body { max-height: 900px; }
-
-.matrix-topic-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
-@media (max-width: 860px) { .matrix-topic-grid { grid-template-columns: 1fr; } }
-
-.matrix-topic-cell {
-  padding: var(--space-4) var(--space-5);
-  border-right: 1px solid var(--color-border-subtle);
+.matrix-row-body { max-height: 0; overflow: hidden; transition: max-height 380ms cubic-bezier(0.16,1,0.3,1); }
+.matrix-row.open .matrix-row-body { max-height: 1000px; }
+.matrix-cells { display: grid; grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 860px) { .matrix-cells { grid-template-columns: 1fr; } }
+.matrix-cell {
+  padding: var(--sp-5) var(--sp-5);
+  border-right: 1px solid var(--color-border-2);
   position: relative;
 }
-.matrix-topic-cell:last-child { border-right: none; }
-.matrix-topic-cell::before {
-  content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
-  background: var(--cell-color);
-  display: none;
-}
+.matrix-cell:last-child { border-right: none; }
 @media (max-width: 860px) {
-  .matrix-topic-cell { border-right: none; border-bottom: 1px solid var(--color-border-subtle); }
-  .matrix-topic-cell:last-child { border-bottom: none; }
-  .matrix-topic-cell::before { display: block; }
+  .matrix-cell { border-right: none; border-bottom: 1px solid var(--color-border-2); padding-left: var(--sp-8); }
+  .matrix-cell::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: var(--cell-color); }
+  .matrix-cell:last-child { border-bottom: none; }
 }
-
-.matrix-cell-persona {
-  font-family: var(--font-display); font-size: 0.75rem; font-weight: 700;
-  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
-  display: flex; align-items: center; gap: var(--space-2);
+.matrix-cell-name {
+  font-family: var(--font-display); font-size: 0.875rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: var(--sp-2); display: flex; align-items: center; gap: var(--sp-2);
 }
-.matrix-cell-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.matrix-cell-text { font-size: var(--text-xs); color: var(--color-text-secondary); line-height: 1.55; }
+.matrix-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.matrix-cell-text { font-size: var(--text-xs); color: var(--color-text-2); line-height: 1.6; }
 
 /* ============================================
-   WHY + SOURCES + FOOTER
+   PLAYER SIGNAL
    ============================================ */
-.why-section { padding: var(--space-12) 0; border-top: 1px solid var(--color-border-subtle); }
-.why-heading { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--color-text); letter-spacing: -0.01em; margin-bottom: var(--space-5); }
-.why-content { max-width: 620px; }
-.why-content p { font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7; margin-bottom: var(--space-4); }
-.why-content p:last-child { margin-bottom: 0; color: var(--color-text-muted); font-style: italic; }
+.player-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp-4); margin: var(--sp-8) 0; }
+@media (max-width: 860px) { .player-grid { grid-template-columns: 1fr; } }
+.player-block {
+  background: var(--color-surface); border: 1px solid var(--color-border-2);
+  border-radius: var(--r-lg); padding: var(--sp-6);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  transition: border-color 200ms ease, transform 200ms cubic-bezier(0.22,1,0.36,1);
+}
+.player-block:hover { border-color: var(--color-border); transform: translateY(-2px); }
+.player-block-label {
+  font-family: var(--font-display); font-size: var(--text-2xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-4);
+  margin-bottom: var(--sp-4); padding-bottom: var(--sp-3);
+  border-bottom: 1px solid var(--color-border-2);
+}
+.player-block p {
+  font-size: var(--text-sm); color: var(--color-text-2); line-height: 1.75;
+  margin-bottom: var(--sp-3); max-width: none;
+}
+.player-block p:last-child { margin-bottom: 0; color: var(--color-text-3); }
 
-.sources-section { padding: var(--space-10) 0; border-top: 1px solid var(--color-border-subtle); }
-.sources-label { font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-4); }
-.data-freshness { font-size: var(--text-xs); color: var(--color-text-faint); margin-bottom: var(--space-3); font-style: italic; }
+.player-stats { display: flex; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-8); }
+.player-stat {
+  padding: var(--sp-5) var(--sp-6); background: var(--color-surface);
+  border: 1px solid var(--color-border-2); border-radius: var(--r-lg);
+  flex: 1; min-width: 180px;
+}
+.player-stat-num {
+  font-family: var(--font-display); font-size: clamp(2rem, 3vw, 3.2rem); font-weight: 800;
+  letter-spacing: -0.04em; color: var(--color-amber); line-height: 1;
+  margin-bottom: var(--sp-2); display: block;
+}
+.player-stat-lbl { font-size: var(--text-2xs); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-3); }
 
-.stat-grid { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); margin-bottom: var(--space-5); }
-.stat-pill { display: flex; align-items: baseline; gap: var(--space-2); padding: var(--space-2) var(--space-3); background: var(--color-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); }
-.stat-pill-value { font-family: var(--font-display); font-size: var(--text-base); font-weight: 800; color: var(--color-primary); letter-spacing: -0.02em; }
-.stat-pill-label { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.3; }
+/* ============================================
+   WHY SECTION
+   ============================================ */
+.why-content { max-width: 640px; }
+.why-content p { font-size: var(--text-base); color: var(--color-text-2); line-height: 1.8; margin-bottom: var(--sp-5); }
+.why-content p:last-child { margin-bottom: 0; font-size: var(--text-sm); color: var(--color-text-3); font-style: italic; }
 
+/* ============================================
+   SOURCES
+   ============================================ */
+.sources-disclaimer { font-size: var(--text-xs); color: var(--color-text-4); font-style: italic; margin-bottom: var(--sp-6); }
+.sources-freshness { font-size: var(--text-xs); color: var(--color-text-4); margin-bottom: var(--sp-4); }
 .sources-list { list-style: none; padding: 0; margin: 0; }
-.sources-list li { font-size: var(--text-xs); color: var(--color-text-faint); line-height: 1.6; padding: var(--space-1) 0; }
-.sources-list a { color: var(--color-text-muted); text-decoration: none; }
-.sources-list a:hover { color: var(--color-primary); text-decoration: underline; }
+.sources-list li { font-size: var(--text-xs); color: var(--color-text-4); line-height: 1.6; padding: var(--sp-1) 0; }
+.sources-list a { color: var(--color-text-3); text-decoration: none; }
+.sources-list a:hover { color: var(--color-amber); text-decoration: underline; }
 
-.site-footer { margin-top: auto; padding: var(--space-8) 0; border-top: 1px solid var(--color-border-subtle); }
-.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
-.footer-left { font-size: var(--text-xs); color: var(--color-text-faint); }
-.footer-left a { color: var(--color-primary); text-decoration: none; }
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer { margin-top: auto; padding: var(--sp-8) 0; border-top: 1px solid var(--color-border-2); }
+.footer-row { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4); flex-wrap: wrap; }
+.footer-left { font-size: var(--text-xs); color: var(--color-text-4); }
+.footer-left a { color: var(--color-amber); text-decoration: none; }
 .footer-left a:hover { text-decoration: underline; }
-.footer-right { display: flex; align-items: center; gap: var(--space-4); }
-.footer-right a { font-size: var(--text-xs); color: var(--color-text-faint); text-decoration: none; }
-.footer-right a:hover { color: var(--color-text-muted); }
+.footer-right { display: flex; align-items: center; gap: var(--sp-5); }
+.footer-right a { font-size: var(--text-xs); color: var(--color-text-4); text-decoration: none; }
+.footer-right a:hover { color: var(--color-text-3); }
 
-/* Share dropdown */
-.share-wrap { position: relative; display: inline-block; }
-.share-btn { display: inline-flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-3); font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: transparent; }
-.share-btn:hover { color: var(--color-text); background: var(--color-surface); }
-.share-btn svg { width: 14px; height: 14px; }
-.share-dropdown { position: absolute; bottom: calc(100% + var(--space-2)); right: 0; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: 0 8px 32px rgba(0,0,0,0.4); padding: var(--space-2); min-width: 210px; z-index: 1000; opacity: 0; pointer-events: none; transform: translateY(4px); transition: opacity 180ms ease, transform 180ms ease; }
-.share-dropdown.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
-.share-dropdown-item { display: flex; align-items: center; gap: var(--space-3); width: 100%; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-sm); font-family: var(--font-body); color: var(--color-text); background: none; border: none; cursor: pointer; text-decoration: none; }
-.share-dropdown-item:hover { background: var(--color-surface-2); }
-.share-dropdown-item svg { flex-shrink: 0; width: 16px; height: 16px; }
+/* Share */
+.share-wrap { position: relative; }
+.share-trigger {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: 6px 12px; font-size: var(--text-xs); font-weight: 600;
+  color: var(--color-text-3); border: 1px solid var(--color-border);
+  border-radius: var(--r-sm); transition: color 150ms, border-color 150ms;
+}
+.share-trigger:hover { color: var(--color-text); border-color: var(--color-text-3); }
+.share-trigger:active { transform: scale(0.96); transition-duration: 0.06s; }
+.share-trigger svg { width: 13px; height: 13px; }
+.share-drop {
+  position: absolute; bottom: calc(100% + 6px); right: 0;
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--r-lg); padding: var(--sp-2); min-width: 200px;
+  z-index: 1000; opacity: 0; pointer-events: none; transform: translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+}
+.share-drop.open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.share-item {
+  display: flex; align-items: center; gap: var(--sp-3);
+  width: 100%; padding: var(--sp-2) var(--sp-3); border-radius: var(--r-sm);
+  font-size: var(--text-sm); color: var(--color-text); text-decoration: none;
+}
+.share-item:hover { background: var(--color-surface-2); }
+.share-item svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-/* Fade-in */
-.fade-in { opacity: 0; transform: translateY(12px); transition: opacity 500ms ease, transform 500ms ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-.stagger > * { opacity: 0; transform: translateY(8px); transition: opacity 400ms ease, transform 400ms ease; }
-.stagger.visible > * { opacity: 1; transform: translateY(0); }
-.stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
-.stagger.visible > *:nth-child(2) { transition-delay: 50ms; }
-.stagger.visible > *:nth-child(3) { transition-delay: 100ms; }
-.stagger.visible > *:nth-child(4) { transition-delay: 150ms; }
-.stagger.visible > *:nth-child(5) { transition-delay: 200ms; }
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.fade-up { opacity: 0; transform: translateY(8px); transition: opacity 380ms cubic-bezier(0.22,1,0.36,1), transform 380ms cubic-bezier(0.22,1,0.36,1); }
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.stagger-grid > * { opacity: 0; transform: translateY(6px); transition: opacity 320ms cubic-bezier(0.22,1,0.36,1), transform 320ms cubic-bezier(0.22,1,0.36,1); }
+.stagger-grid.visible > * { opacity: 1; transform: translateY(0); }
+.stagger-grid.visible > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-grid.visible > *:nth-child(2) { transition-delay: 45ms; }
+.stagger-grid.visible > *:nth-child(3) { transition-delay: 90ms; }
+.stagger-grid.visible > *:nth-child(4) { transition-delay: 135ms; }
+.stagger-grid.visible > *:nth-child(5) { transition-delay: 180ms; }
 </style>
 </head>
 
 <body>
-
 <!-- nav injected by /nav-component.js -->
+<main>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-content">
-        <p class="hero-label">AI Adoption in Game Dev</p>
-        <h1>Same tools.<br>Different realities.</h1>
-        <p class="hero-sub">Five roles see the same AI tools differently. Pick yours to see what you get right, what you miss, and what the other roles see that you don't.</p>
-        <button type="button" class="changelog-toggle" id="changelogToggle">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="hero-eyebrow">AI Adoption in Game Dev</p>
+      <h1>Same tools.<br>Different realities.</h1>
+      <p class="hero-sub">Five roles see the same AI tools differently. Pick yours to see what you get right, what you miss, and what the other roles see that you don't.</p>
+      <div class="hero-actions">
+        <button type="button" class="changelog-btn" id="clToggle">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
           What's New
-          <span class="changelog-badge" id="changelogBadge"></span>
+          <span class="cl-badge" id="clBadge"></span>
         </button>
-        <div class="changelog-panel" id="changelogPanel">
-          <ul class="changelog-list" id="changelogList"></ul>
-        </div>
-
-
       </div>
-    </section>
-
-    <section class="persona-section" aria-label="Choose a perspective">
-      <div class="container">
-        <h2 class="section-label">Where are you coming from?</h2>
-        <div class="persona-grid stagger" id="personaGrid"></div>
+      <div class="changelog-drawer" id="clDrawer">
+        <ul class="cl-list" id="clList"></ul>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <div class="persona-detail-wrapper" id="personaDetail" aria-live="polite">
-      <div class="container persona-detail">
-        <div class="persona-detail-header" id="detailHeader">
-          <div class="persona-detail-icon" id="detailIcon"></div>
-          <div class="persona-detail-header-text">
-            <h3 class="persona-detail-name" id="detailName"></h3>
-            <p class="persona-detail-stance" id="detailStance"></p>
+  <!-- PERSONA PICKER -->
+  <section class="section" id="personas" aria-label="Choose a perspective">
+    <div class="wrap">
+      <p class="section-tag">Where are you coming from?</p>
+      <h2 class="section-heading">Pick your role</h2>
+      <p class="section-sub">Select the perspective closest to yours. Each one gets something right and misses something the others see.</p>
+      <div class="persona-grid stagger-grid" id="personaGrid"></div>
+    </div>
+  </section>
+
+  <!-- PERSONA DETAIL (injected) -->
+  <div class="persona-detail-wrap" id="personaDetailWrap" aria-live="polite">
+    <div class="wrap">
+      <div class="persona-detail" id="personaDetail">
+        <div class="pd-header" id="pdHeader">
+          <p class="pd-role-label" id="pdRoleLabel"></p>
+          <h2 class="pd-name" id="pdName"></h2>
+          <p class="pd-stance" id="pdStance"></p>
+        </div>
+        <div id="pdVoices" class="pd-voices"></div>
+        <div class="pd-beliefs" id="pdBeliefs">
+          <p class="pd-beliefs-label">Common positions <span class="pd-beliefs-note">— patterns, not universals</span></p>
+          <div class="pd-tags" id="pdTags"></div>
+        </div>
+        <div class="pd-grid">
+          <div class="pd-block pd-block--right">
+            <div class="pd-block-head">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2 8 6 12 14 4"/></svg>
+              <span class="pd-block-head-label">What you get right</span>
+            </div>
+            <div class="pd-block-body"><ul id="pdRight"></ul></div>
+          </div>
+          <div class="pd-block pd-block--wrong">
+            <div class="pd-block-head">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.5" fill="currentColor" stroke="none"/></svg>
+              <span class="pd-block-head-label">What others see</span>
+            </div>
+            <div class="pd-block-body"><ul id="pdWrong"></ul></div>
+          </div>
+          <div class="pd-block pd-block--missing">
+            <div class="pd-block-head">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8h12M8 2v12"/></svg>
+              <span class="pd-block-head-label">From other perspectives</span>
+            </div>
+            <div class="pd-block-body"><ul id="pdMissing"></ul></div>
           </div>
         </div>
-        <div id="personaQuotes" class="persona-quotes"></div>
-        <div class="believe-header">
-          <span class="believe-header-label">Common Positions</span>
-          <span class="believe-header-note">Patterns, not universals</span>
-        </div>
-        <div class="believe-tags" id="detailBelieve"></div>
-        <div class="detail-grid">
-          <div class="detail-block detail-block--right">
-            <p class="detail-block-label"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="2 8 6 12 14 4"/></svg> What you get right</p>
-            <ul id="detailRight"></ul>
-          </div>
-          <div class="detail-block detail-block--blindspots">
-            <p class="detail-block-label"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.5" fill="currentColor" stroke="none"/></svg> What others see</p>
-            <ul id="detailWrong"></ul>
-          </div>
-          <div class="detail-block detail-block--missing">
-            <p class="detail-block-label"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 8h12M8 2v12"/></svg> From other perspectives</p>
-            <ul id="detailMissing"></ul>
-          </div>
-        </div>
-        <button class="view-matrix-cta" onclick="document.getElementById('matrixSection').scrollIntoView({behavior:'smooth'}); gaEvent('matrix_cta_clicked');">
+        <button class="pd-cta" onclick="document.getElementById('matrixSection').scrollIntoView({behavior:'smooth'}); gaEvent('matrix_cta_clicked');">
           See all perspectives side by side
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </button>
       </div>
     </div>
+  </div>
 
-    <!-- EXPERIENCE GAP SECTION -->
-    <section class="gap-section fade-in" id="experienceGap">
-      <div class="container">
-        <p class="gap-eyebrow">The Divide Within Roles</p>
-        <h2 class="gap-heading">Experience vs. Exposure</h2>
-        <p class="gap-intro">The gap within each role is often wider than the gap between roles. Two people with the same job title can hold completely opposite views, not because one is wrong, but because their depth of hands-on experience is different.</p>
-        <div class="gap-grid">
-          <div class="gap-card gap-card--shallow">
-            <div class="gap-card-label">Shallow Exposure</div>
+  <!-- GDC STATS BAR -->
+  <div class="stats-bar fade-up">
+    <div class="wrap">
+      <div class="stats-bar-inner">
+        <div class="stat-item"><span class="stat-num">52%</span><span class="stat-lbl">View AI negatively (up from 18%)</span></div>
+        <div class="stat-item"><span class="stat-num">7%</span><span class="stat-lbl">View AI positively (down from 21%)</span></div>
+        <div class="stat-item"><span class="stat-num">36%</span><span class="stat-lbl">Use AI in daily work</span></div>
+        <div class="stat-item"><span class="stat-num">47%</span><span class="stat-lbl">Upper management usage</span></div>
+        <div class="stat-item"><span class="stat-num">29%</span><span class="stat-lbl">Individual contributor usage</span></div>
+        <div class="stat-item"><span class="stat-num">78%</span><span class="stat-lbl">Studios with AI policies</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE GAP -->
+  <section class="section fade-up" id="experienceGap">
+    <div class="wrap">
+      <p class="section-tag">The Divide Within Roles</p>
+      <h2 class="section-heading">Experience vs. Exposure</h2>
+      <p class="section-sub">The gap within each role is often wider than the gap between roles. Two people with the same job title can hold completely opposite views based on depth of hands-on experience, not just their department.</p>
+      <div class="gap-grid">
+        <div class="gap-card gap-card--shallow">
+          <div class="gap-card-head"><span class="gap-card-label">Shallow Exposure</span></div>
+          <div class="gap-card-body">
             <ul>
               <li>Tried one or two tools once, formed a permanent opinion</li>
-              <li>Views shaped primarily by demos, vendor claims, or media coverage</li>
+              <li>Views shaped by demos, vendor claims, or media coverage</li>
               <li>Has not built a repeatable process around AI output</li>
               <li>Either dismisses AI entirely or overstates what it can do</li>
               <li>Treats AI as a binary: it works, or it does not</li>
               <li>Mistakes fluency with prompts for mastery of the tool</li>
             </ul>
           </div>
-          <div class="gap-card gap-card--deep">
-            <div class="gap-card-label">Deep Practice</div>
+        </div>
+        <div class="gap-card gap-card--deep">
+          <div class="gap-card-head"><span class="gap-card-label">Deep Practice</span></div>
+          <div class="gap-card-body">
             <ul>
               <li>Iterated through multiple tools over two or more years</li>
               <li>Built pipelines, hit walls, rebuilt with better constraints</li>
@@ -665,553 +755,373 @@ a, button, [role="button"] {
             </ul>
           </div>
         </div>
-        <div class="gap-callout">
-          <p>Most team arguments about AI are happening between people at different depths, not different roles. An executive who has spent two years building real pipelines and a creative director who has spent a month directing AI output toward a specific visual goal see things more similarly than either does to a colleague who only read about it.</p>
-          <p>The practitioners who know how to direct AI output, not just generate it, are the ones building the processes every studio needs. They are not being made redundant. They are becoming harder to replace. Their expertise is what stands between a useful tool and a slop pipeline.</p>
-        </div>
       </div>
-    </section>
-
-    <section class="matrix-section fade-in" id="matrixSection" aria-label="Cross-perspective comparison">
-      <div class="container">
-        <div class="matrix-header">
-          <h2>The same topic, five lenses</h2>
-          <p>Click a topic to see how each role views it differently.</p>
-        </div>
-        <div class="matrix-accordion" id="matrixAccordion"></div>
-      </div>
-    </section>
-
-    <!-- PLAYER SIGNAL SECTION -->
-    <section class="player-section fade-in" id="playerSignal">
-      <div class="container">
-        <p class="gap-eyebrow">Outside the Studio</p>
-        <h2 class="gap-heading">The Player Signal</h2>
-        <p class="gap-intro">The five personas above cover the people making games. There is a sixth perspective shaping the industry from the outside: the player community pushing back against AI-generated content in shipped titles. Their reaction is not irrational. It is a market signal worth reading correctly.</p>
-        <div class="player-grid">
-          <div class="player-block">
-            <div class="player-block-label">What players are reacting to</div>
-            <p>Not AI tools in development pipelines, but AI output in finished products. The distinction matters. Players generally do not care how their game was made. They care whether it feels like someone cared when they made it.</p>
-            <p>AI content generated without experienced human direction produces a recognizable aesthetic: generic, inconsistent, lacking intentionality. Players are developing instincts for it even when they cannot articulate why something feels off.</p>
-          </div>
-          <div class="player-block">
-            <div class="player-block-label">Why this pressure is useful</div>
-            <p>Vocal player protests against AI-generated content are creating real market pressure. That pressure is pushing the industry toward the only application that holds up over time: AI directed by people with taste and craft, not AI used to skip that step entirely.</p>
-            <p>The Crimson Desert situation in March 2026 is the clearest example. Pearl Abyss accidentally shipped AI placeholder art. Players identified it before the studio did. The apology, Steam disclosure, and public audit commitment came directly from player pressure, not internal process.</p>
-          </div>
-          <div class="player-block">
-            <div class="player-block-label">What this means for studios</div>
-            <p>The question is not whether to use AI. The question is whether an experienced human with vision is directing the output before it ships. Studios that answer yes to that question have nothing to fear from player scrutiny.</p>
-            <p>Studios that use AI to skip creative judgment are learning that players notice, and that the cost of their notice is higher than the cost saved. The protests are doing the industry a favor by making that consequence visible and concrete.</p>
-          </div>
-        </div>
-        <div class="player-stat-row">
-          <div class="player-stat"><span class="player-stat-value">7,000+</span><span class="player-stat-label">Steam titles disclosed AI use in 2025, one third of all releases</span></div>
-          <div class="player-stat"><span class="player-stat-value">52%</span><span class="player-stat-label">of game dev professionals now view AI negatively, up from 18%</span></div>
-          <div class="player-stat"><span class="player-stat-value">5%</span><span class="player-stat-label">of AI usage is for player-facing features; 81% is internal</span></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="why-section fade-in">
-      <div class="container">
-        <h2 class="why-heading">Why this page exists</h2>
-        <div class="why-content">
-          <p>AI is already changing game development. The question for most studios is not whether to use it, but how to adopt it without losing what makes their work good.</p>
-          <p>That conversation keeps stalling because each role has access to different evidence, different incentives, and different consequences. Executives see cost leverage. Creatives see creative risk. Engineers see bounded utility. When you only hear your own side long enough, the other side starts to sound irrational.</p>
-          <p>This page maps where each perspective is grounded, what the other roles see that they do not, and what each would gain from listening. The goal is to help teams move from positional arguments to informed AI decisions.</p>
-          <p><em>If your studio is stuck in an AI debate where nobody is budging, send this to both sides.</em></p>
-        </div>
-      </div>
-    </section>
-
-    <section class="sources-section fade-in">
-      <div class="container">
-        <p class="sources-label">Key Data from GDC 2026 State of the Industry</p>
-        <p class="data-freshness">Data as of: GDC 2026, January 2026. This is a perspective piece, not a study. Persona characterizations are informed by industry patterns, not survey categories.</p>
-        <div class="stat-grid">
-          <div class="stat-pill"><span class="stat-pill-value">52%</span><span class="stat-pill-label">view AI negatively (up from 18%)</span></div>
-          <div class="stat-pill"><span class="stat-pill-value">7%</span><span class="stat-pill-label">view AI positively (down from 21%)</span></div>
-          <div class="stat-pill"><span class="stat-pill-value">36%</span><span class="stat-pill-label">use AI in daily work</span></div>
-          <div class="stat-pill"><span class="stat-pill-value">47%</span><span class="stat-pill-label">upper management AI usage</span></div>
-          <div class="stat-pill"><span class="stat-pill-value">29%</span><span class="stat-pill-label">individual contributor usage</span></div>
-          <div class="stat-pill"><span class="stat-pill-value">78%</span><span class="stat-pill-label">of studios now have AI policies</span></div>
-        </div>
-        <p class="sources-label" style="margin-top: var(--space-6);">Sources</p>
-        <ul class="sources-list" role="list">
-          <li><a href="https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Game Industry Survey</a>. All sentiment, usage, and policy statistics cited above.</li>
-          <li><a href="https://www.gamedeveloper.com/business/one-third-of-game-workers-use-generative-ai-but-half-think-it-s-bad-for-the-industry" target="_blank" rel="noopener noreferrer">Game Developer</a>: Usage breakdowns: Research/brainstorming 81%, Code assistance 47%, Daily tasks 47%, Prototyping 35%, Asset generation 19%.</li>
-          <li><a href="https://www.gamedeveloper.com/business/survey-one-in-four-developers-laid-off-over-the-past-two-years" target="_blank" rel="noopener noreferrer">Game Developer</a>: Opposition by discipline: Visual/technical artists 64%, Game designers/narrative 63%, Programmers 59%.</li>
-          <li><a href="https://www.businesswire.com/news/home/20260129438528/en/" target="_blank" rel="noopener noreferrer">Business Wire</a>: Business/finance role usage grew from 44% (2024) to 58% (2026). "Select tools allowed" policies grew from 7% to 22%.</li>
-          <li><a href="https://www.pcgamer.com/gaming-industry/one-third-of-us-games-industry-workers-were-laid-off-in-the-last-2-years-gdc-survey-says/" target="_blank" rel="noopener noreferrer">PC Gamer</a>: Job impact: 17% experienced job loss within 12 months, 28% within 2 years. 30% of AAA studios use proprietary AI systems.</li>
-          <li><a href="https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/" target="_blank" rel="noopener noreferrer">Whimsy Games</a>: 7,000+ Steam titles disclosed AI use in 2025, one third of all releases. "Gameslop" phenomenon prompts platform curation responses.</li>
-          <li><a href="https://naavik.co/digest/the-state-of-genai-in-game-development/" target="_blank" rel="noopener noreferrer">Naavik</a>: Experienced developers vs. vibe coders: two fundamentally different approaches producing fundamentally different outcomes.</li>
-          <li><a href="https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html" target="_blank" rel="noopener noreferrer">Engadget</a>: Crimson Desert (Pearl Abyss) AI art incident, March 2026. Player-identified AI placeholders shipped accidentally, public apology and audit commitment followed.</li>
-        </ul>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-left">Created by HALP (<a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>)</div>
-      <div class="footer-right">
-        <div class="share-wrap">
-          <button class="share-btn" id="shareBtn" aria-expanded="false" aria-haspopup="true">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h8M8 4v8"/><circle cx="8" cy="8" r="7"/></svg>
-            Share
-          </button>
-          <div class="share-dropdown" id="shareDropdown">
-            <a class="share-dropdown-item" id="shareLinkedIn" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
-            <a class="share-dropdown-item" id="shareX" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X (Twitter)</a>
-            <a class="share-dropdown-item" id="shareBluesky" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.593 3.503 6.173 3.264-3.578.418-6.737 1.766-2.747 6.07 4.843 4.748 6.272-1.067 6.95-3.37.678 2.303 1.19 7.788 6.95 3.37 3.836-4.148.987-5.652-2.747-6.07 2.58.239 5.388-.637 6.173-3.264.246-.828.624-5.79.624-6.479 0-.688-.139-1.86-.902-2.203-.66-.299-1.664-.621-4.3 1.24C14.046 4.747 11.087 8.686 12 10.8z"/></svg>Bluesky</a>
-            <a class="share-dropdown-item" id="shareReddit" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.561-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-5.466 3.99a.327.327 0 0 0-.231.094.33.33 0 0 0 0 .463c.842.842 2.484.913 2.961.913.477 0 2.105-.056 2.961-.913a.361.361 0 0 0 .029-.463.33.33 0 0 0-.464 0c-.547.533-1.684.73-2.512.73-.828 0-1.979-.196-2.512-.73a.326.326 0 0 0-.232-.095z"/></svg>Reddit</a>
-            <button class="share-dropdown-item" id="shareCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy link</button>
-          </div>
-        </div>
-        <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <div class="gap-callout">
+        <p>Most team arguments about AI are happening between people at different depths, not different roles. An executive who has spent two years building real pipelines and a creative director who has spent a month directing AI output see things more similarly than either does to a colleague who only read about it.</p>
+        <p>The practitioners who know how to direct AI output, not just generate it, are the ones building the processes every studio needs. They are not being made redundant. They are becoming harder to replace.</p>
       </div>
     </div>
-  </footer>
+  </section>
+
+  <!-- MATRIX -->
+  <section class="section matrix-section fade-up" id="matrixSection" aria-label="Cross-perspective comparison">
+    <div class="wrap">
+      <div class="matrix-lede">
+        <p class="section-tag">The Full Picture</p>
+        <h2 class="section-heading">Same topic, five lenses</h2>
+        <p class="section-sub">Click any topic to see how each role views it. The disagreements are not random, they are structural.</p>
+      </div>
+      <div class="matrix-list" id="matrixList"></div>
+    </div>
+  </section>
+
+  <!-- PLAYER SIGNAL -->
+  <section class="section fade-up" id="playerSignal">
+    <div class="wrap">
+      <p class="section-tag">Outside the Studio</p>
+      <h2 class="section-heading">The Player Signal</h2>
+      <p class="section-sub">There is a sixth perspective shaping the industry from outside: the player community pushing back against AI-generated content in shipped titles. Their reaction is not irrational. It is a market signal worth reading correctly.</p>
+      <div class="player-grid">
+        <div class="player-block">
+          <div class="player-block-label">What players are reacting to</div>
+          <p>Not AI tools in development pipelines, but AI output in finished products. Players generally do not care how their game was made. They care whether it feels like someone cared when they made it.</p>
+          <p>AI content generated without experienced human direction produces a recognizable aesthetic: generic, inconsistent, lacking intentionality. Players are developing instincts for it even when they cannot articulate why something feels off.</p>
+        </div>
+        <div class="player-block">
+          <div class="player-block-label">Why this pressure is useful</div>
+          <p>Vocal player protests against AI-generated content are creating real market pressure that is pushing the industry toward the only application that holds up over time: AI directed by people with taste and craft.</p>
+          <p>Crimson Desert in March 2026 is the clearest example. Pearl Abyss accidentally shipped AI placeholder art. Players identified it before the studio did. The apology and public audit commitment came directly from player pressure, not internal process.</p>
+        </div>
+        <div class="player-block">
+          <div class="player-block-label">What this means for studios</div>
+          <p>The question is not whether to use AI. The question is whether an experienced human with vision is directing the output before it ships.</p>
+          <p>Studios that use AI to skip creative judgment are learning that players notice, and the cost of their notice is higher than the cost saved. The protests are doing the industry a favor by making that consequence visible and concrete.</p>
+        </div>
+      </div>
+      <div class="player-stats">
+        <div class="player-stat"><span class="player-stat-num">7k+</span><span class="player-stat-lbl">Steam titles disclosed AI use in 2025</span></div>
+        <div class="player-stat"><span class="player-stat-num">52%</span><span class="player-stat-lbl">Of game dev professionals view AI negatively</span></div>
+        <div class="player-stat"><span class="player-stat-num">5%</span><span class="player-stat-lbl">Of AI usage is player-facing; 81% is internal</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="section fade-up">
+    <div class="wrap">
+      <p class="section-tag">About This Tool</p>
+      <h2 class="section-heading">Why this exists</h2>
+      <div class="why-content">
+        <p>AI is already changing game development. The question for most studios is not whether to use it, but how to adopt it without losing what makes their work good.</p>
+        <p>That conversation keeps stalling because each role has access to different evidence, different incentives, and different consequences. When you only hear your own side long enough, the other side starts to sound irrational.</p>
+        <p>This page maps where each perspective is grounded, what the other roles see that they do not, and what each would gain from listening.</p>
+        <p>If your studio is stuck in an AI debate where nobody is budging, send this to both sides.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="section fade-up">
+    <div class="wrap">
+      <p class="section-tag">Data and Sources</p>
+      <h2 class="section-heading" style="font-size: var(--text-xl);">GDC 2026 State of the Industry</h2>
+      <p class="sources-disclaimer">This is a perspective piece, not a study. Persona characterizations are informed by industry patterns, not survey categories.</p>
+      <p class="sources-freshness">Data as of: GDC 2026, January 2026</p>
+      <ul class="sources-list" role="list">
+        <li><a href="https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Game Industry Survey</a>. All sentiment, usage, and policy statistics.</li>
+        <li><a href="https://www.gamedeveloper.com/business/one-third-of-game-workers-use-generative-ai-but-half-think-it-s-bad-for-the-industry" target="_blank" rel="noopener noreferrer">Game Developer</a>: Usage breakdowns by task type.</li>
+        <li><a href="https://www.gamedeveloper.com/business/survey-one-in-four-developers-laid-off-over-the-past-two-years" target="_blank" rel="noopener noreferrer">Game Developer</a>: Opposition by discipline and job impact data.</li>
+        <li><a href="https://www.businesswire.com/news/home/20260129438528/en/" target="_blank" rel="noopener noreferrer">Business Wire</a>: Business/finance role usage and policy growth.</li>
+        <li><a href="https://www.pcgamer.com/gaming-industry/one-third-of-us-games-industry-workers-were-laid-off-in-the-last-2-years-gdc-survey-says/" target="_blank" rel="noopener noreferrer">PC Gamer</a>: Layoff data and AAA proprietary AI adoption.</li>
+        <li><a href="https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/" target="_blank" rel="noopener noreferrer">Whimsy Games</a>: Gameslop phenomenon and Steam disclosure data.</li>
+        <li><a href="https://naavik.co/digest/the-state-of-genai-in-game-development/" target="_blank" rel="noopener noreferrer">Naavik</a>: Experienced developers vs. vibe coders analysis.</li>
+        <li><a href="https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html" target="_blank" rel="noopener noreferrer">Engadget</a>: Crimson Desert AI art incident, March 2026.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-row">
+    <div class="footer-left">Created by HALP (<a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>)</div>
+    <div class="footer-right">
+      <div class="share-wrap">
+        <button class="share-trigger" id="shareBtn" aria-expanded="false" aria-haspopup="true">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="9.3" x2="10.2" y2="11.7"/><line x1="10.2" y1="4.3" x2="5.8" y2="6.7"/></svg>
+          Share
+        </button>
+        <div class="share-drop" id="shareDropdown">
+          <a class="share-item" id="shareLinkedIn" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+          <a class="share-item" id="shareX" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>X</a>
+          <a class="share-item" id="shareBluesky" href="#" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.785 2.627 3.593 3.503 6.173 3.264-3.578.418-6.737 1.766-2.747 6.07 4.843 4.748 6.272-1.067 6.95-3.37.678 2.303 1.19 7.788 6.95 3.37 3.836-4.148.987-5.652-2.747-6.07 2.58.239 5.388-.637 6.173-3.264.246-.828.624-5.79.624-6.479 0-.688-.139-1.86-.902-2.203-.66-.299-1.664-.621-4.3 1.24C14.046 4.747 11.087 8.686 12 10.8z"/></svg>Bluesky</a>
+          <button class="share-item" id="shareCopy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy link</button>
+        </div>
+      </div>
+      <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+    </div>
+  </div>
+</footer>
 
 <script>
 (function() {
   'use strict';
-
   var _store = window['local' + 'Storage'];
-  function getStored(key) { try { return _store.getItem(key); } catch(e) { return null; } }
-  function setStored(key, val) { try { _store.setItem(key, val); } catch(e) {} }
+  function getStored(k) { try { return _store.getItem(k); } catch(e) { return null; } }
+  function setStored(k, v) { try { _store.setItem(k, v); } catch(e) {} }
 
-  // ============================================
-  // CHANGELOG
-  // ============================================
+  // ── CHANGELOG ────────────────────────────────────────────────────────────
   var CHANGELOG = [
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Full visual redesign: dramatic typographic scale, numbered persona watermarks, large stat callouts, and clear section hierarchy throughout.' },
     { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added Experience vs. Exposure section: named the gap between shallow AI exposure and deep practitioner knowledge as a distinct dimension within each role.' },
-    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added The Player Signal section: addresses the gamer protest community as a legitimate corrective market force, with supporting data and the Crimson Desert case study.' },
-    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added Depth of Understanding topic to the cross-perspective matrix, showing how the same role looks at shallow vs. deep AI experience levels.' },
-    { version: 'v1.2', date: 'Apr 2026', tag: 'updated', text: 'Populated Real Voices quotes for all five personas with sourced industry statements from executives, practitioners, and published research.' },
-    { version: 'v1.2', date: 'Apr 2026', tag: 'updated', text: 'Added What\'s New changelog with versioning system.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added The Player Signal section: addresses the gamer protest community as a legitimate corrective market force, with the Crimson Desert case study.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added Depth of Understanding topic to the matrix, showing how the same role looks at shallow vs. deep AI experience levels.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'updated', text: 'Populated Real Voices quotes for all five personas with sourced industry statements and published research.' },
     { version: 'v1.1', date: 'Mar 2026', tag: 'new', text: 'Initial release: five personas, eight matrix topics, GDC 2026 State of the Industry data.' }
   ];
 
-  function renderChangelog() {
-    var list = document.getElementById('changelogList');
-    var badge = document.getElementById('changelogBadge');
+  (function renderChangelog() {
+    var list = document.getElementById('clList');
+    var badge = document.getElementById('clBadge');
     if (!list || !badge) return;
-
-    list.innerHTML = CHANGELOG.map(function(entry) {
-      return '<li class="changelog-entry">' +
-        '<span class="changelog-version">' + entry.version + ' &middot; ' + entry.date + '</span>' +
-        '<span class="changelog-text"><span class="changelog-tag tag-' + entry.tag + '">' + (entry.tag === 'new' ? 'New' : 'Updated') + '</span>' + entry.text + '</span>' +
-        '</li>';
+    list.innerHTML = CHANGELOG.map(function(e) {
+      return '<li class="cl-item"><span class="cl-ver">' + e.version + ' &middot; ' + e.date + '</span><span class="cl-text"><span class="cl-tag ' + e.tag + '">' + (e.tag === 'new' ? 'New' : 'Updated') + '</span>' + e.text + '</span></li>';
     }).join('');
+    var latest = CHANGELOG[0] ? CHANGELOG[0].version : '';
+    badge.textContent = CHANGELOG.filter(function(e) { return e.version === latest; }).length;
+  })();
 
-    var latestVersion = CHANGELOG[0] ? CHANGELOG[0].version : '';
-    var recentCount = CHANGELOG.filter(function(e) { return e.version === latestVersion; }).length;
-    badge.textContent = recentCount;
-  }
-
-  renderChangelog();
-
-  var changelogToggle = document.getElementById('changelogToggle');
-  var changelogPanel = document.getElementById('changelogPanel');
-  if (changelogToggle && changelogPanel) {
-    changelogToggle.addEventListener('click', function() {
-      var isOpen = changelogPanel.classList.contains('open');
-      changelogPanel.classList.toggle('open');
-      changelogToggle.classList.toggle('open');
-      changelogToggle.setAttribute('aria-expanded', !isOpen);
+  var clToggle = document.getElementById('clToggle');
+  var clDrawer = document.getElementById('clDrawer');
+  if (clToggle && clDrawer) {
+    clToggle.addEventListener('click', function() {
+      var open = clDrawer.classList.toggle('open');
+      clToggle.classList.toggle('open', open);
+      clToggle.setAttribute('aria-expanded', open);
     });
   }
 
-  // Share dropdown
-  var shareBtn = document.getElementById('shareBtn');
-  var shareDropdown = document.getElementById('shareDropdown');
+  // ── SHARE ─────────────────────────────────────────────────────────────────
   var pageUrl = 'https://gamedevai.guide/perspectives/';
   var shareText = 'Same AI tools, five different realities. See how your role shapes what you believe about AI in game dev.';
-  if (shareBtn && shareDropdown) {
-    shareBtn.addEventListener('click', function(e) { e.stopPropagation(); var o = shareDropdown.classList.toggle('open'); shareBtn.setAttribute('aria-expanded', o); });
-    document.addEventListener('click', function() { shareDropdown.classList.remove('open'); shareBtn.setAttribute('aria-expanded', 'false'); });
-    shareDropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+  var shareBtn = document.getElementById('shareBtn');
+  var shareDrop = document.getElementById('shareDropdown');
+  if (shareBtn && shareDrop) {
+    shareBtn.addEventListener('click', function(e) { e.stopPropagation(); var o = shareDrop.classList.toggle('open'); shareBtn.setAttribute('aria-expanded', o); });
+    document.addEventListener('click', function() { shareDrop.classList.remove('open'); if(shareBtn) shareBtn.setAttribute('aria-expanded', 'false'); });
+    shareDrop.addEventListener('click', function(e) { e.stopPropagation(); });
   }
-  if (document.getElementById('shareLinkedIn')) document.getElementById('shareLinkedIn').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
-  if (document.getElementById('shareX')) document.getElementById('shareX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
-  if (document.getElementById('shareBluesky')) document.getElementById('shareBluesky').href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
-  if (document.getElementById('shareReddit')) document.getElementById('shareReddit').href = 'https://www.reddit.com/submit?url=' + encodeURIComponent(pageUrl) + '&title=' + encodeURIComponent('Perspectives: How 5 game dev roles see AI differently');
-  var shareCopyEl = document.getElementById('shareCopy');
-  if (shareCopyEl) {
-    shareCopyEl.addEventListener('click', function() {
-      navigator.clipboard.writeText(pageUrl).then(function() {
-        var el = document.getElementById('shareCopy'); var orig = el.innerHTML;
-        el.querySelector('svg').style.display = 'none';
-        el.insertAdjacentHTML('afterbegin', '<svg viewBox="0 0 24 24" fill="none" stroke="#d4943c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>');
-        var t = el.lastChild; if (t.nodeType === 3) t.textContent = ' Copied!';
-        setTimeout(function() { el.innerHTML = orig; }, 1500);
-      });
+  var li = document.getElementById('shareLinkedIn'); if(li) li.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
+  var sx = document.getElementById('shareX'); if(sx) sx.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
+  var sb = document.getElementById('shareBluesky'); if(sb) sb.href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
+  var sc = document.getElementById('shareCopy');
+  if (sc) sc.addEventListener('click', function() {
+    navigator.clipboard.writeText(pageUrl).then(function() {
+      var orig = sc.innerHTML;
+      sc.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#d4943c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+      setTimeout(function() { sc.innerHTML = orig; }, 1500);
     });
-  }
+  });
 
-  // Persona config
+  // ── PERSONA CONFIG ────────────────────────────────────────────────────────
   var personaConfig = {
-    executive: {
-      color: 'var(--c-exec)', colorHex: '#5b8def', label: 'Executive / Producer', quote: '"Competitive edge."',
-      icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="20" rx="3"/><path d="M4 12h24"/><circle cx="10" cy="9" r="1" fill="{color}" stroke="none"/><circle cx="14" cy="9" r="1" fill="{color}" stroke="none"/><path d="M10 18h12M10 22h8"/></svg>'
-    },
-    creative: {
-      color: 'var(--c-creative)', colorHex: '#e8695c', label: 'Hands-On Creative', quote: '"Craft is the product."',
-      icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 28l-2-6-6-2 3-3 1-7 5 3 5-5 5 5 5-3 1 7 3 3-6 2-2 6"/><circle cx="16" cy="16" r="2" fill="{color}" stroke="none"/></svg>'
-    },
-    engineer: {
-      color: 'var(--c-engineer)', colorHex: '#4eca7a', label: 'Engineer / Technical', quote: '"Useful where bounded."',
-      icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l8 4 8-4"/><path d="M8 6v12l8 8 8-8V6"/><path d="M16 10v16"/></svg>'
-    },
-    indie: {
-      color: 'var(--c-indie)', colorHex: '#b07ce8', label: 'Indie / Solo Dev', quote: '"Force multiplier."',
-      icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l3 6h7l-5.5 4.5L22 22l-6-4-6 4 1.5-7.5L6 10h7z"/></svg>'
-    },
-    enterprise: {
-      color: 'var(--c-enterprise)', colorHex: '#8a9bae', label: 'Enterprise / Non-Game', quote: '"Productivity transformer."',
-      icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M11 9h4M11 13h10M11 17h10M11 21h6"/><path d="M22 9h1"/></svg>'
-    }
+    executive:  { colorHex: '#5b8def', label: 'Executive / Producer',   quote: '"Competitive edge."',       icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="24" height="20" rx="3"/><path d="M4 12h24"/><circle cx="10" cy="9" r="1" fill="{c}" stroke="none"/><circle cx="14" cy="9" r="1" fill="{c}" stroke="none"/><path d="M10 18h12M10 22h8"/></svg>' },
+    creative:   { colorHex: '#e8695c', label: 'Hands-On Creative',       quote: '"Craft is the product."',   icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 28l-2-6-6-2 3-3 1-7 5 3 5-5 5 5 5-3 1 7 3 3-6 2-2 6"/><circle cx="16" cy="16" r="2" fill="{c}" stroke="none"/></svg>' },
+    engineer:   { colorHex: '#4eca7a', label: 'Engineer / Technical',    quote: '"Useful where bounded."',   icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6l8 4 8-4"/><path d="M8 6v12l8 8 8-8V6"/><path d="M16 10v16"/></svg>' },
+    indie:      { colorHex: '#b07ce8', label: 'Indie / Solo Dev',        quote: '"Force multiplier."',       icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4l3 6h7l-5.5 4.5L22 22l-6-4-6 4 1.5-7.5L6 10h7z"/></svg>' },
+    enterprise: { colorHex: '#8a9bae', label: 'Enterprise / Non-Game',   quote: '"Productivity transformer."', icon: '<svg viewBox="0 0 32 32" fill="none" stroke="{c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="20" height="24" rx="2"/><path d="M11 9h4M11 13h10M11 17h10M11 21h6"/><path d="M22 9h1"/></svg>' }
   };
 
-  function makeIcon(key, size) {
-    var cfg = personaConfig[key];
-    return cfg.icon.replace(/\{color\}/g, cfg.colorHex).replace('viewBox', 'class="persona-card-icon" style="width:' + (size||32) + 'px;height:' + (size||32) + 'px" viewBox');
-  }
-  function makeDetailIcon(key) {
-    var cfg = personaConfig[key];
-    return cfg.icon.replace(/\{color\}/g, cfg.colorHex).replace('viewBox', 'class="persona-detail-icon" viewBox');
+  function makeIcon(key, cls, size) {
+    var c = personaConfig[key]; size = size || 26;
+    return c.icon.replace(/\{c\}/g, c.colorHex).replace('viewBox', 'class="' + cls + '" style="width:' + size + 'px;height:' + size + 'px" viewBox');
   }
 
-  // Build persona cards
+  // ── BUILD PERSONA CARDS ───────────────────────────────────────────────────
   var grid = document.getElementById('personaGrid');
+  var personaKeys = Object.keys(personaConfig);
   if (grid) {
-    Object.keys(personaConfig).forEach(function(key) {
+    personaKeys.forEach(function(key, idx) {
       var cfg = personaConfig[key];
       var btn = document.createElement('button');
       btn.className = 'persona-card';
       btn.dataset.persona = key;
       btn.setAttribute('role', 'button');
       btn.setAttribute('aria-pressed', 'false');
-      btn.style.setProperty('--persona-color', cfg.color);
-      btn.innerHTML = makeIcon(key, 32) +
+      btn.style.setProperty('--persona-color', cfg.colorHex);
+      btn.innerHTML =
+        '<span class="persona-card-num">0' + (idx + 1) + '</span>' +
+        makeIcon(key, 'persona-card-icon', 26) +
         '<span class="persona-card-title">' + cfg.label + '</span>' +
         '<span class="persona-card-quote">' + cfg.quote + '</span>';
       grid.appendChild(btn);
     });
   }
 
-  // Persona data
+  // ── PERSONA DATA ──────────────────────────────────────────────────────────
   var personas = {
     executive: {
       name: 'Studio Executive / Producer',
       stance: '"I see AI as a way to hit targets and ship faster."',
       quotes: [
-        {
-          text: 'AI tools may help you create assets, but that will not help you create hits. Creating a hit of that magnitude requires human engagement and creativity.',
-          attr: 'Strauss Zelnick, CEO, Take-Two Interactive, March 2026',
-          source: 'Take-Two Q3 Earnings Call',
-          url: 'https://www.reuters.com/technology/artificial-intelligence/take-two-chief-says-ai-can-aid-but-not-replace-human-creativity-games-2026-03-17/'
-        },
-        {
-          text: 'Upper management uses AI tools at nearly twice the rate of individual contributors. The adoption gap between decision-makers and practitioners is a real and underacknowledged source of internal friction.',
-          attr: 'GDC 2026 State of the Industry: 47% upper management vs. 29% individual contributors',
-          source: 'GDC 2026',
-          url: 'https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/'
-        }
+        { text: 'AI tools may help you create assets, but that will not help you create hits. Creating a hit of that magnitude requires human engagement and creativity.', attr: 'Strauss Zelnick, CEO, Take-Two Interactive, March 2026', source: 'Take-Two Q3 Earnings Call', url: 'https://www.reuters.com/technology/artificial-intelligence/take-two-chief-says-ai-can-aid-but-not-replace-human-creativity-games-2026-03-17/' },
+        { text: 'Upper management uses AI tools at nearly twice the rate of individual contributors. The adoption gap between decision-makers and practitioners is a real and underacknowledged source of internal friction.', attr: 'GDC 2026: 47% upper management vs. 29% individual contributors', source: 'GDC 2026', url: 'https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/' }
       ],
-      believe: [
-        'AI will cut production costs 40-60% and accelerate timelines.',
-        'Teams that resist AI will fall behind competitors.',
-        'AI-generated content is getting good enough to ship.',
-        'The resistance is mostly fear of change.',
-        'AI makes small teams competitive with big studios.'
-      ],
-      right: [
-        'AI does provide measurable efficiency gains on bounded tasks: code completion, crash triage, transcription.',
-        'Studios without any AI strategy will miss competitive advantages in pipeline efficiency.',
-        'The speed of tool evolution means waiting too long carries real opportunity cost.'
-      ],
-      wrong: [
-        'The <span class="stat">40-60% cost reduction</span> numbers are vendor marketing. Actual savings are closer to 15-30% on specific tasks, with new costs for integration and rework.',
-        'Creative resistance correlates with expertise, not fear. <span class="stat">52% now view AI negatively</span>, up from 18%.',
-        'AI output quality degrades on creative work requiring intentionality and consistency. Players notice.',
-        'Pushing AI adoption without team buy-in erodes studio culture and morale.'
-      ],
-      missing: [
-        { source: 'From Creatives', text: 'The "last 20%" separating prototype from shippable product is where craft lives. AI cannot do it.' },
-        { source: 'From Engineers', text: 'AI works best on bounded, repetitive, verifiable tasks. The task type matters more than the tool.' },
-        { source: 'From Indie Devs', text: 'AI\'s biggest value is as a force multiplier for gaps you cannot hire for, not a replacement for people you already have.' }
-      ]
+      believe: ['AI will cut production costs 40-60% and accelerate timelines.','Teams that resist AI will fall behind competitors.','AI-generated content is getting good enough to ship.','The resistance is mostly fear of change.','AI makes small teams competitive with big studios.'],
+      right: ['AI does provide measurable efficiency gains on bounded tasks: code completion, crash triage, transcription.','Studios without any AI strategy will miss competitive advantages in pipeline efficiency.','The speed of tool evolution means waiting too long carries real opportunity cost.'],
+      wrong: ['The <span class="stat">40-60% cost reduction</span> numbers are vendor marketing. Actual savings are closer to 15-30% on specific tasks, with new costs for integration and rework.','Creative resistance correlates with expertise, not fear. <span class="stat">52% now view AI negatively</span>, up from 18%.','AI output quality degrades on creative work requiring intentionality and consistency. Players notice.','Pushing AI adoption without team buy-in erodes studio culture and morale.'],
+      missing: [{ source: 'From Creatives', text: 'The "last 20%" separating prototype from shippable product is where craft lives. AI cannot do it.' },{ source: 'From Engineers', text: 'AI works best on bounded, repetitive, verifiable tasks. The task type matters more than the tool.' },{ source: 'From Indie Devs', text: 'AI\'s biggest value is as a force multiplier for gaps you cannot hire for, not a replacement for people you already have.' }]
     },
     creative: {
       name: 'Hands-On Creative',
       stance: '"I see AI as a threat to craft and jobs."',
       quotes: [
-        {
-          text: 'At first, I had a little bit of anxiety because, if we really can start just cranking out games like that, then an entire industry of people who have spent years perfecting their craft could end up jobless.',
-          attr: 'Alexis Brutman, CEO, Astral Clocktower Studios',
-          source: 'GameRant, Feb 2026',
-          url: 'https://gamerant.com/ai-game-developer-interview/'
-        },
-        {
-          text: 'Pearl Abyss used experimental AI tools for early 2D prop iteration. Placeholder assets were accidentally shipped. Players identified them, forcing an apology and a commitment to audit and replace all affected content.',
-          attr: 'Crimson Desert launch incident, March 2026. A cautionary example of what this persona fears becoming real.',
-          source: 'Engadget',
-          url: 'https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html'
-        }
+        { text: 'At first, I had a little bit of anxiety because, if we really can start just cranking out games like that, then an entire industry of people who have spent years perfecting their craft could end up jobless.', attr: 'Alexis Brutman, CEO, Astral Clocktower Studios', source: 'GameRant, Feb 2026', url: 'https://gamerant.com/ai-game-developer-interview/' },
+        { text: 'Pearl Abyss used experimental AI tools for early 2D prop iteration. Placeholder assets were accidentally shipped. Players identified them, forcing an apology and a commitment to audit and replace all affected content.', attr: 'Crimson Desert launch incident, March 2026', source: 'Engadget', url: 'https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html' }
       ],
-      believe: [
-        'AI is fundamentally about replacing creative jobs with cheaper automation.',
-        'Using AI means cheating at creativity. The output is stolen from artists\' work.',
-        'Management is pushing AI to justify layoffs, not improve quality.',
-        'AI output is always detectable, generic, and inferior.',
-        'Engaging with AI means training your own replacement.'
-      ],
-      right: [
-        'Creative quality degrades when AI has too much control. Entertainment requires intentionality that AI cannot provide.',
-        'Training data ethics are a legitimate, unresolved concern.',
-        'Executive interest in AI is often cost-driven. <span class="stat">58% of publishing/marketing</span> use AI vs. <span class="stat">30% of studio devs</span>.',
-        'The "AI generates, human reviews" framing is backwards and demeaning to creative work.'
-      ],
-      wrong: [
-        'Not all AI use is content generation. <span class="stat">81% of usage</span> is research/brainstorming, <span class="stat">47% is code assistance</span>. The most adopted uses augment thinking, not replace making.',
-        'Some applications have zero creative concerns: crash triage, build optimization, transcription, regression testing.',
-        'Blanket rejection means missing tools that reduce tedious work (documentation, phoneme matching, topology cleanup) while freeing time for actual creative work.',
-        '<span class="stat">78% of studios</span> now have AI policies. The industry is developing governance.'
-      ],
-      missing: [
-        { source: 'From Executives', text: 'Real competitive pressures drive AI adoption. 35% of studios are self-funded. Not all business rationale is greed.' },
-        { source: 'From Engineers', text: 'Many AI tools target developer productivity on non-creative tasks. The engineer\'s view is often more nuanced than "pro" or "anti."' },
-        { source: 'From Indie Devs', text: 'For a solo dev who cannot afford a sound library or mocap studio, AI unlocks capabilities they would never have otherwise.' }
-      ]
+      believe: ['AI is fundamentally about replacing creative jobs with cheaper automation.','Using AI means cheating at creativity. The output is stolen from artists\' work.','Management is pushing AI to justify layoffs, not improve quality.','AI output is always detectable, generic, and inferior.','Engaging with AI means training your own replacement.'],
+      right: ['Creative quality degrades when AI has too much control. Entertainment requires intentionality that AI cannot provide.','Training data ethics are a legitimate, unresolved concern.','Executive interest in AI is often cost-driven. <span class="stat">58% of publishing/marketing</span> use AI vs. <span class="stat">30% of studio devs</span>.','The "AI generates, human reviews" framing is backwards and demeaning to creative work.'],
+      wrong: ['Not all AI use is content generation. <span class="stat">81% of usage</span> is research/brainstorming, <span class="stat">47% is code assistance</span>. The most adopted uses augment thinking, not replace making.','Some applications have zero creative concerns: crash triage, build optimization, transcription, regression testing.','Blanket rejection means missing tools that reduce tedious work while freeing time for actual creative work.','<span class="stat">78% of studios</span> now have AI policies. The industry is developing governance.'],
+      missing: [{ source: 'From Executives', text: 'Real competitive pressures drive AI adoption. 35% of studios are self-funded. Not all business rationale is greed.' },{ source: 'From Engineers', text: 'Many AI tools target developer productivity on non-creative tasks. The engineer\'s view is often more nuanced than "pro" or "anti."' },{ source: 'From Indie Devs', text: 'For a solo dev who cannot afford a sound library or mocap studio, AI unlocks capabilities they would never have otherwise.' }]
     },
     engineer: {
       name: 'Engineer / Technical',
       stance: '"I see AI as a tool. Some parts are genuinely useful, some are overhyped."',
       quotes: [
-        {
-          text: 'There are two approaches to using AI for coding: one for experienced programmers and the other for complete novices. Experienced programmers use AI to write boilerplate more efficiently. Novice programmers place all trust in the AI to handle everything, including its own errors.',
-          attr: 'State of AI in Game Development, 2025',
-          source: 'Naavik',
-          url: 'https://naavik.co/digest/the-state-of-genai-in-game-development/'
-        },
-        {
-          text: 'AI now plays a central role in optimizing development workflows, and the fundamentals I built in my career have helped me stay relevant as my job responsibilities evolve. Those foundations will keep supporting my growth as AI continues to shape the industry.',
-          attr: 'Senior game programmer, 2026',
-          source: 'Research.com',
-          url: 'https://research.com/advice/ai-automation-and-the-future-of-game-programming-degree-careers'
-        }
+        { text: 'There are two approaches to using AI for coding: one for experienced programmers and the other for complete novices. Experienced programmers use AI to write boilerplate more efficiently. Novice programmers place all trust in the AI to handle everything, including its own errors.', attr: 'State of AI in Game Development, 2025', source: 'Naavik', url: 'https://naavik.co/digest/the-state-of-genai-in-game-development/' },
+        { text: 'AI now plays a central role in optimizing development workflows, and the fundamentals I built in my career have helped me stay relevant as my job responsibilities evolve.', attr: 'Senior game programmer, 2026', source: 'Research.com', url: 'https://research.com/advice/ai-automation-and-the-future-of-game-programming-degree-careers' }
       ],
-      believe: [
-        'AI coding tools are genuinely useful for bounded, repetitive tasks.',
-        'AI-generated code needs review. It hallucinates APIs and introduces subtle bugs.',
-        'The hype is overblown, but the tools are incrementally useful.',
-        'AI works best in the pipeline, not in the final product.',
-        'Most "AI game features" are demos that do not scale to production.'
-      ],
-      right: [
-        'The bounded vs. open-ended distinction is the most accurate framework for evaluating AI tools.',
-        'Code review is non-negotiable. AI code has higher error rates on edge cases.',
-        'Pipeline integration (CI/CD, crash triage, regression testing) is where AI delivers most reliably.',
-        'Production-scale AI features are genuinely harder than demos suggest.'
-      ],
-      wrong: [
-        'Dismissing creative concerns as "not technical enough" misses the point. Creatives have legitimate expertise about what makes entertainment work.',
-        '"The tools will get better" is speculation, not a strategy. Current tools have fundamental limitations.',
-        'The social and ethical dimensions of AI in games are engineering problems too, not just "business" concerns.'
-      ],
-      missing: [
-        { source: 'From Creatives', text: 'The 52% negative sentiment correlates with deeper understanding of AI, not less.' },
-        { source: 'From Executives', text: 'Budget pressure is real and getting worse. Understanding the business case helps engineers advocate for responsible adoption.' },
-        { source: 'From Enterprise', text: 'Enterprise AI adoption patterns (governance, pilot programs, success metrics) could benefit studios that adopt tools more chaotically.' }
-      ]
+      believe: ['AI coding tools are genuinely useful for bounded, repetitive tasks.','AI-generated code needs review. It hallucinates APIs and introduces subtle bugs.','The hype is overblown, but the tools are incrementally useful.','AI works best in the pipeline, not in the final product.','Most "AI game features" are demos that do not scale to production.'],
+      right: ['The bounded vs. open-ended distinction is the most accurate framework for evaluating AI tools.','Code review is non-negotiable. AI code has higher error rates on edge cases.','Pipeline integration (CI/CD, crash triage, regression testing) is where AI delivers most reliably.','Production-scale AI features are genuinely harder than demos suggest.'],
+      wrong: ['Dismissing creative concerns as "not technical enough" misses the point. Creatives have legitimate expertise about what makes entertainment work.','"The tools will get better" is speculation, not a strategy. Current tools have fundamental limitations.','The social and ethical dimensions of AI in games are engineering problems too, not just "business" concerns.'],
+      missing: [{ source: 'From Creatives', text: 'The 52% negative sentiment correlates with deeper understanding of AI, not less.' },{ source: 'From Executives', text: 'Budget pressure is real and getting worse. Understanding the business case helps engineers advocate for responsible adoption.' },{ source: 'From Enterprise', text: 'Enterprise AI adoption patterns (governance, pilot programs, success metrics) could benefit studios that adopt tools more chaotically.' }]
     },
     indie: {
       name: 'Indie / Solo Dev',
       stance: '"I see AI as a force multiplier for my tiny team."',
       quotes: [
-        {
-          text: 'We do not rely on AI to create a full asset at once. We break ideas into parts, use AI for drafts, and let developers and artists bring them to life. The main purpose is to boost speed at the first stage, not to replace the people doing the actual work.',
-          attr: 'GIANTY studio on their AI pipeline integration',
-          source: 'GIANTY',
-          url: 'https://www.gianty.com/where-might-ai-in-game-development-take-us-in-2025/'
-        },
-        {
-          text: 'A solo dev with AI tools can produce more prototype content than ever. But shipping a polished game still requires deep expertise in optimization, platform requirements, and player psychology. AI helps a five-person team do the work of eight, not fifty.',
-          attr: 'Game Dev AI Guide, practical tip',
-          source: 'gamedevai.guide',
-          url: 'https://gamedevai.guide/ai-tools/'
-        }
+        { text: 'We do not rely on AI to create a full asset at once. We break ideas into parts, use AI for drafts, and let developers and artists bring them to life. The main purpose is to boost speed at the first stage, not to replace the people doing the actual work.', attr: 'GIANTY studio on their AI pipeline integration', source: 'GIANTY', url: 'https://www.gianty.com/where-might-ai-in-game-development-take-us-in-2025/' },
+        { text: 'A solo dev with AI tools can produce more prototype content than ever. But shipping a polished game still requires deep expertise. AI helps a five-person team do the work of eight, not fifty.', attr: 'Game Dev AI Guide, practical tip', source: 'gamedevai.guide', url: 'https://gamedevai.guide/ai-tools/' }
       ],
-      believe: [
-        'AI is the great equalizer. It lets one person do what used to take a team.',
-        'AI-generated assets are fine where polish is not the differentiator.',
-        'Ethical concerns matter less when you could not afford an artist anyway.',
-        'AI lets you prototype and validate ideas faster than ever.',
-        'The big-studio backlash does not apply to this situation.'
-      ],
-      right: [
-        'AI as a force multiplier for small teams is real. Phone-based mocap, scratch VO, and placeholder art unlock previously budget-gated capabilities.',
-        'Faster validation means less time committed to bad ideas.',
-        'The indie context is different from AAA. A solo dev using AI for jam assets is not the same as a AAA studio shipping AI art in a $70 game.'
-      ],
-      wrong: [
-        '"AI makes a solo dev equal to a team" oversells it. AI helps stretch capacity modestly, not multiply it tenfold.',
-        'AI-generated content creates a recognizable aesthetic that players are learning to identify and reject.',
-        'Training data ethics do not disappear because you are indie. Players apply the same standards.',
-        'Copyright status of AI-generated content is unresolved. Building commercial products on assets you may not legally own is a risk.'
-      ],
-      missing: [
-        { source: 'From Creatives', text: 'Players are developing "AI detection" instincts. Content that reads as AI-generated triggers negative sentiment regardless of studio size.' },
-        { source: 'From Engineers', text: 'The most valuable AI tools for solo devs may not be the obvious ones (art gen) but the invisible ones (code completion, crash reporting).' },
-        { source: 'From Executives', text: '"Made with AI" is increasingly a marketing liability, not an asset.' }
-      ]
+      believe: ['AI is the great equalizer. It lets one person do what used to take a team.','AI-generated assets are fine where polish is not the differentiator.','Ethical concerns matter less when you could not afford an artist anyway.','AI lets you prototype and validate ideas faster than ever.','The big-studio backlash does not apply to this situation.'],
+      right: ['AI as a force multiplier for small teams is real. Phone-based mocap, scratch VO, and placeholder art unlock previously budget-gated capabilities.','Faster validation means less time committed to bad ideas.','The indie context is different from AAA. A solo dev using AI for jam assets is not the same as a AAA studio shipping AI art in a $70 game.'],
+      wrong: ['"AI makes a solo dev equal to a team" oversells it. AI helps stretch capacity modestly, not multiply it tenfold.','AI-generated content creates a recognizable aesthetic that players are learning to identify and reject.','Training data ethics do not disappear because you are indie. Players apply the same standards.','Copyright status of AI-generated content is unresolved. Building commercial products on assets you may not legally own is a risk.'],
+      missing: [{ source: 'From Creatives', text: 'Players are developing "AI detection" instincts. Content that reads as AI-generated triggers negative sentiment regardless of studio size.' },{ source: 'From Engineers', text: 'The most valuable AI tools for solo devs may not be the obvious ones (art gen) but the invisible ones (code completion, crash reporting).' },{ source: 'From Executives', text: '"Made with AI" is increasingly a marketing liability, not an asset.' }]
     },
     enterprise: {
       name: 'Enterprise / Non-Game Dev',
       stance: '"I see AI transforming productivity across our org."',
       quotes: [
-        {
-          text: 'The "gameslop" phenomenon of 2025 demonstrated that AI without curation produces mediocrity at scale. Platform responses including disclosure requirements, quality badges, and stricter curation signal that the industry is self-correcting.',
-          attr: 'AI in Gaming industry analysis, 2026',
-          source: 'Whimsy Games',
-          url: 'https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/'
-        },
-        {
-          text: 'Game developers push AI tools into territory enterprise never touches: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI research and development testbed any industry has.',
-          attr: 'Cross-industry AI adoption analysis, 2026',
-          source: 'Lorien Insights',
-          url: 'https://www.lorienglobal.com/insights/ai-in-game-development-what-it-means-for-developers-in-2026'
-        }
+        { text: 'The "gameslop" phenomenon of 2025 demonstrated that AI without curation produces mediocrity at scale. Platform responses including disclosure requirements and stricter curation signal that the industry is self-correcting.', attr: 'AI in Gaming industry analysis, 2026', source: 'Whimsy Games', url: 'https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/' },
+        { text: 'Game developers push AI tools into territory enterprise never touches: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI research and development testbed any industry has.', attr: 'Cross-industry AI adoption analysis, 2026', source: 'Lorien Insights', url: 'https://www.lorienglobal.com/insights/ai-in-game-development-what-it-means-for-developers-in-2026' }
       ],
-      believe: [
-        'AI is a proven productivity multiplier. Already seen 20-40% efficiency gains.',
-        'Resistance to AI is irrational and will fade.',
-        'The game industry is behind on AI adoption.',
-        'Game developer attitudes matter less because enterprise AI revenue dwarfs gaming.',
-        'AI governance frameworks solve adoption resistance.',
-        'Creative concerns are overblown.'
-      ],
-      right: [
-        'Enterprise AI adoption is more methodical than game dev\'s chaotic approach: structured pilots, governance, measured ROI.',
-        'Policy frameworks help. Studios with clear AI policies have less internal conflict.',
-        'Some game dev workflows (PM, QA, analytics) are structurally similar to enterprise and benefit from the same tools.'
-      ],
-      wrong: [
-        'Games are entertainment where creative quality IS the product. Enterprise optimizes for efficiency; games optimize for human experience.',
-        'Resistance correlates with expertise. The most knowledgeable professionals are the most skeptical.',
-        'Enterprise metrics (cost per ticket, time to resolution) do not translate. You cannot measure "fun per dollar."',
-        'Players care about HOW games are made in ways enterprise software users do not care about their CRM.',
-        'Game developers push AI into scenarios enterprise never encounters: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI R&D lab any industry has.'
-      ],
-      missing: [
-        { source: 'From Creatives', text: 'Entertainment is not a productivity problem. Game value comes from human creative decisions AI cannot replicate.' },
-        { source: 'From Engineers', text: 'Game dev has unique constraints (real-time rendering, physics, platform cert) that make enterprise AI patterns non-transferable in many cases.' },
-        { source: 'From Indie Devs', text: 'Game dev culture strongly resists corporate optimization thinking.' },
-        { source: 'From Game Developers', text: 'Game developers push AI tools into territory enterprise never touches. Their skepticism is not irrelevant; it is informed by harder problems.' }
-      ]
+      believe: ['AI is a proven productivity multiplier. Already seen 20-40% efficiency gains.','Resistance to AI is irrational and will fade.','The game industry is behind on AI adoption.','Game developer attitudes matter less because enterprise AI revenue dwarfs gaming.','AI governance frameworks solve adoption resistance.','Creative concerns are overblown.'],
+      right: ['Enterprise AI adoption is more methodical: structured pilots, governance, measured ROI.','Policy frameworks help. Studios with clear AI policies have less internal conflict.','Some game dev workflows (PM, QA, analytics) are structurally similar to enterprise and benefit from the same tools.'],
+      wrong: ['Games are entertainment where creative quality IS the product. Enterprise optimizes for efficiency; games optimize for human experience.','Resistance correlates with expertise. The most knowledgeable professionals are the most skeptical.','Enterprise metrics (cost per ticket, time to resolution) do not translate. You cannot measure "fun per dollar."','Players care about HOW games are made in ways enterprise software users do not care about their CRM.','Game developers push AI into scenarios enterprise never encounters. Dismissing their skepticism loses the most creative AI R&D lab any industry has.'],
+      missing: [{ source: 'From Creatives', text: 'Entertainment is not a productivity problem. Game value comes from human creative decisions AI cannot replicate.' },{ source: 'From Engineers', text: 'Game dev has unique constraints (real-time rendering, physics, platform cert) that make enterprise AI patterns non-transferable in many cases.' },{ source: 'From Indie Devs', text: 'Game dev culture strongly resists corporate optimization thinking.' },{ source: 'From Game Developers', text: 'Their skepticism is not irrelevant; it is informed by harder problems.' }]
     }
   };
 
-  // Matrix data
+  // ── MATRIX DATA ───────────────────────────────────────────────────────────
   var matrixTopics = [
-    { topic: 'Code Assistance', icon: '<path d="M4 4l4 4-4 4"/><path d="M10 12h4"/>', executive: 'No-brainer. Speeds up dev, reduces headcount needs.', creative: 'Fine for engineers. Keep it away from creative tools.', engineer: 'Useful for boilerplate, tests, docs. Hallucinated APIs mean review is mandatory. About 47% of devs use it.', indie: 'Essential. Fills in for the senior dev I cannot hire.', enterprise: 'Proven ROI. Standard across all engineering teams.' },
+    { topic: 'Code Assistance', icon: '<path d="M4 4l4 4-4 4"/><path d="M10 12h4"/>', executive: 'No-brainer. Speeds up dev, reduces headcount needs.', creative: 'Fine for engineers. Keep it away from creative tools.', engineer: 'Useful for boilerplate and tests. Hallucinated APIs mean review is mandatory. About 47% of devs use it.', indie: 'Essential. Fills in for the senior dev I cannot hire.', enterprise: 'Proven ROI. Standard across all engineering teams.' },
     { topic: 'Art / Asset Generation', icon: '<circle cx="8" cy="8" r="4"/><path d="M2 14l4-2 3 3 3-5 4 8H2z"/>', executive: 'Big cost savings on concepting and pre-production.', creative: 'The core threat. Trained on stolen work, produces generic output players reject.', engineer: 'Useful for placeholders and prototypes. Not production-ready for shipped art.', indie: 'Unlocks capabilities I could not afford: concept iteration, texture generation.', enterprise: 'Standard content workflow. Already used for marketing and internal assets.' },
     { topic: 'Content at Scale', icon: '<path d="M2 4h12M2 8h10M2 12h14"/>', executive: 'Localization, NPC dialogue, marketing copy. The volume we need is impossible to do manually.', creative: 'Scale is the opposite of craft. Players know the difference. Only 5% use AI for player-facing features.', engineer: 'Works for structured content (localization, test data). Falls apart for narrative consistency.', indie: 'Helps with first-pass localization and marketing copy I would otherwise skip.', enterprise: 'Our biggest productivity gains. Content at scale is a solved problem.' },
     { topic: 'AI-Powered QA', icon: '<path d="M2 2l6 6M14 2L8 8"/><rect x="1" y="8" width="14" height="6" rx="1"/>', executive: 'Reduces QA costs, catches bugs earlier. Clear ROI.', creative: 'One of the few AI uses without creative-integrity concerns.', engineer: 'The sweet spot: regression testing, crash triage, coverage analysis. Bounded, verifiable, high value.', indie: 'Would love it, but most tools are enterprise-priced.', enterprise: 'Standard practice. Game dev\'s real-time testing demands could push these tools further than enterprise.' },
-    { topic: 'Cost and Timeline', icon: '<circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/>', executive: 'Primary argument for adoption. About 15-30% savings on specific tasks, with potential for more.', creative: '17% have lost jobs within 12 months. Cost savings come at the expense of the people who make the product.', engineer: 'Savings are real but narrow. Integration costs offset gains on complex tasks.', indie: 'Different math for a two-person team. AI does not save money; it unlocks things we could not do.', enterprise: '20-40% efficiency gains demonstrated. The ROI case is well established.' },
-    { topic: 'Creative Quality', icon: '<path d="M8 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>', executive: 'Good enough is shipping. Perfectionism is a luxury when 35% of studios are self-funded.', creative: 'Quality IS the product. AI content lacks intentionality. Players are learning to spot it.', engineer: 'Quality is a spectrum. AI handles routine tasks; final polish requires human craft.', indie: 'Quality matters, but so does existence. A shipped game with some AI help beats a perfect game never made.', enterprise: 'Quality in enterprise is measurable. In games, quality IS the product. What game devs learn flows back to enterprise.' },
+    { topic: 'Cost and Timeline', icon: '<circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/>', executive: 'Primary argument for adoption. About 15-30% savings on specific tasks.', creative: '17% have lost jobs within 12 months. Cost savings come at the expense of the people who make the product.', engineer: 'Savings are real but narrow. Integration costs offset gains on complex tasks.', indie: 'Different math for a two-person team. AI does not save money; it unlocks things I could not do.', enterprise: '20-40% efficiency gains demonstrated. The ROI case is well established.' },
+    { topic: 'Creative Quality', icon: '<path d="M8 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>', executive: 'Good enough is shipping. Perfectionism is a luxury when 35% of studios are self-funded.', creative: 'Quality IS the product. AI content lacks intentionality. Players are learning to spot it.', engineer: 'Quality is a spectrum. AI handles routine tasks; final polish requires human craft.', indie: 'Quality matters, but so does existence. A shipped game beats a perfect game never made.', enterprise: 'Quality in enterprise is measurable. In games, quality IS the product.' },
     { topic: 'Job Displacement', icon: '<circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 3-5 6-5s6 2 6 5"/>', executive: 'Not replacing, repositioning. Though 17% have experienced layoffs within a year.', creative: 'The central concern. 28% laid off within 2 years. "Repositioning" is corporate for downsizing.', engineer: 'Real but exaggerated for technical roles. AI makes engineers more productive; it does not replace judgment.', indie: 'Does not apply the same way. I am not displacing anyone.', enterprise: 'A transition management challenge. But dismissing game dev resistance risks losing the most creative AI testbed.' },
     { topic: 'Who Controls the Process', icon: '<path d="M8 2v4M4 6l2 2M12 6l-2 2"/><path d="M3 10h10v4H3z"/>', executive: 'Leadership sets AI strategy; teams execute.', creative: 'Creators should control their tools. "AI generates, human reviews" is backwards.', engineer: 'Engineers should evaluate tools on technical merit. Management mandating tools without input is counterproductive.', indie: 'I control everything. AI is one more tool, used on my terms.', enterprise: 'IT and leadership define the AI stack. But game devs push tools into creative territory enterprise never touches.' },
-    { topic: 'Depth of Understanding', icon: '<circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/>', executive: 'Shallow: AI is a cost lever; reads vendor claims, pushes adoption. Deep: understands that AI requires process investment and that savings are narrower and more task-specific than marketed.', creative: 'Shallow: all AI is threat. Deep: distinguishes between content generation for creative output (high concern) and pipeline tools for repetitive tasks (lower concern, often genuinely useful).', engineer: 'Shallow: hype skeptic, waits for tools to mature. Deep: has built repeatable pipelines, knows exactly which task types AI handles reliably and which it fails on, uses it selectively.', indie: 'Shallow: AI generates everything, ship fast. Deep: AI for specific gaps only. Knows that AI-generated content has a recognizable aesthetic players are learning to identify and reject.', enterprise: 'Shallow: applies enterprise productivity metrics to creative output. Deep: recognizes that game development has fundamentally different quality signals and that player experience cannot be measured in efficiency terms.' }
+    { topic: 'Depth of Understanding', icon: '<circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/>', executive: 'Shallow: AI is a cost lever; reads vendor claims, pushes adoption. Deep: understands that savings are narrower and more task-specific than marketed.', creative: 'Shallow: all AI is threat. Deep: distinguishes content generation (high concern) from pipeline tools for repetitive tasks (often genuinely useful).', engineer: 'Shallow: hype skeptic, waits for tools to mature. Deep: built repeatable pipelines, knows exactly which task types AI handles reliably.', indie: 'Shallow: AI generates everything, ship fast. Deep: AI for specific gaps only. Knows that AI-generated content has a recognizable aesthetic players are learning to reject.', enterprise: 'Shallow: applies enterprise productivity metrics to creative output. Deep: recognizes that player experience cannot be measured in efficiency terms.' }
   ];
 
-  // Render matrix accordion
-  var accordionEl = document.getElementById('matrixAccordion');
+  // ── BUILD MATRIX ──────────────────────────────────────────────────────────
+  var matrixList = document.getElementById('matrixList');
   var personaLabels = ['Executive', 'Creative', 'Engineer', 'Indie Dev', 'Enterprise'];
-  var personaKeys = ['executive', 'creative', 'engineer', 'indie', 'enterprise'];
-
-  if (accordionEl) {
+  if (matrixList) {
     matrixTopics.forEach(function(row) {
-      var topic = document.createElement('div');
-      topic.className = 'matrix-topic';
-      topic.innerHTML =
-        '<button class="matrix-topic-btn" aria-expanded="false">' +
-          '<span class="matrix-topic-btn-left"><svg class="matrix-topic-btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + row.icon + '</svg><span>' + row.topic + '</span></span>' +
-          '<svg class="matrix-topic-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg>' +
+      var el = document.createElement('div');
+      el.className = 'matrix-row';
+      el.innerHTML =
+        '<button class="matrix-row-btn" aria-expanded="false">' +
+          '<span class="matrix-row-left"><svg class="matrix-row-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + row.icon + '</svg>' + row.topic + '</span>' +
+          '<svg class="matrix-row-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg>' +
         '</button>' +
-        '<div class="matrix-topic-body"><div class="matrix-topic-grid">' +
+        '<div class="matrix-row-body"><div class="matrix-cells">' +
           personaKeys.map(function(key, i) {
             var cfg = personaConfig[key];
-            return '<div class="matrix-topic-cell" style="--cell-color:' + cfg.colorHex + '">' +
-              '<div class="matrix-cell-persona" style="color:' + cfg.colorHex + '"><span class="matrix-cell-dot" style="background:' + cfg.colorHex + '"></span>' + personaLabels[i] + '</div>' +
+            return '<div class="matrix-cell" style="--cell-color:' + cfg.colorHex + '">' +
+              '<div class="matrix-cell-name" style="color:' + cfg.colorHex + '"><span class="matrix-dot" style="background:' + cfg.colorHex + '"></span>' + personaLabels[i] + '</div>' +
               '<div class="matrix-cell-text">' + row[key] + '</div></div>';
           }).join('') +
         '</div></div>';
-
-      topic.querySelector('.matrix-topic-btn').addEventListener('click', function() {
-        var wasOpen = topic.classList.contains('open');
-        accordionEl.querySelectorAll('.matrix-topic.open').forEach(function(t) { t.classList.remove('open'); t.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'false'); });
-        if (!wasOpen) { topic.classList.add('open'); topic.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'true'); gaEvent('matrix_topic_opened', { topic: row.topic }); }
+      el.querySelector('.matrix-row-btn').addEventListener('click', function() {
+        var was = el.classList.contains('open');
+        matrixList.querySelectorAll('.matrix-row.open').forEach(function(r) { r.classList.remove('open'); r.querySelector('.matrix-row-btn').setAttribute('aria-expanded', 'false'); });
+        if (!was) { el.classList.add('open'); el.querySelector('.matrix-row-btn').setAttribute('aria-expanded', 'true'); gaEvent('matrix_topic_opened', { topic: row.topic }); }
       });
-      accordionEl.appendChild(topic);
+      matrixList.appendChild(el);
     });
   }
 
-  // Persona selection
+  // ── PERSONA SELECTION ─────────────────────────────────────────────────────
   var cards = document.querySelectorAll('.persona-card');
-  var detailWrapper = document.getElementById('personaDetail');
+  var detailWrap = document.getElementById('personaDetailWrap');
 
   function selectPersona(key, scroll) {
     var data = personas[key];
     var cfg = personaConfig[key];
-    if (!data) return;
+    if (!data || !cfg) return;
 
-    cards.forEach(function(c) { var a = c.dataset.persona === key; c.classList.toggle('active', a); c.setAttribute('aria-pressed', a); });
+    cards.forEach(function(c) {
+      var a = c.dataset.persona === key;
+      c.classList.toggle('active', a);
+      c.setAttribute('aria-pressed', String(a));
+    });
 
-    var detailHeader = document.getElementById('detailHeader');
-    if (detailHeader) detailHeader.style.borderBottomColor = cfg.colorHex;
-    if (detailWrapper) detailWrapper.style.setProperty('--active-color', cfg.colorHex);
-
-    var detailIcon = document.getElementById('detailIcon');
-    if (detailIcon) detailIcon.innerHTML = makeDetailIcon(key);
-
-    var detailName = document.getElementById('detailName');
-    if (detailName) detailName.textContent = data.name;
-
-    var detailStance = document.getElementById('detailStance');
-    if (detailStance) detailStance.textContent = data.stance;
-
-    var quotesEl = document.getElementById('personaQuotes');
-    if (quotesEl) {
-      if (data.quotes && data.quotes.length) {
-        quotesEl.innerHTML = '<p class="persona-quotes-label">Real voices</p>' + data.quotes.map(function(q) {
-          return '<div class="persona-quote-card"><p class="persona-quote-text">"' + q.text + '"</p><p class="persona-quote-attr">' + q.attr + ' &middot; <a href="' + q.url + '" target="_blank" rel="noopener noreferrer">' + q.source + '</a></p></div>';
-        }).join('');
-      } else {
-        quotesEl.innerHTML = '';
-      }
+    if (detailWrap) {
+      detailWrap.style.setProperty('--active-color', cfg.colorHex);
     }
 
-    var detailBelieve = document.getElementById('detailBelieve');
-    if (detailBelieve) detailBelieve.innerHTML = data.believe.map(function(b) { return '<span class="believe-tag">' + b + '</span>'; }).join('');
+    var pdRoleLabel = document.getElementById('pdRoleLabel');
+    if (pdRoleLabel) pdRoleLabel.textContent = cfg.label;
 
-    var detailRight = document.getElementById('detailRight');
-    if (detailRight) detailRight.innerHTML = data.right.map(function(r) { return '<li>' + r + '</li>'; }).join('');
+    var pdName = document.getElementById('pdName');
+    if (pdName) pdName.textContent = data.name;
 
-    var detailWrong = document.getElementById('detailWrong');
-    if (detailWrong) detailWrong.innerHTML = data.wrong.map(function(w) { return '<li>' + w + '</li>'; }).join('');
+    var pdStance = document.getElementById('pdStance');
+    if (pdStance) pdStance.textContent = data.stance;
 
-    var detailMissing = document.getElementById('detailMissing');
-    if (detailMissing) detailMissing.innerHTML = data.missing.map(function(m) { return '<li><span class="missing-source">' + m.source + '</span><br>' + m.text + '</li>'; }).join('');
+    var pdVoices = document.getElementById('pdVoices');
+    if (pdVoices) {
+      if (data.quotes && data.quotes.length) {
+        pdVoices.innerHTML = '<p class="pd-voices-label">Real voices</p>' +
+          data.quotes.map(function(q) {
+            return '<div class="pd-quote">' +
+              '<p class="pd-quote-text">"' + q.text + '"</p>' +
+              '<p class="pd-quote-attr">' + q.attr + ' &middot; <a href="' + q.url + '" target="_blank" rel="noopener noreferrer">' + q.source + '</a></p>' +
+              '</div>';
+          }).join('');
+      } else { pdVoices.innerHTML = ''; }
+    }
 
-    if (detailWrapper) detailWrapper.classList.add('visible');
+    var pdTags = document.getElementById('pdTags');
+    if (pdTags) pdTags.innerHTML = data.believe.map(function(b) { return '<span class="pd-tag">' + b + '</span>'; }).join('');
+
+    var pdRight = document.getElementById('pdRight');
+    if (pdRight) pdRight.innerHTML = data.right.map(function(r) { return '<li>' + r + '</li>'; }).join('');
+
+    var pdWrong = document.getElementById('pdWrong');
+    if (pdWrong) pdWrong.innerHTML = data.wrong.map(function(w) { return '<li>' + w + '</li>'; }).join('');
+
+    var pdMissing = document.getElementById('pdMissing');
+    if (pdMissing) pdMissing.innerHTML = data.missing.map(function(m) { return '<li><span class="missing-source">' + m.source + '</span><br>' + m.text + '</li>'; }).join('');
+
+    if (detailWrap) detailWrap.classList.add('open');
     setStored('perspectives-persona', key);
     try { if (window.location.hash !== '#' + key) history.replaceState(null, '', '#' + key); } catch(e) {}
     gaEvent('persona_selected', { persona: key });
-    if (scroll) setTimeout(function() { if (detailWrapper) detailWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    if (scroll) setTimeout(function() { if (detailWrap) detailWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
   }
 
   cards.forEach(function(card) { card.addEventListener('click', function() { selectPersona(card.dataset.persona, true); }); });
@@ -1220,17 +1130,18 @@ a, button, [role="button"] {
   try { hashPersona = window.location.hash.replace('#', ''); } catch(e) {}
   if (hashPersona && personas[hashPersona]) { selectPersona(hashPersona, false); }
   else { var saved = getStored('perspectives-persona'); if (saved && personas[saved]) selectPersona(saved, false); }
-  try {
-    window.addEventListener('hashchange', function() { var k = window.location.hash.replace('#', ''); if (k && personas[k]) selectPersona(k, true); });
-  } catch(e) {}
+  try { window.addEventListener('hashchange', function() { var k = window.location.hash.replace('#', ''); if (k && personas[k]) selectPersona(k, true); }); } catch(e) {}
 
-  // Fade-in
-  var fadeEls = document.querySelectorAll('.fade-in, .stagger');
+  // ── SCROLL ANIMATIONS ─────────────────────────────────────────────────────
   if ('IntersectionObserver' in window) {
-    var obs = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    fadeEls.forEach(function(el) { obs.observe(el); });
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
+    document.querySelectorAll('.fade-up, .stagger-grid').forEach(function(el) { obs.observe(el); });
   } else {
-    fadeEls.forEach(function(el) { el.classList.add('visible'); });
+    document.querySelectorAll('.fade-up, .stagger-grid').forEach(function(el) { el.classList.add('visible'); });
   }
 
 })();
