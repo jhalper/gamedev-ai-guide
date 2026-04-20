@@ -38,11 +38,15 @@
     appId: "1:256487705979:web:6ff552e046926bd59141de",
     measurementId: "G-ZBGDRYKQXB"
   };
-  firebase.initializeApp(firebaseConfig);
-  var _ga = firebase.analytics();
-  window.gaEvent = function(name, params) {
-    try { _ga.logEvent(name, params || {}); } catch(e) {}
-  };
+  try {
+    firebase.initializeApp(firebaseConfig);
+    var _ga = firebase.analytics();
+    window.gaEvent = function(name, params) {
+      try { _ga.logEvent(name, params || {}); } catch(e) {}
+    };
+  } catch(e) {
+    window.gaEvent = function() {};
+  }
 </script>
 
 <!-- Shared nav styles + component -->
@@ -146,7 +150,7 @@ a, button, [role="button"] {
    HERO
    ============================================ */
 .hero {
-  padding: clamp(var(--space-12), 6vw, var(--space-20)) 0 clamp(var(--space-10), 4vw, var(--space-16));
+  padding: clamp(var(--space-8), 4vw, var(--space-12)) 0 clamp(var(--space-6), 3vw, var(--space-10));
   border-bottom: 1px solid var(--color-border-subtle);
   background: linear-gradient(180deg, rgba(212,148,60,0.03) 0%, transparent 60%);
 }
@@ -154,13 +158,48 @@ a, button, [role="button"] {
 .hero-label { font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600; color: var(--color-primary); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-5); }
 .hero h1 { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; color: var(--color-text); margin-bottom: var(--space-6); }
 .hero-sub { font-size: var(--text-base); color: var(--color-text-secondary); line-height: 1.7; margin-bottom: var(--space-3); max-width: 54ch; }
-.hero-intent { font-size: var(--text-sm); font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-5); letter-spacing: 0.01em; }
-.hero-byline { font-size: var(--text-sm); color: var(--color-text-muted); }
-.hero-byline a { color: var(--color-primary); text-decoration: none; }
-.hero-byline a:hover { text-decoration: underline; }
-.hero-disclaimer { font-size: var(--text-xs); color: var(--color-text-faint); line-height: 1.6; margin-top: var(--space-4); padding: var(--space-3) var(--space-4); background: var(--color-surface); border-radius: var(--radius-md); border-left: 2px solid var(--color-border); max-width: 54ch; }
-.hero-disclaimer a { color: var(--color-text-muted); text-decoration: underline; }
-.hero-disclaimer a:hover { color: var(--color-primary); }
+
+
+/* Changelog */
+.changelog-toggle {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  margin-top: var(--space-5); padding: 6px 12px;
+  font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.03em;
+  color: var(--color-primary);
+  background: rgba(212,148,60,0.08); border: 1px solid rgba(212,148,60,0.25);
+  border-radius: var(--radius-sm); cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.changelog-toggle:hover { background: rgba(212,148,60,0.14); border-color: var(--color-primary); }
+.changelog-toggle svg { transition: transform 0.2s ease; }
+.changelog-toggle.open svg { transform: rotate(180deg); }
+.changelog-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  font-size: 11px; font-weight: 700; line-height: 1;
+  color: #fff; background: var(--color-primary); border-radius: 9px;
+}
+.changelog-panel {
+  max-height: 0; overflow: hidden; opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease;
+  margin-top: 0;
+}
+.changelog-panel.open { max-height: 500px; overflow-y: auto; opacity: 1; margin-top: var(--space-3); }
+.changelog-panel.open::-webkit-scrollbar { width: 4px; }
+.changelog-panel.open::-webkit-scrollbar-track { background: transparent; }
+.changelog-panel.open::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+.changelog-list { list-style: none; padding: 0; margin: 0; background: var(--color-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); overflow: hidden; }
+.changelog-entry { display: flex; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border-subtle); font-size: var(--text-xs); line-height: 1.5; }
+.changelog-entry:last-child { border-bottom: none; }
+.changelog-version { flex-shrink: 0; font-size: 0.78rem; font-weight: 700; color: var(--color-text-faint); white-space: nowrap; min-width: 90px; padding-top: 1px; }
+.changelog-tag {
+  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.04em; padding: 2px 5px; border-radius: 3px;
+  margin-right: 5px; vertical-align: middle; position: relative; top: -1px;
+}
+.changelog-tag.tag-new { color: #4eca7a; background: rgba(78,202,122,0.1); }
+.changelog-tag.tag-updated { color: var(--color-primary); background: rgba(212,148,60,0.1); }
+.changelog-text { color: var(--color-text-muted); }
 
 /* ============================================
    PERSONA SELECTOR
@@ -291,6 +330,121 @@ a, button, [role="button"] {
 .view-matrix-cta:hover svg { transform: translateX(3px); }
 
 /* ============================================
+   EXPERIENCE GAP SECTION
+   ============================================ */
+.gap-section {
+  padding: var(--space-12) 0;
+  border-top: 1px solid var(--color-border-subtle);
+  background: linear-gradient(180deg, rgba(212,148,60,0.02) 0%, transparent 50%);
+}
+.gap-eyebrow {
+  font-family: var(--font-body); font-size: var(--text-xs); font-weight: 600;
+  color: var(--color-primary); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+.gap-heading {
+  font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800;
+  letter-spacing: -0.03em; color: var(--color-text); margin-bottom: var(--space-4);
+}
+.gap-intro {
+  font-size: var(--text-base); color: var(--color-text-secondary); line-height: 1.7;
+  margin-bottom: var(--space-8); max-width: 62ch;
+}
+.gap-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+@media (max-width: 680px) { .gap-grid { grid-template-columns: 1fr; } }
+
+.gap-card {
+  padding: var(--space-6); border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-subtle);
+}
+.gap-card--shallow {
+  background: var(--color-surface);
+  border-top: 3px solid #e8695c;
+}
+.gap-card--deep {
+  background: var(--color-surface);
+  border-top: 3px solid #4eca7a;
+}
+.gap-card-label {
+  font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle);
+}
+.gap-card--shallow .gap-card-label { color: #e8695c; }
+.gap-card--deep .gap-card-label { color: #4eca7a; }
+
+.gap-card ul { list-style: none; padding: 0; margin: 0; }
+.gap-card li {
+  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.65;
+  padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border-subtle);
+}
+.gap-card li:last-child { border-bottom: none; padding-bottom: 0; }
+.gap-card li:first-child { padding-top: 0; }
+.gap-card li::before { content: ''; }
+
+.gap-callout {
+  background: var(--color-surface); border: 1px solid var(--color-border-subtle);
+  border-left: 3px solid var(--color-primary);
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  padding: var(--space-6); max-width: 780px;
+}
+.gap-callout p {
+  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.75;
+  margin-bottom: var(--space-4);
+}
+.gap-callout p:last-child { margin-bottom: 0; color: var(--color-text-muted); }
+
+/* ============================================
+   PLAYER SIGNAL SECTION
+   ============================================ */
+.player-section {
+  padding: var(--space-12) 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+.player-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (max-width: 860px) { .player-grid { grid-template-columns: 1fr; } }
+
+.player-block {
+  padding: var(--space-5); background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
+}
+.player-block-label {
+  font-family: var(--font-display); font-size: var(--text-xs); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-text-muted); margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3); border-bottom: 1px solid var(--color-border-subtle);
+}
+.player-block p {
+  font-size: var(--text-sm); color: var(--color-text-secondary); line-height: 1.7;
+  margin-bottom: var(--space-3); max-width: none;
+}
+.player-block p:last-child { margin-bottom: 0; color: var(--color-text-muted); }
+
+.player-stat-row {
+  display: flex; flex-wrap: wrap; gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4); background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg);
+}
+.player-stat {
+  display: flex; align-items: baseline; gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-2); border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+.player-stat-value {
+  font-family: var(--font-display); font-size: var(--text-base);
+  font-weight: 800; color: var(--color-primary); letter-spacing: -0.02em;
+}
+.player-stat-label { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.3; }
+
+/* ============================================
    MATRIX ACCORDION
    ============================================ */
 .matrix-section {
@@ -329,7 +483,7 @@ a, button, [role="button"] {
 .matrix-topic.open .matrix-topic-chevron { transform: rotate(180deg); }
 
 .matrix-topic-body { max-height: 0; overflow: hidden; transition: max-height 350ms cubic-bezier(0.16, 1, 0.3, 1); }
-.matrix-topic.open .matrix-topic-body { max-height: 800px; }
+.matrix-topic.open .matrix-topic-body { max-height: 900px; }
 
 .matrix-topic-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
 @media (max-width: 860px) { .matrix-topic-grid { grid-template-columns: 1fr; } }
@@ -424,10 +578,17 @@ a, button, [role="button"] {
       <div class="container hero-content">
         <p class="hero-label">AI Adoption in Game Dev</p>
         <h1>Same tools.<br>Different realities.</h1>
-        <p class="hero-sub">AI adoption works better when you understand the room. Five roles in game development see the same technology differently. Each gets something right. Each has gaps only the others can fill.</p>
-        <p class="hero-intent">A guide for studios moving from AI arguments to AI decisions.</p>
-        <p class="hero-byline">Built by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">Joe Halper</a>, game dev, not an AI company.</p>
-        <div class="hero-disclaimer">This is a perspective piece, not a study. Statistics are from the <a href="https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry report</a>. Persona characterizations are informed by industry patterns, not survey categories.</div>
+        <p class="hero-sub">Five roles see the same AI tools differently. Pick yours to see what you get right, what you miss, and what the other roles see that you don't.</p>
+        <button type="button" class="changelog-toggle" id="changelogToggle">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          What's New
+          <span class="changelog-badge" id="changelogBadge"></span>
+        </button>
+        <div class="changelog-panel" id="changelogPanel">
+          <ul class="changelog-list" id="changelogList"></ul>
+        </div>
+
+
       </div>
     </section>
 
@@ -474,6 +635,43 @@ a, button, [role="button"] {
       </div>
     </div>
 
+    <!-- EXPERIENCE GAP SECTION -->
+    <section class="gap-section fade-in" id="experienceGap">
+      <div class="container">
+        <p class="gap-eyebrow">The Divide Within Roles</p>
+        <h2 class="gap-heading">Experience vs. Exposure</h2>
+        <p class="gap-intro">The gap within each role is often wider than the gap between roles. Two people with the same job title can hold completely opposite views, not because one is wrong, but because their depth of hands-on experience is different.</p>
+        <div class="gap-grid">
+          <div class="gap-card gap-card--shallow">
+            <div class="gap-card-label">Shallow Exposure</div>
+            <ul>
+              <li>Tried one or two tools once, formed a permanent opinion</li>
+              <li>Views shaped primarily by demos, vendor claims, or media coverage</li>
+              <li>Has not built a repeatable process around AI output</li>
+              <li>Either dismisses AI entirely or overstates what it can do</li>
+              <li>Treats AI as a binary: it works, or it does not</li>
+              <li>Mistakes fluency with prompts for mastery of the tool</li>
+            </ul>
+          </div>
+          <div class="gap-card gap-card--deep">
+            <div class="gap-card-label">Deep Practice</div>
+            <ul>
+              <li>Iterated through multiple tools over two or more years</li>
+              <li>Built pipelines, hit walls, rebuilt with better constraints</li>
+              <li>Knows precisely which tasks AI handles reliably and which it fails on</li>
+              <li>Holds a nuanced position: useful here, unreliable there</li>
+              <li>Treats AI as a skill to develop and refine over time</li>
+              <li>Directs output rather than accepting what the model generates</li>
+            </ul>
+          </div>
+        </div>
+        <div class="gap-callout">
+          <p>Most team arguments about AI are happening between people at different depths, not different roles. An executive who has spent two years building real pipelines and a creative director who has spent a month directing AI output toward a specific visual goal see things more similarly than either does to a colleague who only read about it.</p>
+          <p>The practitioners who know how to direct AI output, not just generate it, are the ones building the processes every studio needs. They are not being made redundant. They are becoming harder to replace. Their expertise is what stands between a useful tool and a slop pipeline.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="matrix-section fade-in" id="matrixSection" aria-label="Cross-perspective comparison">
       <div class="container">
         <div class="matrix-header">
@@ -484,14 +682,45 @@ a, button, [role="button"] {
       </div>
     </section>
 
+    <!-- PLAYER SIGNAL SECTION -->
+    <section class="player-section fade-in" id="playerSignal">
+      <div class="container">
+        <p class="gap-eyebrow">Outside the Studio</p>
+        <h2 class="gap-heading">The Player Signal</h2>
+        <p class="gap-intro">The five personas above cover the people making games. There is a sixth perspective shaping the industry from the outside: the player community pushing back against AI-generated content in shipped titles. Their reaction is not irrational. It is a market signal worth reading correctly.</p>
+        <div class="player-grid">
+          <div class="player-block">
+            <div class="player-block-label">What players are reacting to</div>
+            <p>Not AI tools in development pipelines, but AI output in finished products. The distinction matters. Players generally do not care how their game was made. They care whether it feels like someone cared when they made it.</p>
+            <p>AI content generated without experienced human direction produces a recognizable aesthetic: generic, inconsistent, lacking intentionality. Players are developing instincts for it even when they cannot articulate why something feels off.</p>
+          </div>
+          <div class="player-block">
+            <div class="player-block-label">Why this pressure is useful</div>
+            <p>Vocal player protests against AI-generated content are creating real market pressure. That pressure is pushing the industry toward the only application that holds up over time: AI directed by people with taste and craft, not AI used to skip that step entirely.</p>
+            <p>The Crimson Desert situation in March 2026 is the clearest example. Pearl Abyss accidentally shipped AI placeholder art. Players identified it before the studio did. The apology, Steam disclosure, and public audit commitment came directly from player pressure, not internal process.</p>
+          </div>
+          <div class="player-block">
+            <div class="player-block-label">What this means for studios</div>
+            <p>The question is not whether to use AI. The question is whether an experienced human with vision is directing the output before it ships. Studios that answer yes to that question have nothing to fear from player scrutiny.</p>
+            <p>Studios that use AI to skip creative judgment are learning that players notice, and that the cost of their notice is higher than the cost saved. The protests are doing the industry a favor by making that consequence visible and concrete.</p>
+          </div>
+        </div>
+        <div class="player-stat-row">
+          <div class="player-stat"><span class="player-stat-value">7,000+</span><span class="player-stat-label">Steam titles disclosed AI use in 2025, one third of all releases</span></div>
+          <div class="player-stat"><span class="player-stat-value">52%</span><span class="player-stat-label">of game dev professionals now view AI negatively, up from 18%</span></div>
+          <div class="player-stat"><span class="player-stat-value">5%</span><span class="player-stat-label">of AI usage is for player-facing features; 81% is internal</span></div>
+        </div>
+      </div>
+    </section>
+
     <section class="why-section fade-in">
       <div class="container">
         <h2 class="why-heading">Why this page exists</h2>
         <div class="why-content">
-          <p>AI is already changing game development. The question for most studios isn't whether to use it, but how to adopt it without losing what makes their work good.</p>
+          <p>AI is already changing game development. The question for most studios is not whether to use it, but how to adopt it without losing what makes their work good.</p>
           <p>That conversation keeps stalling because each role has access to different evidence, different incentives, and different consequences. Executives see cost leverage. Creatives see creative risk. Engineers see bounded utility. When you only hear your own side long enough, the other side starts to sound irrational.</p>
-          <p>This page maps where each perspective is grounded, what the other roles see that they don't, and what each would gain from listening. The goal is to help teams move from positional arguments to informed AI decisions.</p>
-          <p><em>If your studio is stuck in an AI debate where nobody's budging, send this to both sides.</em></p>
+          <p>This page maps where each perspective is grounded, what the other roles see that they do not, and what each would gain from listening. The goal is to help teams move from positional arguments to informed AI decisions.</p>
+          <p><em>If your studio is stuck in an AI debate where nobody is budging, send this to both sides.</em></p>
         </div>
       </div>
     </section>
@@ -499,7 +728,7 @@ a, button, [role="button"] {
     <section class="sources-section fade-in">
       <div class="container">
         <p class="sources-label">Key Data from GDC 2026 State of the Industry</p>
-        <p class="data-freshness">Data as of: GDC 2026, January 2026</p>
+        <p class="data-freshness">Data as of: GDC 2026, January 2026. This is a perspective piece, not a study. Persona characterizations are informed by industry patterns, not survey categories.</p>
         <div class="stat-grid">
           <div class="stat-pill"><span class="stat-pill-value">52%</span><span class="stat-pill-label">view AI negatively (up from 18%)</span></div>
           <div class="stat-pill"><span class="stat-pill-value">7%</span><span class="stat-pill-label">view AI positively (down from 21%)</span></div>
@@ -515,6 +744,9 @@ a, button, [role="button"] {
           <li><a href="https://www.gamedeveloper.com/business/survey-one-in-four-developers-laid-off-over-the-past-two-years" target="_blank" rel="noopener noreferrer">Game Developer</a>: Opposition by discipline: Visual/technical artists 64%, Game designers/narrative 63%, Programmers 59%.</li>
           <li><a href="https://www.businesswire.com/news/home/20260129438528/en/" target="_blank" rel="noopener noreferrer">Business Wire</a>: Business/finance role usage grew from 44% (2024) to 58% (2026). "Select tools allowed" policies grew from 7% to 22%.</li>
           <li><a href="https://www.pcgamer.com/gaming-industry/one-third-of-us-games-industry-workers-were-laid-off-in-the-last-2-years-gdc-survey-says/" target="_blank" rel="noopener noreferrer">PC Gamer</a>: Job impact: 17% experienced job loss within 12 months, 28% within 2 years. 30% of AAA studios use proprietary AI systems.</li>
+          <li><a href="https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/" target="_blank" rel="noopener noreferrer">Whimsy Games</a>: 7,000+ Steam titles disclosed AI use in 2025, one third of all releases. "Gameslop" phenomenon prompts platform curation responses.</li>
+          <li><a href="https://naavik.co/digest/the-state-of-genai-in-game-development/" target="_blank" rel="noopener noreferrer">Naavik</a>: Experienced developers vs. vibe coders: two fundamentally different approaches producing fundamentally different outcomes.</li>
+          <li><a href="https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html" target="_blank" rel="noopener noreferrer">Engadget</a>: Crimson Desert (Pearl Abyss) AI art incident, March 2026. Player-identified AI placeholders shipped accidentally, public apology and audit commitment followed.</li>
         </ul>
       </div>
     </section>
@@ -550,7 +782,47 @@ a, button, [role="button"] {
   function getStored(key) { try { return _store.getItem(key); } catch(e) { return null; } }
   function setStored(key, val) { try { _store.setItem(key, val); } catch(e) {} }
 
-  // Mobile nav handled by /nav-component.js
+  // ============================================
+  // CHANGELOG
+  // ============================================
+  var CHANGELOG = [
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added Experience vs. Exposure section: named the gap between shallow AI exposure and deep practitioner knowledge as a distinct dimension within each role.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added The Player Signal section: addresses the gamer protest community as a legitimate corrective market force, with supporting data and the Crimson Desert case study.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'new', text: 'Added Depth of Understanding topic to the cross-perspective matrix, showing how the same role looks at shallow vs. deep AI experience levels.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'updated', text: 'Populated Real Voices quotes for all five personas with sourced industry statements from executives, practitioners, and published research.' },
+    { version: 'v1.2', date: 'Apr 2026', tag: 'updated', text: 'Added What\'s New changelog with versioning system.' },
+    { version: 'v1.1', date: 'Mar 2026', tag: 'new', text: 'Initial release: five personas, eight matrix topics, GDC 2026 State of the Industry data.' }
+  ];
+
+  function renderChangelog() {
+    var list = document.getElementById('changelogList');
+    var badge = document.getElementById('changelogBadge');
+    if (!list || !badge) return;
+
+    list.innerHTML = CHANGELOG.map(function(entry) {
+      return '<li class="changelog-entry">' +
+        '<span class="changelog-version">' + entry.version + ' &middot; ' + entry.date + '</span>' +
+        '<span class="changelog-text"><span class="changelog-tag tag-' + entry.tag + '">' + (entry.tag === 'new' ? 'New' : 'Updated') + '</span>' + entry.text + '</span>' +
+        '</li>';
+    }).join('');
+
+    var latestVersion = CHANGELOG[0] ? CHANGELOG[0].version : '';
+    var recentCount = CHANGELOG.filter(function(e) { return e.version === latestVersion; }).length;
+    badge.textContent = recentCount;
+  }
+
+  renderChangelog();
+
+  var changelogToggle = document.getElementById('changelogToggle');
+  var changelogPanel = document.getElementById('changelogPanel');
+  if (changelogToggle && changelogPanel) {
+    changelogToggle.addEventListener('click', function() {
+      var isOpen = changelogPanel.classList.contains('open');
+      changelogPanel.classList.toggle('open');
+      changelogToggle.classList.toggle('open');
+      changelogToggle.setAttribute('aria-expanded', !isOpen);
+    });
+  }
 
   // Share dropdown
   var shareBtn = document.getElementById('shareBtn');
@@ -562,21 +834,24 @@ a, button, [role="button"] {
     document.addEventListener('click', function() { shareDropdown.classList.remove('open'); shareBtn.setAttribute('aria-expanded', 'false'); });
     shareDropdown.addEventListener('click', function(e) { e.stopPropagation(); });
   }
-  document.getElementById('shareLinkedIn').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
-  document.getElementById('shareX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
-  document.getElementById('shareBluesky').href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
-  document.getElementById('shareReddit').href = 'https://www.reddit.com/submit?url=' + encodeURIComponent(pageUrl) + '&title=' + encodeURIComponent('Perspectives: How 5 game dev roles see AI differently');
-  document.getElementById('shareCopy').addEventListener('click', function() {
-    navigator.clipboard.writeText(pageUrl).then(function() {
-      var el = document.getElementById('shareCopy'); var orig = el.innerHTML;
-      el.querySelector('svg').style.display = 'none';
-      el.insertAdjacentHTML('afterbegin', '<svg viewBox="0 0 24 24" fill="none" stroke="#d4943c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>');
-      var t = el.lastChild; if (t.nodeType === 3) t.textContent = ' Copied!';
-      setTimeout(function() { el.innerHTML = orig; }, 1500);
+  if (document.getElementById('shareLinkedIn')) document.getElementById('shareLinkedIn').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
+  if (document.getElementById('shareX')) document.getElementById('shareX').href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText) + '&url=' + encodeURIComponent(pageUrl);
+  if (document.getElementById('shareBluesky')) document.getElementById('shareBluesky').href = 'https://bsky.app/intent/compose?text=' + encodeURIComponent(shareText + ' ' + pageUrl);
+  if (document.getElementById('shareReddit')) document.getElementById('shareReddit').href = 'https://www.reddit.com/submit?url=' + encodeURIComponent(pageUrl) + '&title=' + encodeURIComponent('Perspectives: How 5 game dev roles see AI differently');
+  var shareCopyEl = document.getElementById('shareCopy');
+  if (shareCopyEl) {
+    shareCopyEl.addEventListener('click', function() {
+      navigator.clipboard.writeText(pageUrl).then(function() {
+        var el = document.getElementById('shareCopy'); var orig = el.innerHTML;
+        el.querySelector('svg').style.display = 'none';
+        el.insertAdjacentHTML('afterbegin', '<svg viewBox="0 0 24 24" fill="none" stroke="#d4943c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>');
+        var t = el.lastChild; if (t.nodeType === 3) t.textContent = ' Copied!';
+        setTimeout(function() { el.innerHTML = orig; }, 1500);
+      });
     });
-  });
+  }
 
-  // Persona config with icons (SVG paths) and colors
+  // Persona config
   var personaConfig = {
     executive: {
       color: 'var(--c-exec)', colorHex: '#5b8def', label: 'Executive / Producer', quote: '"Competitive edge."',
@@ -611,26 +886,41 @@ a, button, [role="button"] {
 
   // Build persona cards
   var grid = document.getElementById('personaGrid');
-  Object.keys(personaConfig).forEach(function(key) {
-    var cfg = personaConfig[key];
-    var btn = document.createElement('button');
-    btn.className = 'persona-card';
-    btn.dataset.persona = key;
-    btn.setAttribute('role', 'button');
-    btn.setAttribute('aria-pressed', 'false');
-    btn.style.setProperty('--persona-color', cfg.color);
-    btn.innerHTML = makeIcon(key, 32) +
-      '<span class="persona-card-title">' + cfg.label + '</span>' +
-      '<span class="persona-card-quote">' + cfg.quote + '</span>';
-    grid.appendChild(btn);
-  });
+  if (grid) {
+    Object.keys(personaConfig).forEach(function(key) {
+      var cfg = personaConfig[key];
+      var btn = document.createElement('button');
+      btn.className = 'persona-card';
+      btn.dataset.persona = key;
+      btn.setAttribute('role', 'button');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.style.setProperty('--persona-color', cfg.color);
+      btn.innerHTML = makeIcon(key, 32) +
+        '<span class="persona-card-title">' + cfg.label + '</span>' +
+        '<span class="persona-card-quote">' + cfg.quote + '</span>';
+      grid.appendChild(btn);
+    });
+  }
 
   // Persona data
   var personas = {
     executive: {
       name: 'Studio Executive / Producer',
       stance: '"I see AI as a way to hit targets and ship faster."',
-      quotes: [],
+      quotes: [
+        {
+          text: 'AI tools may help you create assets, but that will not help you create hits. Creating a hit of that magnitude requires human engagement and creativity.',
+          attr: 'Strauss Zelnick, CEO, Take-Two Interactive, March 2026',
+          source: 'Take-Two Q3 Earnings Call',
+          url: 'https://www.reuters.com/technology/artificial-intelligence/take-two-chief-says-ai-can-aid-but-not-replace-human-creativity-games-2026-03-17/'
+        },
+        {
+          text: 'Upper management uses AI tools at nearly twice the rate of individual contributors. The adoption gap between decision-makers and practitioners is a real and underacknowledged source of internal friction.',
+          attr: 'GDC 2026 State of the Industry: 47% upper management vs. 29% individual contributors',
+          source: 'GDC 2026',
+          url: 'https://gdconf.com/article/gdc-2026-state-of-the-game-industry-reveals-impact-of-layoffs-generative-ai-and-more/'
+        }
+      ],
       believe: [
         'AI will cut production costs 40-60% and accelerate timelines.',
         'Teams that resist AI will fall behind competitors.',
@@ -650,51 +940,192 @@ a, button, [role="button"] {
         'Pushing AI adoption without team buy-in erodes studio culture and morale.'
       ],
       missing: [
-        { source: 'From Creatives', text: 'The "last 20%" separating prototype from shippable product is where craft lives. AI can\'t do it.' },
+        { source: 'From Creatives', text: 'The "last 20%" separating prototype from shippable product is where craft lives. AI cannot do it.' },
         { source: 'From Engineers', text: 'AI works best on bounded, repetitive, verifiable tasks. The task type matters more than the tool.' },
-        { source: 'From Indie Devs', text: 'AI\'s biggest value is as a force multiplier for gaps you can\'t hire for, not a replacement for people you already have.' }
+        { source: 'From Indie Devs', text: 'AI\'s biggest value is as a force multiplier for gaps you cannot hire for, not a replacement for people you already have.' }
       ]
     },
     creative: {
-      name: 'Hands-On Creative', stance: '"I see AI as a threat to craft and jobs."', quotes: [],
-      believe: ['AI is fundamentally about replacing creative jobs with cheaper automation.', 'Using AI means cheating at creativity. The output is stolen from artists\' work.', 'Management is pushing AI to justify layoffs, not improve quality.', 'AI output is always detectable, generic, and inferior.', 'Engaging with AI means training your own replacement.'],
-      right: ['Creative quality degrades when AI has too much control. Entertainment requires intentionality that AI cannot provide.', 'Training data ethics are a legitimate, unresolved concern.', 'Executive interest in AI is often cost-driven. <span class="stat">58% of publishing/marketing</span> use AI vs. <span class="stat">30% of studio devs</span>.', 'The "AI generates, human reviews" framing is backwards and demeaning to creative work.'],
-      wrong: ['Not all AI use is content generation. <span class="stat">81% of usage</span> is research/brainstorming, <span class="stat">47% is code assistance</span>. The most adopted uses augment thinking, not replace making.', 'Some applications have zero creative concerns: crash triage, build optimization, transcription, regression testing.', 'Blanket rejection means missing tools that reduce tedious work (documentation, phoneme matching, topology cleanup) while freeing time for actual creative work.', '<span class="stat">78% of studios</span> now have AI policies. The industry is developing governance.'],
-      missing: [{ source: 'From Executives', text: 'Real competitive pressures drive AI adoption. 35% of studios are self-funded. Not all business rationale is greed.' }, { source: 'From Engineers', text: 'Many AI tools target developer productivity on non-creative tasks. The engineer\'s view is often more nuanced than "pro" or "anti."' }, { source: 'From Indie Devs', text: 'For a solo dev who can\'t afford a sound library or mocap studio, AI unlocks capabilities they\'d never have otherwise.' }]
+      name: 'Hands-On Creative',
+      stance: '"I see AI as a threat to craft and jobs."',
+      quotes: [
+        {
+          text: 'At first, I had a little bit of anxiety because, if we really can start just cranking out games like that, then an entire industry of people who have spent years perfecting their craft could end up jobless.',
+          attr: 'Alexis Brutman, CEO, Astral Clocktower Studios',
+          source: 'GameRant, Feb 2026',
+          url: 'https://gamerant.com/ai-game-developer-interview/'
+        },
+        {
+          text: 'Pearl Abyss used experimental AI tools for early 2D prop iteration. Placeholder assets were accidentally shipped. Players identified them, forcing an apology and a commitment to audit and replace all affected content.',
+          attr: 'Crimson Desert launch incident, March 2026. A cautionary example of what this persona fears becoming real.',
+          source: 'Engadget',
+          url: 'https://www.engadget.com/gaming/crimson-desert-developer-apologizes-and-promises-to-replace-ai-generated-art-183716439.html'
+        }
+      ],
+      believe: [
+        'AI is fundamentally about replacing creative jobs with cheaper automation.',
+        'Using AI means cheating at creativity. The output is stolen from artists\' work.',
+        'Management is pushing AI to justify layoffs, not improve quality.',
+        'AI output is always detectable, generic, and inferior.',
+        'Engaging with AI means training your own replacement.'
+      ],
+      right: [
+        'Creative quality degrades when AI has too much control. Entertainment requires intentionality that AI cannot provide.',
+        'Training data ethics are a legitimate, unresolved concern.',
+        'Executive interest in AI is often cost-driven. <span class="stat">58% of publishing/marketing</span> use AI vs. <span class="stat">30% of studio devs</span>.',
+        'The "AI generates, human reviews" framing is backwards and demeaning to creative work.'
+      ],
+      wrong: [
+        'Not all AI use is content generation. <span class="stat">81% of usage</span> is research/brainstorming, <span class="stat">47% is code assistance</span>. The most adopted uses augment thinking, not replace making.',
+        'Some applications have zero creative concerns: crash triage, build optimization, transcription, regression testing.',
+        'Blanket rejection means missing tools that reduce tedious work (documentation, phoneme matching, topology cleanup) while freeing time for actual creative work.',
+        '<span class="stat">78% of studios</span> now have AI policies. The industry is developing governance.'
+      ],
+      missing: [
+        { source: 'From Executives', text: 'Real competitive pressures drive AI adoption. 35% of studios are self-funded. Not all business rationale is greed.' },
+        { source: 'From Engineers', text: 'Many AI tools target developer productivity on non-creative tasks. The engineer\'s view is often more nuanced than "pro" or "anti."' },
+        { source: 'From Indie Devs', text: 'For a solo dev who cannot afford a sound library or mocap studio, AI unlocks capabilities they would never have otherwise.' }
+      ]
     },
     engineer: {
-      name: 'Engineer / Technical', stance: '"I see AI as a tool. Some parts are genuinely useful, some are overhyped."', quotes: [],
-      believe: ['AI coding tools are genuinely useful for bounded, repetitive tasks.', 'AI-generated code needs review. It hallucinates APIs and introduces subtle bugs.', 'The hype is overblown, but the tools are incrementally useful.', 'AI works best in the pipeline, not in the final product.', 'Most "AI game features" are demos that don\'t scale to production.'],
-      right: ['The bounded vs. open-ended distinction is the most accurate framework for evaluating AI tools.', 'Code review is non-negotiable. AI code has higher error rates on edge cases.', 'Pipeline integration (CI/CD, crash triage, regression testing) is where AI delivers most reliably.', 'Production-scale AI features are genuinely harder than demos suggest.'],
-      wrong: ['Dismissing creative concerns as "not technical enough" misses the point. Creatives have legitimate expertise about what makes entertainment work.', '"The tools will get better" is speculation, not a strategy. Current tools have fundamental limitations.', 'The social and ethical dimensions of AI in games are engineering problems too, not just "business" concerns.'],
-      missing: [{ source: 'From Creatives', text: 'The 52% negative sentiment correlates with deeper understanding of AI, not less.' }, { source: 'From Executives', text: 'Budget pressure is real and getting worse. Understanding the business case helps engineers advocate for responsible adoption.' }, { source: 'From Enterprise', text: 'Enterprise AI adoption patterns (governance, pilot programs, success metrics) could benefit studios that adopt tools more chaotically.' }]
+      name: 'Engineer / Technical',
+      stance: '"I see AI as a tool. Some parts are genuinely useful, some are overhyped."',
+      quotes: [
+        {
+          text: 'There are two approaches to using AI for coding: one for experienced programmers and the other for complete novices. Experienced programmers use AI to write boilerplate more efficiently. Novice programmers place all trust in the AI to handle everything, including its own errors.',
+          attr: 'State of AI in Game Development, 2025',
+          source: 'Naavik',
+          url: 'https://naavik.co/digest/the-state-of-genai-in-game-development/'
+        },
+        {
+          text: 'AI now plays a central role in optimizing development workflows, and the fundamentals I built in my career have helped me stay relevant as my job responsibilities evolve. Those foundations will keep supporting my growth as AI continues to shape the industry.',
+          attr: 'Senior game programmer, 2026',
+          source: 'Research.com',
+          url: 'https://research.com/advice/ai-automation-and-the-future-of-game-programming-degree-careers'
+        }
+      ],
+      believe: [
+        'AI coding tools are genuinely useful for bounded, repetitive tasks.',
+        'AI-generated code needs review. It hallucinates APIs and introduces subtle bugs.',
+        'The hype is overblown, but the tools are incrementally useful.',
+        'AI works best in the pipeline, not in the final product.',
+        'Most "AI game features" are demos that do not scale to production.'
+      ],
+      right: [
+        'The bounded vs. open-ended distinction is the most accurate framework for evaluating AI tools.',
+        'Code review is non-negotiable. AI code has higher error rates on edge cases.',
+        'Pipeline integration (CI/CD, crash triage, regression testing) is where AI delivers most reliably.',
+        'Production-scale AI features are genuinely harder than demos suggest.'
+      ],
+      wrong: [
+        'Dismissing creative concerns as "not technical enough" misses the point. Creatives have legitimate expertise about what makes entertainment work.',
+        '"The tools will get better" is speculation, not a strategy. Current tools have fundamental limitations.',
+        'The social and ethical dimensions of AI in games are engineering problems too, not just "business" concerns.'
+      ],
+      missing: [
+        { source: 'From Creatives', text: 'The 52% negative sentiment correlates with deeper understanding of AI, not less.' },
+        { source: 'From Executives', text: 'Budget pressure is real and getting worse. Understanding the business case helps engineers advocate for responsible adoption.' },
+        { source: 'From Enterprise', text: 'Enterprise AI adoption patterns (governance, pilot programs, success metrics) could benefit studios that adopt tools more chaotically.' }
+      ]
     },
     indie: {
-      name: 'Indie / Solo Dev', stance: '"I see AI as a force multiplier for my tiny team."', quotes: [],
-      believe: ['AI is the great equalizer. It lets one person do what used to take a team.', 'AI-generated assets are fine where polish isn\'t the differentiator.', 'Ethical concerns matter less when you couldn\'t afford an artist anyway.', 'AI lets you prototype and validate ideas faster than ever.', 'The big-studio backlash doesn\'t apply to this situation.'],
-      right: ['AI as a force multiplier for small teams is real. Phone-based mocap, scratch VO, and placeholder art unlock previously budget-gated capabilities.', 'Faster validation means less time committed to bad ideas.', 'The indie context is different from AAA. A solo dev using AI for jam assets is not the same as a AAA studio shipping AI art in a $70 game.'],
-      wrong: ['"AI makes a solo dev equal to a team" oversells it. AI helps stretch capacity modestly, not multiply it tenfold.', 'AI-generated content creates a recognizable aesthetic that players are learning to identify and reject.', 'Training data ethics don\'t disappear because you\'re indie. Players apply the same standards.', 'Copyright status of AI-generated content is unresolved. Building commercial products on assets you may not legally own is a risk.'],
-      missing: [{ source: 'From Creatives', text: 'Players are developing "AI detection" instincts. Content that reads as AI-generated triggers negative sentiment regardless of studio size.' }, { source: 'From Engineers', text: 'The most valuable AI tools for solo devs may not be the obvious ones (art gen) but the invisible ones (code completion, crash reporting).' }, { source: 'From Executives', text: '"Made with AI" is increasingly a marketing liability, not an asset.' }]
+      name: 'Indie / Solo Dev',
+      stance: '"I see AI as a force multiplier for my tiny team."',
+      quotes: [
+        {
+          text: 'We do not rely on AI to create a full asset at once. We break ideas into parts, use AI for drafts, and let developers and artists bring them to life. The main purpose is to boost speed at the first stage, not to replace the people doing the actual work.',
+          attr: 'GIANTY studio on their AI pipeline integration',
+          source: 'GIANTY',
+          url: 'https://www.gianty.com/where-might-ai-in-game-development-take-us-in-2025/'
+        },
+        {
+          text: 'A solo dev with AI tools can produce more prototype content than ever. But shipping a polished game still requires deep expertise in optimization, platform requirements, and player psychology. AI helps a five-person team do the work of eight, not fifty.',
+          attr: 'Game Dev AI Guide, practical tip',
+          source: 'gamedevai.guide',
+          url: 'https://gamedevai.guide/ai-tools/'
+        }
+      ],
+      believe: [
+        'AI is the great equalizer. It lets one person do what used to take a team.',
+        'AI-generated assets are fine where polish is not the differentiator.',
+        'Ethical concerns matter less when you could not afford an artist anyway.',
+        'AI lets you prototype and validate ideas faster than ever.',
+        'The big-studio backlash does not apply to this situation.'
+      ],
+      right: [
+        'AI as a force multiplier for small teams is real. Phone-based mocap, scratch VO, and placeholder art unlock previously budget-gated capabilities.',
+        'Faster validation means less time committed to bad ideas.',
+        'The indie context is different from AAA. A solo dev using AI for jam assets is not the same as a AAA studio shipping AI art in a $70 game.'
+      ],
+      wrong: [
+        '"AI makes a solo dev equal to a team" oversells it. AI helps stretch capacity modestly, not multiply it tenfold.',
+        'AI-generated content creates a recognizable aesthetic that players are learning to identify and reject.',
+        'Training data ethics do not disappear because you are indie. Players apply the same standards.',
+        'Copyright status of AI-generated content is unresolved. Building commercial products on assets you may not legally own is a risk.'
+      ],
+      missing: [
+        { source: 'From Creatives', text: 'Players are developing "AI detection" instincts. Content that reads as AI-generated triggers negative sentiment regardless of studio size.' },
+        { source: 'From Engineers', text: 'The most valuable AI tools for solo devs may not be the obvious ones (art gen) but the invisible ones (code completion, crash reporting).' },
+        { source: 'From Executives', text: '"Made with AI" is increasingly a marketing liability, not an asset.' }
+      ]
     },
     enterprise: {
-      name: 'Enterprise / Non-Game Dev', stance: '"I see AI transforming productivity across our org."', quotes: [],
-      believe: ['AI is a proven productivity multiplier. Already seen 20-40% efficiency gains.', 'Resistance to AI is irrational and will fade.', 'The game industry is behind on AI adoption.', 'Game developer attitudes matter less because enterprise AI revenue dwarfs gaming.', 'AI governance frameworks solve adoption resistance.', 'Creative concerns are overblown.'],
-      right: ['Enterprise AI adoption is more methodical than game dev\'s chaotic approach: structured pilots, governance, measured ROI.', 'Policy frameworks help. Studios with clear AI policies have less internal conflict.', 'Some game dev workflows (PM, QA, analytics) are structurally similar to enterprise and benefit from the same tools.'],
-      wrong: ['Games are entertainment where creative quality IS the product. Enterprise optimizes for efficiency; games optimize for human experience.', 'Resistance correlates with expertise. The most knowledgeable professionals are the most skeptical.', 'Enterprise metrics (cost per ticket, time to resolution) don\'t translate. You can\'t measure "fun per dollar."', 'Players care about HOW games are made in ways enterprise software users don\'t care about their CRM.', 'Game developers push AI into scenarios enterprise never encounters: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI R&D lab any industry has.'],
-      missing: [{ source: 'From Creatives', text: 'Entertainment is not a productivity problem. Game value comes from human creative decisions AI cannot replicate.' }, { source: 'From Engineers', text: 'Game dev has unique constraints (real-time rendering, physics, platform cert) that make enterprise AI patterns non-transferable in many cases.' }, { source: 'From Indie Devs', text: 'Game dev culture strongly resists corporate optimization thinking.' }, { source: 'From Game Developers', text: 'Game developers push AI tools into territory enterprise never touches. Their skepticism isn\'t irrelevant; it\'s informed by harder problems.' }]
+      name: 'Enterprise / Non-Game Dev',
+      stance: '"I see AI transforming productivity across our org."',
+      quotes: [
+        {
+          text: 'The "gameslop" phenomenon of 2025 demonstrated that AI without curation produces mediocrity at scale. Platform responses including disclosure requirements, quality badges, and stricter curation signal that the industry is self-correcting.',
+          attr: 'AI in Gaming industry analysis, 2026',
+          source: 'Whimsy Games',
+          url: 'https://whimsygames.co/blog/how-ai-disrupts-the-video-game-industry-in-2024/'
+        },
+        {
+          text: 'Game developers push AI tools into territory enterprise never touches: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI research and development testbed any industry has.',
+          attr: 'Cross-industry AI adoption analysis, 2026',
+          source: 'Lorien Insights',
+          url: 'https://www.lorienglobal.com/insights/ai-in-game-development-what-it-means-for-developers-in-2026'
+        }
+      ],
+      believe: [
+        'AI is a proven productivity multiplier. Already seen 20-40% efficiency gains.',
+        'Resistance to AI is irrational and will fade.',
+        'The game industry is behind on AI adoption.',
+        'Game developer attitudes matter less because enterprise AI revenue dwarfs gaming.',
+        'AI governance frameworks solve adoption resistance.',
+        'Creative concerns are overblown.'
+      ],
+      right: [
+        'Enterprise AI adoption is more methodical than game dev\'s chaotic approach: structured pilots, governance, measured ROI.',
+        'Policy frameworks help. Studios with clear AI policies have less internal conflict.',
+        'Some game dev workflows (PM, QA, analytics) are structurally similar to enterprise and benefit from the same tools.'
+      ],
+      wrong: [
+        'Games are entertainment where creative quality IS the product. Enterprise optimizes for efficiency; games optimize for human experience.',
+        'Resistance correlates with expertise. The most knowledgeable professionals are the most skeptical.',
+        'Enterprise metrics (cost per ticket, time to resolution) do not translate. You cannot measure "fun per dollar."',
+        'Players care about HOW games are made in ways enterprise software users do not care about their CRM.',
+        'Game developers push AI into scenarios enterprise never encounters: real-time rendering, procedural generation, emotional performance. Dismissing their skepticism loses the most creative AI R&D lab any industry has.'
+      ],
+      missing: [
+        { source: 'From Creatives', text: 'Entertainment is not a productivity problem. Game value comes from human creative decisions AI cannot replicate.' },
+        { source: 'From Engineers', text: 'Game dev has unique constraints (real-time rendering, physics, platform cert) that make enterprise AI patterns non-transferable in many cases.' },
+        { source: 'From Indie Devs', text: 'Game dev culture strongly resists corporate optimization thinking.' },
+        { source: 'From Game Developers', text: 'Game developers push AI tools into territory enterprise never touches. Their skepticism is not irrelevant; it is informed by harder problems.' }
+      ]
     }
   };
 
   // Matrix data
   var matrixTopics = [
-    { topic: 'Code Assistance', icon: '<path d="M4 4l4 4-4 4"/><path d="M10 12h4"/>', executive: 'No-brainer. Speeds up dev, reduces headcount needs.', creative: 'Fine for engineers. Keep it away from creative tools.', engineer: 'Useful for boilerplate, tests, docs. Hallucinated APIs mean review is mandatory. ~47% of devs use it.', indie: 'Essential. Fills in for the senior dev I can\'t hire.', enterprise: 'Proven ROI. Standard across all engineering teams.' },
-    { topic: 'Art / Asset Generation', icon: '<circle cx="8" cy="8" r="4"/><path d="M2 14l4-2 3 3 3-5 4 8H2z"/>', executive: 'Big cost savings on concepting and pre-production.', creative: 'The core threat. Trained on stolen work, produces generic output players reject.', engineer: 'Useful for placeholders and prototypes. Not production-ready for shipped art.', indie: 'Unlocks capabilities I couldn\'t afford: concept iteration, texture generation.', enterprise: 'Standard content workflow. Already used for marketing and internal assets.' },
-    { topic: 'Content at Scale', icon: '<path d="M2 4h12M2 8h10M2 12h14"/>', executive: 'Localization, NPC dialogue, marketing copy. The volume we need is impossible to do manually.', creative: 'Scale is the opposite of craft. Players know the difference. Only 5% use AI for player-facing features.', engineer: 'Works for structured content (localization, test data). Falls apart for narrative consistency.', indie: 'Helps with first-pass localization and marketing copy I\'d otherwise skip.', enterprise: 'Our biggest productivity gains. Content at scale is a solved problem.' },
+    { topic: 'Code Assistance', icon: '<path d="M4 4l4 4-4 4"/><path d="M10 12h4"/>', executive: 'No-brainer. Speeds up dev, reduces headcount needs.', creative: 'Fine for engineers. Keep it away from creative tools.', engineer: 'Useful for boilerplate, tests, docs. Hallucinated APIs mean review is mandatory. About 47% of devs use it.', indie: 'Essential. Fills in for the senior dev I cannot hire.', enterprise: 'Proven ROI. Standard across all engineering teams.' },
+    { topic: 'Art / Asset Generation', icon: '<circle cx="8" cy="8" r="4"/><path d="M2 14l4-2 3 3 3-5 4 8H2z"/>', executive: 'Big cost savings on concepting and pre-production.', creative: 'The core threat. Trained on stolen work, produces generic output players reject.', engineer: 'Useful for placeholders and prototypes. Not production-ready for shipped art.', indie: 'Unlocks capabilities I could not afford: concept iteration, texture generation.', enterprise: 'Standard content workflow. Already used for marketing and internal assets.' },
+    { topic: 'Content at Scale', icon: '<path d="M2 4h12M2 8h10M2 12h14"/>', executive: 'Localization, NPC dialogue, marketing copy. The volume we need is impossible to do manually.', creative: 'Scale is the opposite of craft. Players know the difference. Only 5% use AI for player-facing features.', engineer: 'Works for structured content (localization, test data). Falls apart for narrative consistency.', indie: 'Helps with first-pass localization and marketing copy I would otherwise skip.', enterprise: 'Our biggest productivity gains. Content at scale is a solved problem.' },
     { topic: 'AI-Powered QA', icon: '<path d="M2 2l6 6M14 2L8 8"/><rect x="1" y="8" width="14" height="6" rx="1"/>', executive: 'Reduces QA costs, catches bugs earlier. Clear ROI.', creative: 'One of the few AI uses without creative-integrity concerns.', engineer: 'The sweet spot: regression testing, crash triage, coverage analysis. Bounded, verifiable, high value.', indie: 'Would love it, but most tools are enterprise-priced.', enterprise: 'Standard practice. Game dev\'s real-time testing demands could push these tools further than enterprise.' },
-    { topic: 'Cost and Timeline', icon: '<circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/>', executive: 'Primary argument for adoption. ~15-30% savings on specific tasks, with potential for more.', creative: '17% have lost jobs within 12 months. Cost savings come at the expense of the people who make the product.', engineer: 'Savings are real but narrow. Integration costs offset gains on complex tasks.', indie: 'Different math for a 2-person team. AI doesn\'t save money; it unlocks things we couldn\'t do.', enterprise: '20-40% efficiency gains demonstrated. The ROI case is well established.' },
+    { topic: 'Cost and Timeline', icon: '<circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/>', executive: 'Primary argument for adoption. About 15-30% savings on specific tasks, with potential for more.', creative: '17% have lost jobs within 12 months. Cost savings come at the expense of the people who make the product.', engineer: 'Savings are real but narrow. Integration costs offset gains on complex tasks.', indie: 'Different math for a two-person team. AI does not save money; it unlocks things we could not do.', enterprise: '20-40% efficiency gains demonstrated. The ROI case is well established.' },
     { topic: 'Creative Quality', icon: '<path d="M8 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z"/>', executive: 'Good enough is shipping. Perfectionism is a luxury when 35% of studios are self-funded.', creative: 'Quality IS the product. AI content lacks intentionality. Players are learning to spot it.', engineer: 'Quality is a spectrum. AI handles routine tasks; final polish requires human craft.', indie: 'Quality matters, but so does existence. A shipped game with some AI help beats a perfect game never made.', enterprise: 'Quality in enterprise is measurable. In games, quality IS the product. What game devs learn flows back to enterprise.' },
-    { topic: 'Job Displacement', icon: '<circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 3-5 6-5s6 2 6 5"/>', executive: 'Not replacing, repositioning. Though 17% have experienced layoffs within a year.', creative: 'The central concern. 28% laid off within 2 years. "Repositioning" is corporate for downsizing.', engineer: 'Real but exaggerated for technical roles. AI makes engineers more productive; it doesn\'t replace judgment.', indie: 'Doesn\'t apply the same way. I\'m not displacing anyone.', enterprise: 'A transition management challenge. But dismissing game dev resistance risks losing the most creative AI testbed.' },
-    { topic: 'Who Controls the Process', icon: '<path d="M8 2v4M4 6l2 2M12 6l-2 2"/><path d="M3 10h10v4H3z"/>', executive: 'Leadership sets AI strategy; teams execute.', creative: 'Creators should control their tools. "AI generates, human reviews" is backwards.', engineer: 'Engineers should evaluate tools on technical merit. Management mandating tools without input is counterproductive.', indie: 'I control everything. AI is one more tool, used on my terms.', enterprise: 'IT and leadership define the AI stack. But game devs push tools into creative territory enterprise never touches.' }
+    { topic: 'Job Displacement', icon: '<circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 3-5 6-5s6 2 6 5"/>', executive: 'Not replacing, repositioning. Though 17% have experienced layoffs within a year.', creative: 'The central concern. 28% laid off within 2 years. "Repositioning" is corporate for downsizing.', engineer: 'Real but exaggerated for technical roles. AI makes engineers more productive; it does not replace judgment.', indie: 'Does not apply the same way. I am not displacing anyone.', enterprise: 'A transition management challenge. But dismissing game dev resistance risks losing the most creative AI testbed.' },
+    { topic: 'Who Controls the Process', icon: '<path d="M8 2v4M4 6l2 2M12 6l-2 2"/><path d="M3 10h10v4H3z"/>', executive: 'Leadership sets AI strategy; teams execute.', creative: 'Creators should control their tools. "AI generates, human reviews" is backwards.', engineer: 'Engineers should evaluate tools on technical merit. Management mandating tools without input is counterproductive.', indie: 'I control everything. AI is one more tool, used on my terms.', enterprise: 'IT and leadership define the AI stack. But game devs push tools into creative territory enterprise never touches.' },
+    { topic: 'Depth of Understanding', icon: '<circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.5 3.5l1.4 1.4M11.1 11.1l1.4 1.4M3.5 12.5l1.4-1.4M11.1 4.9l1.4-1.4"/>', executive: 'Shallow: AI is a cost lever; reads vendor claims, pushes adoption. Deep: understands that AI requires process investment and that savings are narrower and more task-specific than marketed.', creative: 'Shallow: all AI is threat. Deep: distinguishes between content generation for creative output (high concern) and pipeline tools for repetitive tasks (lower concern, often genuinely useful).', engineer: 'Shallow: hype skeptic, waits for tools to mature. Deep: has built repeatable pipelines, knows exactly which task types AI handles reliably and which it fails on, uses it selectively.', indie: 'Shallow: AI generates everything, ship fast. Deep: AI for specific gaps only. Knows that AI-generated content has a recognizable aesthetic players are learning to identify and reject.', enterprise: 'Shallow: applies enterprise productivity metrics to creative output. Deep: recognizes that game development has fundamentally different quality signals and that player experience cannot be measured in efficiency terms.' }
   ];
 
   // Render matrix accordion
@@ -702,30 +1133,32 @@ a, button, [role="button"] {
   var personaLabels = ['Executive', 'Creative', 'Engineer', 'Indie Dev', 'Enterprise'];
   var personaKeys = ['executive', 'creative', 'engineer', 'indie', 'enterprise'];
 
-  matrixTopics.forEach(function(row) {
-    var topic = document.createElement('div');
-    topic.className = 'matrix-topic';
-    topic.innerHTML =
-      '<button class="matrix-topic-btn" aria-expanded="false">' +
-        '<span class="matrix-topic-btn-left"><svg class="matrix-topic-btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + row.icon + '</svg><span>' + row.topic + '</span></span>' +
-        '<svg class="matrix-topic-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg>' +
-      '</button>' +
-      '<div class="matrix-topic-body"><div class="matrix-topic-grid">' +
-        personaKeys.map(function(key, i) {
-          var cfg = personaConfig[key];
-          return '<div class="matrix-topic-cell" style="--cell-color:' + cfg.colorHex + '">' +
-            '<div class="matrix-cell-persona" style="color:' + cfg.colorHex + '"><span class="matrix-cell-dot" style="background:' + cfg.colorHex + '"></span>' + personaLabels[i] + '</div>' +
-            '<div class="matrix-cell-text">' + row[key] + '</div></div>';
-        }).join('') +
-      '</div></div>';
+  if (accordionEl) {
+    matrixTopics.forEach(function(row) {
+      var topic = document.createElement('div');
+      topic.className = 'matrix-topic';
+      topic.innerHTML =
+        '<button class="matrix-topic-btn" aria-expanded="false">' +
+          '<span class="matrix-topic-btn-left"><svg class="matrix-topic-btn-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' + row.icon + '</svg><span>' + row.topic + '</span></span>' +
+          '<svg class="matrix-topic-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6l4 4 4-4"/></svg>' +
+        '</button>' +
+        '<div class="matrix-topic-body"><div class="matrix-topic-grid">' +
+          personaKeys.map(function(key, i) {
+            var cfg = personaConfig[key];
+            return '<div class="matrix-topic-cell" style="--cell-color:' + cfg.colorHex + '">' +
+              '<div class="matrix-cell-persona" style="color:' + cfg.colorHex + '"><span class="matrix-cell-dot" style="background:' + cfg.colorHex + '"></span>' + personaLabels[i] + '</div>' +
+              '<div class="matrix-cell-text">' + row[key] + '</div></div>';
+          }).join('') +
+        '</div></div>';
 
-    topic.querySelector('.matrix-topic-btn').addEventListener('click', function() {
-      var wasOpen = topic.classList.contains('open');
-      accordionEl.querySelectorAll('.matrix-topic.open').forEach(function(t) { t.classList.remove('open'); t.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'false'); });
-      if (!wasOpen) { topic.classList.add('open'); topic.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'true'); gaEvent('matrix_topic_opened', { topic: row.topic }); }
+      topic.querySelector('.matrix-topic-btn').addEventListener('click', function() {
+        var wasOpen = topic.classList.contains('open');
+        accordionEl.querySelectorAll('.matrix-topic.open').forEach(function(t) { t.classList.remove('open'); t.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'false'); });
+        if (!wasOpen) { topic.classList.add('open'); topic.querySelector('.matrix-topic-btn').setAttribute('aria-expanded', 'true'); gaEvent('matrix_topic_opened', { topic: row.topic }); }
+      });
+      accordionEl.appendChild(topic);
     });
-    accordionEl.appendChild(topic);
-  });
+  }
 
   // Persona selection
   var cards = document.querySelectorAll('.persona-card');
@@ -738,105 +1171,69 @@ a, button, [role="button"] {
 
     cards.forEach(function(c) { var a = c.dataset.persona === key; c.classList.toggle('active', a); c.setAttribute('aria-pressed', a); });
 
-    document.getElementById('detailHeader').style.borderBottomColor = cfg.colorHex;
-    detailWrapper.style.setProperty('--active-color', cfg.colorHex);
-    document.getElementById('detailIcon').innerHTML = makeDetailIcon(key);
-    document.getElementById('detailName').textContent = data.name;
-    document.getElementById('detailStance').textContent = data.stance;
+    var detailHeader = document.getElementById('detailHeader');
+    if (detailHeader) detailHeader.style.borderBottomColor = cfg.colorHex;
+    if (detailWrapper) detailWrapper.style.setProperty('--active-color', cfg.colorHex);
+
+    var detailIcon = document.getElementById('detailIcon');
+    if (detailIcon) detailIcon.innerHTML = makeDetailIcon(key);
+
+    var detailName = document.getElementById('detailName');
+    if (detailName) detailName.textContent = data.name;
+
+    var detailStance = document.getElementById('detailStance');
+    if (detailStance) detailStance.textContent = data.stance;
 
     var quotesEl = document.getElementById('personaQuotes');
-    if (data.quotes && data.quotes.length) {
-      quotesEl.innerHTML = '<p class="persona-quotes-label">Real voices</p>' + data.quotes.map(function(q) { return '<div class="persona-quote-card"><p class="persona-quote-text">"' + q.text + '"</p><p class="persona-quote-attr">' + q.attr + ' &middot; <a href="' + q.url + '" target="_blank" rel="noopener noreferrer">' + q.source + '</a></p></div>'; }).join('');
-    } else { quotesEl.innerHTML = ''; }
+    if (quotesEl) {
+      if (data.quotes && data.quotes.length) {
+        quotesEl.innerHTML = '<p class="persona-quotes-label">Real voices</p>' + data.quotes.map(function(q) {
+          return '<div class="persona-quote-card"><p class="persona-quote-text">"' + q.text + '"</p><p class="persona-quote-attr">' + q.attr + ' &middot; <a href="' + q.url + '" target="_blank" rel="noopener noreferrer">' + q.source + '</a></p></div>';
+        }).join('');
+      } else {
+        quotesEl.innerHTML = '';
+      }
+    }
 
-    document.getElementById('detailBelieve').innerHTML = data.believe.map(function(b) { return '<span class="believe-tag">' + b + '</span>'; }).join('');
-    document.getElementById('detailRight').innerHTML = data.right.map(function(r) { return '<li>' + r + '</li>'; }).join('');
-    document.getElementById('detailWrong').innerHTML = data.wrong.map(function(w) { return '<li>' + w + '</li>'; }).join('');
-    document.getElementById('detailMissing').innerHTML = data.missing.map(function(m) { return '<li><span class="missing-source">' + m.source + '</span><br>' + m.text + '</li>'; }).join('');
+    var detailBelieve = document.getElementById('detailBelieve');
+    if (detailBelieve) detailBelieve.innerHTML = data.believe.map(function(b) { return '<span class="believe-tag">' + b + '</span>'; }).join('');
 
-    detailWrapper.classList.add('visible');
+    var detailRight = document.getElementById('detailRight');
+    if (detailRight) detailRight.innerHTML = data.right.map(function(r) { return '<li>' + r + '</li>'; }).join('');
+
+    var detailWrong = document.getElementById('detailWrong');
+    if (detailWrong) detailWrong.innerHTML = data.wrong.map(function(w) { return '<li>' + w + '</li>'; }).join('');
+
+    var detailMissing = document.getElementById('detailMissing');
+    if (detailMissing) detailMissing.innerHTML = data.missing.map(function(m) { return '<li><span class="missing-source">' + m.source + '</span><br>' + m.text + '</li>'; }).join('');
+
+    if (detailWrapper) detailWrapper.classList.add('visible');
     setStored('perspectives-persona', key);
-    if (window.location.hash !== '#' + key) history.replaceState(null, '', '#' + key);
+    try { if (window.location.hash !== '#' + key) history.replaceState(null, '', '#' + key); } catch(e) {}
     gaEvent('persona_selected', { persona: key });
-    if (scroll) setTimeout(function() { detailWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+    if (scroll) setTimeout(function() { if (detailWrapper) detailWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
   }
 
   cards.forEach(function(card) { card.addEventListener('click', function() { selectPersona(card.dataset.persona, true); }); });
 
-  var hashPersona = window.location.hash.replace('#', '');
+  var hashPersona = '';
+  try { hashPersona = window.location.hash.replace('#', ''); } catch(e) {}
   if (hashPersona && personas[hashPersona]) { selectPersona(hashPersona, false); }
   else { var saved = getStored('perspectives-persona'); if (saved && personas[saved]) selectPersona(saved, false); }
-  window.addEventListener('hashchange', function() { var k = window.location.hash.replace('#', ''); if (k && personas[k]) selectPersona(k, true); });
+  try {
+    window.addEventListener('hashchange', function() { var k = window.location.hash.replace('#', ''); if (k && personas[k]) selectPersona(k, true); });
+  } catch(e) {}
 
   // Fade-in
   var fadeEls = document.querySelectorAll('.fade-in, .stagger');
   if ('IntersectionObserver' in window) {
     var obs = new IntersectionObserver(function(entries) { entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     fadeEls.forEach(function(el) { obs.observe(el); });
-  } else { fadeEls.forEach(function(el) { el.classList.add('visible'); }); }
+  } else {
+    fadeEls.forEach(function(el) { el.classList.add('visible'); });
+  }
 
 })();
 </script>
-<script data-pplx-inline-edit>
-(function(){
-  if(window===window.top)return;
-  function inlineAll(orig,clone){
-    if(orig.nodeType!==1)return;
-    try{
-      var cs=getComputedStyle(orig);
-      var t='';
-      for(var i=0;i<cs.length;i++){t+=cs[i]+':'+cs.getPropertyValue(cs[i])+';';}
-      clone.style.cssText=t;
-    }catch(e){}
-    var oc=orig.children,cc=clone.children;
-    for(var j=0;j<oc.length&&j<cc.length;j++){inlineAll(oc[j],cc[j]);}
-  }
-  function stripExternal(clone){
-    var imgs=clone.querySelectorAll('img');
-    for(var i=0;i<imgs.length;i++){
-      var s=imgs[i].getAttribute('src');
-      if(s&&!s.startsWith('data:'))imgs[i].removeAttribute('src');
-    }
-    var all=clone.querySelectorAll('*');
-    for(var i=0;i<all.length;i++){
-      var st=all[i].style.cssText;
-      if(st&&st.indexOf('url(')>=0){
-        all[i].style.cssText=st.replace(/url\(["']?(?!data:)[^)"']*["']?\)/gi,'none');
-      }
-    }
-  }
-  window.addEventListener('message',function(e){
-    if(!e.data||e.data.type!=='INLINE_EDIT_CAPTURE_REQUEST')return;
-    var scrollX=window.scrollX||window.pageXOffset||0;
-    var scrollY=window.scrollY||window.pageYOffset||0;
-    var w=window.innerWidth,h=window.innerHeight;
-    try{
-      var clone=document.documentElement.cloneNode(true);
-      var rm=clone.querySelectorAll('script,link[rel="stylesheet"],style');
-      for(var i=0;i<rm.length;i++){rm[i].remove();}
-      inlineAll(document.documentElement,clone);
-      stripExternal(clone);
-      var html=new XMLSerializer().serializeToString(clone);
-      var svg='<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'
-        +'<foreignObject width="100%" height="100%">'
-        +'<div xmlns="http://www.w3.org/1999/xhtml" style="width:'+w+'px;height:'+h+'px;overflow:hidden">'
-        +'<div style="transform:translate(-'+scrollX+'px,-'+scrollY+'px);transform-origin:top left">'
-        +html+'</div></div></foreignObject></svg>';
-      var svgUrl='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
-      var img=new Image();
-      img.onload=function(){
-        var c=document.createElement('canvas');c.width=w;c.height=h;
-        c.getContext('2d').drawImage(img,0,0);
-        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:c.toDataURL('image/png'),scrollX:scrollX,scrollY:scrollY},'*');
-      };
-      img.onerror=function(){
-        window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
-      };
-      img.src=svgUrl;
-    }catch(err){
-      window.parent.postMessage({type:'INLINE_EDIT_SCREENSHOT_RESULT',dataUrl:null,scrollX:scrollX,scrollY:scrollY},'*');
-    }
-  });
-})();
-</script></body>
+</body>
 </html>
