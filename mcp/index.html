@@ -336,10 +336,10 @@ button{cursor:pointer;font-family:inherit}
 @media(max-width:600px){.sec-notice{font-size:12px;padding:8px 12px}}
 
 /* WELCOME MODAL */
-.wm-overlay{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+.wm-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;padding-top:calc(var(--nav) + 16px);animation:wm-fade .2s ease}
 @keyframes wm-fade{from{opacity:0}to{opacity:1}}
 .wm-overlay.hidden{display:none}
-.wm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:680px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .25s ease}
+.wm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:680px;max-height:calc(92vh - var(--nav));display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .25s ease}
 @keyframes wm-up{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 .wm-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:1px solid var(--border);background:var(--surface)}
 .wm-title{font-family:'Exo 2',sans-serif;font-weight:800;font-size:20px;color:var(--text);line-height:1.25}
@@ -372,7 +372,7 @@ button{cursor:pointer;font-family:inherit}
 .wm-no-show input{accent-color:var(--accent);cursor:pointer}
 
 /* CHANGELOG MODAL */
-.cl-overlay{position:fixed;inset:0;z-index:410;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+.cl-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;padding-top:calc(var(--nav) + 16px);animation:wm-fade .2s ease}
 .cl-overlay.hidden{display:none}
 .cl-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .22s ease}
 .cl-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
@@ -408,7 +408,7 @@ button{cursor:pointer;font-family:inherit}
 .whats-new-dot.hidden{display:none}
 
 /* ROADMAP MODAL */
-.rm-overlay{position:fixed;inset:0;z-index:410;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;animation:wm-fade .2s ease}
+.rm-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;padding:16px;padding-top:calc(var(--nav) + 16px);animation:wm-fade .2s ease}
 .rm-overlay.hidden{display:none}
 .rm-box{background:var(--surface);border:1px solid var(--border-b);border-radius:14px;width:100%;max-width:640px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--sh-lg);animation:wm-up .22s ease}
 .rm-hdr{padding:20px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;justify-content:space-between;align-items:flex-start}
