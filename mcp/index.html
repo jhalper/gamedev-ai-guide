@@ -281,14 +281,25 @@ button{cursor:pointer;font-family:inherit}
   .sidebar{position:fixed;top:calc(var(--hdr) + var(--nav));left:0;bottom:60px;z-index:95;width:280px !important;transform:translateX(-100%);transition:transform .25s ease}
   .sidebar.mob-open{transform:translateX(0)}
   .sidebar.collapsed{width:280px !important;transform:translateX(-100%)}
+  /* Strip header to hamburger + search only on mobile */
   .hdr-count{display:none}
-  .logo-sub{display:none}
+  .logo{display:none}
+  .whats-new-btn{display:none}
+  .theme-btn{display:none}
+  .hdr-right{display:none}
+  .search-wrap{flex:1;max-width:none}
+  /* Security notice: single line with expand toggle on mobile */
+  .sec-notice-full{display:none}
+  .sec-notice-short{display:inline}
+  .sec-notice.expanded .sec-notice-full{display:inline}
+  .sec-notice.expanded .sec-notice-short{display:none}
 }
 @media(max-width:480px){
   .main{padding:10px}
-  .hdr{padding:0 10px;gap:8px}
+  .hdr{padding:0 8px;gap:6px}
   .panel-name{font-size:15px}
   .grid{grid-template-columns:1fr}
+  .search-wrap input{padding:8px 10px 8px 32px;font-size:16px}
 }
 
 /* HAMBURGER */
@@ -334,6 +345,10 @@ button{cursor:pointer;font-family:inherit}
 .sec-notice a{color:#c86428;text-decoration:underline;text-underline-offset:2px}
 .sec-notice a:hover{opacity:.8}
 @media(max-width:600px){.sec-notice{font-size:12px;padding:8px 12px}}
+
+.sec-notice-toggle{color:#c86428;background:none;border:none;font-size:12px;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.sec-notice-short{display:none} /* full text shown on desktop */
+.sec-notice-full{display:inline}
 
 /* WELCOME MODAL */
 .wm-overlay{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:16px;padding-top:calc(var(--nav) + 16px);animation:wm-fade .2s ease}
@@ -440,8 +455,7 @@ button{cursor:pointer;font-family:inherit}
 .rm-footer{padding:14px 22px;border-top:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .rm-footer-note{font-size:14px;color:var(--muted);flex:1}
 .rm-footer-note a{color:var(--accent)}
-.roadmap-btn{background:var(--surface2);border:1px solid var(--border-b);color:var(--dim);border-radius:7px;height:36px;padding:0 13px;display:flex;align-items:center;gap:6px;font-size:13px;font-family:'JetBrains Mono',monospace;transition:all .15s;white-space:nowrap;font-weight:600}
-.roadmap-btn:hover{border-color:var(--accent);color:var(--accent)}
+/* ROADMAP styles removed */
 
 /* MISC */
 .sb-backdrop{display:none;position:fixed;inset:0;top:calc(var(--hdr) + var(--nav));background:rgba(0,0,0,.5);z-index:90}
@@ -565,11 +579,10 @@ button{cursor:pointer;font-family:inherit}
   </a>
   <div class="search-wrap">
     <span class="search-icon">⌕</span>
-    <input type="search" id="search" placeholder="Search MCPs, capabilities, tools… (press /)" autocomplete="off">
+    <input type="search" id="search" placeholder="Search MCPs…" autocomplete="off">
   </div>
   <div class="hdr-right">
-    <span class="hdr-count" id="hdr-count">15 MCPs</span>
-    <button class="roadmap-btn" id="roadmap-btn" title="Product Roadmap">◎ Roadmap</button>
+    <span class="hdr-count" id="hdr-count">22 MCPs</span>
     <button class="whats-new-btn" id="whats-new-btn" title="What's New">
       <span>★ What's New</span>
       <span class="whats-new-dot hidden" id="wn-dot"></span>
@@ -577,83 +590,6 @@ button{cursor:pointer;font-family:inherit}
     <button class="theme-btn" id="theme-toggle"><span id="theme-ico">☀</span><span id="theme-lbl">Light</span></button>
   </div>
 </header>
-
-<!-- ROADMAP MODAL -->
-<div class="rm-overlay hidden" id="rm-overlay">
-  <div class="rm-box" role="dialog" aria-modal="true" aria-label="Product Roadmap">
-    <div class="rm-hdr">
-      <div>
-        <div class="rm-title">Product Roadmap</div>
-        <div class="rm-subtitle">Where this tool is going, and what is honest about where it is now.</div>
-      </div>
-      <button class="close-btn" id="rm-close">✕</button>
-    </div>
-    <div class="rm-body">
-      <div class="rm-phase done">
-        <div class="rm-phase-hdr">
-          <span class="rm-phase-num">PHASE 1</span>
-          <span class="rm-phase-title">Foundation: Build the Thing</span>
-          <span class="rm-phase-status">✓ Complete</span>
-        </div>
-        <div class="rm-phase-desc">Get a working, searchable, filterable MCP reference tool out the door. Establish the data model, core features, and basic UX patterns.</div>
-        <div class="rm-items">
-          <div class="rm-item"><span class="rm-item-dot"></span>15 MCPs across Game Engines, 3D Content, and NVIDIA tools</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Search, filter, sort, and detail panel with copy-able integration steps</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Side-by-side comparison mode for up to 3 MCPs</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Light/dark mode, mobile bottom nav, collapsible sidebar</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Welcome modal with role-based quick starts</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>What's New changelog and this Roadmap</div>
-        </div>
-      </div>
-      <div class="rm-phase next">
-        <div class="rm-phase-hdr">
-          <span class="rm-phase-num">PHASE 2</span>
-          <span class="rm-phase-title">Integration with gamedevai.guide</span>
-          <span class="rm-phase-status">Up next</span>
-        </div>
-        <div class="rm-phase-desc">This tool becomes the 5th pillar of <a href="https://gamedevai.guide/" target="_blank" rel="noopener">gamedevai.guide</a>, sitting alongside the existing four tools as a fully integrated part of the platform.</div>
-        <div class="rm-items">
-          <div class="rm-item"><span class="rm-item-dot"></span>Unified navigation, auth, and visual language with gamedevai.guide</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Server-side MCP data with community submissions, versioned updates, and moderation queue</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>User accounts to save favourites, track MCPs you use, and leave reviews</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Cross-tool intelligence to surface relevant MCPs based on activity elsewhere on the platform</div>
-        </div>
-      </div>
-      <div class="rm-phase soon">
-        <div class="rm-phase-hdr">
-          <span class="rm-phase-num">PHASE 3</span>
-          <span class="rm-phase-title">Share &amp; Export</span>
-          <span class="rm-phase-status">Planned</span>
-        </div>
-        <div class="rm-phase-desc">Make it easy to share discoveries and hand off results to teammates, leads, or the wider community.</div>
-        <div class="rm-items">
-          <div class="rm-item"><span class="rm-item-dot"></span>Share filtered views on X, LinkedIn, Discord, and Reddit with a preview card</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Print to PDF with a clean print stylesheet for exporting filtered shortlists and comparisons</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Shareable comparison links to deep-link to a specific set of compared MCPs</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Embed widget to drop a filtered MCP card into any webpage or Notion doc</div>
-        </div>
-      </div>
-      <div class="rm-phase future">
-        <div class="rm-phase-hdr">
-          <span class="rm-phase-num">PHASE 4</span>
-          <span class="rm-phase-title">Visual Redesign: Escape the Baseline</span>
-          <span class="rm-phase-status">Future</span>
-        </div>
-        <div class="rm-phase-desc">Get past the AI slop design baseline.</div>
-        <div class="rm-items">
-          <div class="rm-item"><span class="rm-item-dot"></span>Custom visual identity including distinctive typography, colour system, and iconography</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Reimagined desktop layout with less overwhelming, stronger information hierarchy</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Proper motion design with purposeful transitions, not decoration</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Accessibility audit covering contrast, keyboard, and screen reader support</div>
-          <div class="rm-item"><span class="rm-item-dot"></span>Mobile-first layout rethink since the current design is desktop-adapted, not mobile-native</div>
-        </div>
-      </div>
-    </div>
-    <div class="rm-footer">
-      <span class="rm-footer-note">Part of <a href="https://gamedevai.guide/" target="_blank" rel="noopener">gamedevai.guide</a>, AI tools for game developers.</span>
-    </div>
-  </div>
-</div>
 
 <!-- WHATS NEW MODAL -->
 <div class="cl-overlay hidden" id="cl-overlay">
@@ -690,9 +626,13 @@ button{cursor:pointer;font-family:inherit}
   </div>
 </div>
 
-<div class="sec-notice" role="note">
+<div class="sec-notice" role="note" id="sec-notice">
   <svg class="sec-notice-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-  <span><strong>Security notice (April 16, 2026):</strong> Ox Security researchers disclosed a design-level vulnerability in the MCP protocol affecting an estimated 200,000 servers and packages with 150M+ downloads. The attack vector is prompt injection through tool descriptions, enabling server takeover. Anthropic updated its guidance to treat STDIO-based MCP adapters with caution but declined to patch the protocol architecture. <strong>Practical steps:</strong> only install MCP servers from sources you trust, review what file system and network permissions each server requests, and prefer servers with active maintenance. Read the full disclosure: <a href="https://www.ox.security/blog/the-mother-of-all-ai-supply-chains-critical-systemic-vulnerability-at-the-core-of-the-mcp/" target="_blank" rel="noopener noreferrer">Ox Security</a> &middot; <a href="https://www.theregister.com/2026/04/16/anthropic_mcp_design_flaw/" target="_blank" rel="noopener noreferrer">The Register</a></span>
+  <span>
+    <strong>Security notice (Apr 16):</strong>
+    <span class="sec-notice-short"> MCP protocol vulnerability disclosed — prompt injection via tool descriptions. <button class="sec-notice-toggle" onclick="document.getElementById('sec-notice').classList.toggle('expanded')">Read more</button></span>
+    <span class="sec-notice-full"> Ox Security researchers disclosed a design-level vulnerability in the MCP protocol affecting an estimated 200,000 servers and packages with 150M+ downloads. The attack vector is prompt injection through tool descriptions, enabling server takeover. Anthropic updated its guidance to treat STDIO-based MCP adapters with caution but declined to patch the protocol architecture. <strong>Practical steps:</strong> only install MCP servers from sources you trust, review what file system and network permissions each server requests, and prefer servers with active maintenance. Read the full disclosure: <a href="https://www.ox.security/blog/the-mother-of-all-ai-supply-chains-critical-systemic-vulnerability-at-the-core-of-the-mcp/" target="_blank" rel="noopener noreferrer">Ox Security</a> &middot; <a href="https://www.theregister.com/2026/04/16/anthropic_mcp_design_flaw/" target="_blank" rel="noopener noreferrer">The Register</a> <button class="sec-notice-toggle" onclick="document.getElementById('sec-notice').classList.toggle('expanded')">Show less</button></span>
+  </span>
 </div>
 
 <div class="layout">
@@ -772,10 +712,15 @@ button{cursor:pointer;font-family:inherit}
 
 <script>
 /* ══ DATA ══ */
-const NOW = new Date("2026-04-16");
+const NOW = new Date("2026-04-24");
 const MCPS = [
   {id:"unity-scene",name:"Unity Scene MCP",version:"2.1.4",category:"Game Engine",targets:["Unity"],desc:"Full scene graph manipulation, GameObject queries, component inspection and modification via natural language.",status:"Active",updated:"2025-03-01",license:"MIT",caps:["Scene Management","GameObject Query","Component Inspection","Prefab Instantiation","Physics Control","EditorCoroutines"],inputs:[".unity",".prefab","JSON"],outputs:[".unity",".prefab","JSON","C# snippet"],ctx:"Medium",streaming:true,tools:true,install:"Unity Package Manager",prereqs:["Unity 2022.3+","Anthropic API key",".NET 6"],setupTime:15,complexity:2,docs:5,community:5,stability:4,tags:["scene","editor","automation","official","C#"],steps:[{n:1,t:"Add package via URL",c:"com.anthropic.unity-mcp"},{n:2,t:"Configure API key",c:"Edit → Project Settings → Anthropic MCP → paste key"},{n:3,t:"Open MCP Panel",c:"Window → Anthropic → MCP Console"}],links:{docs:"https://github.com/CoderGamester/mcp-unity",github:"https://github.com/CoderGamester/mcp-unity",discord:"https://discord.com/invite/unity",reddit:"https://reddit.com/r/Unity3D",marketplace:"https://assetstore.unity.com"}},
-  {id:"unreal-blueprint",name:"Unreal Blueprint MCP",version:"1.3.0",category:"Game Engine",targets:["Unreal Engine"],desc:"AI-driven Blueprint graph generation, level streaming control, and Sequencer animation authoring for UE5.",status:"Beta",updated:"2025-02-18",license:"Apache 2.0",caps:["Blueprint Generation","Level Streaming","Sequencer Control","Material Authoring","Actor Spawning","C++ Stub Gen"],inputs:[".uasset",".umap","JSON"],outputs:[".uasset","C++ snippet","JSON"],ctx:"High",streaming:false,tools:true,install:"Manual Plugin",prereqs:["UE 5.3+","Python 3.11","Anthropic API key"],setupTime:45,complexity:4,docs:3,community:4,stability:3,tags:["blueprint","level-design","sequencer","UE5","C++"],steps:[{n:1,t:"Clone into Plugins folder",c:"git clone https://github.com/... Plugins/AnthropicMCP"},{n:2,t:"Enable in editor",c:"Edit → Plugins → search Anthropic → Enable → Restart"},{n:3,t:"Set API key",c:"Project Settings → Plugins → Anthropic → enter key"},{n:4,t:"Start Python server",c:'py "Plugins/AnthropicMCP/server.py"'}],links:{docs:"https://github.com/chongdashu/unreal-mcp",github:"https://github.com/chongdashu/unreal-mcp",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.fab.com"}},
+  {id:"unreal-blueprint",name:"Unreal Blueprint MCP",version:"1.5.0",category:"Game Engine",targets:["Unreal Engine"],desc:"AI-driven Blueprint graph generation, actor spawning, level design, input mapping, and component configuration for UE5.5. Works with Claude Desktop, Cursor, and Windsurf via uv Python runner. Experimental — API subject to change.",status:"Beta",updated:"2025-11-01",license:"MIT",caps:["Blueprint Class Creation","Component Add & Configure","Actor Spawn & Transform","Input Mapping","Physics Settings","Blueprint Compile","Level Actor Query","Camera & Light Setup","C++ Stub Gen"],inputs:[".uasset",".umap","JSON"],outputs:[".uasset","C++ snippet","JSON"],ctx:"High",streaming:false,tools:true,install:"uv Python runner + UE Plugin",prereqs:["UE 5.5+","Python 3.11","uv installed","MCP-compatible client"],setupTime:30,complexity:3,docs:3,community:4,stability:2,tags:["blueprint","level-design","actors","UE5","C++","experimental"],steps:[{n:1,t:"Clone the repo",c:"git clone https://github.com/chongdashu/unreal-mcp"},{n:2,t:"Enable UE plugin",c:"Copy UnrealMCP.uplugin into your project Plugins/ folder, then Edit > Plugins > Enable UnrealMCP > Restart"},{n:3,t:"Add to MCP config",c:'{ "mcpServers": { "unrealMCP": { "command": "uv", "args": ["--directory","<path/to/PYTHON>","run","unreal_mcp_server.py"] } } }'},{n:4,t:"Verify connection",c:"Open Claude Desktop and check that unrealMCP tools appear in the tool list"}],links:{docs:"https://github.com/chongdashu/unreal-mcp",github:"https://github.com/chongdashu/unreal-mcp",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.fab.com"}},
+  {id:"unrealmcpbridge-appleweed",name:"UnrealMCPBridge (Fab)",version:"1.0.0",category:"Game Engine",targets:["Unreal Engine"],desc:"Fab-store UE plugin that exposes the full Unreal Engine Python API to any MCP client via a socket server on port 9000. No curated tool list — just the entire UE Python API. Includes two starter prompts (create_castle, create_town) to test immediately after install.",status:"Active",updated:"2026-03-01",license:"Commercial (Fab)",caps:["Full UE Python API Access","Socket Server (port 9000)","Actor Creation & Placement","Material Authoring","Blueprint Scripting","Level Editing","Starter Prompts (create_castle, create_town)","Multi-client Support"],inputs:[".uasset",".umap","Python","JSON"],outputs:[".uasset","Python snippet","JSON"],ctx:"High",streaming:false,tools:true,install:"Fab Store Plugin",prereqs:["UE 5.x","Python Editor Script Plugin enabled","Claude Desktop (admin mode)","Fab account"],setupTime:15,complexity:2,docs:3,community:3,stability:3,tags:["fab","python-api","full-api","socket","UE5","commercial"],steps:[{n:1,t:"Purchase and install from Fab",c:"fab.com > search UnrealMCPBridge > Install to Engine > choose your UE version in Epic Games Launcher"},{n:2,t:"Enable in your project",c:"Edit > Plugins > search UnrealMCPBridge > Enable > Restart. Also ensure Python Editor Script Plugin is enabled."},{n:3,t:"Add to Claude MCP config",c:'{ "mcpServers": { "unreal-engine": { "command": "python", "args": ["[path_to_unreal_mcp_client.py]"] } } }'},{n:4,t:"Start the bridge",c:"Click the MCP Bridge button in the UE toolbar. Confirm the popup says MCP Python bridge running. Output Log shows socket server on 127.0.0.1:9000."},{n:5,t:"Launch Claude as administrator",c:"Right-click Claude Desktop > Run as administrator > click the Attach from MCP plug-icon"}],links:{docs:"https://github.com/appleweed/UnrealMCPBridge",github:"https://github.com/appleweed/UnrealMCPBridge",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.fab.com"}},
+  {id:"unrealmcp-aadesh",name:"unrealmcp / UnrealMCPBridge",version:"1.0.0",category:"Game Engine",targets:["Unreal Engine"],desc:"280-command MCP server across 13 categories with a C++ editor plugin (UnrealMCPBridge), Python MCP server, and Go CLI (ue-cli). The most comprehensive open-source Unreal MCP. Each UE editor instance picks a unique port automatically. Install as one npm package with no manual config files.",status:"Active",updated:"2026-04-01",license:"MPL-2.0",caps:["Material Creation & Editing","Blueprint CRUD","Niagara VFX Systems","StateTree Authoring","Actor Spawn & Transform","Data Table Management","GPU Profiling","Level Organization","Substrate Workflows","280 Commands across 13 Categories","Go CLI (ue-cli) for Claude Code","Multi-Instance Support (auto port)","npm one-command install"],inputs:[".uasset",".umap",".csv","JSON","text prompt"],outputs:[".uasset","C++ snippet","Python snippet","JSON","perf report"],ctx:"High",streaming:false,tools:true,install:"npm (ue-cli) or pip (unrealmcp)",prereqs:["UE5 (any version)","Node.js 18+ or Python 3.10+","C++ project (Blueprint-only projects need one C++ class added)"],setupTime:10,complexity:2,docs:4,community:3,stability:3,tags:["280-commands","materials","blueprints","niagara","statetree","profiling","cli","npm","pip","UE5","new"],steps:[{n:1,t:"Install CLI globally",c:"npm install -g unrealcli"},{n:2,t:"Init plugin in your project",c:"cd YourProject/ && ue-cli init"},{n:3,t:"Open UE editor and verify",c:"ue-cli health_check"},{n:4,t:"Alternative: MCP server for Cursor or Windsurf",c:'pip install unrealmcp, then add to MCP config: { "mcpServers": { "unreal-engine": { "command": "python", "args": ["-m","unrealmcp"] } } }'},{n:5,t:"Blueprint-only project?",c:"Tools > New C++ Class in editor to add one class, then re-run ue-cli init"}],links:{docs:"https://github.com/aadeshrao123/Unreal-MCP",github:"https://github.com/aadeshrao123/Unreal-MCP",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://pypi.org/project/unrealmcp/"}},
+  {id:"flopperam-unreal-mcp",name:"Flopperam Unreal MCP",version:"2.0.0",category:"Game Engine",targets:["Unreal Engine"],desc:"The only hosted Unreal MCP. One URL, one API key, no local server or Python install. An autonomous agentic mode (Flop Agent) lives inside the editor: decomposes complex requests into multi-step plans, writes and executes code, recovers from errors, and iterates until done. Routes tasks to the best model. Embedded chat panel in editor.",status:"Active",updated:"2026-02-15",license:"Commercial (API key)",caps:["Hosted Remote MCP (no local setup)","Agentic Multi-Step Planning","Blueprint Creation & Editing","World Building & Structure Gen","Material Creation","Actor Placement & Verification","Error Recovery & Iteration","Multi-Model Routing (Opus + Flash)","Embedded Chat Panel in Editor","Works with Cursor, Claude Code, Windsurf, Cline, VS Code Copilot"],inputs:[".uasset",".umap","text prompt"],outputs:[".uasset","Blueprints","materials","JSON"],ctx:"High",streaming:true,tools:true,install:"Hosted URL + UE Plugin",prereqs:["UE 5.5+","flopperam.com API key","MCP-compatible client"],setupTime:10,complexity:1,docs:4,community:4,stability:3,tags:["hosted","agentic","autonomous","world-building","no-local-server","UE5","new","commercial"],steps:[{n:1,t:"Get API key",c:"flopperam.com > sign up > copy your API key"},{n:2,t:"Add hosted MCP to config",c:'{ "mcpServers": { "flopperam-unreal": { "url": "https://agent.flopperam.com/mcp", "headers": { "Authorization": "Bearer YOUR_API_KEY" } } } }'},{n:3,t:"Or use Claude Code",c:'claude mcp add -H "Authorization: Bearer YOUR_API_KEY" --transport http flopperam-unreal https://agent.flopperam.com/mcp'},{n:4,t:"Install editor plugin for agentic mode",c:"flopperam.com/docs > Installation tab > copy plugin into YourProject/Plugins/ > enable in editor"}],links:{docs:"https://flopperam.com/docs",github:"https://github.com/flopperam/unreal-engine-mcp",discord:"https://discord.gg/flopperam",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://flopperam.com"}},
+  {id:"runreal-unreal-mcp",name:"Unreal MCP (runreal)",version:"1.0.0",category:"Game Engine",targets:["Unreal Engine"],desc:"MCP server for Unreal Engine using the built-in Python Remote Execution protocol. No new UE plugin to install — just enable two settings in Project Settings and run one npm command. New tools are pure Python, no C++ required.",status:"Beta",updated:"2026-01-15",license:"MIT",caps:["No New Plugin Required","Actor Spawn & Query","Blueprint Scripting","Level Editing","Python Remote Execution","Scene Info Query","Works with Claude, Cursor, Windsurf"],inputs:[".umap","JSON","Python"],outputs:[".uasset","Python snippet","JSON"],ctx:"Medium",streaming:false,tools:true,install:"npm package only",prereqs:["UE 5.4+","Python Editor Script Plugin enabled","Remote Execution enabled in Project Settings","Node.js 18+"],setupTime:10,complexity:1,docs:3,community:3,stability:2,tags:["no-plugin","python-remote","lightweight","UE5","easy-setup"],steps:[{n:1,t:"Enable Python and Remote Execution",c:"Edit > Plugins > Python Editor Script Plugin > Enable. Then Project Settings > Plugins > Python > check Enable Remote Execution."},{n:2,t:"Install MCP server",c:"npm install -g @runreal/unreal-mcp"},{n:3,t:"Add to MCP config",c:'{ "mcpServers": { "unreal": { "command": "unreal-mcp" } } }'},{n:4,t:"If connection fails",c:"Project Settings > Plugins > Python > change Bind Address from 127.0.0.1 to 0.0.0.0 (local network only — dev use)"}],links:{docs:"https://github.com/runreal/unreal-mcp",github:"https://github.com/runreal/unreal-mcp",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.npmjs.com/package/@runreal/unreal-mcp"}},
+  {id:"quixel-bridge",name:"Quixel Bridge MCP",version:"0.8.0",category:"Game Engine",targets:["Unreal Engine"],desc:"AI-driven Blueprint graph generation, level streaming control, and Sequencer animation authoring for UE5.",status:"Beta",updated:"2025-02-18",license:"Apache 2.0",caps:["Blueprint Generation","Level Streaming","Sequencer Control","Material Authoring","Actor Spawning","C++ Stub Gen"],inputs:[".uasset",".umap","JSON"],outputs:[".uasset","C++ snippet","JSON"],ctx:"High",streaming:false,tools:true,install:"Manual Plugin",prereqs:["UE 5.3+","Python 3.11","Anthropic API key"],setupTime:45,complexity:4,docs:3,community:4,stability:3,tags:["blueprint","level-design","sequencer","UE5","C++"],steps:[{n:1,t:"Clone into Plugins folder",c:"git clone https://github.com/... Plugins/AnthropicMCP"},{n:2,t:"Enable in editor",c:"Edit → Plugins → search Anthropic → Enable → Restart"},{n:3,t:"Set API key",c:"Project Settings → Plugins → Anthropic → enter key"},{n:4,t:"Start Python server",c:'py "Plugins/AnthropicMCP/server.py"'}],links:{docs:"https://github.com/chongdashu/unreal-mcp",github:"https://github.com/chongdashu/unreal-mcp",discord:"https://discord.com/invite/unreal-slackers",reddit:"https://reddit.com/r/unrealengine",marketplace:"https://www.fab.com"}},
   {id:"godot-gdscript",name:"Godot GDScript MCP",version:"0.9.2",category:"Game Engine",targets:["Godot"],desc:"SceneTree traversal, GDScript generation, signal wiring, and Node property editing via conversational AI.",status:"Beta",updated:"2025-01-30",license:"MIT",caps:["SceneTree Query","GDScript Generation","Signal Wiring","Node Property Edit","Resource Loading","Shader Gen"],inputs:[".tscn",".gd",".tres"],outputs:[".tscn",".gd","JSON"],ctx:"Low",streaming:true,tools:true,install:"Addon (Manual)",prereqs:["Godot 4.2+","Python 3.10+","Anthropic API key"],setupTime:25,complexity:3,docs:3,community:3,stability:3,tags:["gdscript","open-source","indie","scene-tree"],steps:[{n:1,t:"Copy addon folder",c:"cp -r addons/anthropic_mcp your_project/addons/"},{n:2,t:"Enable plugin",c:"Project → Settings → Plugins → enable AnthropicMCP"},{n:3,t:"Add .env file",c:"ANTHROPIC_API_KEY=sk-ant-..."}],links:{docs:"https://github.com/Coding-Solo/godot-mcp",github:"https://github.com/Coding-Solo/godot-mcp",discord:"https://discord.gg/4JBkykG",reddit:"https://reddit.com/r/godot",marketplace:"https://godotengine.org/asset-library"}},
   {id:"purplejelly-godot-mcp",name:"Godot MCP (PurpleJelly)",version:"1.0.0",category:"Game Engine",targets:["Godot"],desc:"77-tool MCP server giving AI assistants direct Godot 4 editor control — scenes, scripts, debugger, tests, screenshots — with hybrid file/live-editor mode. No copy-pasting required. Works with Claude, Cursor, and any MCP-compatible client.",status:"Active",updated:"2026-04-12",license:"Free (name your price)",caps:["Scene Editing","Script Creation & Validation","Run & Debug","Breakpoints & Step-Through","Profiler","Test Runner (GUT/GdUnit4)","Screenshots","Asset Import","File Management","UID Handling (Godot 4.4+)","Export Presets","Live Editor Control","Node Reparenting","GDScript Syntax Check","Hybrid File/Editor Mode"],inputs:[".tscn",".gd",".tres",".res"],outputs:[".tscn",".gd","screenshots (PNG)","JSON"],ctx:"Medium",streaming:false,tools:true,install:"Node.js + Optional Editor Plugin",prereqs:["Godot 4.x","Node.js 18+","MCP-compatible AI client (Claude, Cursor, etc.)"],setupTime:15,complexity:2,docs:4,community:4,stability:3,tags:["scene","debug","testing","live-editor","gdscript","free","new","indie","hybrid-mode"],steps:[{n:1,t:"Clone and build",c:"git clone https://github.com/PurpleJellyfish/godot-mcp && cd godot-mcp && npm install && npm run build"},{n:2,t:"Add to MCP config",c:'{ "mcpServers": { "godot": { "command": "node", "args": ["~/.claude/mcp-servers/godot-mcp/build/index.js"], "env": { "GODOT_PATH": "/path/to/godot" } } } }'},{n:3,t:"(Optional) Install editor plugin",c:"Copy plugin/addons/godot_mcp_bridge/ into your project's addons/ folder, then enable in Project → Project Settings → Plugins"},{n:4,t:"Restart AI client",c:"Reload Claude Desktop / Cursor. File-based tools work immediately; live editor tools require the plugin running in Godot."}],links:{docs:"https://purplejelly.itch.io/godot-mcp",github:"https://github.com/PurpleJellyfish/godot-mcp",discord:"https://discord.gg/4JBkykG",reddit:"https://reddit.com/r/godot",marketplace:"https://purplejelly.itch.io/godot-mcp"}},
   {id:"godot-mcp-pro",name:"Godot MCP Pro",version:"1.0.0",category:"Game Engine",targets:["Godot"],desc:"Premium 163-tool MCP server across 23 categories for AI-powered Godot 4 development. Covers animation, AnimationTree, 3D scene, physics, particles, audio bus, shaders, navigation, TileMap, input simulation, and runtime analysis. Includes lite (subset) and minimal (35 tools) modes for clients with tool limits.",status:"Active",updated:"2026-04-15",license:"Commercial ($5 one-time)",caps:["Scene & Node CRUD","Script Editing","Animation Tracks","AnimationTree & State Machines","3D Meshes, Cameras & Lights","Physics Bodies & Collision","GPU Particles","Navigation Mesh & Agents","Audio Bus & Effects","TileMap & TileSet","Shader Control","Input Simulation & Sequences","Runtime Recording & Replay","Editor Screenshots & Error Log","UID Conversion","Export Presets","Lite Mode (subset)","Minimal Mode (35 tools)"],inputs:[".tscn",".gd",".tres",".res",".glb"],outputs:[".tscn",".gd","screenshots (PNG)","JSON"],ctx:"High",streaming:false,tools:true,install:"Node.js + Editor Plugin (WebSocket)",prereqs:["Godot 4.x","Node.js 18+","MCP-compatible AI client","$5 one-time license"],setupTime:20,complexity:2,docs:3,community:3,stability:3,tags:["premium","animation","3D","physics","particles","audio","shaders","navigation","tilemap","runtime-analysis","new","godot-asset-library"],steps:[{n:1,t:"Purchase & download",c:"github.com/youichi-uda/godot-mcp-pro — $5 one-time via GitHub Sponsors or Godot Asset Library (Asset ID 4961)"},{n:2,t:"Build the server",c:"cd godot-mcp-pro && npm install && npm run build"},{n:3,t:"Install Godot plugin",c:"Copy addons/godot_mcp/ into your project's addons/ folder. Enable via Project → Project Settings → Plugins → Godot MCP Pro → Enable"},{n:4,t:"Add to MCP config",c:'{ "mcpServers": { "godot-mcp-pro": { "command": "node", "args": ["/path/to/server/build/index.js"], "env": { "GODOT_MCP_PORT": "6505" } } } }'},{n:5,t:"(Optional) Use lite/minimal mode for tool-limit clients",c:"Append --lite (subset) or --minimal (35 core tools) flag to the args array if your client has a tool cap"}],links:{docs:"https://github.com/youichi-uda/godot-mcp-pro",github:"https://github.com/youichi-uda/godot-mcp-pro",discord:"https://discord.gg/4JBkykG",reddit:"https://reddit.com/r/godot",marketplace:"https://godotengine.org/asset-library/asset/4961"}},
@@ -804,15 +749,17 @@ const MCPS = [
 ══════════════════════════════════════════════════════════ */
 const CHANGELOG = [
   {
-    version: "1.5.0",
-    date: "2026-04-16",
+    version: "1.6.0",
+    date: "2026-04-24",
     label: "Content Update",
     changes: [
-      { type: "added", text: "Security notice added to the page (April 16, 2026): Ox Security researchers disclosed a design-level vulnerability in the MCP protocol. Estimated 200,000 servers and packages with 150M+ combined downloads are at risk. Attack vector is prompt injection via tool descriptions, enabling server takeover. Anthropic updated its STDIO adapter guidance but declined to patch the protocol architecture. Practical mitigations added to the notice: only install from trusted sources, review file system and network permissions, prefer actively-maintained servers. Links to the Ox Security disclosure and The Register coverage." },
-      { type: "added", text: "Godot MCP (PurpleJelly) — free MCP server with 77 tools across 15 categories released April 12. Covers scene editing, GDScript creation and validation, run/debug with breakpoints and step-through, test runner integration (GUT, GdUnit4, built-in), screenshots, asset import, file management, and UID handling (Godot 4.4+). Hybrid mode: uses the live editor when it's open, falls back to reading .tscn/.tres files directly when it's not. No copy-pasting required. Install via Node.js + optional editor plugin." },
-      { type: "added", text: "Godot MCP Pro — $5 one-time premium server with 163 tools across 23 categories, listed on the Godot Asset Library (Asset #4961) April 15. Expands on the free options with animation track authoring, AnimationTree state machines, 3D scene control, physics bodies and collision shapes, GPU particles, navigation mesh baking, audio bus layout, TileMap/TileSet, shader editing, input simulation, and runtime recording and replay. Includes --lite and --minimal (35 tools) modes for AI clients with tool count limits. WebSocket connection to the Godot editor plugin on port 6505." },
-      { type: "improved", text: "NOW constant updated to 2026-04-16 so stale indicators reflect the correct date for new entries." },
-      { type: "improved", text: "Roblox Studio MCP updated to v3.0.0 reflecting three major capability jumps: March 5 (built-in MCP server natively in Studio, no external setup, full tool parity with Assistant, multi-studio instance support, playtest automation with virtual keyboard/mouse/character-navigation input), March 19 (Mesh Generation via generate_mesh, generate_material, insert_from_creator_store, and screen_capture MCP tools), and April 16 (Planning Mode agentic loops that analyze code, produce editable plans, then build and self-test, plus Procedural Model Generation in beta). Setup time reduced from 20 to 10 minutes. License corrected to Free. Card description, capabilities, steps, and tags all updated to match current reality. Note: 44% of the top 1,000 Roblox creators now use Assistant or MCP tools." },
+      { type: "added", text: "Security notice: Ox Security disclosed a design-level vulnerability in the MCP protocol affecting ~200,000 servers and packages with 150M+ downloads. Attack vector is prompt injection via tool descriptions. Anthropic updated STDIO adapter guidance but declined to patch the protocol. Practical mitigations and links to the full disclosure included on the page." },
+      { type: "added", text: "5 Unreal Engine MCP servers added or updated: unreal-blueprint (chongdashu) updated to UE 5.5 and uv runner; unrealmcp/UnrealMCPBridge (aadeshrao) 280 commands across 13 categories; UnrealMCPBridge (appleweed, Fab store, full UE Python API); Flopperam Unreal MCP (hosted, agentic, no local server); Unreal MCP by runreal (no new plugin, built-in Python Remote Execution)." },
+      { type: "improved", text: "Roblox Studio MCP updated to v3.0.0: built-in MCP server (no install), playtest automation with virtual input, Mesh Generation and generate_material tools, Planning Mode agentic build-test loops, and Procedural Model Generation beta." },
+      { type: "added", text: "Godot MCP (PurpleJelly) — 77 tools, free, hybrid live-editor and file mode. Covers scene editing, GDScript creation, run/debug, breakpoints, test runners (GUT/GdUnit4), screenshots, asset import, UID handling (Godot 4.4+)." },
+      { type: "added", text: "Godot MCP Pro — 163 tools across 23 categories, $5 one-time, Godot Asset Library #4961. Adds animation tracks, AnimationTree state machines, 3D scene, physics, GPU particles, navigation mesh, audio bus, TileMap/TileSet, shaders, input simulation, runtime recording. Includes --lite and --minimal (35 tools) modes for clients with tool limits." },
+      { type: "improved", text: "Mobile search bar fixed: search input now takes full header width, placeholder shortened, security notice collapses to one line with a Read more toggle." },
+      { type: "improved", text: "Welcome modal no longer cut off by the sticky nav on any screen size." },
     ]
   },
   {
@@ -1404,22 +1351,6 @@ function fallbackCopy(btn,txt){
 
 /* ══ INIT ══ */
 function init(){
-  // Roadmap
-  document.getElementById("roadmap-btn").addEventListener("click",()=>{
-    document.getElementById("rm-overlay").classList.remove("hidden");
-    document.body.style.overflow="hidden";
-  });
-  document.getElementById("rm-close").addEventListener("click",()=>{
-    document.getElementById("rm-overlay").classList.add("hidden");
-    document.body.style.overflow="";
-  });
-  document.getElementById("rm-overlay").addEventListener("click",e=>{
-    if(e.target===document.getElementById("rm-overlay")){
-      document.getElementById("rm-overlay").classList.add("hidden");
-      document.body.style.overflow="";
-    }
-  });
-
   // What's New
   if(hasUnreadChangelog()) document.getElementById("wn-dot").classList.remove("hidden");
   document.getElementById("whats-new-btn").addEventListener("click", openChangelog);
@@ -1584,7 +1515,6 @@ function init(){
     const cmpOpen=!document.getElementById("cmp-overlay").classList.contains("hidden");
     if(e.key==="Escape"){
       if(cmpOpen){document.getElementById("cmp-overlay").classList.add("hidden");document.body.style.overflow="";return}
-      if(!document.getElementById("rm-overlay").classList.contains("hidden")){document.getElementById("rm-overlay").classList.add("hidden");document.body.style.overflow="";return}
       if(!document.getElementById("cl-overlay").classList.contains("hidden")){closeChangelog();return}
       if(modalOpen){dismissModal(false);return}
       if(state.selected){closePanel();return}
