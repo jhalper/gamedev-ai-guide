@@ -311,17 +311,6 @@ const NVIDIA_DATA = {
       "godotType": "N/A",
       "custom": 4,
       "customType": "C/C++ SDK"
-    },
-    {
-      "name": "RTX Neural Shaders / Cooperative Vectors",
-      "unreal": 1,
-      "unrealType": "Manual/API",
-      "unity": 0,
-      "unityType": "N/A",
-      "godot": 0,
-      "godotType": "N/A",
-      "custom": 3,
-      "customType": "DX12 / Vulkan / Slang SDK"
     }
   ],
   "tools": [
@@ -2046,7 +2035,7 @@ const NVIDIA_DATA = {
       "name": "DLSS Super Resolution (DLSS SR)",
       "category": "Rendering & Graphics",
       "oneLiner": "DLSS 4's transformer-based architecture combining Super Resolution with up to 6x Multi Frame Generation (5 AI-generated frames per rendered frame) for 240+ FPS path-traced gaming.",
-      "description": "DLSS Super Resolution is NVIDIA's flagship AI upscaling technology. It renders frames at a lower internal resolution and uses a trained neural network (since DLSS 4, a transformer-based model instead of the earlier CNN) to reconstruct a higher-resolution output that rivals or exceeds native quality. DLSS 4 introduced the first transformer model in Jan 2025, and DLSS 4.5 (announced CES 2026) introduced a second-generation transformer model that uses 5x more compute, trains in linear color space, and delivers superior temporal stability, reduced ghosting, and near-native quality in Performance mode. It is deployed via Streamline plugin and supported in Unreal Engine (UE 5.4–5.7 plugins available) and Unity (2021.2+). Over 400 games and apps support DLSS 4.5 Super Resolution as of March 2026. At GDC 2026, 20 additional games were announced with DLSS 4.5 integration including Crimson Desert, DEATH STRANDING 2: ON THE BEACH, Star Wars: Galactic Racer, Directive 8020, and others. DLSS 4.5 Dynamic Multi Frame Generation launched March 31, 2026 via an opt-in NVIDIA app beta. Dynamic MFG works like an automatic transmission: instead of a fixed multiplier, it monitors your display's refresh rate and auto-adjusts frame multipliers in real time (up to 6X on RTX 50 Series), only generating the frames needed to hit your target. Configurable globally or per-game in the NVIDIA app Graphics tab. Also shipped: an Enhanced Frame Generation model that improves UI element clarity (minimaps, on-screen HUD) in select titles by incorporating additional game engine data. Typical frame rate uplift depends on quality mode: Quality (67% native), Balanced (58%), Performance (50%), Ultra Performance (33%). The second-gen transformer is backwards compatible with existing integrations and auto-updates in the NVIDIA app. Note: DLSS 5, announced at GTC 2026 (launching Fall 2026), represents a fundamentally new neural rendering approach — see the separate DLSS 5 entry.",
+      "description": "DLSS Super Resolution is NVIDIA's flagship AI upscaling technology. It renders frames at a lower internal resolution and uses a trained neural network (since DLSS 4, a transformer-based model instead of the earlier CNN) to reconstruct a higher-resolution output that rivals or exceeds native quality. DLSS 4 introduced the first transformer model in Jan 2025, and DLSS 4.5 (announced CES 2026) introduced a second-generation transformer model that uses 5x more compute, trains in linear color space, and delivers superior temporal stability, reduced ghosting, and near-native quality in Performance mode. It is deployed via Streamline plugin and supported in Unreal Engine (UE 5.4–5.7 plugins available) and Unity (2021.2+). Over 400 games and apps support DLSS 4.5 Super Resolution as of March 2026. At GDC 2026, 20 additional games were announced with DLSS 4.5 integration including Crimson Desert, DEATH STRANDING 2: ON THE BEACH, Star Wars: Galactic Racer, Directive 8020, and others.\n\nDynamic Multi Frame Generation (Dynamic MFG): Consumer rollout launched March 31, 2026 via opt-in NVIDIA app beta. Developer SDK access followed on April 22, 2026 via the Streamline SDK — meaning Dynamic MFG is now available for native game integration, not just NVIDIA app override. Dynamic MFG works like an automatic transmission: instead of a fixed multiplier, it monitors display refresh rate and auto-adjusts frame generation in real time (up to 6X on RTX 50 Series, producing 5 AI-generated frames per rendered frame), only generating the frames needed to match your target refresh. The 6X mode is exclusive to RTX 50 Series Tensor Cores. On RTX 40 Series, Dynamic MFG tops out at 4X. Static multiplier modes (2X, 3X, 4X) remain available for predictable latency budgets. Also shipped April 22: an Enhanced Frame Generation model that improves UI element clarity (minimaps, on-screen HUD elements) in select titles by incorporating additional game engine data — particularly relevant for games with persistent UI at high frame multipliers.\n\nTypical SR frame rate uplift by quality mode: Quality (67% native), Balanced (58%), Performance (50%), Ultra Performance (33%). The second-gen transformer model is backwards compatible with existing integrations and auto-updates via the NVIDIA app for end users. Note: DLSS 5, announced at GTC 2026 (launching Fall 2026), represents a fundamentally new neural rendering approach — see the separate DLSS 5 entry.",
       "useCases": [
         "Increasing frame rates without sacrificing visual quality",
         "Enabling path tracing and heavy ray tracing at playable frame rates",
@@ -2095,7 +2084,7 @@ const NVIDIA_DATA = {
       "pricing": "Free",
       "maturity": "Stable",
       "difficulty": "Easy",
-      "limitations": "Requires RTX GPU (any RTX series for SR). Second-gen transformer model benefits most from RTX 40/50 Series Tensor Cores (FP8 precision). Motion vectors and depth buffer must be provided. Does not work without NGX runtime (not available on consoles or non-NVIDIA hardware). Ultra Performance mode needs very high output resolution to look good.",
+      "limitations": "Requires RTX GPU (any RTX series for SR). Second-gen transformer model benefits most from RTX 40/50 Series Tensor Cores (FP8 precision). Motion vectors and depth buffer must be provided. Does not work without NGX runtime (not available on consoles or non-NVIDIA hardware). Ultra Performance mode needs very high output resolution to look good. Dynamic MFG 6X mode (5 AI-generated frames per rendered frame) is exclusive to RTX 50 Series — RTX 40 Series tops out at 4X Dynamic MFG. Higher frame multipliers increase input latency — pair with NVIDIA Reflex to offset. Dynamic MFG native integration requires the April 22, 2026 Streamline SDK update; earlier Streamline versions do not expose Dynamic MFG to developers.",
       "url": "https://developer.nvidia.com/blog/nvidia-dlss-4-5-delivers-super-resolution-upgrades-and-new-dynamic-multi-frame-generation/",
       "officialPage": "https://developer.nvidia.com/blog/nvidia-dlss-4-5-delivers-super-resolution-upgrades-and-new-dynamic-multi-frame-generation/",
       "hiddenGem": 3,
@@ -2125,7 +2114,7 @@ const NVIDIA_DATA = {
           "apiType": "C/C++ SDK",
           "setupComplexity": 3,
           "docsQuality": 4,
-          "notes": "Direct NGX integration for DLSS Super Resolution (without Streamline). Uses nvsdk_ngx.h header and links against NGX library. Supports DX11, DX12, and Vulkan. Does not include Frame Generation or Ray Reconstruction (those require Streamline). DLSS 4.5 SDK available as of January 2026. Requires providing: depth buffer, motion vectors, jitter offset, render resolution, display resolution. NVIDIA recommends Streamline for new integrations; direct NGX is considered legacy for DLSS SR. License: Proprietary EULA (DLSS DLLs are binary-only, cannot be included in open-source projects with copyleft licenses)."
+          "notes": "Recommended path for new integrations: Streamline SDK (github.com/NVIDIA-RTX/Streamline). Streamline wraps DLSS SR, Frame Generation (including Dynamic MFG), and Ray Reconstruction under a unified API. The DLSS 4.5 SDK update released April 22, 2026 added Dynamic MFG and 6X MFG mode to Streamline for developer integration — previously Dynamic MFG was consumer-only via the NVIDIA app. To integrate Dynamic MFG natively: update to the April 22 Streamline SDK release, enable sl::eDLSS_G feature flag, and pass sl::DLSSGOptions with dynamicFrameGeneration = true. Static 2X/3X/4X multiplier modes also available via sl::DLSSGOptions::numFramesToGenerate. Enhanced Frame Generation model (improved UI clarity in HUD-heavy titles) also available in the April 22 SDK. Direct NGX integration (without Streamline) supports DLSS SR only — no Dynamic MFG or Ray Reconstruction. Requires DX11, DX12, or Vulkan. License: Proprietary EULA (DLSS DLLs are binary-only, not compatible with copyleft open-source licenses)."
         }
       },
       "id": 40,
@@ -4138,58 +4127,6 @@ const NVIDIA_DATA = {
       "hiddenGem": 3,
       "id": 83,
       "whyGameDev": "Build AI characters and game systems that reason, plan, and act autonomously over long play sessions — moving beyond scripted behavior into truly intelligent agents."
-    },
-    {
-      "name": "RTX Neural Shaders / Cooperative Vectors",
-      "category": "Rendering & Graphics",
-      "oneLiner": "Run small neural networks directly inside HLSL shaders, hardware-accelerated by RTX Tensor Cores — enabling neural texture compression, neural materials, and neural radiance cache in real-time game rendering.",
-      "description": "RTX Neural Shaders is NVIDIA's framework for embedding ML inference directly into the graphics pipeline. Instead of writing complex shader math, developers train a small neural network to approximate the computation, then execute it per-pixel at frame time using Tensor Cores. Microsoft and NVIDIA shipped the Cooperative Vectors extension to DirectX 12 via the Agility SDK preview (April 2025, DX12 Agility SDK 1.717.x-preview), making the technique accessible through standard HLSL alongside existing Vulkan and Slang paths.\n\nThree production-ready use cases are available today:\n\n**RTX Neural Texture Compression (NTC)** — Encodes textures as neural network weights rather than block-compressed pixels. Delivers up to 7x VRAM savings vs BCn compression, up to 85% VRAM reduction in benchmarks, with 2–4x inference throughput improvement on Ada/Blackwell via Cooperative Vectors. Supports up to 16 texture channels simultaneously. Two modes: Inference on Sample (decode at read time, lowest VRAM) and Inference on Load (decode to BCn at load, lowest runtime cost). SDK: github.com/NVIDIA-RTX/RTXNTC.\n\n**RTX Neural Radiance Cache (NRC)** — A neural network that learns indirect lighting during a play session and provides real-time estimates of path-traced global illumination. Improves indirect lighting quality and performance in path-traced titles. First shipped in RTX Remix (all mods include NRC as of GDC 2025 release).\n\n**RTX Neural Materials** — Replaces complex physically-based BRDF shaders with compact neural approximations. Same visual quality, smaller instruction count. Particularly valuable for layered materials with expensive evaluation loops.\n\nThe overall SDK (RTXNS, github.com/NVIDIA-RTX/RTXNS) uses the Slang shading language as the primary authoring path, with HLSL output for DX12 deployment. Cooperative Vectors is cross-vendor in the DX12 spec — AMD and Intel have also committed driver support — but NVIDIA RTX GPUs (RTX 20XX+ for Vulkan, Ada/Blackwell for peak DX12 Cooperative Vectors performance) are the current primary target. Shader Model 6.9 and NVIDIA Developer Driver 590.26 are required for the DX12 Cooperative Vectors path.",
-      "useCases": [
-        "Neural texture compression — ship more texture detail in the same VRAM budget, up to 7x smaller than BCn",
-        "Inline neural materials replacing complex layered BRDF shaders with compact trained approximations",
-        "Neural radiance cache for path-traced games — faster and more accurate indirect lighting",
-        "Custom neural shaders trained on studio-proprietary surface appearance data",
-        "Replacing expensive real-time volumetric computation with neural approximations",
-        "VRAM pressure reduction for open-world titles with large texture budgets",
-        "Prototype next-generation material systems using Python + SlangPy for fast iteration"
-      ],
-      "phases": [
-        "Pre-production",
-        "Production",
-        "Polish"
-      ],
-      "engines": [
-        "Custom Engine",
-        "Unreal Engine"
-      ],
-      "teamSizes": [
-        "AAA (50+)",
-        "Mid-size (10-50)"
-      ],
-      "pricing": "Free",
-      "maturity": "Preview",
-      "difficulty": "Complex",
-      "limitations": "DX12 Cooperative Vectors path requires Agility SDK 1.717.x-preview and NVIDIA Developer Driver 590.26 (Shader Model 6.9 preview) — not shipping drivers yet; Vulkan path requires driver ≥ 572.16 and is available on RTX 20XX+, but the DX12 path targets Ada/Blackwell for full performance; Cross-vendor Cooperative Vectors support (AMD, Intel) is specified and drivers are in progress, but performance on non-NVIDIA hardware is unproven for games; Neural network training pipeline (compression, BRDF fitting) adds a content pipeline step — baking times vary; NTC Inference on Sample mode adds per-frame shader cost (~0.5–0.7 ms on RTX 5070 at 1440p) — must be profiled against VRAM savings; Slang shading language required for the RTXNS SDK authoring path — not a pure HLSL workflow yet; CUDA 13 is currently incompatible with the 590.26 developer preview driver — use CUDA 12.9 for NTC SDK builds; Console support not expected; Preview status means APIs and tooling are still evolving",
-      "url": "https://github.com/NVIDIA-RTX/RTXNS",
-      "officialPage": "https://developer.nvidia.com/rtx/neural-shading",
-      "hiddenGem": 4,
-      "engineIntegration": {
-        "unreal": {
-          "type": "Manual/API",
-          "setup": "No official UE5 plugin yet. Integration requires DX12 Agility SDK 1.717.x-preview and custom RHI work to call Cooperative Vector instructions from within UE5 material/shader pipelines. RTX Kit is the recommended starting point for UE5 neural rendering integration context. Watch RTX Kit and NvRTX branches for future plugin support.",
-          "quality": 1,
-          "issues": "No official plugin as of April 2026. Requires engine modification to expose Cooperative Vector shader instructions. Best suited for studios with custom rendering teams willing to work at the RHI layer.",
-          "version": "Preview — UE5 plugin TBD"
-        },
-        "custom": {
-          "apiType": "DX12 Agility SDK / Vulkan / Slang",
-          "setupComplexity": 4,
-          "docsQuality": 3,
-          "notes": "DX12 path: Agility SDK 1.717.x-preview + Shader Model 6.9 driver + HLSL Cooperative Vector intrinsics. Vulkan path: VK_NV_cooperative_vector extension + driver ≥ 572.16. Slang is recommended for cross-API authoring — it compiles to HLSL, GLSL, SPIR-V, and CUDA. RTXNS SDK on GitHub (github.com/NVIDIA-RTX/RTXNS) provides samples, helper functions, and a SlangPy path for Python-driven iteration. NTC SDK (github.com/NVIDIA-RTX/RTXNTC) is a separate, more production-focused package for texture compression specifically."
-        }
-      },
-      "id": 84,
-      "whyGameDev": "Ship more visual quality per VRAM byte — neural texture compression and inline neural materials put Tensor Core acceleration directly in your shader pipeline."
     }
   ]
 };

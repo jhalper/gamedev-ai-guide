@@ -1,5 +1,5 @@
 // ============================================================
-// NVIDIA GameDev Guide — Application Logic
+// NVIDIA Game Dev Toolkit — Application Logic
 // ============================================================
 
 (function () {
@@ -843,9 +843,16 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.4', date: '2026-04-24', changes: [
+      'Updated DLSS SR entry — DLSS 4.5 SDK released April 22, 2026 via Streamline SDK, Dynamic MFG now available for native game integration (not just NVIDIA app override)',
+      '6X MFG mode (5 AI-generated frames per rendered frame) documented — exclusive to RTX 50 Series; RTX 40 Series tops out at 4X Dynamic MFG',
+      'Enhanced Frame Generation model now in SDK — improves HUD/UI clarity at high frame multipliers',
+      'Custom engine integration notes updated with Streamline API details for Dynamic MFG (sl::DLSSGOptions, dynamicFrameGeneration flag)',
+      'Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK; earlier versions do not expose Dynamic MFG'
+    ]},
     { version: 'v1.9.3', date: '2026-04-16', changes: [
-      'Renamed to NVIDIA GameDev Guide — clearer independent positioning, nav label updated to "NVIDIA GameDev"',
-      'Added non-affiliation disclosure to hero: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."',
+      'Renamed to NVIDIA GameDev Guide — nav label updated to "NVIDIA GameDev", clearer independent positioning',
+      'Added non-affiliation disclosure: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."',
       'Added RTX Neural Shaders / Cooperative Vectors — new Rendering & Graphics entry covering NTC, NRC, and Neural Materials',
       'DX12 Cooperative Vectors live in Agility SDK 1.717.x-preview — Tensor Cores accessible from HLSL shaders, cross-vendor',
       'Tool count: 83 → 84'
@@ -1020,7 +1027,7 @@
       if (useCases) text += '\nUse Cases:\n' + useCases + '\n';
       if (limitations) text += '\nThings to Know:\n' + limitations + '\n';
       if (tool.url) text += '\nDocumentation: ' + tool.url + '\n';
-      text += '\n---\nExported from NVIDIA GameDev Guide (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper\n';
+      text += '\n---\nExported from NVIDIA Game Dev Toolkit (gamedevai.guide/nvidia-toolkit) | Created by Joe Halper\n';
 
       // Download as .txt file
       const blob = new Blob([text], { type: 'text/plain' });

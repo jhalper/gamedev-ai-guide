@@ -1,7 +1,14 @@
 # NVIDIA GameDev Guide — Changelog
 
+## v1.9.4 — 2026-04-24
+- Updated DLSS SR entry: DLSS 4.5 SDK released April 22 via Streamline SDK — Dynamic MFG now available for native developer integration, not just NVIDIA app consumer override
+- 6X MFG mode documented (5 AI-generated frames per rendered frame) — RTX 50 Series exclusive; RTX 40 Series tops out at 4X Dynamic MFG
+- Enhanced Frame Generation model added to SDK — improves HUD/UI clarity at high frame multipliers, relevant for games with persistent HUD elements
+- Custom engine notes updated with Streamline API integration details for Dynamic MFG (sl::DLSSGOptions, dynamicFrameGeneration flag, static multiplier options)
+- Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK release specifically
+
 ## v1.9.3 — 2026-04-16
-- Renamed to NVIDIA GameDev Guide (nav label: "NVIDIA GameDev") — clearer independent positioning, avoids overlap with official NVIDIA "Toolkit" branding
+- Renamed to NVIDIA GameDev Guide — nav label updated to "NVIDIA GameDev", clearer independent positioning, avoids overlap with official NVIDIA "Toolkit" branding
 - Added non-affiliation disclosure to hero: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."
 - Added RTX Neural Shaders / Cooperative Vectors as new Rendering & Graphics entry covering NTC, NRC, and Neural Materials
 - DX12 Cooperative Vectors live in Agility SDK 1.717.x-preview (Shader Model 6.9), cross-vendor in spec
