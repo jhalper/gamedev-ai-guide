@@ -1,9 +1,17 @@
 # NVIDIA GameDev Guide — Changelog
 
+## v1.9.5 — 2026-05-01
+- Updated NVIDIA ACE entry: added Nemotron 3 Nano Omni (released April 28, 2026) — open multimodal model unifying vision, audio, and language in a single system; 30B params / 3B active (MoE); 9x throughput vs comparable open multimodal models; runs on a single GPU
+- Nemotron 3 Nano Omni available as NVIDIA NIM, Hugging Face, OpenRouter — open weights, commercial license (NVIDIA Open Model License Agreement)
+- Updated RTX Neural Texture Compression (NTC) entry — SDK 0.9: BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added
+- Tom's Hardware benchmark (April 2026) confirmed: up to 85% VRAM reduction in practice, 2-4x inference throughput on Ada/Blackwell with Cooperative Vectors
+- NTC custom engine notes updated: CUDA 12.9 required for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)
+- Added Intel Neural Compression competitive context to NTC entry — cross-vendor standardization accelerating
+
 ## v1.9.4 — 2026-04-24
 - Updated DLSS SR entry: DLSS 4.5 SDK released April 22 via Streamline SDK — Dynamic MFG now available for native developer integration, not just NVIDIA app consumer override
-- 6X MFG mode documented (5 AI-generated frames per rendered frame) — RTX 50 Series exclusive; RTX 40 Series tops out at 4X Dynamic MFG
-- Enhanced Frame Generation model added to SDK — improves HUD/UI clarity at high frame multipliers, relevant for games with persistent HUD elements
+- 6X MFG mode (5 AI-generated frames per rendered frame) documented — RTX 50 Series exclusive; RTX 40 Series tops out at 4X Dynamic MFG
+- Enhanced Frame Generation model added to SDK — improves HUD/UI clarity at high frame multipliers
 - Custom engine notes updated with Streamline API integration details for Dynamic MFG (sl::DLSSGOptions, dynamicFrameGeneration flag, static multiplier options)
 - Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK release specifically
 
