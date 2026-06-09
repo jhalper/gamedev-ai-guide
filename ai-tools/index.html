@@ -3591,7 +3591,7 @@ document.getElementById('pdf-btn').addEventListener('click', () => {
   // Footer with link back
   const hash = encodeSelectionsToHash(selections);
   html += `<div class="footer">Generated from <a href="https://gamedevai.guide">Game Dev AI Guide</a> by HALP (Joe Halper)<br>`;
-  html += `<a href="https://gamedevai.guide?s=${hash}">Open these results in the tool</a> · Last updated March 2026</div>`;
+  html += `<a href="https://gamedevai.guide?s=${hash}">Open these results in the tool</a> · Last updated ${CHANGELOG[0] ? CHANGELOG[0].date : ""}</div>`;
   html += `</body></html>`;
 
   // Open in new window and trigger print (save as PDF)
