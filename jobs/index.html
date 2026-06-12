@@ -2109,6 +2109,17 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-surface-2);
   border-radius: var(--radius-sm);
 }
+.adjacent-disc-header {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: var(--space-4) 0 var(--space-2) 0;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-divider);
+}
 .adjacent-framing {
   font-size: var(--text-xs);
   color: var(--color-text-faint);
@@ -2194,16 +2205,9 @@ h1, h2, h3, h4, h5, h6 {
     <h1 class="landing-title">Game Dev Job Search Guide</h1>
     <p class="landing-subtitle">Personalized job boards, AI tools, and honest market context based on your discipline and situation. 4 questions, one plan.</p>
 
-    <div class="stat-pills">
-      <span class="stat-pill stat-warning"><strong>33%</strong> of US game devs laid off in past 2 years</span>
-      <span class="stat-pill stat-warning"><strong>48%</strong> still haven't found work</span>
-      <span class="stat-pill stat-good"><strong>~50%</strong> referral interview rate</span>
+    <div class="market-framing-quote" id="landingQuote">
+      <!-- populated by JS on load -->
     </div>
-
-    <blockquote class="market-framing-quote">
-      <p>&#8220;Ever since 2020, when everything about making video games started to change, people have been waiting for business to get back to normal. This year, we&#8217;re adopting a new posture to accept these current market conditions as permanent.&#8221;</p>
-      <cite>&#8212; Iron Galaxy Studios, April 17, 2026, announcing their second round of layoffs in under two years</cite>
-    </blockquote>
 
     <button class="btn-start" id="startWizardBtn">
       Get My Plan
@@ -2215,12 +2219,19 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.7</span>
+            <span class="whats-new-badge">v1.8</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
-          <div class="whats-new-version">v1.7, April 20, 2026</div>
+          <div class="whats-new-version">v1.8, June 12, 2026</div>
+          <ul class="whats-new-list">
+            <li>Multi-discipline selection: Q1 now accepts multiple disciplines. Results, scoring, adjacent industries, and action plan all reflect your full profile.</li>
+            <li>Market update: Behaviour Interactive laid off external development team (April 22), Spiders (GreedFall) confirmed full studio closure (April 30), Bungie announced significant layoffs following Destiny 2 sunset June 9 with Sony taking a $765 million impairment loss on the studio (May 21).</li>
+            <li>Layoff tracker stat updated to ~3,500+ through May 2026.</li>
+            <li>Landing screen: stat pills removed. Replaced with a rotating industry quote (5 quotes, random on each load) from Iron Galaxy, Epic, Riot Games, Enad Global 7/Piranha, and GDC 2026 data.</li>
+          </ul>
+                    <div class="whats-new-version">v1.7, April 20, 2026</div>
           <ul class="whats-new-list">
             <li>New section: Where Your Skills Transfer, discipline-specific breakdown of adjacent industries actively hiring game devs (defense simulation, automotive, film/VFX, product design, and more)</li>
             <li>Market context updated: Iron Galaxy (up to 90, second round in under two years), AppLovin/Machine Zone (97), Polyarc Games (30, two-thirds of studio), Eidos Montreal (124 + studio head departure after 7-year project cancellation), Piranha Games (30%), Rec Room closure announced for June 2026</li>
@@ -2312,10 +2323,11 @@ h1, h2, h3, h4, h5, h6 {
       <div class="question-section">
         <div class="question-label">
           <span class="question-number">Q1</span>
-          <span class="question-text">Your Discipline</span>
+          <span class="question-text">Your Disciplines</span>
         </div>
+        <p class="question-hint">Select all that apply</p>
         <div class="option-grid cols-3" id="disciplineGrid"></div>
-        <div class="validation-msg" id="valStep1">Select your primary discipline</div>
+        <div class="validation-msg" id="valStep1">Select at least one discipline</div>
       </div>
     </div>
 
@@ -2380,11 +2392,11 @@ h1, h2, h3, h4, h5, h6 {
   <div class="modal">
     <h2>About This Tool</h2>
     <p>The <strong>Game Dev Job Search Guide</strong> is a companion to the <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">Game Dev AI Guide</a>. It helps game developers navigate the job search landscape with personalized, scored recommendations.</p>
-    <p><strong>What it covers:</strong> 14 job boards, 12 AI tools, 11 market pitfalls, 14 community and support resources, a 5-step action plan, and an adjacent industries guide mapping your discipline to roles outside games. All scored and ranked by your discipline, experience level, and situation.</p>
+    <p><strong>What it covers:</strong> 14 job boards, 12 AI tools, 11 market pitfalls, 14 community and support resources, a 5-step action plan, and an adjacent industries guide mapping your discipline to roles outside games. All scored and ranked by your disciplines, experience level, and situation.</p>
     <p><strong>How scoring works:</strong> Every recommendation is matched against your profile. Boards, tools, communities, and pitfalls each have discipline, experience, and situation tags. The tool scores each item based on how many of your selections it matches, with special boosts for strong fits (e.g., ASGC for laid-off devs, ArtStation for artists, Take This for mental health support).</p>
     <p><strong>Philosophy:</strong> AI tools augment your search. They don't replace doing the real work. A referral from a former colleague is still worth more than 100 AI-optimized cold applications. No motivational fluff. Concrete, honest, practical.</p>
     <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
-    <p style="font-size:var(--text-xs);color:var(--color-text-muted);"><strong>Data sources:</strong> GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends 2024, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025, Take This Mental Health in Games 2025. All URLs verified April 2026.</p>
+    <p style="font-size:var(--text-xs);color:var(--color-text-muted);"><strong>Data sources:</strong> GDC 2026 State of the Industry, Amir Satvat/ASGC, Ashby Talent Trends 2024, 8Bit Gamedev Salary Pulse 2025, InGame Job Employment Survey 2025, Take This Mental Health in Games 2025. All URLs verified June 2026.</p>
     <button class="modal-close" id="closeModal">Close</button>
   </div>
 </div>
@@ -2393,7 +2405,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: April 20, 2026 (v1.7) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: June 12, 2026 (v1.8) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -3272,7 +3284,7 @@ var ADJACENT_INDUSTRIES = {
 var state = {
   step: 1,
   totalSteps: 4,
-  discipline: null,
+  disciplines: [],
   experience: null,
   situations: [],
   challenges: []
@@ -3442,7 +3454,7 @@ function buildCheckboxGrid(containerId, items, name, maxSelect) {
   }
 }
 
-buildRadioGrid('disciplineGrid', DISCIPLINES, 'discipline', false);
+buildCheckboxGrid('disciplineGrid', DISCIPLINES, 'discipline');
 buildRadioGrid('experienceGrid', EXPERIENCE_LEVELS, 'experience', true);
 buildCheckboxGrid('situationGrid', SITUATIONS, 'situation');
 buildCheckboxGrid('challengeGrid', CHALLENGES, 'challenge', 3);
@@ -3511,9 +3523,9 @@ wizardNext.addEventListener('click', function() {
   // collect data
   switch(state.step) {
     case 1:
-      var d = document.querySelector('input[name="discipline"]:checked');
-      if (!d) { document.getElementById('valStep1').classList.add('visible'); return; }
-      state.discipline = d.value;
+      var ds = document.querySelectorAll('input[name="discipline"]:checked');
+      if (ds.length === 0) { document.getElementById('valStep1').classList.add('visible'); return; }
+      state.disciplines = Array.from(ds).map(function(d) { return d.value; });
       break;
     case 2:
       var e = document.querySelector('input[name="experience"]:checked');
@@ -3559,8 +3571,8 @@ function scoreBoards() {
   var scored = JOB_BOARDS.map(function(board) {
     var score = 0;
 
-    // discipline match
-    if (board.disciplines.indexOf(state.discipline) >= 0) score += 3;
+    // discipline match (any selected discipline matches)
+    if (state.disciplines.some(function(d) { return board.disciplines.indexOf(d) >= 0; })) score += 3;
 
     // experience match
     if (board.experienceLevels.indexOf(state.experience) >= 0) score += 2;
@@ -3571,7 +3583,7 @@ function scoreBoards() {
     });
 
     // special boosts
-    var isArtDiscipline = ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0;
+    var isArtDiscipline = state.disciplines.some(function(d) { return ['art','animation','vfx','cinematics','tech_art'].indexOf(d) >= 0; });
     if (board.id === 'artstation' && isArtDiscipline) score += 5;
     if (board.id === 'artstation' && !isArtDiscipline) score -= 10;
 
@@ -3612,8 +3624,8 @@ function scoreTools() {
   var scored = AI_TOOLS.map(function(tool) {
     var score = 0;
 
-    // discipline match
-    if (tool.disciplines.indexOf(state.discipline) >= 0) score += 2;
+    // discipline match (any selected discipline)
+    if (state.disciplines.some(function(d) { return tool.disciplines.indexOf(d) >= 0; })) score += 2;
 
     // challenge match
     state.challenges.forEach(function(c) {
@@ -3658,7 +3670,7 @@ function scorePitfalls() {
     // special boosts
     if (pit.id === 'remote_myth' && state.situations.indexOf('remote') >= 0) score += 5;
     if (pit.id === 'seniors_taking_mids' && state.experience === 'entry') score += 5;
-    if (pit.id === 'art_test_exploit' && ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0) score += 4;
+    if (pit.id === 'art_test_exploit' && state.disciplines.some(function(d) { return ['art','animation','vfx','cinematics','tech_art'].indexOf(d) >= 0; })) score += 4;
     if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_from_nongames') >= 0) score += 5;
     if (pit.id === 'discipline_switch' && state.challenges.indexOf('switching_disciplines') >= 0) score += 4;
     if (pit.id === 'no_networking' && state.challenges.indexOf('getting_ghosted') >= 0) score += 3;
@@ -3675,8 +3687,8 @@ function scoreCommunities() {
   var scored = COMMUNITIES.map(function(comm) {
     var score = 0;
 
-    // discipline match
-    if (comm.disciplines.indexOf(state.discipline) >= 0) score += 2;
+    // discipline match (any selected discipline)
+    if (state.disciplines.some(function(d) { return comm.disciplines.indexOf(d) >= 0; })) score += 2;
 
     // experience match
     if (comm.experienceLevels.indexOf(state.experience) >= 0) score += 2;
@@ -3723,7 +3735,7 @@ function scoreCommunities() {
     if (comm.id === 'awesome_people_list' && state.experience === 'lead') score += 3;
     if (comm.id === 'awesome_people_list' && state.experience === 'senior') score += 2;
 
-    var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
+    var isDesign = state.disciplines.some(function(d) { return ['game_design','level_design'].indexOf(d) >= 0; });
     if (comm.id === 'funsmith' && isDesign) score += 4;
     if (comm.id === 'design_den' && isDesign) score += 4;
 
@@ -3739,14 +3751,15 @@ function scoreCommunities() {
    ============================================ */
 function generateActionPlan(boards, tools) {
   var steps = [];
-  var disc = DISCIPLINES.find(function(d) { return d.id === state.discipline; });
+  var primaryDisc = state.disciplines[0] || '';
+  var disc = DISCIPLINES.find(function(d) { return d.id === primaryDisc; });
   var discLabel = disc ? disc.label : 'your discipline';
-  var isArt = ['art','animation','vfx','cinematics','tech_art'].indexOf(state.discipline) >= 0;
-  var isCode = state.discipline === 'engineering';
-  var isDesign = ['game_design','level_design'].indexOf(state.discipline) >= 0;
-  var isNarrative = state.discipline === 'narrative';
-  var isAudio = state.discipline === 'audio';
-  var isQA = state.discipline === 'qa';
+  var isArt = state.disciplines.some(function(d) { return ['art','animation','vfx','cinematics','tech_art'].indexOf(d) >= 0; });
+  var isCode = state.disciplines.indexOf('engineering') >= 0;
+  var isDesign = state.disciplines.some(function(d) { return ['game_design','level_design'].indexOf(d) >= 0; });
+  var isNarrative = state.disciplines.indexOf('narrative') >= 0;
+  var isAudio = state.disciplines.indexOf('audio') >= 0;
+  var isQA = state.disciplines.indexOf('qa') >= 0;
   var isEntry = state.experience === 'entry';
   var isSenior = ['senior','lead'].indexOf(state.experience) >= 0;
 
@@ -3823,7 +3836,7 @@ function generateActionPlan(boards, tools) {
    ============================================ */
 function showResults() {
   gaEvent('wizard_complete', {
-    discipline: state.discipline,
+    discipline: state.disciplines.join(','),
     experience: state.experience,
     situations: state.situations.join(','),
     challenges: state.challenges.join(',')
@@ -3835,7 +3848,8 @@ function showResults() {
   var communities = scoreCommunities();
   var actionPlan = generateActionPlan(boards, tools);
 
-  var disc = DISCIPLINES.find(function(d) { return d.id === state.discipline; });
+  var discObjs = state.disciplines.map(function(id) { return DISCIPLINES.find(function(d) { return d.id === id; }); }).filter(Boolean);
+  var discLabels = discObjs.map(function(d) { return d.label; });
   var exp = EXPERIENCE_LEVELS.find(function(e) { return e.id === state.experience; });
 
   var html = '';
@@ -3843,9 +3857,9 @@ function showResults() {
   // Header
   html += '<div class="results-header">';
   html += '<h1>Your Job Search Plan</h1>';
-  html += '<p class="results-summary">Personalized for a ' + exp.label + ' ' + disc.label + ' professional</p>';
+  html += '<p class="results-summary">Personalized for a ' + exp.label + ' ' + (discLabels.length === 1 ? discLabels[0] : discLabels.slice(0, -1).join(', ') + ' and ' + discLabels[discLabels.length - 1]) + ' professional</p>';
   html += '<div class="results-meta">';
-  html += '<span class="meta-tag">' + disc.label + '</span>';
+  discLabels.forEach(function(label) { html += '<span class="meta-tag">' + label + '</span>'; });
   html += '<span class="meta-tag">' + exp.label + '</span>';
   state.situations.forEach(function(s) {
     var sit = SITUATIONS.find(function(x) { return x.id === s; });
@@ -3874,8 +3888,8 @@ function showResults() {
   if (communities.length > 0) {
     html += '<button class="results-nav-btn" data-target="sec-communities">Communities <span class="nav-count">' + communities.length + '</span></button>';
   }
-  var _discAdj = ADJACENT_INDUSTRIES[state.discipline] || [];
-  if (_discAdj.length > 0) {
+  var _hasAdj = state.disciplines.some(function(d) { return (ADJACENT_INDUSTRIES[d] || []).length > 0; });
+  if (_hasAdj) {
     html += '<button class="results-nav-btn" data-target="sec-adjacent">Adjacent Industries</button>';
   }
   html += '</nav>';
@@ -3887,7 +3901,7 @@ function showResults() {
   html += '<div class="market-stats-grid">';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">33%</div><div class="market-stat-label">US game devs laid off in 2 years</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">48%</div><div class="market-stat-label">Of laid-off devs still without work</div><div class="market-stat-source"><a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026</a></div></div>';
-  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~3,000+</div><div class="market-stat-label">Layoffs Jan–Apr 2026 (and counting)</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
+  html += '<div class="market-stat"><div class="market-stat-value stat-bad">~3,500+</div><div class="market-stat-label">Layoffs Jan–May 2026 (and counting)</div><div class="market-stat-source"><a href="https://publish.obsidian.md/vg-layoffs/Archive/2026" target="_blank" rel="noopener noreferrer">Game Industry Layoffs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">~0.2%</div><div class="market-stat-label">Cold application offer rate</div><div class="market-stat-source"><a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby 2024</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
@@ -4100,7 +4114,7 @@ function showResults() {
   }
 
   // Disclaimer
-  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified April 2026.</p>';
+  html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified June 2026.</p>';
 
   // Survey
   var alreadySubmitted = _ls ? _ls.getItem('jsg-survey-done') : null;
@@ -4233,7 +4247,7 @@ function showResults() {
         label.textContent = 'Copied!';
         setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
       });
-      gaEvent('copy_plan', { discipline: state.discipline, experience: state.experience });
+      gaEvent('copy_plan', { discipline: state.disciplines.join(','), experience: state.experience });
     });
   }
 
@@ -4270,7 +4284,7 @@ function showResults() {
         q4_valuable: q4.value,
         q5_improve: q5Vals,
         q6_freetext: q6Val,
-        discipline: state.discipline || '',
+        discipline: (state.disciplines || []).join(',') || '',
         experience: state.experience || '',
         timestamp: Date.now()
       };
@@ -4293,7 +4307,7 @@ function showResults() {
         if (card) {
           card.innerHTML = '<div class="survey-thanks"><h3>Thanks for your feedback</h3><p>Your response has been recorded. <a href="survey-results.html">View community results</a></p></div>';
         }
-        gaEvent('survey_submit', { discipline: state.discipline, experience: state.experience });
+        gaEvent('survey_submit', { discipline: state.disciplines.join(','), experience: state.experience });
       }).catch(function(err) {
         surveyBtn.disabled = false;
         surveyBtn.textContent = 'Submit Feedback';
@@ -4392,7 +4406,7 @@ function revealCards(btn) {
 
 function restart() {
   state.step = 1;
-  state.discipline = null;
+  state.disciplines = [];
   state.experience = null;
   state.situations = [];
   state.challenges = [];
@@ -4470,5 +4484,42 @@ function restart() {
     }
   });
 })();
-</script></body>
+</script>
+<script>
+/* ============================================
+   ROTATING LANDING QUOTE
+   Random selection on each page load
+   ============================================ */
+(function() {
+  var QUOTES = [
+    {
+      text: 'We’re adopting a new posture to accept these current market conditions as permanent.',
+      cite: 'Iron Galaxy Studios, April 2026, announcing their second round of layoffs in under two years'
+    },
+    {
+      text: 'I’m sorry we’re here again. We’re spending significantly more than we’re making, and we have to make major cuts to keep the company funded. Some of the challenges we’re facing are industry-wide: slower growth, weaker spending, and tougher cost economics.',
+      cite: 'Tim Sweeney, CEO, Epic Games, March 2026, announcing layoffs of over 1,000 employees'
+    },
+    {
+      text: 'The game has resonated with a passionate core audience, but overall momentum hasn’t reached the level needed to support a team of this size long term.',
+      cite: 'Riot Games, January 2026, cutting the 2XKO development team. The game was free to play and based on one of the largest IPs in gaming.'
+    },
+    {
+      text: 'MechWarrior 5: Clans failed to reach new audiences and expand its core audience as anticipated and therefore has not met the necessary sales targets.',
+      cite: 'Enad Global 7, parent company of Piranha Games, 2025. MechWarrior 5: Clans scored 82 on Metacritic. Layoffs followed anyway.'
+    },
+    {
+      text: 'The global games market generated its highest revenue on record in 2025 at $195.6 billion. In the same period, 28% of developers globally were laid off.',
+      cite: 'GDC 2026 State of the Game Industry and Epyllion State of Video Gaming 2026'
+    }
+  ];
+
+  var q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  var el = document.getElementById('landingQuote');
+  if (el) {
+    el.innerHTML = '<p>“' + q.text + '”</p><cite>' + q.cite + '</cite>';
+  }
+})();
+</script>
+</body>
 </html>
