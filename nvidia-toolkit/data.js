@@ -350,6 +350,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/geforce/news/gdc-2026-nvidia-geforce-rtx-announcements/",
       "officialPage": "https://www.nvidia.com/en-us/geforce/news/gdc-2026-nvidia-geforce-rtx-announcements/",
       "hiddenGem": 4,
+      "lastUpdated": "2026-03-17",
       "id": 1,
       "whyGameDev": "Prototype concept art and storyboards locally on your RTX card — fast iterations between art direction reviews."
     },
@@ -357,7 +358,7 @@ const NVIDIA_DATA = {
       "name": "NVIDIA ACE (Avatar Cloud Engine) for Games",
       "category": "AI & NPCs",
       "oneLiner": "Suite of on-device and cloud AI models (speech, language, animation, vision) for building autonomous NPC game characters and AI companions.",
-      "description": "NVIDIA ACE is the most game-dev-centric AI platform NVIDIA has built. First shown at Computex 2023, it has evolved significantly through 2024–2026. At CES 2025, NVIDIA expanded ACE from conversational NPCs to fully autonomous game characters with perception, planning, and action capabilities. Real shipped games as of March 2026 include: PUBG (Ally Co-Playable Character, Mistral-Nemo-Minitron-8B), inZOI (Smart Zoi, launched March 28, 2025), NARAKA: BLADEPOINT Mobile (on-device AI teammates, March 2025), MIR5 (adaptive bosses), Dead Meat (murder mystery, on-device SLM via NVIGI). At GDC 2026, NVIDIA expanded ACE language recognition support, released production-quality on-device TTS, and released a new SLM with advanced agent capabilities. The full ACE stack includes: NVIGI SDK (on-device inference scheduler), Riva ASR (speech-to-text, 140M/600M models, 8 languages), Chatterbox TTS (350M open-source model, paralinguistic/emotional control, zero-shot voice cloning), Nemotron Nano family (4B/9B SLMs, open source), Qwen3 family (.6B/4B/8B dense models), Audio2Face-3D SDK (facial animation from audio, regression 2.3 + diffusion 3.0), Audio2Emotion-3D (emotional state inference), and Nemovision-4B (VLM for scene perception). Unreal Engine 5.4/5.5/5.6 plugins available. All models downloadable with open/Apache/MIT licenses.\n\nNew April 28, 2026: Nemotron 3 Nano Omni — NVIDIA's open multimodal model that unifies vision, audio, and language in a single system. 30B parameters, 3B active per inference (mixture-of-experts), runs on a single GPU. Designed to function as the perception sub-agent in agentic pipelines: it can see the screen, hear audio, and reason across all three modalities simultaneously without a cloud call. 9x higher throughput than comparable open multimodal models. Available as an NVIDIA NIM microservice, on Hugging Face, and via OpenRouter. For game developers, the practical angle is on-device NPC AI that can observe and respond to the visual game world — the same role Nemovision-4B fills for scene perception, but now with audio understanding in the same model. Open weights, commercial license (NVIDIA Open Model License Agreement).",
+      "description": "NVIDIA ACE is the most game-dev-centric AI platform NVIDIA has built. First shown at Computex 2023, it has evolved significantly through 2024–2026. At CES 2025, NVIDIA expanded ACE from conversational NPCs to fully autonomous game characters with perception, planning, and action capabilities. Real shipped games as of March 2026 include: PUBG (Ally Co-Playable Character, Mistral-Nemo-Minitron-8B), inZOI (Smart Zoi, launched March 28, 2025), NARAKA: BLADEPOINT Mobile (on-device AI teammates, March 2025), MIR5 (adaptive bosses), Dead Meat (murder mystery, on-device SLM via NVIGI). At GDC 2026, NVIDIA expanded ACE language recognition support, released production-quality on-device TTS, and released a new SLM with advanced agent capabilities. The full ACE stack includes: NVIGI SDK (on-device inference scheduler), Riva ASR (speech-to-text, 140M/600M models, 8 languages), Chatterbox TTS (350M open-source model, paralinguistic/emotional control, zero-shot voice cloning), Nemotron Nano family (4B/9B SLMs, open source), Qwen3 family (.6B/4B/8B dense models), Audio2Face-3D SDK (facial animation from audio, regression 2.3 + diffusion 3.0), Audio2Emotion-3D (emotional state inference), and Nemovision-4B (VLM for scene perception). Unreal Engine 5.4/5.5/5.6 plugins available. All models downloadable with open/Apache/MIT licenses.",
       "useCases": [
         "Autonomous NPC companions that perceive game state, make decisions, and communicate in natural language",
         "Adaptive enemy AI that learns from player tactics (e.g. MIR5 boss behavior)",
@@ -405,6 +406,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.3+ (via ACE/NVIGI plugin)"
         }
       },
+      "lastUpdated": "2026-06-16",
       "id": 2,
       "whyGameDev": "Add real-time perception, memory, and natural conversation to your NPCs — a new layer on top of your existing dialogue systems."
     },
@@ -465,6 +467,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 3,
       "whyGameDev": "Get working lip sync from any audio file in real time — unblock animation before your mocap session is even scheduled."
     },
@@ -499,6 +502,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/ai/cosmos/",
       "officialPage": "https://www.nvidia.com/en-us/ai/cosmos/",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 4,
       "whyGameDev": "Generate photorealistic environment videos for trailers and produce synthetic vision-AI training data without a camera rig."
     },
@@ -542,6 +546,7 @@ const NVIDIA_DATA = {
       "url": "https://blogs.nvidia.com/blog/ai-decoded-edify/",
       "officialPage": "https://blogs.nvidia.com/blog/ai-decoded-edify/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 5,
       "whyGameDev": "Generate PBR materials, 360 HDRi skies, and 3D props at scale — give your art team a head start on asset production."
     },
@@ -584,6 +589,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/rtx/in-game-inferencing",
       "officialPage": "https://developer.nvidia.com/rtx/in-game-inferencing",
       "hiddenGem": 4,
+      "lastUpdated": "2026-06-16",
       "id": 6,
       "whyGameDev": "Run LLMs, voice recognition, and TTS on the player's GPU — zero cloud latency, zero API bill."
     },
@@ -618,6 +624,7 @@ const NVIDIA_DATA = {
       "url": "https://github.com/NVIDIA/NeMo",
       "officialPage": "https://github.com/NVIDIA/NeMo",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 7,
       "whyGameDev": "Fine-tune a small language model on your game's lore so every NPC sounds like it actually lives in your world."
     },
@@ -655,6 +662,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/nemo-guardrails",
       "officialPage": "https://developer.nvidia.com/nemo-guardrails",
       "hiddenGem": 4,
+      "lastUpdated": "2026-03-17",
       "id": 8,
       "whyGameDev": "Stop your AI NPCs from breaking character or tripping ESRB limits — programmable guardrails keep them on script."
     },
@@ -692,6 +700,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/blog/nvidia-rtx-advances-with-neural-rendering-and-digital-human-technologies-at-gdc-2025/",
       "officialPage": "https://developer.nvidia.com/blog/nvidia-rtx-advances-with-neural-rendering-and-digital-human-technologies-at-gdc-2025/",
       "hiddenGem": 5,
+      "lastUpdated": "2026-03-17",
       "id": 9,
       "whyGameDev": "Give your NPCs eyes: they read the actual game screen and react to what the player just did."
     },
@@ -734,6 +743,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/riva",
       "officialPage": "https://developer.nvidia.com/riva",
       "hiddenGem": 3,
+      "lastUpdated": "2026-06-16",
       "id": 10,
       "whyGameDev": "Add real-time voice commands and dynamically voiced NPC lines to your game without a cloud dependency or latency hit."
     },
@@ -770,6 +780,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/tensorrt",
       "officialPage": "https://developer.nvidia.com/tensorrt",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 11,
       "whyGameDev": "Squeeze AI models tight enough to run at frame rate — the same optimizer powering DLSS is yours."
     },
@@ -804,6 +815,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-app/",
       "officialPage": "https://www.nvidia.com/en-us/geforce/broadcasting/broadcast-app/",
       "hiddenGem": 1,
+      "lastUpdated": "2026-03-17",
       "id": 12,
       "whyGameDev": "Record professional-quality dev diaries, live reveals, and playtests from any workspace — studio-grade audio cleanup built in."
     },
@@ -838,6 +850,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/studio/canvas/",
       "officialPage": "https://www.nvidia.com/en-us/studio/canvas/",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 13,
       "whyGameDev": "Block out entire biomes and terrain moods in minutes by painting with material brushes, not detailed concept sketches."
     },
@@ -896,6 +909,7 @@ const NVIDIA_DATA = {
           "version": "N/A — incompatible with UE-built games"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 14,
       "whyGameDev": "Remaster your old DirectX 8/9 title with path tracing and AI-upscaled PBR textures — no source code required."
     },
@@ -932,6 +946,7 @@ const NVIDIA_DATA = {
       "url": "https://docs.nvidia.com/maxine/afx/latest/index.html",
       "officialPage": "https://docs.nvidia.com/maxine/afx/latest/index.html",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 15,
       "whyGameDev": "Make voice-to-NPC interactions feel seamless by cleaning player mic input before it hits your speech recognition pipeline."
     },
@@ -998,6 +1013,7 @@ const NVIDIA_DATA = {
           "issues": "Godot games must be available on a supported storefront (Steam, etc.) to be listed on GeForce NOW; GeForce NOW streams Windows builds of games; Godot's Vulkan renderer is compatible; No special NVIDIA GeForce NOW SDK integration is needed or available for game engines; NVIDIA RTX features (ray tracing, DLSS) in cloud: GeForce NOW Premium/Ultimate uses NVIDIA RTX server hardware, so RTX features work if the game supports them natively; Using Godot IDE on GeForce NOW for development is impractical despite the platform adding storage tiers"
         }
       },
+      "lastUpdated": "2026-03-18",
       "id": 16,
       "whyGameDev": "Stream your game to low-spec PCs, Chromebooks, and mobile on day one — no extra porting work required."
     },
@@ -1066,6 +1082,7 @@ const NVIDIA_DATA = {
           "issues": "Godot games must be available on a supported storefront (Steam, etc.) to be listed on GeForce NOW; GeForce NOW streams Windows builds of games; Godot's Vulkan renderer is compatible; No special NVIDIA GeForce NOW SDK integration is needed or available for game engines; NVIDIA RTX features (ray tracing, DLSS) in cloud: GeForce NOW Premium/Ultimate uses NVIDIA RTX server hardware, so RTX features work if the game supports them natively; Using Godot IDE on GeForce NOW for development is impractical despite the platform adding storage tiers"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 17,
       "whyGameDev": "Make your game cloud-aware: detect GFN sessions, enable touch input, and power 'Play in Cloud' buttons from your storefront."
     },
@@ -1101,6 +1118,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/cuda/toolkit",
       "officialPage": "https://developer.nvidia.com/cuda/toolkit",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 18,
       "whyGameDev": "Write GPU compute kernels for custom physics, terrain generation, or AI inference — the full CUDA toolkit is your sandbox."
     },
@@ -1134,6 +1152,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/data-center/dgx-cloud/",
       "officialPage": "https://www.nvidia.com/en-us/data-center/dgx-cloud/",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 19,
       "whyGameDev": "Train your game's AI agents and fine-tune dialogue LLMs on H100 clusters without buying a single server."
     },
@@ -1178,6 +1197,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/nim",
       "officialPage": "https://developer.nvidia.com/nim",
       "hiddenGem": 5,
+      "lastUpdated": "2026-03-17",
       "id": 20,
       "whyGameDev": "Plug containerized AI models with OpenAI-compatible APIs directly into your game — on-device or cloud, accessible even to small teams."
     },
@@ -1215,6 +1235,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/on-demand/",
       "officialPage": "https://www.nvidia.com/en-us/on-demand/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-18",
       "id": 21,
       "whyGameDev": "Get face time with NVIDIA engineers, see bleeding-edge rendering demos early, and pick up techniques before your competitors do."
     },
@@ -1248,6 +1269,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/higher-education-and-research",
       "officialPage": "https://developer.nvidia.com/higher-education-and-research",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 22,
       "whyGameDev": "Get free GPU hardware and compute hours for your university game lab — prototype neural rendering research without grant paperwork."
     },
@@ -1284,6 +1306,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/developer-program",
       "officialPage": "https://developer.nvidia.com/developer-program",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 23,
       "whyGameDev": "One free registration unlocks every NVIDIA SDK, debugger, and early-release tool your studio will ever need."
     },
@@ -1323,6 +1346,7 @@ const NVIDIA_DATA = {
       "url": "https://github.com/NVIDIAGameWorks",
       "officialPage": "https://github.com/NVIDIAGameWorks",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 24,
       "whyGameDev": "Extend your engine with battle-tested PhysX destruction, cloth sim, and real-time lighting — proven middleware that integrates with your existing pipeline."
     },
@@ -1360,6 +1384,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/startups/",
       "officialPage": "https://www.nvidia.com/en-us/startups/",
       "hiddenGem": 4,
+      "lastUpdated": "2026-03-17",
       "id": 25,
       "whyGameDev": "Get cloud compute credits, hardware discounts, and VC introductions to fuel your AI-native game studio's growth."
     },
@@ -1401,6 +1426,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.4, 5.5, 5.6, 5.7 (active branches); UE 4.27 and 5.0 (legacy branches)"
         }
       },
+      "lastUpdated": "2026-06-16",
       "id": 26,
       "whyGameDev": "Test the absolute latest RTX Kit features inside UE5 months before they ship in an official engine release."
     },
@@ -1432,6 +1458,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/rtx-kit#rtx-memory-utility",
       "officialPage": "https://developer.nvidia.com/rtx-kit#rtx-memory-utility",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 27,
       "whyGameDev": "Shrink your ray tracing BVH memory footprint so you can fit more dynamic objects in VRAM without compromising scene complexity."
     },
@@ -1469,6 +1496,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/tools-overview",
       "officialPage": "https://developer.nvidia.com/tools-overview",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 28,
       "whyGameDev": "Add named markers to your game loop and Nsight tells you exactly which system is killing frame time."
     },
@@ -1504,6 +1532,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/video-codec-sdk",
       "officialPage": "https://developer.nvidia.com/video-codec-sdk",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 29,
       "whyGameDev": "Encode and decode gameplay video on the GPU — your in-game capture, streaming, and cutscene playback won't steal CPU time."
     },
@@ -1559,6 +1588,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 30,
       "whyGameDev": "Let players take 63K-resolution free-camera screenshots that become your best marketing material — all with one SDK integration."
     },
@@ -1613,6 +1643,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 31,
       "whyGameDev": "Give players real-time post-processing filters — including colorblind accessibility modes — layered on top of your engine's rendering pipeline."
     },
@@ -1669,6 +1700,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 32,
       "whyGameDev": "Automatically clip every kill streak and clutch moment so players have shareable highlights without lifting a finger."
     },
@@ -1704,6 +1736,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/software/nvidia-app/",
       "officialPage": "https://www.nvidia.com/en-us/software/nvidia-app/",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 33,
       "whyGameDev": "Players' instant-replay clips become organic social marketing; your QA team also captures bugs retroactively without pre-flagging them."
     },
@@ -1753,6 +1786,7 @@ const NVIDIA_DATA = {
           "version": "UE 4.20 (officially, last supported version)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 34,
       "whyGameDev": "Ship satisfying, modular building destruction with configurable damage thresholds — pre-fractured, physics-driven, and production-ready."
     },
@@ -1801,6 +1835,7 @@ const NVIDIA_DATA = {
           "version": "UE 4.18 (GameWorks branch only, legacy)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 35,
       "whyGameDev": "Add real-time GPU fire, smoke, and combustion effects that interact with your Blast destruction without building a fluid solver."
     },
@@ -1868,6 +1903,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-04-10",
       "id": 36,
       "whyGameDev": "Build USD-based asset pipelines and scene assembly tools that keep Maya, Blender, and your engine in sync."
     },
@@ -1911,6 +1947,7 @@ const NVIDIA_DATA = {
           "version": "N/A — no native UE bridge; external Python simulation framework"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 37,
       "whyGameDev": "Write physics simulations in Python that JIT-compile to CUDA — generate synthetic AI training data without a C++ pipeline."
     },
@@ -1979,6 +2016,7 @@ const NVIDIA_DATA = {
           "issues": "No community PhysX GDExtension plugin exists for Godot 4 as of March 2026; PhysX GPU features (fluid simulation, GPU rigid bodies) require additional setup and CUDA; Godot's physics API abstraction may not expose all PhysX capabilities; Most Godot developers use Jolt Physics (godot-jolt) as the preferred alternative - it is integrated and has active community support; NVIDIA GPU-accelerated PhysX shaders (Flow, Blast) were fully open-sourced under BSD-3 in April 2025 but integration work remains"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 38,
       "whyGameDev": "Get full rigid body, cloth, fluid, and soft body simulation in one open-source GPU-accelerated package your engine can embed."
     },
@@ -2028,6 +2066,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-04-16",
       "id": 39,
       "whyGameDev": "Run tiny neural networks inside shaders using Tensor Cores — the hardware unlock behind neural materials and NTC."
     },
@@ -2117,6 +2156,7 @@ const NVIDIA_DATA = {
           "notes": "Direct NGX integration for DLSS Super Resolution (without Streamline). Uses nvsdk_ngx.h header and links against NGX library. Supports DX11, DX12, and Vulkan. Does not include Frame Generation or Ray Reconstruction (those require Streamline). DLSS 4.5 SDK available as of January 2026. Requires providing: depth buffer, motion vectors, jitter offset, render resolution, display resolution. NVIDIA recommends Streamline for new integrations; direct NGX is considered legacy for DLSS SR. License: Proprietary EULA (DLSS DLLs are binary-only, cannot be included in open-source projects with copyleft licenses)."
         }
       },
+      "lastUpdated": "2026-06-16",
       "id": 40,
       "whyGameDev": "Ship path-traced visuals at 240+ FPS with DLSS 4 Multi Frame Generation — quality that wasn't possible last year."
     },
@@ -2148,6 +2188,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/rtx/ray-tracing/micro-mesh",
       "officialPage": "https://developer.nvidia.com/rtx/ray-tracing/micro-mesh",
       "hiddenGem": 4,
+      "lastUpdated": "2026-03-17",
       "id": 41,
       "whyGameDev": "Render scanned assets and terrain with full geometric detail in ray-traced scenes — no normal-map cheating, actual micro-triangles."
     },
@@ -2192,6 +2233,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.0 (Nanite uses mesh shader-like concepts internally; DX12 Mesh Shaders used by Epic)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 42,
       "whyGameDev": "Offload LOD, culling, and procedural geometry to the GPU — freeing your engine's CPU budget for gameplay logic."
     },
@@ -2242,6 +2284,7 @@ const NVIDIA_DATA = {
           "notes": "API-agnostic, spatio-temporal denoising library. Open source (MIT license). Supports DX11, DX12, and Vulkan. Includes REBLUR (recurrent blur), RELAX (SVGF-based, designed for RTXDI), and SIGMA (shadow-only) denoisers. Designed for 0.5-1 ray per pixel signals. Three integration variants: (1) black-box via engine RHI, (2) white-box with full source, (3) via native API pointers using NRD integration layer + NVIDIA Rendering Interface (NRI). NRD does not make graphics API calls directly - it returns compute dispatch data that the application executes. Build system: CMake 3.15+. Supports Windows and Linux (x86-64, aarch64). NRI is an abstraction layer supporting DX11, DX12, and Vulkan. API-agnostic design means no NVIDIA GPU requirement at runtime (though quality is best on RTX hardware). Used in production (Watch Dogs: Legion, RTX-enabled UE5 titles). Alternative to using DLSS Ray Reconstruction as a denoiser."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 43,
       "whyGameDev": "Clean noisy ray-traced shadows and GI from just a few rays per pixel — makes RT viable on mid-range hardware."
     },
@@ -2310,6 +2353,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 44,
       "whyGameDev": "Stream your PC VR game to wireless headsets and Apple Vision Pro without building a separate standalone port."
     },
@@ -2344,6 +2388,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/blog/nvidia-vrss-2-dynamic-foveated-rendering-no-assembly-required/",
       "officialPage": "https://developer.nvidia.com/blog/nvidia-vrss-2-dynamic-foveated-rendering-no-assembly-required/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 45,
       "whyGameDev": "Instantly reclaim 25-50% GPU headroom in your VR title via driver-level foveated shading — no engine changes needed."
     },
@@ -2380,6 +2425,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/nvapi",
       "officialPage": "https://developer.nvidia.com/nvapi",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 46,
       "whyGameDev": "Read real GPU clocks, temps, and Reflex latency metrics from inside your game to build accurate performance overlays and telemetry."
     },
@@ -2421,6 +2467,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/design-visualization/iray/",
       "officialPage": "https://www.nvidia.com/en-us/design-visualization/iray/",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 47,
       "whyGameDev": "Render photorealistic key art directly from your game assets in Maya or 3ds Max — another option in your marketing pipeline."
     },
@@ -2455,6 +2502,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/design-visualization/technologies/material-definition-language/",
       "officialPage": "https://www.nvidia.com/en-us/design-visualization/technologies/material-definition-language/",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 48,
       "whyGameDev": "Define materials once in MDL and get identical PBR results whether you're in Omniverse, Iray, or your real-time engine."
     },
@@ -2496,6 +2544,7 @@ const NVIDIA_DATA = {
           "notes": "NVIDIA's core SDK for direct GPU and driver access on Windows. Open-source public headers on GitHub (BSD-3 license for headers; driver interaction is proprietary). Release 590 documentation updated February 2026. Provides: driver management, GPU enumeration, thermal/cooling controls, display management, system info, and crucially the low-level hooks used by Reflex (NvAPI_D3D_SetSleepMode, NvAPI_D3D_SetLatencyMarker), SLI management, and other features not in standard graphics APIs. Windows-only. Not a graphics rendering API - works alongside DX12/Vulkan. NVIDIA partially open-sourced NVAPI in 2020 to aid Linux/Windows emulation environments (useful for Proton/Wine DLSS support). Required dependency for standalone Reflex SDK integration."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 49,
       "whyGameDev": "Access NVIDIA GPU features that DX12 and Vulkan don't expose — adaptive quality settings, custom tweaks, and low-level GPU control."
     },
@@ -2553,6 +2602,7 @@ const NVIDIA_DATA = {
           "notes": "Cross-vendor Vulkan ray tracing extensions (not NVIDIA-exclusive). Key extensions: VK_KHR_acceleration_structure (BLAS/TLAS), VK_KHR_ray_tracing_pipeline (vkCmdTraceRaysKHR), VK_KHR_ray_query (inline tracing from any shader stage), VK_KHR_deferred_host_operations. NVIDIA supports Vulkan 1.4 + full KHR ray tracing on Turing/Ampere/Ada/Blackwell. NVIDIA also has VK_NV_* extensions for Blackwell-exclusive features: VK_NV_cluster_acceleration_structure (RTX 50 series), VK_NV_partitioned_acceleration_structure, VK_NV_ray_tracing_linear_swept_spheres. Tutorial: nvpro-samples/vk_raytracing_tutorial_KHR (GitHub). Integration requires: acceleration structure build, pipeline with ray generation/hit/miss shaders, shader binding table (SBT). Setup complexity 4/5 reflects the significant Vulkan expertise required. NVIDIA provides nvpro-samples helper libraries to reduce boilerplate."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 50,
       "whyGameDev": "Bake production-quality lightmaps and acoustic IRs using GPU-accelerated ray tracing — faster offline renders, better in-game lighting."
     },
@@ -2610,6 +2660,7 @@ const NVIDIA_DATA = {
           "notes": "RTXGI (Global Illumination via probe-based irradiance fields) and RTXDI (ReSTIR-based Direct Illumination sampling) are available as separate SDKs. Both require DX12 or Vulkan and ray tracing hardware. RTXGI SDK is open source on GitHub. These are advanced techniques used in AAA titles and require significant rendering expertise to integrate. NRD is typically used alongside RTXDI for denoising. Not available as engine plugins for Godot or other engines outside of UE5 (which has RTXDI integration in NVIDIA's UE5 fork)."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 51,
       "whyGameDev": "Render physically accurate lighting from thousands of dynamic lights in real time — no light baking, no fake shadows."
     },
@@ -2653,6 +2704,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/rtx-kit",
       "officialPage": "https://developer.nvidia.com/rtx-kit",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-18",
       "id": 52,
       "whyGameDev": "One SDK bundles DLSS 4, path tracing, neural textures, and mega geometry — the complete toolkit for next-gen RTX games."
     },
@@ -2695,6 +2747,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.x (requires manual engine integration; no standalone plugin)"
         }
       },
+      "lastUpdated": "2026-04-16",
       "id": 53,
       "whyGameDev": "Compress complex multi-layer materials into shader code and run lightweight AI models for lighting directly inside your GPU shaders."
     },
@@ -2736,6 +2789,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.4+ (via NvRTX branch; SDK available separately)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 54,
       "whyGameDev": "Encode foliage and fence alpha data into your BVH so ray tracing through a forest doesn't murder your frame rate."
     },
@@ -2777,6 +2831,7 @@ const NVIDIA_DATA = {
           "issues": "Only available in NVIDIA's experimental fork, not mainline Godot; Fork uses path tracing (full ray tracing) which requires RTX-capable GPU for acceptable performance; Path tracer is a single renderer mode - not a hybrid (raster + RT) approach; Settings are packed in an integer array - poor UX; DLSS Ray Reconstruction (RR) used as denoiser; NRD integration is complex and not yet included; Mainline Godot 4.7 will add Vulkan ray tracing API hooks via RenderingDevice, but a full ray traced renderer is not part of 4.7; Community has noted artifacts when adjusting packed RT parameters; DXR path in Godot does not exist - Godot's Windows renderer uses Vulkan, not DirectX 12"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 55,
       "whyGameDev": "Study a fully working reference path tracer using NVIDIA's best-practice RTX techniques — then adapt it directly to your engine."
     },
@@ -2836,6 +2891,7 @@ const NVIDIA_DATA = {
           "notes": "Direct NGX integration for DLSS Super Resolution (without Streamline). Uses nvsdk_ngx.h header and links against NGX library. Supports DX11, DX12, and Vulkan. Does not include Frame Generation or Ray Reconstruction (those require Streamline). DLSS 4.5 SDK available as of January 2026. Requires providing: depth buffer, motion vectors, jitter offset, render resolution, display resolution. NVIDIA recommends Streamline for new integrations; direct NGX is considered legacy for DLSS SR. License: Proprietary EULA (DLSS DLLs are binary-only, cannot be included in open-source projects with copyleft licenses)."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 56,
       "whyGameDev": "Upscale pre-rendered cutscenes to 4K at playback time so you ship smaller video assets without sacrificing visual quality."
     },
@@ -2884,6 +2940,7 @@ const NVIDIA_DATA = {
           "notes": "API-agnostic, spatio-temporal denoising library. Open source (MIT license). Supports DX11, DX12, and Vulkan. Includes REBLUR (recurrent blur), RELAX (SVGF-based, designed for RTXDI), and SIGMA (shadow-only) denoisers. Designed for 0.5-1 ray per pixel signals. Three integration variants: (1) black-box via engine RHI, (2) white-box with full source, (3) via native API pointers using NRD integration layer + NVIDIA Rendering Interface (NRI). NRD does not make graphics API calls directly - it returns compute dispatch data that the application executes. Build system: CMake 3.15+. Supports Windows and Linux (x86-64, aarch64). NRI is an abstraction layer supporting DX11, DX12, and Vulkan. API-agnostic design means no NVIDIA GPU requirement at runtime (though quality is best on RTX hardware). Used in production (Watch Dogs: Legion, RTX-enabled UE5 titles). Alternative to using DLSS Ray Reconstruction as a denoiser."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 57,
       "whyGameDev": "Make ray-traced reflections, shadows, and GI viable on mid-range hardware by denoising low-SPP signals into clean temporal output."
     },
@@ -2960,6 +3017,7 @@ const NVIDIA_DATA = {
           "notes": "Standalone Reflex SDK for custom engines. Dependencies: NVAPI, C++, Windows 10. Integration involves: (1) calling NvAPI_D3D_SetSleepMode() to enable low-latency mode, (2) placing NV_LATENCY_MARKER_PARAMS markers at simulation start/end, render submit start/end, and present start/end using NvAPI_D3D_SetLatencyMarker(). The SDK has been production-tested in custom engines (Bungie, Respawn, Riot Games). Key requirement: exactly 1 simulation, 1 render submit, and 1 present marker per frame ID. Latency measurement via NvAPI_D3D_GetLatency(). Also available via Streamline (recommended for new projects). The blog post 'Optimizing System Latency with NVIDIA Reflex SDK' (Dec 2020) explicitly notes it is 'built to support custom engines'."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 58,
       "whyGameDev": "Cut input-to-display latency with Frame Warp so your competitive game feels snappier than anything your players have touched before."
     },
@@ -3025,6 +3083,7 @@ const NVIDIA_DATA = {
           "notes": "Streamline is the recommended integration path for DLSS, Reflex, NIS, and NRD in custom engines. It is MIT licensed and open source (except DLSS-G plugin DLL). Version 2.7.32 (May 2025) is current. Supported APIs: DirectX 11, DirectX 12; Vulkan support listed as 'coming soon' on the developer page (though Vulkan interposer is documented in the SDK). Works as an interposer - wraps DXGI/D3D API calls transparently. Plugins available: DLSS Super Resolution, DLSS Frame Generation, DLSS Ray Reconstruction, Reflex, NIS (Image Scaling). Requires: Windows 10 20H1+, GPU with DX11 and Vulkan 1.2+, NVIDIA driver 512.15+. Application ID (appId) is required for NGX components. Setup involves: (1) loading sl.interposer.dll, (2) calling slInit(), (3) tagging resources (depth, motion vectors, color, HUD-less), (4) calling slEvaluateFeature() per frame. Security: SDK verifies embedded NVIDIA digital signature on sl.interposer.dll."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 59,
       "whyGameDev": "Integrate DLSS, Frame Generation, Reflex, and NRD through one API — update models OTA without patching your game."
     },
@@ -3065,6 +3124,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/vrworks",
       "officialPage": "https://developer.nvidia.com/vrworks",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 60,
       "whyGameDev": "Boost VR frame rates with multi-view rendering and foveated shading — deliver comfort frame rates without gutting visual quality."
     },
@@ -3098,6 +3158,7 @@ const NVIDIA_DATA = {
       "url": "https://docs.nvidia.com/gameworks-products/index.html",
       "officialPage": "https://docs.nvidia.com/gameworks-products/index.html",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 61,
       "whyGameDev": "Drop in cinematic GPU-simulated ocean waves with real water interaction — production-quality fluid dynamics out of the box."
     },
@@ -3138,6 +3199,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.1+ (via NvRTX branch; SDK available in RTX Global Illumination SDK 2.0)"
         }
       },
+      "lastUpdated": "2026-03-18",
       "id": 62,
       "whyGameDev": "Get infinite-bounce global illumination at playable frame rates using an AI that predicts multi-bounce light from initial ray samples."
     },
@@ -3179,6 +3241,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.x (via NvRTX branch; standardized in DXR 1.2 March 2026; no standalone UE plugin yet)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 63,
       "whyGameDev": "Speed up ray tracing through vegetation by 55% with precomputed opacity data — finally make forest scenes path-traceable."
     },
@@ -3237,6 +3300,7 @@ const NVIDIA_DATA = {
           "notes": "RTXGI (Global Illumination via probe-based irradiance fields) and RTXDI (ReSTIR-based Direct Illumination sampling) are available as separate SDKs. Both require DX12 or Vulkan and ray tracing hardware. RTXGI SDK is open source on GitHub. These are advanced techniques used in AAA titles and require significant rendering expertise to integrate. NRD is typically used alongside RTXDI for denoising. Not available as engine plugins for Godot or other engines outside of UE5 (which has RTXDI integration in NVIDIA's UE5 fork)."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 64,
       "whyGameDev": "Light a night city with thousands of dynamic neon signs and streetlights at real-time frame rates using ReSTIR importance sampling."
     },
@@ -3299,6 +3363,7 @@ const NVIDIA_DATA = {
           "notes": "RTXGI (Global Illumination via probe-based irradiance fields) and RTXDI (ReSTIR-based Direct Illumination sampling) are available as separate SDKs. Both require DX12 or Vulkan and ray tracing hardware. RTXGI SDK is open source on GitHub. These are advanced techniques used in AAA titles and require significant rendering expertise to integrate. NRD is typically used alongside RTXDI for denoising. Not available as engine plugins for Godot or other engines outside of UE5 (which has RTXDI integration in NVIDIA's UE5 fork)."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 65,
       "whyGameDev": "Upgrade from baked lightmaps to fully dynamic probe-based GI — light responds when you blow up a wall, no rebake required."
     },
@@ -3346,6 +3411,7 @@ const NVIDIA_DATA = {
           "version": "UE 5.4+ (Experimental NvRTX branch only; SDK available separately)"
         }
       },
+      "lastUpdated": "2026-03-18",
       "id": 66,
       "whyGameDev": "Accelerate BVH builds by 100x so real-time path tracing on Nanite-level geometry is finally a shipping target, not a demo."
     },
@@ -3353,7 +3419,7 @@ const NVIDIA_DATA = {
       "name": "RTX Neural Texture Compression (NTC)",
       "category": "Rendering & Graphics",
       "oneLiner": "Uses AI (Cooperative Vectors / Neural Shaders) to compress game textures with up to 8x VRAM savings at visual fidelity comparable to traditional BC compression.",
-      "description": "RTX Neural Texture Compression is part of NVIDIA RTX Kit's neural shading suite, introduced at CES 2025. It uses small neural networks (MLPs) running in shaders via Cooperative Vectors to compress and decompress textures on-the-fly on the GPU. Instead of storing full BC7-compressed textures, NTC stores compressed neural network weights representing the texture. At runtime, the GPU evaluates the MLP to reconstruct texture values during shading. This provides up to 8x VRAM reduction versus uncompressed textures and approximately 2x reduction vs. BC compression, at comparable visual quality. NTC leverages the RTX Tensor Cores via Cooperative Vector APIs available in OptiX 9.0, Vulkan, and (preview) DirectX Agility SDK. It is part of the RTX Neural Shaders SDK. As a use case demonstration, a massive dragon scene that required 6 GB uncompressed textures was rendered in real time on a single RTX 5080 with NTC reducing it to under 3 GB.\n\nSDK 0.9 update (shipped with DLSS 4.5 tech blog, Jan 2026): BC7 encoding accelerated 6X vs SDK 0.8; inference speed improved 20-40% depending on hardware. The 0.9 update also added Inference on Feedback mode (hybrid decode path). Tom's Hardware benchmark (April 2026) confirmed up to 85% VRAM reduction in practice and 2-4x inference throughput improvement on Ada/Blackwell with Cooperative Vectors enabled. Intel introduced a competing Neural Compression technology in the same April 2026 window, with a fallback mode for GPUs without dedicated AI cores — cross-vendor standardization is accelerating.",
+      "description": "RTX Neural Texture Compression is part of NVIDIA RTX Kit's neural shading suite, introduced at CES 2025. It uses small neural networks (MLPs) running in shaders via Cooperative Vectors to compress and decompress textures on-the-fly on the GPU. Instead of storing full BC7-compressed textures, NTC stores compressed neural network weights representing the texture. At runtime, the GPU evaluates the MLP to reconstruct texture values during shading. This provides up to 8x VRAM reduction versus uncompressed textures and approximately 2x reduction vs. BC compression, at comparable visual quality. NTC leverages the RTX Tensor Cores via Cooperative Vector APIs available in OptiX 9.0, Vulkan, and (preview) DirectX Agility SDK. It is part of the RTX Neural Shaders SDK. As a use case demonstration, a massive dragon scene that required 6 GB uncompressed textures was rendered in real time on a single RTX 5080 with NTC reducing it to under 3 GB.",
       "useCases": [
         "Reducing VRAM footprint for open-world games with massive texture budgets",
         "Enabling higher-resolution textures within existing VRAM budgets",
@@ -3392,9 +3458,10 @@ const NVIDIA_DATA = {
           "apiType": "C/C++ SDK",
           "setupComplexity": 3,
           "docsQuality": 3,
-          "notes": "NTC SDK 0.9 (Jan 2026): BC7 encoding 6X faster than 0.8; inference 20-40% faster; added Inference on Feedback hybrid decode path. Compresses textures using neural networks for up to 8x VRAM reduction vs BCn formats. Inference via Vulkan cooperative vector instructions (VK_NV_cooperative_vector) or DirectX 12 Agility SDK preview. Best performance on Ada/Blackwell with Cooperative Vectors enabled. Available via NVIDIA RTX Kit (github.com/NVIDIA-RTX/RTXNTC). Custom engine integration requires: Vulkan or DX12 backend, shader integration for inference, offline baking step to convert BC textures to NTC format. Note: CUDA 13 is incompatible with the 590.26 developer preview driver needed for DX12 Cooperative Vectors — use CUDA 12.9 for NTC SDK builds targeting DX12."
+          "notes": "NTC compresses textures using neural networks for 10x+ compression ratios vs BCn formats with higher quality. Inference via Vulkan cooperative vector instructions (VK_NV_cooperative_vector). Currently Blackwell/Ada-class hardware for best performance. Available as part of NVIDIA GameWorks SDK. Custom engine integration requires: Vulkan backend, shader integration for inference, encoding tools. This is an emerging/experimental technology as of March 2026."
         }
       },
+      "lastUpdated": "2026-05-01",
       "id": 67,
       "whyGameDev": "Cut texture VRAM up to 8x with AI compression — fit higher-res textures in the same budget, no trade-offs."
     },
@@ -3446,6 +3513,7 @@ const NVIDIA_DATA = {
           "pipeline": ""
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 68,
       "whyGameDev": "Get 25-44% faster ray tracing on RTX 40+ for free — hardware reorders divergent shaders automatically, no code changes required."
     },
@@ -3480,6 +3548,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/geforce/technologies/fcat/",
       "officialPage": "https://www.nvidia.com/en-us/geforce/technologies/fcat/",
       "hiddenGem": 1,
+      "lastUpdated": "2026-03-17",
       "id": 69,
       "whyGameDev": "Catch VR frame drops before players feel them — FCAT VR shows exactly where frames are dropped or synthesized."
     },
@@ -3516,6 +3585,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.geforcenow.com",
       "officialPage": "https://developer.geforcenow.com",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 70,
       "whyGameDev": "Test your game on live GFN cloud infrastructure before launch so cloud-specific bugs don't surprise you on release day."
     },
@@ -3578,6 +3648,7 @@ const NVIDIA_DATA = {
           "issues": "Godot games must be available on a supported storefront (Steam, etc.) to be listed on GeForce NOW; GeForce NOW streams Windows builds of games; Godot's Vulkan renderer is compatible; No special NVIDIA GeForce NOW SDK integration is needed or available for game engines; NVIDIA RTX features (ray tracing, DLSS) in cloud: GeForce NOW Premium/Ultimate uses NVIDIA RTX server hardware, so RTX features work if the game supports them natively; Using Godot IDE on GeForce NOW for development is impractical despite the platform adding storage tiers"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 71,
       "whyGameDev": "Run secure global playtests against RTX 5080-class hardware years before your game ships — no hardware logistics, just a link."
     },
@@ -3621,6 +3692,7 @@ const NVIDIA_DATA = {
       "url": "https://www.nvidia.com/en-us/geforce/technologies/frameview/",
       "officialPage": "https://www.nvidia.com/en-us/geforce/technologies/frameview/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 72,
       "whyGameDev": "Benchmark frame times, 1% Lows, and PC latency across any GPU without installing NVIDIA App — clean standalone numbers."
     },
@@ -3658,6 +3730,7 @@ const NVIDIA_DATA = {
       "url": "https://catalog.ngc.nvidia.com",
       "officialPage": "https://catalog.ngc.nvidia.com",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 73,
       "whyGameDev": "Pull pre-built CUDA and TensorRT containers so your team can focus on training game AI models — environment setup handled."
     },
@@ -3689,6 +3762,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/cuda/cuda-gpus",
       "officialPage": "https://developer.nvidia.com/cuda/cuda-gpus",
       "hiddenGem": 2,
+      "lastUpdated": "2026-03-17",
       "id": 74,
       "whyGameDev": "Validate your game across every GPU generation's shader compatibility before release — catch architecture-specific crashes on your timeline, not players'."
     },
@@ -3740,6 +3814,7 @@ const NVIDIA_DATA = {
           "version": "UE 4.x / 5.x (requires C++ integration or use via Nsight Graphics)"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 75,
       "whyGameDev": "When players report GPU crashes, get a mini-dump in your crash reporter showing the exact shader line that fired."
     },
@@ -3778,6 +3853,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/nsight-compute",
       "officialPage": "https://developer.nvidia.com/nsight-compute",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 76,
       "whyGameDev": "Profile CUDA kernels at hardware counter level — pinpoint the exact memory bottleneck killing your physics or AI inference."
     },
@@ -3861,6 +3937,7 @@ const NVIDIA_DATA = {
           "notes": "Standalone GPU debugging and profiling tool - not an SDK to integrate, but a development tool that works with any DX11/DX12/Vulkan/OpenGL/OpenVR application. Features: Frame Debugger, GPU Trace Profiler, Real-Time Shader Profiler, shader timing heatmap. Nsight Aftermath SDK can be integrated into a DX12 or Vulkan application to capture GPU mini-dumps on crash/TDR (for crash reporting). Nsight Perf SDK enables programmatic GPU performance metric collection (HUD renderer, metrics API). All three components work with custom engines with no engine-specific requirements. Windows and Linux supported."
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 77,
       "whyGameDev": "Step through individual draw calls, inspect resource state, and debug ray tracing BVHs — find rendering artifacts at their source."
     },
@@ -3929,6 +4006,7 @@ const NVIDIA_DATA = {
           "issues": "Nsight works on exported binaries only, not the Godot editor itself; Some 'next-generation' Nsight features may not work correctly with Godot's Vulkan usage patterns; Draw calls may have generic labels without '--verbose' flag; Nsight Aftermath SDK (crash reporter) integration requires modifying Godot's source or creating a GDExtension; Nsight Systems GPU Timeline works well but CUDA profiling is not relevant for Godot games"
         }
       },
+      "lastUpdated": "2026-03-17",
       "id": 78,
       "whyGameDev": "See your entire CPU-GPU frame in one timeline — instantly know whether you're CPU-bound, GPU-bound, or hammering a sync point."
     },
@@ -3963,6 +4041,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/tools-overview",
       "officialPage": "https://developer.nvidia.com/tools-overview",
       "hiddenGem": 0,
+      "lastUpdated": "2026-03-17",
       "id": 79,
       "whyGameDev": "Debug and profile your CUDA game systems right inside Visual Studio with AI-assisted code suggestions from Nsight Copilot."
     },
@@ -3996,6 +4075,7 @@ const NVIDIA_DATA = {
       "url": "https://blogs.nvidia.com/blog/gdc-2026-virtual-game-development/",
       "officialPage": "https://blogs.nvidia.com/blog/gdc-2026-virtual-game-development/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-17",
       "id": 80,
       "whyGameDev": "Provision centralized RTX instances for remote teams and scale QA on demand — stop shipping dev kits worldwide."
     },
@@ -4036,6 +4116,7 @@ const NVIDIA_DATA = {
       "url": "https://developer.nvidia.com/nsight-perf-sdk",
       "officialPage": "https://developer.nvidia.com/nsight-perf-sdk",
       "hiddenGem": 4,
+      "lastUpdated": "2026-03-17",
       "id": 81,
       "whyGameDev": "Embed GPU counters in your builds and run automated perf regression tests in CI before frame rate slips ship."
     },
@@ -4087,6 +4168,7 @@ const NVIDIA_DATA = {
           "notes": "DLSS 5 integration will be available via the Streamline SDK, following the same pattern as DLSS Frame Generation. Direct NGX integration may also be supported. Full SDK documentation and integration guide will be released closer to Fall 2026 launch. The NVIDIA Zorah tech demo shown at GTC 2026 provides an early reference implementation."
         }
       },
+      "lastUpdated": "2026-03-18",
       "id": 82,
       "whyGameDev": "The next leap in real-time visuals — DLSS 5 fuses your rendered frames with AI-generated photoreal lighting, closing the gap between games and cinema."
     },
@@ -4125,6 +4207,7 @@ const NVIDIA_DATA = {
       "url": "https://blogs.nvidia.com/blog/gtc-2026-news/",
       "officialPage": "https://blogs.nvidia.com/blog/gtc-2026-news/",
       "hiddenGem": 3,
+      "lastUpdated": "2026-03-18",
       "id": 83,
       "whyGameDev": "Build AI characters and game systems that reason, plan, and act autonomously over long play sessions — moving beyond scripted behavior into truly intelligent agents."
     }

@@ -1,26 +1,29 @@
 # NVIDIA GameDev Guide — Changelog
 
+## v1.9.6 — 2026-06-16
+- Updated DLSS SR entry: DLSS 4.5 Ray Reconstruction 2nd gen transformer (Computex, May 31) — 35% more compute, 20% more parameters, improved lighting accuracy, motion clarity, temporal stability; 27 launch titles including Alan Wake 2, Cyberpunk 2077, DOOM: The Dark Ages, Half-Life 2 RTX, Resident Evil Requiem
+- Updated DLSS SR UE5 integration: official DLSS 4.5 plugin (May 31) adds native Dynamic MFG and 6X MFG support for Unreal Engine — no longer requires separate Streamline SDK integration
+- Updated NVIDIA ACE entry: NVIGI SDK 1.6 (Computex, May 31) — full multilingual on-device NPC pipeline; Qwen 3.5 4B (201 languages), Riva Parakeet TDT 600M ASR (25 languages), Chatterbox Multilingual 500M TTS (24 languages); first release enabling complete voice-to-voice multilingual pipeline entirely on-device
+- Updated NvRTX entry: rebased to UE 5.7.4 stable (May 31) — fixes RTX Mega Geometry shader compilation on non-DX12 platforms, Substrate material system compatibility, Opacity Micromap vegetation stability; migration docs refreshed
+
 ## v1.9.5 — 2026-05-01
-- Updated NVIDIA ACE entry: added Nemotron 3 Nano Omni (released April 28, 2026) — open multimodal model unifying vision, audio, and language in a single system; 30B params / 3B active (MoE); 9x throughput vs comparable open multimodal models; runs on a single GPU
-- Nemotron 3 Nano Omni available as NVIDIA NIM, Hugging Face, OpenRouter — open weights, commercial license (NVIDIA Open Model License Agreement)
-- Updated RTX Neural Texture Compression (NTC) entry — SDK 0.9: BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added
-- Tom's Hardware benchmark (April 2026) confirmed: up to 85% VRAM reduction in practice, 2-4x inference throughput on Ada/Blackwell with Cooperative Vectors
-- NTC custom engine notes updated: CUDA 12.9 required for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)
-- Added Intel Neural Compression competitive context to NTC entry — cross-vendor standardization accelerating
+- Updated NVIDIA ACE entry: added Nemotron 3 Nano Omni (April 28) — open multimodal model unifying vision, audio, and language; 30B params / 3B active (MoE); 9x throughput vs comparable open multimodal models; runs on single GPU
+- Updated RTX Neural Texture Compression (NTC) entry: SDK 0.9 numbers — BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added
+- NTC custom engine notes: CUDA 12.9 required for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)
+- Added Intel Neural Compression competitive context to NTC entry
 
 ## v1.9.4 — 2026-04-24
-- Updated DLSS SR entry: DLSS 4.5 SDK released April 22 via Streamline SDK — Dynamic MFG now available for native developer integration, not just NVIDIA app consumer override
+- Updated DLSS SR entry: DLSS 4.5 SDK released April 22 via Streamline SDK — Dynamic MFG now available for native game integration, not just NVIDIA app consumer override
 - 6X MFG mode (5 AI-generated frames per rendered frame) documented — RTX 50 Series exclusive; RTX 40 Series tops out at 4X Dynamic MFG
 - Enhanced Frame Generation model added to SDK — improves HUD/UI clarity at high frame multipliers
-- Custom engine notes updated with Streamline API integration details for Dynamic MFG (sl::DLSSGOptions, dynamicFrameGeneration flag, static multiplier options)
-- Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK release specifically
+- Custom engine notes updated with Streamline API integration details for Dynamic MFG
+- Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK specifically
 
 ## v1.9.3 — 2026-04-16
-- Renamed to NVIDIA GameDev Guide — nav label updated to "NVIDIA GameDev", clearer independent positioning, avoids overlap with official NVIDIA "Toolkit" branding
+- Renamed to NVIDIA GameDev Guide — nav label updated to "NVIDIA GameDev", clearer independent positioning
 - Added non-affiliation disclosure to hero: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."
 - Added RTX Neural Shaders / Cooperative Vectors as new Rendering & Graphics entry covering NTC, NRC, and Neural Materials
 - DX12 Cooperative Vectors live in Agility SDK 1.717.x-preview (Shader Model 6.9), cross-vendor in spec
-- Engine matrix row added for RTX Neural Shaders
 - Tool count: 83 → 84
 
 ## v1.9.2 — 2026-04-10

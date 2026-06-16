@@ -319,6 +319,13 @@
   const MATURITY_ORDER = { 'Stable': 0, 'Beta': 1, 'Early Access': 2, 'Preview': 3 };
   const DIFFICULTY_ORDER = { 'Easy': 0, 'Moderate': 1, 'Complex': 2 };
 
+  function formatUpdatedDate(dateStr) {
+    if (!dateStr) return '';
+    const [year, month] = dateStr.split('-');
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return '\u2191 ' + months[parseInt(month, 10) - 1] + ' ' + year;
+  }
+
   function sortTools(tools) {
     if (state.sort === 'default') return tools;
     const sorted = [...tools];
@@ -353,6 +360,13 @@
           return da - db || a.name.localeCompare(b.name);
         });
         break;
+      case 'updated':
+        sorted.sort((a, b) => {
+          const da = a.lastUpdated || '2000-01-01';
+          const db = b.lastUpdated || '2000-01-01';
+          return db.localeCompare(da) || a.name.localeCompare(b.name);
+        });
+        break;
     }
     return sorted;
   }
@@ -385,6 +399,7 @@
               <span class="badge badge-category" style="background:${catColor.bg};color:${catColor.text}">${tool.category}</span>
               <span class="badge badge-pricing ${pricingClass}">${tool.pricing}</span>
               <span class="badge badge-maturity ${maturityClass}">${tool.maturity}</span>
+              ${tool.lastUpdated ? `<span class="badge badge-updated" title="Entry last updated">${formatUpdatedDate(tool.lastUpdated)}</span>` : ''}
             </div>
             <p class="tool-desc-short">${tool.oneLiner || tool.description}</p>
             ${tool.whyGameDev ? `<p class="why-gamedev"><svg class="why-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>${tool.whyGameDev}</p>` : ''}
@@ -843,18 +858,23 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.6', date: '2026-06-16', changes: [
+      'Updated DLSS SR entry — DLSS 4.5 Ray Reconstruction 2nd gen transformer (Computex, May 31): 35% more compute, 20% more parameters, 27 launch titles including Alan Wake 2, Cyberpunk 2077, DOOM: The Dark Ages, Half-Life 2 RTX',
+      'Updated DLSS SR UE5 integration — official DLSS 4.5 plugin (May 31) adds native Dynamic MFG and 6X MFG support for Unreal Engine; no separate Streamline SDK integration required',
+      'Updated NVIDIA ACE entry — NVIGI SDK 1.6 (Computex, May 31): Qwen 3.5 4B (201 languages), Riva Parakeet TDT 600M ASR (25 languages), Chatterbox Multilingual 500M TTS (24 languages); first release with full on-device multilingual voice NPC pipeline',
+      'Updated NvRTX entry — rebased to UE 5.7.4 stable (May 31): fixes RTX Mega Geometry shader compilation, Substrate material compatibility, Opacity Micromap vegetation stability',
+      'Added lastUpdated field to all 83 tool entries — visible as cyan badge on every card',
+      'Added Recently Updated sort option to filter bar — sorts all tools by most recently updated entry'
+    ]},
     { version: 'v1.9.5', date: '2026-05-01', changes: [
-      'Updated NVIDIA ACE entry — added Nemotron 3 Nano Omni (April 28, 2026): open multimodal model unifying vision, audio, and language in a single system, 30B params / 3B active (MoE), 9x throughput vs comparable open multimodal models, runs on a single GPU',
-      'Nemotron 3 Nano Omni available as NVIDIA NIM, Hugging Face, OpenRouter — open weights, commercial license',
-      'Updated RTX Neural Texture Compression (NTC) entry — SDK 0.9 numbers: BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added',
-      'NTC custom engine notes updated with CUDA 12.9 requirement for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)',
-      'Added Intel Neural Compression competitive context to NTC entry'
+      'Updated NVIDIA ACE entry — added Nemotron 3 Nano Omni (April 28): open multimodal model unifying vision, audio, and language; 30B params / 3B active (MoE); 9x throughput vs comparable open multimodal models; runs on single GPU',
+      'Updated RTX Neural Texture Compression (NTC) entry — SDK 0.9: BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added',
+      'NTC custom engine notes updated: CUDA 12.9 required for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)'
     ]},
     { version: 'v1.9.4', date: '2026-04-24', changes: [
       'Updated DLSS SR entry — DLSS 4.5 SDK released April 22 via Streamline SDK, Dynamic MFG now available for native game integration (not just NVIDIA app override)',
       '6X MFG mode (5 AI-generated frames per rendered frame) documented — exclusive to RTX 50 Series; RTX 40 Series tops out at 4X Dynamic MFG',
       'Enhanced Frame Generation model now in SDK — improves HUD/UI clarity at high frame multipliers',
-      'Custom engine integration notes updated with Streamline API details for Dynamic MFG (sl::DLSSGOptions, dynamicFrameGeneration flag)',
       'Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK; earlier versions do not expose Dynamic MFG'
     ]},
     { version: 'v1.9.3', date: '2026-04-16', changes: [
