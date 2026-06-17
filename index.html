@@ -341,78 +341,7 @@ tailwind.config = {
         </p>
 
         <!-- ====== WHAT'S NEW ====== -->
-        <div class="mt-6 reveal" id="wn-bar">
-          <button
-            id="wn-toggle"
-            aria-expanded="false"
-            aria-controls="wn-panel"
-            class="group flex items-center gap-3 px-4 py-2.5 w-full md:w-auto text-left glass-panel rounded-lg border border-white/[0.06] hover:border-white/[0.12] transition-colors duration-200"
-          >
-            <span class="font-headline text-[10px] font-bold tracking-[0.15em] uppercase px-2 py-0.5 bg-amber/[0.1] border border-amber/25 rounded text-amber flex-shrink-0">v2.0</span>
-            <span class="font-body text-xs text-on-surface-variant/60">Apr 13 2026. Visual identity overhaul, shared nav, MCP Guide</span>
-            <svg id="wn-caret" class="w-3.5 h-3.5 text-on-surface-variant/30 flex-shrink-0 ml-auto transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 9 6 6 6-6"/></svg>
-          </button>
 
-          <div id="wn-panel" hidden class="mt-2 px-5 py-4 glass-panel rounded-lg border border-white/[0.06]">
-
-            <p class="font-headline text-[10px] font-bold tracking-[0.15em] uppercase text-on-surface-variant/40 mb-4">What changed in v2.0</p>
-
-            <div class="space-y-4">
-
-              <div>
-                <p class="font-headline text-[10px] font-bold tracking-[0.12em] uppercase text-amber mb-2">Visual Identity</p>
-                <ul class="space-y-1.5">
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-amber mt-1.5 flex-shrink-0"></span>
-                    Each tool now has a unique accent color carried consistently through the nav dot, active highlight, GD icon gradient, favicon, and social preview image
-                  </li>
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-amber mt-1.5 flex-shrink-0"></span>
-                    New GD gradient icon in the nav bar, shifting color to match whichever tool you're currently on
-                  </li>
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-amber mt-1.5 flex-shrink-0"></span>
-                    New per-tool favicons and OG social preview images for all six pages
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <p class="font-headline text-[10px] font-bold tracking-[0.12em] uppercase text-primary mb-2">Navigation</p>
-                <ul class="space-y-1.5">
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
-                    Shared navigation system. All tools now pull from a single source, so any nav update deploys everywhere at once
-                  </li>
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
-                    MCP Guide added to the network. Search and filter Model Context Protocols for game dev workflows
-                  </li>
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
-                    Nav animations added: entry slide-down, scroll-aware backdrop, active dot pulse, link hover underline
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <p class="font-headline text-[10px] font-bold tracking-[0.12em] uppercase text-tertiary mb-2">Accessibility & Code</p>
-                <ul class="space-y-1.5">
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-tertiary mt-1.5 flex-shrink-0"></span>
-                    Improved keyboard accessibility. Debounced search input and keyboard shortcuts for activating tools
-                  </li>
-                  <li class="flex items-start gap-2 font-body text-xs text-on-surface-variant/70 leading-relaxed">
-                    <span class="w-1 h-1 rounded-full bg-tertiary mt-1.5 flex-shrink-0"></span>
-                    CSS design tokens introduced for consistent theming across the tool suite
-                  </li>
-                </ul>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        <!-- ====== /WHAT'S NEW ====== -->
       </div>
 
       <!-- Routing Panel -->
@@ -476,13 +405,14 @@ tailwind.config = {
       <!-- AI Tools Guide -->
       <a href="./ai-tools/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-amber opacity-20 transition-opacity duration-300"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">01.</div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">01. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(212,148,60,0.12);color:#d4943c;font-size:11px">Jun 9</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-amber text-3xl card-icon">construction</span>
         </div>
         <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">AI Tools Guide</h3>
         <p class="text-amber text-sm font-medium italic mb-4">Superpowers, no instructions included.</p>
-        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Born out of conversations at GDC 2026, where AI catches blame for a lot of what's going wrong in the industry. Fair or not, these tools exist and they're powerful. The problem is there are no instructions. This is an attempt to fix that.</p>
+        <p class="text-[11px] text-on-surface-variant/40 mb-4 leading-relaxed"><span class="font-bold" style="color:#d4943c">Jun 9</span> &mdash; Google Veo 3.1 added for cinematics and trailers. NVIDIA RTX Spark and Unity AI open beta coverage added.</p>
         <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
           <span>By discipline</span>
           <span class="text-outline/30">/</span>
@@ -499,13 +429,14 @@ tailwind.config = {
       <!-- Perspectives -->
       <a href="./perspectives/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] opacity-20 transition-opacity duration-300" style="background:#a78bfa"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">02.</div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">02. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(167,139,250,0.12);color:#a78bfa;font-size:11px">Apr 2026</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-3xl card-icon" style="color:#a78bfa">visibility</span>
         </div>
         <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">Perspectives</h3>
         <p class="text-sm font-medium italic mb-4" style="color:#a78bfa">Same tools. Different realities.</p>
-        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">The AI conversation in game dev is splitting into camps. Executives, creatives, engineers, indie devs, and enterprise are all reaching different conclusions about the same technology. This maps the divide so teams can actually talk to each other.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4">The AI conversation in game dev is splitting into camps. Executives, creatives, engineers, indie devs, and enterprise are all reaching different conclusions about the same technology. This maps the divide so teams can actually talk to each other.</p>
+        <p class="text-[11px] text-on-surface-variant/40 mb-4 leading-relaxed"><span class="font-bold" style="color:#a78bfa">Apr 2026</span> &mdash; Full visual redesign. Added Experience vs. Exposure section and The Player Signal with the Crimson Desert case study.</p>
         <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
           <span>5 personas</span>
           <span class="text-outline/30">/</span>
@@ -522,13 +453,14 @@ tailwind.config = {
       <!-- Job Search Guide -->
       <a href="./jobs/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] opacity-20 transition-opacity duration-300" style="background:#e8695c"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">03.</div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">03. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(232,105,92,0.12);color:#e8695c;font-size:11px">Apr 20</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-3xl card-icon" style="color:#e8695c">work</span>
         </div>
         <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">Job Search Guide</h3>
         <p class="text-sm font-medium italic mb-4" style="color:#e8695c">Use the tools they fear to land the next gig.</p>
-        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Job searching as a game dev is scattered and overwhelming. Times are tough for a lot of reasons, but the same AI tools that over half the industry is skeptical about can give you an edge landing your next role.</p>
+        <p class="text-[11px] text-on-surface-variant/40 mb-4 leading-relaxed"><span class="font-bold" style="color:#e8695c">Apr 20</span> &mdash; New section: Where Your Skills Transfer. Market data updated with six recent studio layoffs. Restructured intro.</p>
         <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
           <span>Action plans</span>
           <span class="text-outline/30">/</span>
@@ -545,13 +477,14 @@ tailwind.config = {
       <!-- MCP Guide -->
       <a href="./mcp/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] opacity-20 transition-opacity duration-300" style="background:#35ceae"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">04.</div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">04. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(53,206,174,0.12);color:#35ceae;font-size:11px">Jun 9</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-3xl card-icon" style="color:#35ceae">hub</span>
         </div>
         <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">MCP Guide</h3>
         <p class="text-sm font-medium italic mb-4" style="color:#35ceae">Connect the right protocols to your workflow.</p>
-        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">Model Context Protocols are becoming the connective tissue between AI tools and game development pipelines. This guide surfaces the ones actually relevant to game developers — organized by engine, workflow phase, and complexity.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4">Model Context Protocols are becoming the connective tissue between AI tools and game development pipelines. This guide surfaces the ones actually relevant to game developers — organized by engine, workflow phase, and complexity.</p>
+        <p class="text-[11px] text-on-surface-variant/40 mb-4 leading-relaxed"><span class="font-bold" style="color:#35ceae">Jun 9</span> &mdash; Unity MCP (CoplayDev) added as primary Unity entry at 10,000+ stars. MCP spec 2026-07-28 update notice added.</p>
         <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
           <span>By engine</span>
           <span class="text-outline/30">/</span>
@@ -568,13 +501,14 @@ tailwind.config = {
       <!-- NVIDIA GameDev Guide -->
       <a href="./nvidia-toolkit/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-nvidia opacity-20 transition-opacity duration-300"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">05.</div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">05. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(118,185,0,0.12);color:#76b900;font-size:11px">May 1</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-nvidia text-3xl card-icon">memory</span>
         </div>
         <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">NVIDIA GameDev Guide</h3>
         <p class="text-nvidia text-sm font-medium italic mb-4">80+ tools you didn't know you had.</p>
-        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-4">GTC gets a lot of attention for robotics, autonomous vehicles, and enterprise AI. What gets buried is that NVIDIA has 80+ tools designed to work alongside your engine and your pipeline, not compete with them. Most game devs don't even know they exist.</p>
+        <p class="text-[11px] text-on-surface-variant/40 mb-4 leading-relaxed"><span class="font-bold" style="color:#76b900">May 1</span> &mdash; Nemotron 3 Nano Omni added to ACE. NTC SDK 0.9 numbers updated. Now 84 tools.</p>
         <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
           <span>80+ tools</span>
           <span class="text-outline/30">/</span>
@@ -634,26 +568,6 @@ tailwind.config = {
 
 <script>
 // Mobile nav handled by /nav-component.js
-
-// What's New toggle
-(function () {
-  var btn   = document.getElementById('wn-toggle');
-  var panel = document.getElementById('wn-panel');
-  var caret = document.getElementById('wn-caret');
-  if (!btn || !panel) return;
-  btn.addEventListener('click', function () {
-    var open = panel.hasAttribute('hidden');
-    if (open) {
-      panel.removeAttribute('hidden');
-      btn.setAttribute('aria-expanded', 'true');
-      caret.style.transform = 'rotate(180deg)';
-    } else {
-      panel.setAttribute('hidden', '');
-      btn.setAttribute('aria-expanded', 'false');
-      caret.style.transform = 'rotate(0deg)';
-    }
-  });
-})();
 
 // Scroll-triggered reveal observer
 (function(){
