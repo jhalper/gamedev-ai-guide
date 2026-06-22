@@ -858,6 +858,13 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.7', date: '2026-06-22', changes: [
+      'Added NVIDIA ACE Game Agent SDK (Beta) as new tool entry — lightweight open-source C/C++ agentic framework announced at Unreal Fest 2026 (June 17); Agent, Chat, and RAG APIs; Apache 2.0; GitHub: github.com/NVIDIA/game-agent-sdk',
+      'ACE Game Agent SDK battle-tested in Total War: PHARAOH (RAG across 1,200+ game data tables) and PUBG Ally Duo Mode Beta (live on Steam through June 30)',
+      'Updated NVIDIA ACE entry — new UE5 plugin suite (June 17): ASR, SLM, TTS plugins; Blueprint + C++; local RTX inference; ships with Qwen 3.5 4B and Chatterbox Turbo 350M',
+      'Updated NVIDIA ACE entry — PUBG Ally Duo Mode Beta added as shipped reference; Total War: PHARAOH AI advisor added as shipped reference',
+      'Tool count: 83 → 84'
+    ]},
     { version: 'v1.9.6', date: '2026-06-16', changes: [
       'Updated DLSS SR entry — DLSS 4.5 Ray Reconstruction 2nd gen transformer (Computex, May 31): 35% more compute, 20% more parameters, 27 launch titles including Alan Wake 2, Cyberpunk 2077, DOOM: The Dark Ages, Half-Life 2 RTX',
       'Updated DLSS SR UE5 integration — official DLSS 4.5 plugin (May 31) adds native Dynamic MFG and 6X MFG support for Unreal Engine; no separate Streamline SDK integration required',

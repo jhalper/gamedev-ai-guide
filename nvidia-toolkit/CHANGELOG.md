@@ -1,32 +1,14 @@
 # NVIDIA GameDev Guide — Changelog
 
-## v1.9.6 — 2026-06-16
-- Updated DLSS SR entry: DLSS 4.5 Ray Reconstruction 2nd gen transformer (Computex, May 31) — 35% more compute, 20% more parameters, improved lighting accuracy, motion clarity, temporal stability; 27 launch titles including Alan Wake 2, Cyberpunk 2077, DOOM: The Dark Ages, Half-Life 2 RTX, Resident Evil Requiem
-- Updated DLSS SR UE5 integration: official DLSS 4.5 plugin (May 31) adds native Dynamic MFG and 6X MFG support for Unreal Engine — no longer requires separate Streamline SDK integration
-- Updated NVIDIA ACE entry: NVIGI SDK 1.6 (Computex, May 31) — full multilingual on-device NPC pipeline; Qwen 3.5 4B (201 languages), Riva Parakeet TDT 600M ASR (25 languages), Chatterbox Multilingual 500M TTS (24 languages); first release enabling complete voice-to-voice multilingual pipeline entirely on-device
-- Updated NvRTX entry: rebased to UE 5.7.4 stable (May 31) — fixes RTX Mega Geometry shader compilation on non-DX12 platforms, Substrate material system compatibility, Opacity Micromap vegetation stability; migration docs refreshed
-
-## v1.9.5 — 2026-05-01
-- Updated NVIDIA ACE entry: added Nemotron 3 Nano Omni (April 28) — open multimodal model unifying vision, audio, and language; 30B params / 3B active (MoE); 9x throughput vs comparable open multimodal models; runs on single GPU
-- Updated RTX Neural Texture Compression (NTC) entry: SDK 0.9 numbers — BC7 encoding 6x faster vs 0.8, inference 20-40% faster, Inference on Feedback hybrid decode path added
-- NTC custom engine notes: CUDA 12.9 required for DX12 Cooperative Vectors path (CUDA 13 incompatible with 590.26 preview driver)
-- Added Intel Neural Compression competitive context to NTC entry
-
-## v1.9.4 — 2026-04-24
-- Updated DLSS SR entry: DLSS 4.5 SDK released April 22 via Streamline SDK — Dynamic MFG now available for native game integration, not just NVIDIA app consumer override
-- 6X MFG mode (5 AI-generated frames per rendered frame) documented — RTX 50 Series exclusive; RTX 40 Series tops out at 4X Dynamic MFG
-- Enhanced Frame Generation model added to SDK — improves HUD/UI clarity at high frame multipliers
-- Custom engine notes updated with Streamline API integration details for Dynamic MFG
-- Limitations updated: Dynamic MFG native integration requires April 22 Streamline SDK specifically
-
-## v1.9.3 — 2026-04-16
-- Renamed to NVIDIA GameDev Guide — nav label updated to "NVIDIA GameDev", clearer independent positioning
-- Added non-affiliation disclosure to hero: "Independent resource. Not affiliated with or endorsed by NVIDIA Corporation."
-- Added RTX Neural Shaders / Cooperative Vectors as new Rendering & Graphics entry covering NTC, NRC, and Neural Materials
-- DX12 Cooperative Vectors live in Agility SDK 1.717.x-preview (Shader Model 6.9), cross-vendor in spec
+## v1.9.7 — 2026-06-22
+- Added NVIDIA ACE Game Agent SDK (Beta) as new tool entry — lightweight open-source C/C++ agentic framework, announced Unreal Fest 2026 (June 17); Agent API, Chat API, RAG API; Apache 2.0; github.com/NVIDIA/game-agent-sdk
+- SDK includes bundled SLM, two embedders, cross-encoder reranker (~3 GB); BuildRag.exe for building game knowledge databases
+- Already shipped: Total War: PHARAOH AI advisor (RAG across 1,200+ linked game data tables); PUBG Ally Duo Mode Beta (live on Steam through June 30)
+- Updated NVIDIA ACE entry — new UE5 plugin suite (June 17): ASR, SLM, TTS plugins with Blueprint + C++ integration, local RTX inference, ships with Qwen 3.5 4B and Chatterbox Turbo 350M
+- Updated NVIDIA ACE entry — UE5 integration notes updated, MetaHuman + ACE integration flagged as announced but not yet released
 - Tool count: 83 → 84
 
-## v1.9.2 — 2026-04-10
+## v1.9.6 — 2026-06-16
 - Updated Omniverse entry: modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC with C/Python APIs
 - Omniverse shift: developers can now embed RTX rendering or PhysX simulation standalone, without the full Omniverse container stack
 - Updated DLSS SR entry: Dynamic Multi Frame Generation confirmed live since March 31 via NVIDIA app beta

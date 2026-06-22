@@ -358,7 +358,7 @@ const NVIDIA_DATA = {
       "name": "NVIDIA ACE (Avatar Cloud Engine) for Games",
       "category": "AI & NPCs",
       "oneLiner": "Suite of on-device and cloud AI models (speech, language, animation, vision) for building autonomous NPC game characters and AI companions.",
-      "description": "NVIDIA ACE is the most game-dev-centric AI platform NVIDIA has built. First shown at Computex 2023, it has evolved significantly through 2024–2026. At CES 2025, NVIDIA expanded ACE from conversational NPCs to fully autonomous game characters with perception, planning, and action capabilities. Real shipped games as of March 2026 include: PUBG (Ally Co-Playable Character, Mistral-Nemo-Minitron-8B), inZOI (Smart Zoi, launched March 28, 2025), NARAKA: BLADEPOINT Mobile (on-device AI teammates, March 2025), MIR5 (adaptive bosses), Dead Meat (murder mystery, on-device SLM via NVIGI). At GDC 2026, NVIDIA expanded ACE language recognition support, released production-quality on-device TTS, and released a new SLM with advanced agent capabilities. The full ACE stack includes: NVIGI SDK (on-device inference scheduler), Riva ASR (speech-to-text, 140M/600M models, 8 languages), Chatterbox TTS (350M open-source model, paralinguistic/emotional control, zero-shot voice cloning), Nemotron Nano family (4B/9B SLMs, open source), Qwen3 family (.6B/4B/8B dense models), Audio2Face-3D SDK (facial animation from audio, regression 2.3 + diffusion 3.0), Audio2Emotion-3D (emotional state inference), and Nemovision-4B (VLM for scene perception). Unreal Engine 5.4/5.5/5.6 plugins available. All models downloadable with open/Apache/MIT licenses.",
+      "description": "NVIDIA ACE is the most game-dev-centric AI platform NVIDIA has built. First shown at Computex 2023, it has evolved significantly through 2024–2026. At CES 2025, NVIDIA expanded ACE from conversational NPCs to fully autonomous game characters with perception, planning, and action capabilities. Real shipped games as of June 2026 include: PUBG (Ally Co-Playable Character — now with Ally Duo Mode Beta live on Steam through June 30, 2026, powered by ACE), inZOI (Smart Zoi, launched March 28, 2025), NARAKA: BLADEPOINT Mobile (on-device AI teammates, March 2025), MIR5 (adaptive bosses), Dead Meat (murder mystery, on-device SLM via NVIGI), Total War: PHARAOH (AI advisor using RAG across 1,200+ linked game data tables). At GDC 2026, NVIDIA expanded ACE language recognition support, released production-quality on-device TTS, and released a new SLM with advanced agent capabilities. The full ACE stack includes: NVIGI SDK (on-device inference scheduler), Riva ASR (speech-to-text, 140M/600M models, 8 languages), Chatterbox TTS (350M open-source model, paralinguistic/emotional control, zero-shot voice cloning), Nemotron Nano family (4B/9B SLMs, open source), Qwen3 family (.6B/4B/8B dense models), Audio2Face-3D SDK (facial animation from audio, regression 2.3 + diffusion 3.0), Audio2Emotion-3D (emotional state inference), and Nemovision-4B (VLM for scene perception). All models downloadable with open/Apache/MIT licenses.\n\nNVIGI SDK 1.6 (Computex, May 31, 2026): Full multilingual on-device NPC pipeline. Qwen 3.5 4B (201 languages), Riva Parakeet TDT 600M ASR (25 languages), Chatterbox Multilingual 500M TTS (24 languages). First release enabling a complete voice-to-voice multilingual pipeline entirely on-device without cloud dependency.\n\nUnreal Fest 2026 (June 17, 2026): New suite of NVIDIA ACE plugins for Unreal Engine 5 released — separate from the DLSS 4.5 UE5 plugin. Three plugins: ASR plugin (nemo-conformer-ctc-120m, English + 7 additional languages available), SLM plugin (supports local .gguf models, ships with Qwen 3.5 4B), TTS plugin (Chatterbox Turbo 350M with example voices). All Blueprint and C++ compatible, all run locally on RTX hardware with no cloud dependency. Also announced: ACE integration with Epic's MetaHuman NPC technology — voice synthesis and Audio2Face for emotional facial animation tied to MetaHuman character traits. See the separate ACE Game Agent SDK entry for the agentic framework released the same day.\n\nApril 28, 2026: Nemotron 3 Nano Omni — open multimodal model unifying vision, audio, and language. 30B parameters, 3B active per inference (MoE), single GPU. 9x throughput vs comparable open multimodal models. Available as NVIDIA NIM, Hugging Face, OpenRouter.",
       "useCases": [
         "Autonomous NPC companions that perceive game state, make decisions, and communicate in natural language",
         "Adaptive enemy AI that learns from player tactics (e.g. MIR5 boss behavior)",
@@ -400,13 +400,13 @@ const NVIDIA_DATA = {
       "engineIntegration": {
         "unreal": {
           "type": "Official Plugin",
-          "setup": "Included in the NVIGI SDK. Download from developer.nvidia.com/ace-for-games. The ASR plugin uses Riva ASR or local Whisper.cpp backend. Enable via NVIGI plugin system. Local on-device inference available for Windows with RTX GPU.",
-          "quality": 3,
-          "issues": "Language recognition support was still expanding as of GDC 2026. On-device TTS listed as 'production-quality' at GDC 2026 (significant milestone). Requires RTX GPU for on-device inference.",
-          "version": "UE 5.3+ (via ACE/NVIGI plugin)"
+          "setup": "Two separate plugin suites as of June 2026. (1) NVIGI SDK plugins: download from developer.nvidia.com/ace-for-games — covers ASR, SLM, TTS via NVIGI scheduler. (2) New ACE UE5 plugin suite (June 17, 2026): standalone plugins for ASR (nemo-conformer-ctc-120m), SLM (.gguf models, ships with Qwen 3.5 4B), and TTS (Chatterbox Turbo 350M). Both suites support Blueprint and C++ integration. Local on-device inference only — no cloud dependency. RTX GPU required for best performance.",
+          "quality": 4,
+          "issues": "Two separate plugin suites with overlapping functionality can cause confusion — clarify which suite covers your use case before integrating. RTX GPU required for on-device inference. MetaHuman + ACE integration announced June 2026 but not yet released.",
+          "version": "UE 5.3+ (NVIGI suite); UE 5 (new ACE plugin suite, June 17, 2026)"
         }
       },
-      "lastUpdated": "2026-06-16",
+      "lastUpdated": "2026-06-17",
       "id": 2,
       "whyGameDev": "Add real-time perception, memory, and natural conversation to your NPCs — a new layer on top of your existing dialogue systems."
     },
@@ -4210,6 +4210,60 @@ const NVIDIA_DATA = {
       "lastUpdated": "2026-03-18",
       "id": 83,
       "whyGameDev": "Build AI characters and game systems that reason, plan, and act autonomously over long play sessions — moving beyond scripted behavior into truly intelligent agents."
+    },
+    {
+      "name": "NVIDIA ACE Game Agent SDK",
+      "category": "AI & NPCs",
+      "oneLiner": "Lightweight open-source C/C++ agentic framework for building on-device AI NPCs that reason, use tools, query game knowledge, and hold multi-turn conversations — with Agent, Chat, and RAG APIs.",
+      "description": "Announced at Unreal Fest 2026 (June 17, 2026) and available in Beta on GitHub (Apache 2.0). The ACE Game Agent SDK is the developer-facing integration layer of NVIDIA ACE — a lightweight C/C++ framework that gives studios direct API access to build NPCs with genuine agentic behavior on RTX hardware, without cloud dependency.\n\nThree API layers:\n\n**Agent API** — stateful API that owns conversation history and drives the inference-and-tool-call loop autonomously. Developers define tools (functions the agent can call); the Agent API handles multi-step reasoning, tool chaining, and response generation with minimal application code. The agent knows when to call which tool, executes the loop, and returns when done.\n\n**Chat API** — stateless API that gives the application direct control over inference. No automatic loop — the developer drives the turn structure explicitly. More predictable latency, suitable for simpler NPC dialogue without tool use.\n\n**RAG API** — semantic, lexical, and hybrid retrieval from developer-built knowledge databases. BuildRag.exe (included) converts raw text files into a searchable database. Enables NPCs to answer questions grounded in game-specific knowledge — quest logs, lore, game state tables, world data — rather than relying on model weights alone.\n\nBundled with the SDK: one SLM, two embedding models, and a cross-encoder reranker (~3 GB total). Models are not stored in the GitHub repo — download the source zip from the NVIDIA Developer Portal which includes data/models/.\n\nAlready shipped in games: Total War: PHARAOH experimental AI advisor uses the Agent + RAG APIs to query 1,200+ linked game data tables and answer player strategy questions in real time. PUBG Ally Duo Mode Beta (live on Steam through June 30, 2026) uses the ACE stack for an adaptive on-device AI teammate.\n\nA suite of Unreal Engine 5 plugins was released alongside the SDK — ASR, SLM, and TTS — supporting Blueprint and C++ integration with local model inference. See the NVIDIA ACE entry for the full platform context.",
+      "useCases": [
+        "NPC companions that reason across multiple steps, use tools, and query game knowledge databases",
+        "AI advisors grounded in game-specific data via RAG (quest logs, lore tables, world state)",
+        "On-device AI teammates with adaptive behavior and conversation history",
+        "Dialogue systems that maintain multi-turn conversation context across a play session",
+        "Game knowledge assistants that answer player questions from developer-built databases",
+        "Multi-agent systems with multiple NPCs sharing one SLM with distinct identities and histories",
+        "Prototyping agent-driven NPC behavior before scaling to production"
+      ],
+      "phases": [
+        "Pre-production",
+        "Production",
+        "Post-launch"
+      ],
+      "engines": [
+        "Custom Engine",
+        "Unreal Engine"
+      ],
+      "teamSizes": [
+        "AAA (50+)",
+        "Mid-size (10-50)",
+        "Small Team (2-10)"
+      ],
+      "pricing": "Free",
+      "maturity": "Beta",
+      "difficulty": "Moderate",
+      "limitations": "Beta — APIs and bundled models subject to change; Windows only as of June 2026 (Visual Studio 2019+ required to build from source); requires RTX GPU for on-device inference at acceptable latency; ~3 GB model download not included in GitHub repo — requires NVIDIA Developer Portal zip; Agent API is fully autonomous (intentional) — gives the application less control over individual inference steps; RAG pipeline requires pre-building a database with BuildRag.exe — not a zero-setup integration; SLM context windows are still short for complex long-form narrative memory",
+      "url": "https://github.com/NVIDIA/game-agent-sdk",
+      "officialPage": "https://developer.nvidia.com/blog/build-on-device-ai-companions-with-the-nvidia-ace-game-agent-sdk-and-unreal-engine-5-plugins/",
+      "hiddenGem": 5,
+      "engineIntegration": {
+        "unreal": {
+          "type": "Official Plugin",
+          "setup": "Companion UE5 plugin suite released June 17, 2026 alongside the SDK. Three separate plugins: ASR (nemo-conformer-ctc-120m, English + 7 additional languages), SLM (.gguf model support, ships with Qwen 3.5 4B), TTS (Chatterbox Turbo 350M + example voices). Blueprint and C++ integration. Download from developer.nvidia.com/ace-for-games. All plugins run locally on RTX hardware — no cloud calls.",
+          "quality": 4,
+          "issues": "Beta — plugin API may change between releases. RTX GPU required. MetaHuman + ACE integration (voice synthesis + Audio2Face for emotional animation) announced but not yet released as of June 2026.",
+          "version": "UE 5 (June 17, 2026 Beta release)"
+        },
+        "custom": {
+          "apiType": "C/C++ SDK",
+          "setupComplexity": 3,
+          "docsQuality": 4,
+          "notes": "GitHub: github.com/NVIDIA/game-agent-sdk. Apache 2.0. Build from source using Visual Studio 2019+ (setup.bat generates VS project files, build.bat compiles). Three sample executables included: Agent-Sample (poker assistant via Agent API + RAG), Chat-Sample (same scenario via Chat API), MultiAgent-Sample (two agents sharing one SLM with distinct identities). Download the NVIDIA Developer Portal zip for bundled models — not in GitHub repo."
+        }
+      },
+      "lastUpdated": "2026-06-17",
+      "id": 84,
+      "whyGameDev": "The fastest path from zero to an NPC that reasons, calls tools, and queries your game's own knowledge — all on-device with no cloud bill."
     }
   ]
 };
