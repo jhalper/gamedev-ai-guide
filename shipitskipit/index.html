@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ship It or Skip It - AI Decision Framework for Game Developers</title>
+<meta name="description" content="Five questions. One honest answer about whether AI is the right call for this specific task, right now.">
+
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,600&display=swap" rel="stylesheet">
+
+
+
+<style>
+/* =====================================================
+   DESIGN TOKENS
+   ===================================================== */
+:root {
+  --bg:           #0d1526;
+  --surface:      #162034;
+  --surface-2:    #1c2a40;
+  --surface-3:    #243550;
+  --border:       #2a4068;
+  --border-2:     #1e3050;
+  --text:         #f4f6fd;
+  --text-2:       #d0d8f0;
+  --text-3:       #a8b4d0;
+  --text-4:       #8898b8;
+  --amber:        #d4943c;
+  --amber-dim:    rgba(212,148,60,0.12);
+  --amber-border: rgba(212,148,60,0.25);
+  --green:        #4eca7a;
+  --green-dim:    rgba(78,202,122,0.1);
+  --green-border: rgba(78,202,122,0.25);
+  --red:          #f07068;
+  --red-dim:      rgba(240,112,104,0.1);
+  --red-border:   rgba(240,112,104,0.25);
+  --radius:       6px;
+  --radius-lg:    10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Satoshi', 'Inter', -apple-system, sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Cabinet Grotesk', 'Trebuchet MS', sans-serif;
+  line-height: 1.15;
+}
+
+button { cursor: pointer; border: none; font: inherit; background: none; color: inherit; }
+a { color: var(--amber); text-decoration: none; }
+a:hover { opacity: 0.8; text-decoration: underline; }
+
+:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =====================================================
+   AMBIENT BACKGROUND
+   ===================================================== */
+.bg-orbs {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0;
+  animation: orbFadeIn 1.5s ease-out forwards;
+}
+.bg-orb-1 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(212,148,60,0.07) 0%, transparent 70%);
+  top: -200px; right: -100px;
+  animation-name: orbFadeIn, orbDrift1;
+  animation-duration: 1.5s, 28s;
+  animation-delay: 0s, 1.5s;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+  animation-timing-function: ease-out, ease-in-out;
+}
+.bg-orb-2 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(78,202,122,0.04) 0%, transparent 70%);
+  bottom: -150px; left: -100px;
+  animation-name: orbFadeIn, orbDrift2;
+  animation-duration: 1.5s, 24s;
+  animation-delay: 0.3s, 1.5s;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+  animation-timing-function: ease-out, ease-in-out;
+}
+.bg-orb-3 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(76,214,255,0.03) 0%, transparent 70%);
+  top: 40%; left: 50%;
+  animation-name: orbFadeIn, orbDrift3;
+  animation-duration: 1.5s, 32s;
+  animation-delay: 0.6s, 1.5s;
+  animation-fill-mode: forwards, none;
+  animation-iteration-count: 1, infinite;
+  animation-timing-function: ease-out, ease-in-out;
+}
+
+@keyframes orbFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  33%       { transform: translate(-20px, 15px); }
+  66%       { transform: translate(12px, -18px); }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  40%       { transform: translate(18px, -12px); }
+  70%       { transform: translate(-10px, 20px); }
+}
+@keyframes orbDrift3 {
+  0%, 100% { transform: translate(0, 0); }
+  50%       { transform: translate(-15px, -10px); }
+}
+
+/* =====================================================
+   VERDICT ENTRANCE ANIMATION
+   ===================================================== */
+@keyframes verdictIn {
+  0%   { opacity: 0; transform: scale(0.92) translateY(8px); }
+  60%  { opacity: 1; transform: scale(1.02) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes verdictLabelIn {
+  0%   { opacity: 0; transform: translateY(12px); letter-spacing: -0.01em; }
+  100% { opacity: 1; transform: translateY(0); letter-spacing: -0.04em; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 transparent; }
+  50%       { box-shadow: 0 0 40px 0 var(--glow-color); }
+}
+.result-verdict {
+  --glow-color: transparent;
+}
+.result-verdict.green {
+  --glow-color: rgba(78,202,122,0.12);
+  animation: verdictIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+             glowPulse 3s ease-in-out 0.5s 2;
+}
+.result-verdict.red {
+  --glow-color: rgba(240,112,104,0.12);
+  animation: verdictIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+             glowPulse 3s ease-in-out 0.5s 2;
+}
+.result-verdict-label {
+  animation: verdictLabelIn 0.45s cubic-bezier(0.22,1,0.36,1) 0.15s both;
+}
+
+/* Progress step fill sweep */
+@keyframes stepFill {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+.progress-step.done {
+  animation: stepFill 0.3s ease-out forwards;
+}
+
+/* Q card entrance */
+@keyframes qIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Option button select bounce */
+.option-btn, .option-btn-grid {
+  transform-origin: center;
+}
+.option-btn.selected, .option-btn-grid.selected {
+  animation: optionSelect 0.2s cubic-bezier(0.22,1,0.36,1);
+}
+@keyframes optionSelect {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.97); }
+  100% { transform: scale(1); }
+}
+
+/* =====================================================
+   LAYOUT
+   ===================================================== */
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.tool-wrap {
+  padding: 2rem 0 5rem;
+}
+
+/* =====================================================
+   INTRO PANEL
+   Visible on load. Collapses when flow starts.
+   ===================================================== */
+.intro {
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.intro {
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+/* One-star hook */
+.one-star-hook {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  background: rgba(240,112,104,0.1);
+  border: 1px solid rgba(240,112,104,0.25);
+  border-radius: var(--radius);
+  margin-top: 0.25rem;
+  margin-bottom: 1.25rem;
+  animation: titleIn 0.6s cubic-bezier(0.22,1,0.36,1) 0.08s both;
+}
+.one-star-rating {
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.one-star-text {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: -0.01em;
+}
+
+/* Intro title */
+.intro-title {
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text);
+  margin-bottom: 0.125rem;
+  line-height: 1.0;
+  animation: titleIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+}
+@keyframes titleIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Signature element: split verdict bar */
+.decision-meter {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 1rem 0 1.375rem;
+  max-width: 260px;
+}
+.decision-meter-ship {
+  flex: 1;
+  background: linear-gradient(90deg, var(--green), rgba(78,202,122,0.35));
+}
+.decision-meter-gap {
+  width: 3px;
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.decision-meter-skip {
+  flex: 1;
+  background: linear-gradient(90deg, rgba(240,112,104,0.35), var(--red));
+}
+
+/* Hook paragraph */
+.intro-hook {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+  max-width: 54ch;
+  margin-bottom: 1.125rem;
+  animation: titleIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+.intro-hook strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Closing line */
+.intro-sub {
+  font-size: 16px;
+  color: var(--text-3);
+  line-height: 1.65;
+  max-width: 50ch;
+  margin-bottom: 1.125rem;
+  padding-left: 0.875rem;
+  border-left: 2px solid var(--border);
+  animation: titleIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.15s both;
+}
+
+
+/* Intro collapsed state (once flow starts) */
+.intro.collapsed {
+  margin-bottom: 1.25rem;
+}
+.intro.collapsed .intro-hook,
+.intro.collapsed .intro-sub,
+.intro.collapsed .decision-meter,
+.intro.collapsed .one-star-hook {
+  display: none;
+}
+.intro.collapsed .intro-title {
+  font-size: clamp(1.25rem, 3vw, 1.625rem);
+  margin-bottom: 0;
+}
+
+/* =====================================================
+   QUESTION FLOW
+   ===================================================== */
+.question-flow { display: flex; flex-direction: column; gap: 0; }
+
+/* Progress track */
+.progress-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.5rem;
+}
+.progress-step {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  position: relative;
+  transition: background 0.25s ease;
+}
+.progress-step::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  right: -1px;
+  width: 1px;
+  height: 9px;
+  background: var(--bg);
+  z-index: 1;
+}
+.progress-step:last-child::after { display: none; }
+.progress-step.done    { background: var(--amber); }
+.progress-step.current { background: var(--amber); opacity: 0.45; }
+
+/* Question card */
+.q-card {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.625rem 1.5rem;
+  animation: qIn 0.22s ease-out;
+}
+.q-card.active { display: block; }
+
+@keyframes qIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.q-number {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+
+.q-text {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: clamp(1.0625rem, 2.5vw, 1.25rem);
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.125rem;
+  line-height: 1.3;
+}
+
+.q-hint {
+  font-size: 16px;
+  color: var(--text-4);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  margin-top: -0.625rem;
+}
+
+/* Options */
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.option-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-2);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Satoshi', sans-serif;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  line-height: 1.45;
+}
+.option-btn:hover {
+  border-color: var(--amber);
+  background: var(--surface-3);
+  color: var(--text);
+}
+.option-btn.selected {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  color: var(--text);
+}
+/* Unsure option gets a distinct muted treatment */
+.option-btn.unsure-opt {
+  border-style: dashed;
+  color: var(--text-4);
+}
+.option-btn.unsure-opt:hover {
+  border-color: var(--text-4);
+  border-style: solid;
+  color: var(--text-3);
+}
+.option-btn.unsure-opt.selected {
+  border-color: var(--border);
+  border-style: solid;
+  background: var(--surface-3);
+  color: var(--text-3);
+}
+
+.option-indicator {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  position: relative;
+}
+.option-btn.selected .option-indicator {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+.option-btn.selected .option-indicator::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #0d1526;
+}
+.option-btn.unsure-opt.selected .option-indicator {
+  border-color: var(--text-4);
+  background: var(--surface-3);
+}
+.option-btn.unsure-opt.selected .option-indicator::after {
+  background: var(--text-4);
+}
+
+.option-label { flex: 1; }
+.option-label-main { display: block; font-weight: 600; font-size: 16px; }
+.option-label-sub  { display: block; font-size: 16px; color: var(--text-4); margin-top: 2px; font-weight: 400; }
+.option-btn.selected .option-label-sub { color: var(--text-3); }
+
+/* Task type grid (Q1) */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+@media (max-width: 400px) { .options-grid { grid-template-columns: 1fr; } }
+
+.option-btn-grid {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 0.875rem;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-2);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Satoshi', sans-serif;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  cursor: pointer;
+  line-height: 1.3;
+}
+.option-btn-grid:hover {
+  border-color: var(--amber);
+  background: var(--surface-3);
+  color: var(--text);
+}
+.option-btn-grid.selected {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  color: var(--text);
+}
+.grid-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-4);
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.option-btn-grid.selected .grid-dot {
+  border-color: var(--amber);
+  background: var(--amber);
+}
+.task-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--text-4);
+  transition: color 0.15s ease, transform 0.2s cubic-bezier(0.22,1,0.36,1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.task-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+.option-btn-grid:hover .task-icon { color: var(--amber); transform: scale(1.1); }
+.option-btn-grid.selected .task-icon { color: var(--amber); }
+
+/* Navigation */
+.q-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.375rem;
+  gap: 0.75rem;
+}
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-4);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  letter-spacing: 0.01em;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-back:hover { border-color: var(--text-4); color: var(--text-3); }
+.btn-back.hidden { visibility: hidden; }
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.375rem;
+  background: var(--amber);
+  color: #0d1526;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn-next:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-next:active { transform: scale(0.97); }
+.btn-next:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+/* Validation */
+.q-validation {
+  font-size: 16px;
+  color: var(--red);
+  margin-top: 0.625rem;
+  display: none;
+}
+.q-validation.show { display: block; }
+
+/* Fork label */
+.fork-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.fork-label.facing  { color: #4cd6ff; border-color: rgba(76,214,255,0.2); background: rgba(76,214,255,0.05); }
+.fork-label.pipeline { color: var(--green); border-color: var(--green-border); background: var(--green-dim); }
+
+/* =====================================================
+   RESULT SCREEN
+   ===================================================== */
+.result-screen { display: none; }
+.result-screen.active { display: block; }
+
+/* Staggered reveals */
+.result-screen.active .result-below-verdict { animation: qIn 0.45s ease-out 0.2s both; }
+
+/* =====================================================
+   VERDICT CARD: the hero of the result screen
+   ===================================================== */
+.result-verdict {
+  padding: 2.5rem 2rem 2rem;
+  border-radius: 14px;
+  margin-bottom: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+/* Diagonal light sweep in top-left corner */
+.result-verdict::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  opacity: 0.15;
+  pointer-events: none;
+}
+.result-verdict.green::before { background: radial-gradient(circle, var(--green) 0%, transparent 70%); }
+.result-verdict.red::before   { background: radial-gradient(circle, var(--red)   0%, transparent 70%); }
+
+.result-verdict.green {
+  background: linear-gradient(145deg,
+    rgba(78,202,122,0.2) 0%,
+    rgba(78,202,122,0.1) 40%,
+    rgba(13,21,38,0.6) 100%);
+  border: 1.5px solid rgba(78,202,122,0.4);
+  box-shadow:
+    0 0 80px -15px rgba(78,202,122,0.35),
+    0 1px 0 inset rgba(78,202,122,0.25),
+    0 20px 60px -20px rgba(0,0,0,0.5);
+  animation: verdictIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+             glowPulse 3s ease-in-out 0.6s 2;
+  --glow-color: rgba(78,202,122,0.15);
+}
+.result-verdict.red {
+  background: linear-gradient(145deg,
+    rgba(240,112,104,0.2) 0%,
+    rgba(240,112,104,0.1) 40%,
+    rgba(13,21,38,0.6) 100%);
+  border: 1.5px solid rgba(240,112,104,0.4);
+  box-shadow:
+    0 0 80px -15px rgba(240,112,104,0.35),
+    0 1px 0 inset rgba(240,112,104,0.25),
+    0 20px 60px -20px rgba(0,0,0,0.5);
+  animation: verdictIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards,
+             glowPulse 3s ease-in-out 0.6s 2;
+  --glow-color: rgba(240,112,104,0.15);
+}
+
+/* The big verdict word */
+.result-verdict-label {
+  font-size: clamp(4rem, 14vw, 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  margin-bottom: 0.75rem;
+  display: block;
+  animation: verdictLabelIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+}
+.result-verdict.green .result-verdict-label {
+  color: var(--green);
+  text-shadow: 0 0 60px rgba(78,202,122,0.4), 0 2px 0 rgba(0,0,0,0.3);
+}
+.result-verdict.red .result-verdict-label {
+  color: var(--red);
+  text-shadow: 0 0 60px rgba(240,112,104,0.4), 0 2px 0 rgba(0,0,0,0.3);
+}
+
+/* Supporting verdict line */
+.result-verdict-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  animation: qIn 0.4s ease-out 0.2s both;
+}
+.result-verdict.green .result-verdict-title { color: rgba(78,202,122,0.9); }
+.result-verdict.red   .result-verdict-title { color: rgba(240,112,104,0.9); }
+
+/* Body copy inside verdict */
+.result-verdict-body {
+  font-size: 16px;
+  color: rgba(244,246,253,0.88);
+  line-height: 1.7;
+  max-width: 48ch;
+  animation: qIn 0.4s ease-out 0.28s both;
+}
+
+/* Score row: bigger, bolder */
+.result-score-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  animation: qIn 0.4s ease-out 0.35s both;
+}
+.score-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+.score-pips { display: flex; gap: 5px; }
+.score-pip  {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.08);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.score-pip.filled-green {
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(78,202,122,0.6);
+}
+.score-pip.filled-red {
+  background: var(--red);
+  box-shadow: 0 0 10px rgba(240,112,104,0.6);
+}
+.score-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+/* =====================================================
+   BELOW-VERDICT WRAPPER: all content after the card
+   ===================================================== */
+.result-below-verdict { animation: qIn 0.5s ease-out 0.25s both; }
+
+/* Answer pills */
+.answer-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.25rem 0 1.25rem;
+  border-bottom: 1px solid var(--border-2);
+  margin-bottom: 1.75rem;
+}
+.answer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.875rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-2);
+  font-family: 'Satoshi', sans-serif;
+}
+.answer-pill-label {
+  font-size: 16px;
+  color: var(--amber);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   RESULT SECTIONS: what needs to happen
+   ===================================================== */
+.result-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+.result-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.375rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.result-section-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.result-section-icon svg { width: 18px; height: 18px; display: block; }
+.result-section-icon.icon-step {
+  background: rgba(212,148,60,0.12);
+  color: var(--amber);
+  border: 1px solid rgba(212,148,60,0.2);
+}
+.result-section-icon.icon-warning {
+  background: rgba(240,112,104,0.1);
+  color: var(--red);
+  border: 1px solid rgba(240,112,104,0.2);
+}
+.result-section-icon.icon-truth {
+  background: rgba(76,214,255,0.08);
+  color: #4cd6ff;
+  border: 1px solid rgba(76,214,255,0.15);
+}
+.result-section-content { flex: 1; min-width: 0; }
+.result-section-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.5rem;
+}
+.result-section-body {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.result-section-body.is-quote {
+  font-style: italic;
+  color: var(--red);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.55;
+  border-left: 3px solid rgba(240,112,104,0.4);
+  padding-left: 0.875rem;
+}
+
+/* =====================================================
+   UNSURE FLAGS
+   ===================================================== */
+.unsure-flag {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 1.125rem 1.25rem;
+  background: rgba(212,148,60,0.07);
+  border: 1px solid rgba(212,148,60,0.22);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  margin-bottom: 0.75rem;
+}
+.unsure-flag-icon { flex-shrink: 0; color: var(--amber); margin-top: 2px; }
+.unsure-flag-text { font-size: 16px; color: var(--text-2); line-height: 1.65; }
+.unsure-flag-text strong { color: var(--text); font-weight: 700; }
+
+/* =====================================================
+   ENVIRONMENT NOTE
+   ===================================================== */
+.environment-note {
+  background: rgba(76,214,255,0.05);
+  border: 1px solid rgba(76,214,255,0.14);
+  border-left: 3px solid rgba(76,214,255,0.45);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.375rem;
+  margin-bottom: 1.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.env-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+  background: rgba(76,214,255,0.1);
+  border: 1px solid rgba(76,214,255,0.18);
+  color: #4cd6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.env-icon svg { width: 16px; height: 16px; display: block; }
+.env-content { flex: 1; min-width: 0; }
+.environment-note-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(76,214,255,0.7);
+  margin-bottom: 0.5rem;
+}
+.environment-note-body {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+
+/* =====================================================
+   CASE STUDIES
+   ===================================================== */
+.case-studies { margin-bottom: 1.75rem; }
+.case-studies-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  opacity: 0.8;
+  margin-bottom: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+.case-studies-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(240,112,104,0.15);
+}
+.case-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid rgba(240,112,104,0.5);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.375rem;
+  margin-bottom: 0.625rem;
+  transition: border-color 0.15s ease;
+}
+.case-card:hover { border-color: rgba(240,112,104,0.3); border-left-color: var(--red); }
+.case-card:last-child { margin-bottom: 0; }
+.case-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.625rem;
+  flex-wrap: wrap;
+}
+.case-card-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.35;
+}
+.case-card-studio {
+  font-size: 16px;
+  color: var(--text-4);
+  font-weight: 500;
+  white-space: nowrap;
+  padding-top: 2px;
+  flex-shrink: 0;
+}
+.case-card-tags {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+.case-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+}
+.case-tag-task    { background: rgba(212,148,60,0.1); color: var(--amber); border: 1px solid rgba(212,148,60,0.2); }
+.case-tag-outcome { background: rgba(240,112,104,0.1); color: var(--red); border: 1px solid rgba(240,112,104,0.18); }
+.case-card-what {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+}
+.case-card-cost {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.65;
+  padding: 0.875rem 1rem;
+  background: rgba(240,112,104,0.06);
+  border-radius: 5px;
+  border: 1px solid rgba(240,112,104,0.12);
+}
+.case-card-cost-label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.375rem;
+}
+.case-pattern-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-top: 0.875rem;
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.65;
+}
+.case-pattern-note strong { color: var(--amber); font-weight: 700; }
+.case-source {
+  display: block;
+  margin-top: 0.625rem;
+  font-size: 16px;
+  color: var(--text-4);
+}
+.case-source a { color: var(--text-4); text-decoration: underline; text-underline-offset: 2px; }
+.case-source a:hover { color: var(--amber); }
+
+/* =====================================================
+   RESULT ACTIONS
+   ===================================================== */
+.result-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-2);
+}
+.btn-restart {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--amber);
+  color: #0d1526;
+  font-size: 16px;
+  font-weight: 800;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 20px rgba(212,148,60,0.35);
+  transition: box-shadow 0.15s, transform 0.1s, background 0.15s;
+}
+.btn-restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(212,148,60,0.45);
+  background: #e0a040;
+}
+.btn-restart:active { transform: scale(0.97); }
+.btn-share-result {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.25rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-3);
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.btn-share-result:hover { border-color: var(--text-4); color: var(--text-2); background: var(--surface); }
+.btn-share-result.copied { border-color: var(--green); color: var(--green); }
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.policy-card {
+  margin-top: 1.75rem;
+  padding: 1.375rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--amber);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+@media (min-width: 520px) {
+  .policy-card { flex-direction: row; align-items: center; }
+}
+.policy-card-text { flex: 1; min-width: 0; }
+.policy-card-eyebrow {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.375rem;
+}
+.policy-card-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.375rem;
+  line-height: 1.3;
+}
+.policy-card-desc {
+  font-size: 16px;
+  color: var(--text-3);
+  line-height: 1.6;
+}
+.policy-card-btns {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.btn-dl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1rem;
+  border-radius: var(--radius);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.btn-dl-primary {
+  background: var(--amber);
+  color: #0d1526;
+  box-shadow: 0 2px 12px rgba(212,148,60,0.3);
+}
+.btn-dl-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212,148,60,0.4);
+  text-decoration: none;
+}
+.btn-dl-secondary {
+  border: 1.5px solid var(--border);
+  color: var(--text-3);
+  background: transparent;
+}
+.btn-dl-secondary:hover {
+  border-color: var(--text-4);
+  color: var(--text-2);
+  background: var(--surface-2);
+  text-decoration: none;
+}
+
+.tool-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-2);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.tool-footer p { font-size: 16px; color: var(--text-4); line-height: 1.5; }
+.tool-footer a { color: var(--text-4); }
+.tool-footer a:hover { color: var(--amber); }
+.footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 0.25rem; }
+.footer-links a { font-size: 16px; }
+</style>
+</head>
+<body>
+
+<!-- AMBIENT BACKGROUND ORBS -->
+<div class="bg-orbs" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+</div>
+
+
+<div class="container" style="position:relative;z-index:1;">
+<div class="tool-wrap">
+
+<!-- ===== INTRO (collapses once flow starts) ===== -->
+<div class="intro" id="intro-section">
+  <h1 class="intro-title">Ship It or Skip It</h1>
+  <div class="decision-meter" aria-hidden="true">
+    <div class="decision-meter-ship"></div>
+    <div class="decision-meter-gap"></div>
+    <div class="decision-meter-skip"></div>
+  </div>
+  <div class="one-star-hook" aria-label="One star review warning">
+    <span class="one-star-rating" aria-hidden="true">&#9733;&#9734;&#9734;&#9734;&#9734;</span>
+    <span class="one-star-text">One star.</span>
+  </div>
+  <p class="intro-hook">Imagine getting that on a game you just released after countless days and nights of work. Not because the game is bad. Because you put AI in there hoping to cut a few hours on art and <strong>players came after it with pitchfork reviews.</strong> The AI debate in game dev is brutal right now. Think twice before that choice costs you.</p>
+  <p class="intro-sub">Five questions. One honest answer about whether AI is the right call for this specific task, right now, before you find out the hard way.</p>
+</div>
+
+<!-- ===== QUESTION FLOW ===== -->
+<div class="question-flow" id="question-flow">
+
+  <div class="progress-track" id="progress-track" aria-label="Question progress">
+    <div class="progress-step current" data-step="1"></div>
+    <div class="progress-step" data-step="2"></div>
+    <div class="progress-step" data-step="3"></div>
+    <div class="progress-step" data-step="4"></div>
+    <div class="progress-step" data-step="5"></div>
+  </div>
+
+  <!-- Q1: Task type -->
+  <div class="q-card active" id="q1">
+    <div class="q-number">Question 1 of 5</div>
+    <div class="q-text">What type of task is this?</div>
+    <div class="options-grid" id="q1-options"></div>
+    <div class="q-validation" id="q1-val">Select a task type to continue.</div>
+    <div class="q-nav">
+      <button class="btn-back hidden" id="back-1">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="next-1" disabled>
+        Next
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Q2: Player-facing? -->
+  <div class="q-card" id="q2">
+    <div class="q-number">Question 2 of 5</div>
+    <div class="q-text">Will players see, hear, or interact with this output directly?</div>
+    <div class="options-list" id="q2-options"></div>
+    <div class="q-validation" id="q2-val">Select an option to continue.</div>
+    <div class="q-nav">
+      <button class="btn-back" id="back-2">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="next-2" disabled>
+        Next
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Q3: Fork -->
+  <div class="q-card" id="q3">
+    <div class="q-number">Question 3 of 5</div>
+    <div class="fork-label" id="q3-fork-label"></div>
+    <div class="q-text" id="q3-text"></div>
+    <div class="options-list" id="q3-options"></div>
+    <div class="q-validation" id="q3-val">Select an option to continue.</div>
+    <div class="q-nav">
+      <button class="btn-back" id="back-3">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="next-3" disabled>
+        Next
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Q4: Experience -->
+  <div class="q-card" id="q4">
+    <div class="q-number">Question 4 of 5</div>
+    <div class="q-text">Does your team have someone who has built a repeatable process around this specific AI tool?</div>
+    <p class="q-hint">Not just opened it once. Actually shipped things with it across multiple real projects.</p>
+    <div class="options-list" id="q4-options"></div>
+    <div class="q-validation" id="q4-val">Select an option to continue.</div>
+    <div class="q-nav">
+      <button class="btn-back" id="back-4">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="next-4" disabled>
+        Next
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Q5: Fork -->
+  <div class="q-card" id="q5">
+    <div class="q-number">Question 5 of 5</div>
+    <div class="fork-label" id="q5-fork-label"></div>
+    <div class="q-text" id="q5-text"></div>
+    <div class="options-list" id="q5-options"></div>
+    <div class="q-validation" id="q5-val">Select an option to continue.</div>
+    <div class="q-nav">
+      <button class="btn-back" id="back-5">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <button class="btn-next" id="submit-btn" disabled>
+        Get the verdict
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ===== RESULT SCREEN ===== -->
+<div class="result-screen" id="result-screen">
+
+  <div class="result-verdict" id="result-verdict">
+    <div class="result-verdict-label" id="result-label"></div>
+    <div class="result-verdict-title" id="result-title"></div>
+    <div class="result-verdict-body" id="result-body"></div>
+    <div class="result-score-row">
+      <span class="score-label">Risk score</span>
+      <div class="score-pips" id="score-pips"></div>
+      <span class="score-value" id="score-value"></span>
+    </div>
+  </div>
+
+  <div class="result-below-verdict">
+  <div class="answer-summary" id="answer-summary"></div>
+  <div id="unsure-flags"></div>
+
+  <div class="environment-note">
+    <div class="env-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    </div>
+    <div class="env-content">
+      <div class="environment-note-label">The environment you are operating in</div>
+      <div class="environment-note-body">The sentiment from players and developers right now is: we are watching, and we will call it out if you do not do this right. Even though nobody has fully defined what right is yet. That is the actual environment you are operating in.</div>
+    </div>
+  </div>
+
+  <div class="result-sections" id="result-sections"></div>
+  <div id="case-studies-wrap"></div>
+
+  <div class="result-actions">
+    <button class="btn-restart" id="restart-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+      Try another task
+    </button>
+    <button class="btn-share-result" id="share-result-btn">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      <span id="share-label">Share result</span>
+    </button>
+  </div><!-- /result-actions -->
+
+  <!-- POLICY TEMPLATE DOWNLOAD CARD -->
+  <div class="policy-card">
+    <div class="policy-card-text">
+      <div class="policy-card-eyebrow">Free Download</div>
+      <div class="policy-card-title">Studio AI Use Policy Template</div>
+      <div class="policy-card-desc">A baseline policy covering approval tiers, QA verification, platform disclosure, voice talent requirements, and recordkeeping. Built from published studio policies, SAG-AFTRA 2025 IMA provisions, and legal guidance. Fill in your studio name and route for sign-off.</div>
+    </div>
+    <div class="policy-card-btns">
+      <a href="studio-ai-use-policy.docx" download class="btn-dl btn-dl-primary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Word
+      </a>
+      <a href="studio-ai-use-policy.pdf" download class="btn-dl btn-dl-secondary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        PDF
+      </a>
+    </div>
+  </div>
+
+  </div><!-- /result-below-verdict -->
+</div><!-- /result-screen -->
+
+<!-- FOOTER -->
+<footer class="tool-footer">
+  <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a> at <a href="https://gamedevai.guide" target="_blank" rel="noopener noreferrer">gamedevai.guide</a></p>
+  <div class="footer-links">
+    <a href="../ai-tools/">AI Tools Wizard</a>
+    <a href="../nvidia-toolkit/">NVIDIA Toolkit</a>
+    <a href="../jobs/">Job Search</a>
+    <a href="../mcp/">MCP Directory</a>
+  </div>
+</footer>
+
+</div>
+</div>
+
+<script>
+/* =====================================================
+   DATA
+   ===================================================== */
+var TASK_TYPES = [
+  { id: 'art',       label: 'Art / Visual Assets',       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="2.5"/><path d="M2 20h20M4 20V10l8-8 8 8v10"/><path d="M9 20v-5h6v5"/></svg>' },
+  { id: 'code',      label: 'Code / Technical',          icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>' },
+  { id: 'audio',     label: 'Audio / Music / VO',        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>' },
+  { id: 'narrative', label: 'Narrative / Dialogue',      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' },
+  { id: 'qa',        label: 'QA / Testing',              icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>' },
+  { id: 'marketing', label: 'Marketing / Promo',         icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>' },
+  { id: 'systems',   label: 'Game Systems / Mechanics',  icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="16" cy="12" r="1" fill="currentColor"/><circle cx="18" cy="10" r="1" fill="currentColor"/></svg>' },
+  { id: 'other',     label: 'Other',                     icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>' }
+];
+
+var Q2_OPTIONS = [
+  { id: 'yes',     score: 3, label: 'Yes, it ships',
+    sub: 'Players will directly see, hear, or interact with this output' },
+  { id: 'partial', score: 1, label: 'Partially, it informs something that ships',
+    sub: 'The AI output influences player-facing work but is not the thing itself' },
+  { id: 'no',      score: 0, label: 'No, it stays in our pipeline',
+    sub: 'Internal tool, process, or reference only' }
+];
+
+var Q3_FACING_OPTIONS = [
+  { id: 'yes',      score: 2, label: 'Yes, players will feel it if something is off',
+    sub: 'The craft and creative voice behind this genuinely matters' },
+  { id: 'somewhat', score: 1, label: 'Somewhat, part creative, part just needs to work',
+    sub: 'Quality matters here but some of it can be checked objectively' },
+  { id: 'no',       score: 0, label: 'No, we just need it to work correctly',
+    sub: 'Right or wrong is the standard, not how it feels' },
+  { id: 'unsure',   score: 1, label: 'Not sure',
+    sub: 'We have not figured out what good looks like for this yet', unsure: true }
+];
+
+var Q3_PIPELINE_OPTIONS = [
+  { id: 'yes',      score: 0, label: 'Yes, we can clearly tell if it is right or wrong',
+    sub: 'There is a concrete standard we can check the output against' },
+  { id: 'partial',  score: 1, label: 'Partially, some parts we can check, some we cannot',
+    sub: 'Some of this needs a human call, not just a yes or no check' },
+  { id: 'no',       score: 2, label: 'No, it takes an expert to know if it is any good',
+    sub: 'There is no simple test. Someone experienced has to look at it.' },
+  { id: 'unsure',   score: 1, label: 'Not sure',
+    sub: 'We have not defined what a good result looks like yet', unsure: true }
+];
+
+var Q4_OPTIONS = [
+  { id: 'yes',      score: 0, label: 'Yes, someone on the team has done this before for real',
+    sub: 'Not just experimented. They have shipped things with this tool.' },
+  { id: 'somewhat', score: 1, label: 'Sort of. We have tried it but do not have a real process yet',
+    sub: 'Some hands-on time but no proven workflow we can rely on' },
+  { id: 'no',       score: 2, label: 'No, this would be the first real attempt',
+    sub: 'Nobody on the team has actually shipped anything with this tool yet' }
+];
+
+var Q5_FACING_OPTIONS = [
+  { id: 'severe',   score: 2, label: 'Bad. Players would notice and the damage would stick',
+    sub: 'This could follow the game in reviews and coverage for a long time' },
+  { id: 'moderate', score: 1, label: 'Some blowback but we could manage it',
+    sub: 'Players might push back but it would not define the game' },
+  { id: 'low',      score: 0, label: 'Minimal. Players would probably not notice or care',
+    sub: 'The stakes here are genuinely low' },
+  { id: 'unsure',   score: 2, label: 'Honestly not sure how players would react',
+    sub: 'We do not have a clear read on this yet', unsure: true }
+];
+
+var Q5_PIPELINE_OPTIONS = [
+  { id: 'high',     score: 2, label: 'High. Could break something important or ship wrong',
+    sub: 'If this fails quietly it could cause serious problems downstream' },
+  { id: 'moderate', score: 1, label: 'Probably caught in review before it causes damage',
+    sub: 'There are checkpoints that would likely catch a bad result' },
+  { id: 'low',      score: 0, label: 'Low. Easy to spot, easy to fix',
+    sub: 'A failure here would be obvious and simple to correct' },
+  { id: 'unsure',   score: 1, label: 'Not sure what happens if it goes wrong',
+    sub: 'We have not traced what a failure here would actually affect', unsure: true }
+];
+
+/* =====================================================
+   STATE
+   ===================================================== */
+var state = {
+  task: null,
+  facing: null,
+  q3: null,
+  q4: null,
+  q5: null,
+  scores: {},
+  unsure: {}
+};
+
+/* =====================================================
+   LOCAL STORAGE
+   ===================================================== */
+var _ls = (function() {
+  try {
+    var s = window['local'+'Storage'];
+    s.setItem('_t','1'); s.removeItem('_t'); return s;
+  } catch(e) { return null; }
+})();
+function lsSet(k, v) { if (_ls) try { _ls.setItem(k, v); } catch(e) {} }
+
+/* =====================================================
+   INTRO COLLAPSE
+   ===================================================== */
+var introCollapsed = false;
+function collapseIntro() {
+  if (introCollapsed) return;
+  introCollapsed = true;
+  document.getElementById('intro-section').classList.add('collapsed');
+}
+
+/* =====================================================
+   RENDER Q1 GRID
+   ===================================================== */
+(function() {
+  var container = document.getElementById('q1-options');
+  TASK_TYPES.forEach(function(t) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn-grid';
+    btn.dataset.id = t.id;
+    btn.innerHTML = '<span class="task-icon" aria-hidden="true">' + t.icon + '</span><span>' + t.label + '</span>';
+    btn.addEventListener('click', function() {
+      container.querySelectorAll('.option-btn-grid').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      state.task = t.id;
+      document.getElementById('next-1').disabled = false;
+      document.getElementById('q1-val').classList.remove('show');
+    });
+    container.appendChild(btn);
+  });
+
+  document.getElementById('next-1').addEventListener('click', function() {
+    if (!state.task) { document.getElementById('q1-val').classList.add('show'); return; }
+    collapseIntro();
+    goTo(2);
+  });
+})();
+
+/* =====================================================
+   RENDER OPTION LIST
+   ===================================================== */
+function renderOptionList(containerId, options, stateKey, nextBtnId, valId) {
+  var container = document.getElementById(containerId);
+  container.innerHTML = '';
+  options.forEach(function(opt) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn' + (opt.unsure ? ' unsure-opt' : '');
+    btn.dataset.id = opt.id;
+    btn.innerHTML =
+      '<span class="option-indicator"></span>' +
+      '<span class="option-label">' +
+        '<span class="option-label-main">' + opt.label + '</span>' +
+        (opt.sub ? '<span class="option-label-sub">' + opt.sub + '</span>' : '') +
+      '</span>';
+    btn.addEventListener('click', function() {
+      container.querySelectorAll('.option-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      state[stateKey] = opt.id;
+      state.scores[stateKey] = opt.score;
+      state.unsure[stateKey] = !!opt.unsure;
+      if (nextBtnId) document.getElementById(nextBtnId).disabled = false;
+      if (valId) document.getElementById(valId).classList.remove('show');
+    });
+    container.appendChild(btn);
+  });
+}
+
+renderOptionList('q2-options', Q2_OPTIONS, 'facing', 'next-2', 'q2-val');
+
+document.getElementById('next-2').addEventListener('click', function() {
+  if (!state.facing) { document.getElementById('q2-val').classList.add('show'); return; }
+  buildQ3(); goTo(3);
+});
+
+/* =====================================================
+   BUILD FORKED QUESTIONS
+   ===================================================== */
+function buildQ3() {
+  var isFacing = (state.facing === 'yes' || state.facing === 'partial');
+  var label = document.getElementById('q3-fork-label');
+  var text  = document.getElementById('q3-text');
+
+  if (isFacing) {
+    label.textContent = 'Player-facing';
+    label.className = 'fork-label facing';
+    text.textContent = 'Does this output need a human creative touch?';
+    renderOptionList('q3-options', Q3_FACING_OPTIONS, 'q3', 'next-3', 'q3-val');
+  } else {
+    label.textContent = 'Pipeline only';
+    label.className = 'fork-label pipeline';
+    text.textContent = 'Can you actually check whether the output is correct?';
+    renderOptionList('q3-options', Q3_PIPELINE_OPTIONS, 'q3', 'next-3', 'q3-val');
+  }
+  state.q3 = null; delete state.scores['q3'];
+  document.getElementById('next-3').disabled = true;
+}
+
+document.getElementById('next-3').addEventListener('click', function() {
+  if (!state.q3) { document.getElementById('q3-val').classList.add('show'); return; }
+  goTo(4);
+});
+
+renderOptionList('q4-options', Q4_OPTIONS, 'q4', 'next-4', 'q4-val');
+
+document.getElementById('next-4').addEventListener('click', function() {
+  if (!state.q4) { document.getElementById('q4-val').classList.add('show'); return; }
+  buildQ5(); goTo(5);
+});
+
+function buildQ5() {
+  var isFacing = (state.facing === 'yes' || state.facing === 'partial');
+  var label = document.getElementById('q5-fork-label');
+  var text  = document.getElementById('q5-text');
+
+  if (isFacing) {
+    label.textContent = 'Player-facing';
+    label.className = 'fork-label facing';
+    text.textContent = 'If a player identified this as AI-generated, what happens?';
+    renderOptionList('q5-options', Q5_FACING_OPTIONS, 'q5', null, 'q5-val');
+  } else {
+    label.textContent = 'Pipeline only';
+    label.className = 'fork-label pipeline';
+    text.textContent = 'If the AI gets it wrong and nobody catches it, how bad is the damage?';
+    renderOptionList('q5-options', Q5_PIPELINE_OPTIONS, 'q5', null, 'q5-val');
+  }
+  state.q5 = null; delete state.scores['q5'];
+  document.getElementById('submit-btn').disabled = true;
+
+  document.getElementById('q5-options').addEventListener('click', function() {
+    setTimeout(function() {
+      if (state.q5) document.getElementById('submit-btn').disabled = false;
+    }, 50);
+  });
+}
+
+document.getElementById('submit-btn').addEventListener('click', function() {
+  if (!state.q5) { document.getElementById('q5-val').classList.add('show'); return; }
+  computeResult();
+});
+
+/* =====================================================
+   NAVIGATION
+   ===================================================== */
+var currentQ = 1;
+
+function goTo(n) {
+  document.getElementById('q' + currentQ).classList.remove('active');
+  document.getElementById('q' + n).classList.add('active');
+  currentQ = n;
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.getElementById('back-2').addEventListener('click', function() { goTo(1); });
+document.getElementById('back-3').addEventListener('click', function() { goTo(2); });
+document.getElementById('back-4').addEventListener('click', function() { goTo(3); });
+document.getElementById('back-5').addEventListener('click', function() { goTo(4); });
+
+function updateProgress() {
+  document.querySelectorAll('.progress-step').forEach(function(step, i) {
+    step.classList.remove('done','current');
+    var n = i + 1;
+    if (n < currentQ) step.classList.add('done');
+    else if (n === currentQ) step.classList.add('current');
+  });
+}
+
+/* =====================================================
+   SCORING
+   ===================================================== */
+function computeScore() {
+  return (state.scores['facing'] || 0) +
+         (state.scores['q3']     || 0) +
+         (state.scores['q4']     || 0) +
+         (state.scores['q5']     || 0);
+}
+
+function checkRedOverride() {
+  var isFacing = (state.facing === 'yes' || state.facing === 'partial');
+  if (isFacing && state.q3 === 'yes'    && state.q4 === 'no') return true;
+  if (isFacing && state.q5 === 'severe' && state.q4 === 'no') return true;
+  return false;
+}
+
+function getVerdict(score, override) {
+  if (override)   return 'red';
+  if (score <= 4) return 'green';
+  return 'red';
+}
+
+/* =====================================================
+   RESULT CONTENT
+   ===================================================== */
+var RESULTS = {
+  green: {
+    label: 'Ship It',
+    title_clean: 'Go ahead.',
+    title_conditions: 'You can ship this. Read the conditions first.',
+    body_clean: 'The risk profile here is low. Verifiable output, established experience, or low player-facing stakes. The downside is contained. Run it.',
+    body_conditions: 'This is shippable, but not unconditionally. The answers you gave have some risk in them. That does not make it a no. It makes it a yes with homework.',
+    sections_clean: [
+      { label: 'Suggested first step',
+        body: 'Set a clear definition of done before you start. What does a passing result look like? If you cannot answer that before running the AI, you are not ready to verify the output.' }
+    ],
+    sections_conditions: [
+      { label: 'What has to be true before this ships',
+        body: 'Someone owns verification of this output. There is a defined quality bar the AI result must clear before it touches anything player-facing. There is a fallback plan if the output is not good enough.' },
+      { label: 'The real question to ask your team',
+        body: 'Would you be comfortable if a player noticed this was AI-generated? If the answer is anything other than a confident yes, you need more experience with this specific tool before it ships.' }
+    ]
+  },
+  red: {
+    label: 'Skip It',
+    title: 'Not right now.',
+    body: 'The combination of factors you described creates real risk. This is not a permanent no, but shipping this now is likely to cost more than it saves.',
+    sections: [
+      { label: 'What needs to change',
+        body: 'The most common path forward: find someone who has actually shipped things with this specific tool, scope the AI involvement to internal or non-creative work only, or wait until the task type moves out of high-stakes player-facing territory.' },
+      { label: 'Worth saying out loud',
+        body: 'When someone tells you AI removes the hard part, ask what the hard part actually was. Usually that was the job.',
+        isQuote: true }
+    ]
+  }
+};
+
+
+/* =====================================================
+   CASE STUDIES DATA
+   Only shown on SKIP IT results. Mapped to Q1 task type.
+   All cases verified from primary sources.
+   ===================================================== */
+var CASE_STUDIES = {
+  audio: [
+    {
+      title: 'AI voice lines shipped at launch, replaced post-launch after player backlash',
+      studio: 'Arc Raiders / Embark Studios (2025)',
+      taskTag: 'Audio / VO',
+      outcomeTag: 'Replaced post-launch',
+      what: 'Arc Raiders launched in October 2025 with AI text-to-speech voice lines for in-game ping callouts, generated from audio licensed from real voice actors. The studio described it as a production efficiency decision for a live-service game with frequent updates. Players pushed back immediately. CEO Patrick Soderlund later acknowledged the gap in a GamesIndustry.biz interview: "A real professional actor is better than AI. That is just how it is." The studio re-recorded many lines with human performers after launch.',
+      cost: 'Reputational friction at launch for a game that otherwise received strong reviews. Post-launch re-recording cost the efficiency gain the AI approach was meant to deliver. The studio ended up doing both.',
+      source: 'Kotaku, March 2026; GamesIndustry.biz, March 2026'
+    }
+  ],
+  art: [
+    {
+      title: 'AI placeholder art shipped in final game, players found it within 24 hours',
+      studio: 'Crimson Desert / Pearl Abyss (2026)',
+      taskTag: 'Art / Visual Assets',
+      outcomeTag: 'Public apology + patch + retroactive disclosure',
+      what: 'Players identified AI-generated in-game paintings within one day of Crimson Desert\'s launch. The telltale artifacts, including horses with too many limbs and faces merging with riders, spread quickly on social media. Pearl Abyss confirmed the assets had been created with AI tools for early-stage exploration and were never meant to ship. The studio issued a public apology, committed to a full asset audit, and added the Steam AI disclosure that should have been there at launch.',
+      cost: 'The "we used it as a placeholder" explanation was met with skepticism across the developer community. Other devs publicly shared examples of what real placeholder art looks like, deliberately ugly and unmistakable, to show the difference. The reputational damage attached to the game permanently, even after the assets were patched out.',
+      source: 'PC Gamer, March 2026; Kotaku, March 2026; Engadget, March 2026'
+    },
+    {
+      title: 'AI placeholder textures in shipped game led to GOTY awards being revoked',
+      studio: 'Clair Obscur: Expedition 33 / Sandfall Interactive (2025)',
+      taskTag: 'Art / Visual Assets',
+      outcomeTag: 'Awards revoked',
+      what: 'Players spotted what appeared to be AI-generated textures on an in-game billboard shortly after the game\'s April 2025 launch. Sandfall patched them out within five days. The studio had submitted the game to the Indie Game Awards with a declaration that no AI was used. Eight months later, when a producer\'s comments to a Spanish newspaper confirmed AI use, the awards body revoked both the Game of the Year and Best Debut Game awards on the night of the ceremony. The game retained its awards from other organisations, including The Game Awards.',
+      cost: 'Two major industry awards, stripped publicly. The cost was not the patch. It was the disclosure that came out at the worst possible moment and the gap between what the studio had represented to an awards organisation and what had actually happened.',
+      source: 'This Week in Video Games, December 2025; GameSpot, December 2025; ComicsBeat, December 2025'
+    }
+  ],
+  narrative: [
+    {
+      title: 'AI-generated text visible on in-game screen, AI translation left in shipped localization',
+      studio: 'The Alters / 11 Bit Studios (2025)',
+      taskTag: 'Narrative / Dialogue',
+      outcomeTag: 'Public apology + patch + missing Steam disclosure',
+      what: 'Players discovered two separate AI uses after The Alters launched in June 2025. First, an AI chatbot response was visible on an in-game monitor screen, with the ChatGPT prompt text still present. Second, AI-translated subtitles in multiple languages contained errors and in some cases showed raw AI output. 11 Bit Studios admitted to both, describing them as placeholder and last-minute localization decisions respectively. The studio also acknowledged it had not added the Steam AI disclosure Valve requires.',
+      cost: 'Backlash across a game that had received strong critical reviews. Two distinct failure points in one release, art and localization, from two different decisions that both traced to the same root cause: AI output that was not verified before it shipped.',
+      source: 'Game Informer, June 2025; GameSpot, July 2025; Game Developer, July 2025'
+    }
+  ],
+  marketing: [
+    {
+      title: 'AI-generated artwork in official storefront promotion caused player backlash',
+      studio: 'GOG.com storefront (2025)',
+      taskTag: 'Marketing / Promo',
+      outcomeTag: 'Player backlash',
+      what: 'GOG, the PC game storefront, faced backlash after using AI-generated artwork in its own promotional materials. The platform does not require AI disclosure from developers, yet used AI-generated art in its own communications. Players noted the irony.',
+      cost: 'Reputational inconsistency for a platform that positions itself as a player-friendly alternative. The episode reinforced that marketing and storefront materials are just as visible to players as in-game content.',
+      source: 'TechXplore / The Conversation, February 2026'
+    }
+  ]
+};
+
+// Tasks with no documented cases yet get a general note
+var CASE_STUDY_GENERAL = {
+  title: 'No well-documented cases yet for this task type',
+  note: 'That does not mean the risk is lower. It may mean this category has not had a high-profile incident yet, or that failures here are harder for players to detect. The absence of a documented case is not evidence of safety.'
+};
+
+/* =====================================================
+   RENDER CASE STUDIES
+   ===================================================== */
+function renderCaseStudies(taskId) {
+  var wrap = document.getElementById('case-studies-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  var cases = CASE_STUDIES[taskId];
+
+  var container = document.createElement('div');
+  container.className = 'case-studies';
+
+  var heading = document.createElement('div');
+  heading.className = 'case-studies-label';
+  heading.textContent = 'What happened when others shipped this';
+  container.appendChild(heading);
+
+  if (!cases || cases.length === 0) {
+    var note = document.createElement('div');
+    note.className = 'case-pattern-note';
+    note.innerHTML = '<strong>' + CASE_STUDY_GENERAL.title + '.</strong> ' + CASE_STUDY_GENERAL.note;
+    container.appendChild(note);
+  } else {
+    cases.forEach(function(c) {
+      var card = document.createElement('div');
+      card.className = 'case-card';
+
+      var header = document.createElement('div');
+      header.className = 'case-card-header';
+      header.innerHTML =
+        '<div class="case-card-title">' + c.title + '</div>' +
+        '<div class="case-card-studio">' + c.studio + '</div>';
+      card.appendChild(header);
+
+      var tags = document.createElement('div');
+      tags.className = 'case-card-tags';
+      tags.innerHTML =
+        '<span class="case-tag case-tag-task">' + c.taskTag + '</span>' +
+        '<span class="case-tag case-tag-outcome">' + c.outcomeTag + '</span>';
+      card.appendChild(tags);
+
+      var what = document.createElement('div');
+      what.className = 'case-card-what';
+      what.textContent = c.what;
+      card.appendChild(what);
+
+      var cost = document.createElement('div');
+      cost.className = 'case-card-cost';
+      cost.innerHTML = '<span class="case-card-cost-label">The cost</span>' + c.cost;
+      card.appendChild(cost);
+
+      var src = document.createElement('span');
+      src.className = 'case-source';
+      src.textContent = 'Sources: ' + c.source;
+      card.appendChild(src);
+
+      container.appendChild(card);
+    });
+
+    // Pattern note shown when there are cases
+    var pattern = document.createElement('div');
+    pattern.className = 'case-pattern-note';
+    pattern.innerHTML = '<strong>A pattern worth naming:</strong> Three of the four most documented cases from 2025 and early 2026 used the word "placeholder" to describe the AI assets that shipped. The developer community noted that real placeholder art is deliberately ugly so it cannot accidentally ship. AI-generated art that looks plausible is a different category of thing.';
+    container.appendChild(pattern);
+  }
+
+  wrap.appendChild(container);
+}
+
+/* =====================================================
+   COMPUTE AND SHOW RESULT
+   ===================================================== */
+function computeResult() {
+  var score    = computeScore();
+  var override = checkRedOverride();
+  var verdict  = getVerdict(score, override);
+  var data     = RESULTS[verdict];
+  var isFacing = (state.facing === 'yes' || state.facing === 'partial');
+
+  lsSet('sisi_last', JSON.stringify({ state: state, score: score, verdict: verdict, ts: Date.now() }));
+
+  // Verdict card
+  var verdictEl = document.getElementById('result-verdict');
+  verdictEl.className = 'result-verdict ' + verdict;
+  document.getElementById('result-label').textContent = verdict === 'green' ? 'Ship It' : 'Skip It';
+
+  if (verdict === 'green') {
+    var isClean = score <= 2;
+    document.getElementById('result-title').textContent = isClean ? data.title_clean : data.title_conditions;
+    document.getElementById('result-body').textContent  = isClean ? data.body_clean  : data.body_conditions;
+  } else {
+    document.getElementById('result-title').textContent = data.title;
+    document.getElementById('result-body').textContent  = data.body;
+  }
+
+  // Pips
+  var pips     = document.getElementById('score-pips');
+  var pipClass = verdict === 'green' ? 'filled-green' : 'filled-red';
+  pips.innerHTML = '';
+  for (var i = 0; i < 8; i++) {
+    var pip = document.createElement('div');
+    pip.className = 'score-pip' + (i < score ? ' ' + pipClass : '');
+    pips.appendChild(pip);
+  }
+  document.getElementById('score-value').textContent = score + ' of 8';
+
+  // Answer summary pills
+  var taskLabel = TASK_TYPES.find(function(t) { return t.id === state.task; });
+  var q4Label   = Q4_OPTIONS.find(function(o) { return o.id === state.q4; });
+  var summary   = document.getElementById('answer-summary');
+  summary.innerHTML = '';
+
+  function addPill(lbl, val) {
+    var pill = document.createElement('div');
+    pill.className = 'answer-pill';
+    pill.innerHTML = '<span class="answer-pill-label">' + lbl + '</span>' + val;
+    summary.appendChild(pill);
+  }
+  if (taskLabel) addPill('Task:', taskLabel.label);
+  addPill('Scope:', isFacing ? 'Player-facing' : 'Pipeline only');
+  if (q4Label) addPill('Experience:', q4Label.label.split(',')[0]);
+
+  // Unsure flags: surfaces the assumptions
+  var unsureContainer = document.getElementById('unsure-flags');
+  unsureContainer.innerHTML = '';
+
+  var unsureMessages = {
+    q3: isFacing
+      ? 'You were not sure whether this output needs real creative judgment behind it. That is worth figuring out before you commit. If you cannot say what good looks like, you cannot tell whether the AI got it right.'
+      : 'You were not sure whether you can actually check the output. That is worth resolving. An AI result you cannot verify is one you are trusting on faith.',
+    q5: isFacing
+      ? 'You were not sure how players would react if they found out this was AI-generated. That is exactly the assumption worth thinking through. Player sentiment on AI in games right now is unpredictable. Not knowing is a risk on its own.'
+      : 'You were not sure what would happen if the AI got this wrong and nobody caught it. Figure that out before you proceed. Not knowing the damage potential is not the same as the damage being low.'
+  };
+
+  var warningIcon = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+  ['q3','q5'].forEach(function(key) {
+    if (state.unsure[key] && unsureMessages[key]) {
+      var flag = document.createElement('div');
+      flag.className = 'unsure-flag';
+      flag.innerHTML =
+        '<span class="unsure-flag-icon">' + warningIcon + '</span>' +
+        '<span class="unsure-flag-text">' + unsureMessages[key] + '</span>';
+      unsureContainer.appendChild(flag);
+    }
+  });
+
+  // Result sections
+  var sections = document.getElementById('result-sections');
+  sections.innerHTML = '';
+  var sectionList = verdict === 'green'
+    ? (score <= 2 ? data.sections_clean : data.sections_conditions)
+    : data.sections;
+  var SECTION_ICONS = {
+    'Suggested first step':           { cls: 'icon-step',    svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>' },
+    'What has to be true before this ships': { cls: 'icon-step', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>' },
+    'The real question to ask your team':    { cls: 'icon-truth', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
+    'What needs to change':           { cls: 'icon-warning', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' },
+    'Worth saying out loud':          { cls: 'icon-truth',   svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' }
+  };
+  var defaultIcon = { cls: 'icon-step', svg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' };
+  sectionList.forEach(function(sec) {
+    var icon = SECTION_ICONS[sec.label] || defaultIcon;
+    var div = document.createElement('div');
+    div.className = 'result-section';
+    div.innerHTML =
+      '<div class="result-section-icon ' + icon.cls + '" aria-hidden="true">' + icon.svg + '</div>' +
+      '<div class="result-section-content">' +
+        '<div class="result-section-label">' + sec.label + '</div>' +
+        '<div class="result-section-body' + (sec.isQuote ? ' is-quote' : '') + '">' + sec.body + '</div>' +
+      '</div>';
+    sections.appendChild(div);
+  });
+
+  // Case studies (SKIP IT only)
+  if (verdict === 'red') {
+    renderCaseStudies(state.task);
+  } else {
+    var wrap = document.getElementById('case-studies-wrap');
+    if (wrap) wrap.innerHTML = '';
+  }
+
+  // Hide flow, show result
+  document.getElementById('question-flow').style.display = 'none';
+  document.getElementById('intro-section').style.display = 'none';
+  document.getElementById('result-screen').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  writeHash();
+}
+
+/* =====================================================
+   RESTART
+   ===================================================== */
+document.getElementById('restart-btn').addEventListener('click', function() {
+  state = { task: null, facing: null, q3: null, q4: null, q5: null, scores: {}, unsure: {} };
+  introCollapsed = false;
+
+  document.querySelectorAll('.option-btn-grid, .option-btn').forEach(function(b) { b.classList.remove('selected'); });
+  ['next-1','next-2','next-3','next-4','submit-btn'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.disabled = true;
+  });
+  document.getElementById('q3-options').innerHTML = '';
+  document.getElementById('q5-options').innerHTML = '';
+
+  document.getElementById('result-screen').classList.remove('active');
+  document.querySelectorAll('.q-card').forEach(function(c) { c.classList.remove('active'); });
+  document.getElementById('q1').classList.add('active');
+  currentQ = 1;
+  updateProgress();
+
+  document.getElementById('question-flow').style.display = '';
+  document.getElementById('intro-section').style.display = '';
+  document.getElementById('intro-section').classList.remove('collapsed');
+
+  try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* =====================================================
+   SHARE
+   ===================================================== */
+function writeHash() {
+  try {
+    var enc = btoa(JSON.stringify({ t: state.task, f: state.facing, q3: state.q3, q4: state.q4, q5: state.q5 }))
+      .replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+    history.replaceState(null, '', '?r=' + enc);
+  } catch(e) {}
+}
+
+document.getElementById('share-result-btn').addEventListener('click', function() {
+  var btn   = document.getElementById('share-result-btn');
+  var label = document.getElementById('share-label');
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    btn.classList.add('copied');
+    label.textContent = 'Link copied';
+    setTimeout(function() { btn.classList.remove('copied'); label.textContent = 'Share result'; }, 2500);
+  }).catch(function() { prompt('Copy this link:', window.location.href); });
+});
+
+/* =====================================================
+   LOAD FROM URL
+   ===================================================== */
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var r = params.get('r');
+  if (!r) return;
+  try {
+    var padded  = r.replace(/-/g,'+').replace(/_/g,'/') + '=='.slice(0,(4 - r.length % 4) % 4);
+    var payload = JSON.parse(atob(padded));
+    if (!payload.t || !payload.f || !payload.q3 || !payload.q4 || !payload.q5) return;
+
+    state.task = payload.t; state.facing = payload.f;
+    state.q3   = payload.q3; state.q4 = payload.q4; state.q5 = payload.q5;
+
+    var isFacing   = (state.facing === 'yes' || state.facing === 'partial');
+    var facingOpt  = Q2_OPTIONS.find(function(o) { return o.id === state.facing; });
+    var q3Opts     = isFacing ? Q3_FACING_OPTIONS : Q3_PIPELINE_OPTIONS;
+    var q3Opt      = q3Opts.find(function(o) { return o.id === state.q3; });
+    var q4Opt      = Q4_OPTIONS.find(function(o) { return o.id === state.q4; });
+    var q5Opts     = isFacing ? Q5_FACING_OPTIONS : Q5_PIPELINE_OPTIONS;
+    var q5Opt      = q5Opts.find(function(o) { return o.id === state.q5; });
+
+    if (!facingOpt || !q3Opt || !q4Opt || !q5Opt) return;
+
+    state.scores = { facing: facingOpt.score, q3: q3Opt.score, q4: q4Opt.score, q5: q5Opt.score };
+    state.unsure = { q3: !!q3Opt.unsure, q5: !!q5Opt.unsure };
+
+    buildQ3(); buildQ5(); computeResult();
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
