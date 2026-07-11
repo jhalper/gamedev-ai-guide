@@ -325,7 +325,7 @@ tailwind.config = {
         <!-- Status badge -->
         <div class="inline-flex items-center gap-2 mb-6 px-3 py-1 bg-amber/[0.08] border border-amber/20 rounded-full badge-float reveal">
           <span class="w-1.5 h-1.5 rounded-full bg-amber animate-pulse"></span>
-          <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-amber font-headline">5 tools, one home</span>
+          <span class="text-[10px] font-bold tracking-[0.2em] uppercase text-amber font-headline">6 tools, one home</span>
         </div>
 
         <h1 class="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-[0.92] text-white mb-6 reveal">
@@ -372,6 +372,12 @@ tailwind.config = {
           <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
 
+        <a href="./shipitskipit/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm mb-0.5 transition-all duration-200">
+          <span class="routing-accent w-[3px] h-[18px] rounded-sm flex-shrink-0 transition-transform duration-200" style="background:#f97316"></span>
+          <span class="flex-1">Deciding whether AI is the right call for a specific task</span>
+          <svg class="routing-arrow w-3.5 h-3.5 flex-shrink-0 opacity-0 -translate-x-1 transition-all duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+
         <a href="./nvidia-toolkit/" class="routing-btn flex items-center gap-3 px-4 py-3 text-on-surface-variant text-sm no-underline border-l-[3px] border-transparent rounded-r-sm transition-all duration-200">
           <span class="routing-accent w-[3px] h-[18px] rounded-sm flex-shrink-0 transition-transform duration-200" style="background:#76b900"></span>
           <span class="flex-1">Looking for specific NVIDIA tools</span>
@@ -395,7 +401,7 @@ tailwind.config = {
       <div>
         <span class="text-amber font-body text-[10px] tracking-[0.25em] uppercase font-semibold mb-3 block">What's inside</span>
         <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight text-white uppercase">
-          Five tools.<br/><span class="text-on-surface-variant/40">One mission.</span>
+          Six tools.<br/><span class="text-on-surface-variant/40">One mission.</span>
         </h2>
       </div>
     </div>
@@ -498,10 +504,34 @@ tailwind.config = {
         </span>
       </a>
 
+      <!-- Ship It or Skip It -->
+      <a href="./shipitskipit/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
+        <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] opacity-20 transition-opacity duration-300" style="background:#f97316"></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">05.</div>
+        <div class="mb-4">
+          <span class="material-symbols-outlined text-3xl card-icon" style="color:#f97316">rule</span>
+        </div>
+        <h3 class="font-headline text-xl font-bold text-white mb-2 uppercase tracking-tight">Ship It or Skip It</h3>
+        <p class="text-sm font-medium italic mb-4" style="color:#f97316">Five questions. One honest answer.</p>
+        <p class="text-sm text-on-surface-variant leading-relaxed mb-6">That one-star review hurts more when you know AI content caused it. Before you commit to using AI on a task, five questions give you a clear verdict: ship it or skip it. Includes a Studio AI Use Policy template you can take straight to sign-off.</p>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 mb-6 text-[11px] text-outline font-medium">
+          <span>5 questions</span>
+          <span class="text-outline/30">/</span>
+          <span>SHIP IT or SKIP IT</span>
+          <span class="text-outline/30">/</span>
+          <span>Policy template included</span>
+        </div>
+        <p class="text-[11px] text-on-surface-variant/40 mb-5"><span style="color:#f97316">New</span> — AI decision framework with forked logic for player-facing vs. pipeline use</p>
+        <span class="inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em]" style="color:#f97316">
+          Open tool
+          <svg class="card-arrow w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </span>
+      </a>
+
       <!-- NVIDIA GameDev Guide -->
       <a href="./nvidia-toolkit/" class="tool-card glass-panel inner-glow rounded-lg p-8 no-underline text-on-surface group relative reveal">
         <div class="card-accent-line absolute top-0 left-8 right-8 h-[2px] bg-nvidia opacity-20 transition-opacity duration-300"></div>
-        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">05. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(118,185,0,0.12);color:#76b900;font-size:11px">May 1</span></div>
+        <div class="card-number text-primary/15 text-5xl font-headline font-black mb-5 transition-colors duration-300">06. <span class="text-[11px] font-bold tracking-[0.12em] uppercase align-middle ml-1 px-2 py-0.5 rounded" style="background:rgba(118,185,0,0.12);color:#76b900;font-size:11px">May 1</span></div>
         <div class="mb-4">
           <span class="material-symbols-outlined text-nvidia text-3xl card-icon">memory</span>
         </div>
