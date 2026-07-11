@@ -848,33 +848,66 @@ h1, h2, h3, h4, h5, h6 {
 
 /* RESULTS */
 /* RESULTS SECTION NAV */
-.results-nav {
+.results-section { display: none; }
+.results-section.active { display: block; }
+
+.results-nav-container {
   position: sticky;
-  top: 52px; /* below hub-nav */
+  top: 52px;
   z-index: 100;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-divider);
-  padding: var(--space-2) 0;
-  margin: 0 calc(-1 * var(--space-4));
-  padding-left: var(--space-4);
-  padding-right: var(--space-4);
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  transition: box-shadow var(--transition-fast);
+}
+.results-nav-container.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+[data-theme="light"] .results-nav-container.has-shadow {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.nav-scroll-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  padding: 0;
+  background: var(--color-bg);
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, color 0.15s ease;
+  z-index: 1;
+}
+.nav-scroll-arrow.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.nav-scroll-arrow:hover { color: var(--color-text); }
+.nav-scroll-arrow-left { box-shadow: 3px 0 8px var(--color-bg); }
+.nav-scroll-arrow-right { box-shadow: -3px 0 8px var(--color-bg); }
+
+.results-nav {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--space-2) var(--space-2);
   display: flex;
   gap: var(--space-1);
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  transition: box-shadow var(--transition-fast);
 }
 
 .results-nav::-webkit-scrollbar { display: none; }
 
-.results-nav.has-shadow {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-[data-theme="light"] .results-nav.has-shadow {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
+/* has-shadow now on .results-nav-container */
 
 .results-nav-btn {
   display: inline-flex;
@@ -883,7 +916,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   font-family: var(--font-body);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   font-weight: 500;
   color: var(--color-text-muted);
   background: none;
@@ -902,6 +935,8 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-primary);
   background: var(--color-primary-bg);
   border-color: var(--color-primary-border);
+  box-shadow: inset 0 -2px 0 var(--color-primary);
+  font-weight: 600;
 }
 
 .results-nav-btn .nav-count {
@@ -2090,7 +2125,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .adjacent-detail-value { font-size: var(--text-sm); line-height: 1.5; color: var(--color-text); }
 .adjacent-caveat {
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--color-text-muted);
   font-style: italic;
   margin-top: var(--space-2);
@@ -2140,6 +2175,144 @@ h1, h2, h3, h4, h5, h6 {
 .market-context-panel { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.35s ease; margin-top: 0; }
 .market-context-panel.open { max-height: 800px; opacity: 1; margin-top: var(--space-3); }
 .market-context-toggle.open svg { transform: rotate(180deg); }
+
+/* MENTAL HEALTH SECTION */
+:root { --sec-mentalhealth: #5B9F9F; }
+[data-theme="light"] { --sec-mentalhealth: #3A7A7A; }
+#sec-mentalhealth .section-header { border-left-color: var(--sec-mentalhealth) !important; }
+#sec-mentalhealth .section-header svg { color: var(--sec-mentalhealth); }
+#sec-mentalhealth .section-header h2 { color: var(--sec-mentalhealth); }
+.mh-notice {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: rgba(91,159,159,0.06);
+  border-left: 3px solid rgba(91,159,159,0.3);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.mh-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid rgba(91,159,159,0.4);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  transition: border-color var(--transition-fast);
+}
+.mh-card:hover { border-color: rgba(91,159,159,0.5); }
+.mh-card.crisis {
+  border-left-color: rgba(255,180,171,0.6);
+  background: rgba(255,180,171,0.04);
+}
+.mh-card-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+.mh-card-name a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+.mh-card-name a:hover { color: var(--sec-mentalhealth); }
+.mh-card.crisis .mh-card-name a { color: var(--color-error); }
+.mh-card-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+
+/* FREELANCE SECTION */
+:root { --sec-freelance: #A07850; }
+[data-theme="light"] { --sec-freelance: #8A6438; }
+#sec-freelance .section-header { border-left-color: var(--sec-freelance) !important; }
+#sec-freelance .section-header svg { color: var(--sec-freelance); }
+#sec-freelance .section-header h2 { color: var(--sec-freelance); }
+.freelance-subheader {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin: var(--space-4) 0 var(--space-2) 0;
+  font-family: var(--font-display);
+}
+.freelance-platform-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  transition: border-color var(--transition-fast);
+}
+.freelance-platform-card:hover { border-color: rgba(160,120,80,0.3); }
+.freelance-platform-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.freelance-platform-name a { color: var(--color-text); text-decoration: none; }
+.freelance-platform-name a:hover { color: var(--sec-freelance); }
+.freelance-platform-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+.freelance-tip-card {
+  background: rgba(160,120,80,0.05);
+  border: 1px solid rgba(160,120,80,0.15);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+}
+.freelance-tip-title {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: rgba(160,120,80,0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.freelance-tip-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+
+/* NETWORKING SECTION */
+:root { --sec-networking: #7B6BAF; }
+[data-theme="light"] { --sec-networking: #5E50A0; }
+#sec-networking .section-header { border-left-color: var(--sec-networking) !important; }
+#sec-networking .section-header svg { color: var(--sec-networking); }
+#sec-networking .section-header h2 { color: var(--sec-networking); }
+.networking-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  transition: border-color var(--transition-fast);
+}
+.networking-card:hover { border-color: rgba(123,107,175,0.3); }
+.networking-card-body { flex: 1; min-width: 0; }
+.networking-card-name {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.networking-card-name a { color: var(--color-text); text-decoration: none; }
+.networking-card-name a:hover { color: var(--sec-networking); }
+.networking-card-desc { font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.6; }
+.networking-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.networking-badge.type-event { background: rgba(123,107,175,0.12); color: rgba(123,107,175,0.9); }
+.networking-badge.type-online { background: rgba(76,214,255,0.08); color: rgba(76,214,255,0.7); }
+.networking-badge.type-discovery { background: var(--color-surface-2); color: var(--color-text-muted); }
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -2223,11 +2396,24 @@ h1, h2, h3, h4, h5, h6 {
           <span class="whats-new-toggle-left">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             What's New
-            <span class="whats-new-badge">v1.9</span>
+            <span class="whats-new-badge">v1.10</span>
           </span>
           <svg class="whats-new-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
         <div class="whats-new-content">
+          <div class="whats-new-version">v1.10, July 11, 2026</div>
+          <ul class="whats-new-list">
+            <li>New: Freelance and Contract section with discipline-matched platforms and practical guidance on rates, taxes, health insurance, and contracts.</li>
+            <li>New: Networking section with recurring events and online communities worth actually using.</li>
+            <li>New: Mental Health Resources section with game-dev-specific support and practical options for people between jobs.</li>
+            <li>Copy Plan and Share buttons fixed.</li>
+            <li>Market context updated: Xbox cut 3,200 jobs on July 6 and divested Double Fine, Ninja Theory, Compulsion Games, and Undead Labs. 2026 tracker updated to 7,000+.</li>
+          </ul>
+          <div class="whats-new-version">v1.9.1, July 11, 2026</div>
+          <ul class="whats-new-list">
+            <li>Copy Plan and Share buttons fixed.</li>
+            <li>Market context updated: Xbox cut 3,200 jobs on July 6 and divested Double Fine, Ninja Theory, Compulsion Games, and Undead Labs. 2026 tracker updated to 7,000+.</li>
+          </ul>
           <div class="whats-new-version">v1.9, July 8, 2026</div>
           <ul class="whats-new-list">
             <li>Market context moved out of the landing screen and made collapsible in results. The tool leads with resources, not with bad news.</li>
@@ -2415,7 +2601,7 @@ h1, h2, h3, h4, h5, h6 {
 <footer class="app-footer">
   <p>Created by <a href="https://www.linkedin.com/in/joehalper/" target="_blank" rel="noopener noreferrer">HALP (Joe Halper)</a></p>
   <p id="footerResultsLink" style="margin-top: var(--space-2); font-size: var(--text-xs); display:none;"><a href="survey-results.html">Community Survey Results</a></p>
-  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: July 8, 2026 (v1.9) &bull; Research data subject to change</p>
+  <p style="margin-top: var(--space-3); font-size: 11px; opacity: 0.5;">Last updated: July 11, 2026 (v1.10) &bull; Research data subject to change</p>
 </footer>
 
 <script>
@@ -3285,6 +3471,51 @@ var ADJACENT_INDUSTRIES = {
   ]
 };
 
+
+/* ============================================
+   DATA: MENTAL HEALTH RESOURCES
+   ============================================ */
+var MENTAL_HEALTH_RESOURCES = [
+  { name: 'Take This', url: 'https://www.takethis.org', desc: 'Mental health resources built specifically for the games community. Crisis support, free resources, and trained volunteers at conventions. The most game-dev-specific resource available.', crisis: false },
+  { name: 'IGDA Mental Health SIG', url: 'https://igda.org/sigs/mental-health/', desc: 'Special interest group within IGDA focused on mental health in the industry. Peer support, advocacy, and a place to talk to people who understand game dev specifically.', crisis: false },
+  { name: 'Open Path Collective', url: 'https://openpathcollective.org', desc: 'Low-cost therapy ($30-$80 per session) with vetted therapists. Useful if you have lost employer-provided health insurance and cannot afford standard therapy rates right now.', crisis: false },
+  { name: 'Freelancers Union Health Insurance', url: 'https://www.freelancersunion.org/resources/health-insurance/', desc: 'Health insurance options for people between jobs or going independent. Relevant whether you are freelancing or just between studio jobs and need coverage.', crisis: false },
+  { name: '988 Suicide and Crisis Lifeline', url: 'https://988lifeline.org', desc: 'Call or text 988, available 24 hours a day. If you are in crisis or supporting someone who is, this is where to start.', crisis: true }
+];
+
+/* ============================================
+   DATA: FREELANCE RESOURCES
+   ============================================ */
+var FREELANCE_PLATFORMS = [
+  { name: 'Moonlighter', url: 'https://www.moonlighter.co', desc: 'Game dev specific freelance platform. Contract work across most game dev disciplines. More relevant than Upwork for game-specific work.', disciplines: [] },
+  { name: 'Hitmarker', url: 'https://hitmarker.net', desc: 'The most game-industry-specific job board also lists contract and freelance roles. Strong for short-term contract work across disciplines.', disciplines: [] },
+  { name: 'ArtStation Jobs', url: 'https://www.artstation.com/jobs', desc: 'Contract and freelance roles for art, animation, VFX, and concept work. Filter by contract to see what is available now.', disciplines: ['art', 'animation', 'vfx', 'cinematics', 'tech_art'] },
+  { name: 'Contra', url: 'https://contra.com', desc: 'Portfolio-forward platform for independent work. No commission taken from your earnings. Works well for engineering, design, and production disciplines.', disciplines: ['engineering', 'game_design', 'uiux', 'production', 'level_design'] },
+  { name: 'LinkedIn Services', url: 'https://www.linkedin.com', desc: 'Enable your Services page on LinkedIn listing what you offer as a contractor. Companies actively search here for freelancers and it is often overlooked by candidates.', disciplines: [] }
+];
+
+var FREELANCE_TIPS = [
+  { title: 'Set your rate before the first conversation', desc: 'Research market rates before you talk to anyone. Game dev engineering contracts typically run $75-150/hr depending on discipline and experience. Art and animation $40-100/hr. Do not let the first client anchor you low.' },
+  { title: 'Quarterly estimated taxes (US)', desc: 'If you expect to owe $1,000 or more in federal taxes you are required to pay quarterly. Dates: April 15, June 15, September 15, January 15. Set aside 25-30% of every invoice the day it is paid. Missing quarters results in penalties, not just a lump sum at year end.' },
+  { title: 'Health insurance after losing studio coverage', desc: 'You have 60 days from losing employer coverage to enroll in ACA marketplace insurance as a qualifying life event at healthcare.gov. After 60 days you wait for open enrollment. Do not let this window close without acting.' },
+  { title: 'Contract basics before you start any project', desc: 'Always use a written agreement. Minimum: scope of work, payment amount and schedule (net 15 or net 30 is standard), a kill fee if the project is cancelled mid-work (25-50% of remaining scope is normal), and who owns the IP when the work is done.' },
+  { title: 'Portfolio matters more for contract than for studio jobs', desc: 'Studio hiring has internal advocates and referrals. Contract clients have none of that. Your portfolio and reputation are your entire sales process. Keep shipped work visible and described in outcomes, not just aesthetics.' }
+];
+
+/* ============================================
+   DATA: NETWORKING RESOURCES
+   ============================================ */
+var NETWORKING_RESOURCES = [
+  { name: 'GDC (Game Developers Conference)', url: 'https://gdconf.com', desc: 'The primary professional conference for game developers. San Francisco, annually in March. An expo pass gets you on the floor without paying for sessions. Unofficial events the week of GDC are often where real networking happens.', type: 'event', frequency: 'Annual, March' },
+  { name: 'Game Devs of Color Expo', url: 'https://gamedevsofcolorexpo.com', desc: 'Annual expo for developers of color and allies. Strong community focus and genuinely useful networking. Worth attending regardless of background.', type: 'event', frequency: 'Annual' },
+  { name: 'IGDA Chapter Meetups', url: 'https://igda.org/chapters/', desc: 'IGDA runs local chapters in most major cities. Free or low-cost monthly meetups. The most accessible ongoing networking option for most people, wherever they are.', type: 'event', frequency: 'Ongoing, local' },
+  { name: 'PAX (East, West, Aus)', url: 'https://www.paxsite.com', desc: 'Multiple events per year. More consumer-facing than GDC but developer networking happens in the margins. Indie showcase areas are worth attending if you have a project to show.', type: 'event', frequency: 'Multiple per year' },
+  { name: 'Gamescom', url: 'https://www.gamescom.global', desc: 'Europe largest games event. Cologne, Germany. Strong B2B component alongside the public show. Worth it if you are Europe-based or actively targeting European studios.', type: 'event', frequency: 'Annual, August' },
+  { name: 'ASGC Discord', url: 'https://discord.gg/asgc', desc: 'Amir Satvat game career community. The most active online networking space for game dev job seekers right now. Introductions, mentorship matching, portfolio reviews, and job postings.', type: 'online' },
+  { name: 'Mastodon / gamedev.place', url: 'https://mastodon.gamedev.place', desc: 'Active developer community. Less noise than LinkedIn, more genuine conversation. Good for building real connections with developers outside your immediate network.', type: 'online' },
+  { name: 'Game Dev Map', url: 'https://www.gamedevmap.com', desc: 'Find studios near you. Useful for identifying local employers worth connecting with before reaching out. Often reveals studios you would not find by searching job boards.', type: 'discovery' }
+];
+
 /* ============================================
    APP STATE
    ============================================ */
@@ -3884,12 +4115,15 @@ function showResults() {
   }
   var _hasAdj = state.disciplines.some(function(d) { return (ADJACENT_INDUSTRIES[d] || []).length > 0; });
   if (_hasAdj) {
-    html += '<button class="results-nav-btn" data-target="sec-adjacent">Adjacent Industries</button>';
+    html += '<button class="results-nav-btn" data-target="sec-adjacent">Adjacent</button>';
   }
+  html += '<button class="results-nav-btn" data-target="sec-freelance">Freelance</button>';
+  html += '<button class="results-nav-btn" data-target="sec-networking">Networking</button>';
+  html += '<button class="results-nav-btn" data-target="sec-mentalhealth">Wellbeing</button>';
   html += '</nav>';
 
   // Market Snapshot
-  html += '<div id="sec-plan">';
+  html += '<div id="sec-plan" class="results-section active">';
 
   // Action Plan
   var timeFrames = ['This week', 'This week', 'Ongoing', 'Ongoing', 'Within 30 days'];
@@ -3926,13 +4160,13 @@ function showResults() {
   html += '<div class="market-stat"><div class="market-stat-value stat-good">~50%</div><div class="market-stat-label">Referral interview rate</div><div class="market-stat-source"><a href="https://www.reddit.com/r/ExperiencedDevs/" target="_blank" rel="noopener noreferrer">r/ExperiencedDevs</a></div></div>';
   html += '<div class="market-stat"><div class="market-stat-value stat-bad">&lt;15%</div><div class="market-stat-label">Roles still remote-friendly</div><div class="market-stat-source"><a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Satvat 2025</a></div></div>';
   html += '</div>';
-  html += '<p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-3);line-height:1.5;">Notable cuts since January 2026: Ninja Theory (closed), Compulsion Games (uncertain), Bungie (third round, Sony took a $765M write-down), Spiders (closed), Eidos Montreal (124 cut), Behaviour Interactive, Piranha Games, AppLovin/Machine Zone, Polyarc. Total for 2026 will likely exceed 4,000.</p>';
+  html += '<p style="font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-3);line-height:1.5;">Notable closures and cuts in 2026: Microsoft Xbox (3,200 cut July 6, including closure or sale of Double Fine, Ninja Theory, Compulsion Games, and Undead Labs, with Arkane Lyon under review and Bethesda/Blizzard also restructuring), Bungie (third round of cuts, Sony took a $765M write-down), Spiders (closed), Eidos Montreal (124 cut), Behaviour Interactive, Piranha Games, AppLovin/Machine Zone, Polyarc. 2026 is on track to be the worst year for game industry jobs on record.</p>';
   html += '</div></div>';
 
   html += '</div>'; // close sec-plan
 
   // Section 1: Where to Look
-  html += '<div id="sec-boards">';
+  html += '<div id="sec-boards" class="results-section">';
   html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><h2>Where to Look <span class="section-count">(' + boards.length + ')</span></h2></div>';
 
   boards.forEach(function(item, i) {
@@ -3972,7 +4206,7 @@ function showResults() {
   html += '</div>'; // close sec-boards
 
   // Section 2: AI Tools
-  html += '<div id="sec-tools">';
+  html += '<div id="sec-tools" class="results-section">';
   html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg><h2>AI Tools for Your Search <span class="section-count">(' + tools.length + ')</span></h2></div>';
 
   tools.forEach(function(item, i) {
@@ -4007,7 +4241,7 @@ function showResults() {
   html += '</div>'; // close sec-tools
 
   // Section 3: Watch Out For
-  html += '<div id="sec-pitfalls">';
+  html += '<div id="sec-pitfalls" class="results-section">';
   html += '<div class="section-header warning-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><h2>Watch Out For <span class="section-count">(' + pitfalls.length + ')</span></h2></div>';
 
   pitfalls.forEach(function(item, pi) {
@@ -4031,7 +4265,7 @@ function showResults() {
 
   // Section 4: Communities & Support
   if (communities.length > 0) {
-    html += '<div id="sec-communities">';
+    html += '<div id="sec-communities" class="results-section">';
     html += '<div class="section-header communities-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Communities &amp; Support <span class="section-count">(' + communities.length + ')</span></h2></div>';
 
     var TYPE_LABELS = { discord: 'Discord', reddit: 'Reddit', organization: 'Organization', mental_health: 'Mental Health', mentorship: 'Mentorship', tool: 'Tool' };
@@ -4093,7 +4327,7 @@ function showResults() {
   // Section: Adjacent Industries
   var _adjDiscs = state.disciplines.filter(function(d) { return (ADJACENT_INDUSTRIES[d] || []).length > 0; });
   if (_adjDiscs.length > 0) {
-    html += '<div id="sec-adjacent">';
+    html += '<div id="sec-adjacent" class="results-section">';
     html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><h2>Where Your Skills Transfer</h2></div>';
     html += '<p class="adjacent-intro-note">The game industry has shed tens of thousands of jobs since 2022. These paths are specific to your selected disciplines. The more technical your role, the wider your options outside games.</p>';
     var adjCardIdx = 0;
@@ -4125,7 +4359,92 @@ function showResults() {
     html += '</div>';
   }
 
-    // Disclaimer
+  
+  // ── FREELANCE / CONTRACT ──────────────────────────────────────────────────
+  html += '<div id="sec-freelance" class="results-section">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg><h2>Freelance and Contract Work</h2></div>';
+
+  // Platforms - all disciplines, then discipline-specific
+  var freePlatAll = FREELANCE_PLATFORMS.filter(function(p) { return p.disciplines.length === 0; });
+  var freePlatDisc = FREELANCE_PLATFORMS.filter(function(p) {
+    return p.disciplines.length > 0 && state.disciplines.some(function(d) { return p.disciplines.indexOf(d) >= 0; });
+  });
+  var freePlats = freePlatAll.concat(freePlatDisc);
+
+  if (freePlats.length > 0) {
+    html += '<div class="freelance-subheader">Platforms</div>';
+    freePlats.forEach(function(p) {
+      html += '<div class="freelance-platform-card">';
+      html += '<div class="freelance-platform-name"><a href="' + p.url + '" target="_blank" rel="noopener noreferrer">' + p.name + '</a></div>';
+      html += '<div class="freelance-platform-desc">' + p.desc + '</div>';
+      html += '</div>';
+    });
+  }
+
+  html += '<div class="freelance-subheader">Practical Guidance</div>';
+  FREELANCE_TIPS.forEach(function(tip) {
+    html += '<div class="freelance-tip-card">';
+    html += '<div class="freelance-tip-title">' + tip.title + '</div>';
+    html += '<div class="freelance-tip-desc">' + tip.desc + '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>'; // close sec-freelance
+
+  // ── NETWORKING ────────────────────────────────────────────────────────────
+  html += '<div id="sec-networking" class="results-section">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Networking</h2></div>';
+  html += '<p style="font-size:var(--text-sm);color:var(--color-text-muted);line-height:1.6;margin-bottom:var(--space-3);">Specific event listings go stale fast. This is a mix of recurring events worth planning for and ongoing places where real developer connections happen.</p>';
+
+  var netEvents = NETWORKING_RESOURCES.filter(function(r) { return r.type === 'event'; });
+  var netOnline = NETWORKING_RESOURCES.filter(function(r) { return r.type !== 'event'; });
+
+  if (netEvents.length > 0) {
+    html += '<div class="freelance-subheader">Recurring Events</div>';
+    netEvents.forEach(function(r) {
+      html += '<div class="networking-card">';
+      html += '<div class="networking-card-body">';
+      html += '<div class="networking-card-name"><a href="' + r.url + '" target="_blank" rel="noopener noreferrer">' + r.name + '</a></div>';
+      if (r.frequency) {
+        html += '<div style="font-size:10px;color:var(--color-text-muted);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">' + r.frequency + '</div>';
+      }
+      html += '<div class="networking-card-desc">' + r.desc + '</div>';
+      html += '</div>';
+      html += '<span class="networking-badge type-event">Event</span>';
+      html += '</div>';
+    });
+  }
+
+  if (netOnline.length > 0) {
+    html += '<div class="freelance-subheader">Online and Discovery</div>';
+    netOnline.forEach(function(r) {
+      html += '<div class="networking-card">';
+      html += '<div class="networking-card-body">';
+      html += '<div class="networking-card-name"><a href="' + r.url + '" target="_blank" rel="noopener noreferrer">' + r.name + '</a></div>';
+      html += '<div class="networking-card-desc">' + r.desc + '</div>';
+      html += '</div>';
+      html += '<span class="networking-badge type-' + r.type + '">' + (r.type === 'online' ? 'Online' : 'Tool') + '</span>';
+      html += '</div>';
+    });
+  }
+
+  html += '</div>'; // close sec-networking
+
+  // ── MENTAL HEALTH ─────────────────────────────────────────────────────────
+  html += '<div id="sec-mentalhealth" class="results-section">';
+  html += '<div class="section-header"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><h2>Mental Health Resources</h2></div>';
+  html += '<div class="mh-notice">Job loss hits differently in a creative field where work and identity overlap. These resources are here if you need them.</div>';
+
+  MENTAL_HEALTH_RESOURCES.forEach(function(r) {
+    html += '<div class="mh-card' + (r.crisis ? ' crisis' : '') + '">';
+    html += '<div class="mh-card-name"><a href="' + r.url + '" target="_blank" rel="noopener noreferrer">' + r.name + '</a></div>';
+    html += '<div class="mh-card-desc">' + r.desc + '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>'; // close sec-mentalhealth
+
+  // Disclaimer
   html += '<p class="results-disclaimer">Data from <a href="https://gdconf.com/news/gdc-2026-state-game-industry" target="_blank" rel="noopener noreferrer">GDC 2026 State of the Industry</a>, <a href="https://www.ashbyhq.com/blog/recruiting/talent-trends-2024" target="_blank" rel="noopener noreferrer">Ashby Talent Trends 2024</a>, <a href="https://asgc.gg" target="_blank" rel="noopener noreferrer">Amir Satvat/ASGC</a>, <a href="https://gdconf.com/article/gdc-2025-state-of-the-game-industry-devs-weigh-in-on-layoffs-ai-and-more/" target="_blank" rel="noopener noreferrer">GDC 2025 State of the Industry</a>, 8Bit Gamedev Salary Pulse 2025. Tool pricing subject to change. All URLs verified June 2026.</p>';
 
   // Survey
@@ -4198,7 +4517,7 @@ function showResults() {
     copyBtn.addEventListener('click', function() {
       var planOl = document.querySelector('.action-plan ol');
       var planItems = planOl ? planOl.querySelectorAll('li') : [];
-      var text = 'Game Dev Job Search Plan (' + exp.label + ' ' + disc.label + ')\n';
+      var text = 'Game Dev Job Search Plan (' + exp.label + ' ' + discLabels.join(', ') + ')\n';
       text += '='.repeat(40) + '\n\n';
       planItems.forEach(function(li, idx) {
         var tf = timeFrames[idx] || '';
@@ -4231,6 +4550,33 @@ function showResults() {
         setTimeout(function() { label.textContent = 'Copy Plan'; }, 2000);
       });
       gaEvent('copy_plan', { discipline: state.disciplines.join(','), experience: state.experience });
+    });
+  }
+
+  // Share plan CTA button (must be wired here — injected into DOM by showResults)
+  var sharePlanBtnEl = document.getElementById('sharePlanBtn');
+  if (sharePlanBtnEl) {
+    sharePlanBtnEl.addEventListener('click', function() {
+      var SHARE_URL = 'https://gamedevai.guide/jobs/';
+      var lbl = document.getElementById('sharePlanLabel');
+      if (navigator.share) {
+        navigator.share({ title: 'Game Dev Job Search Guide', url: SHARE_URL }).catch(function() {});
+        gaEvent('share_click', { platform: 'native', source: 'plan_cta' });
+      } else {
+        navigator.clipboard.writeText(SHARE_URL).then(function() {
+          if (lbl) { lbl.textContent = 'Link Copied!'; setTimeout(function() { lbl.textContent = 'Share'; }, 2000); }
+        }).catch(function() {
+          var ta = document.createElement('textarea');
+          ta.value = SHARE_URL;
+          ta.style.cssText = 'position:fixed;left:-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (lbl) { lbl.textContent = 'Link Copied!'; setTimeout(function() { lbl.textContent = 'Share'; }, 2000); }
+        });
+        gaEvent('share_click', { platform: 'copy', source: 'plan_cta' });
+      }
     });
   }
 
@@ -4320,62 +4666,99 @@ function revealCards(btn) {
     var nav = document.getElementById('resultsNav');
     if (!nav) return;
 
+    // Wrap nav in container and add scroll arrows
+    var container = document.createElement('div');
+    container.className = 'results-nav-container';
+    nav.parentNode.insertBefore(container, nav);
+    container.appendChild(nav);
+
+    var arrowLeft = document.createElement('button');
+    arrowLeft.className = 'nav-scroll-arrow nav-scroll-arrow-left';
+    arrowLeft.setAttribute('aria-label', 'Scroll nav left');
+    arrowLeft.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+    container.insertBefore(arrowLeft, nav);
+
+    var arrowRight = document.createElement('button');
+    arrowRight.className = 'nav-scroll-arrow nav-scroll-arrow-right';
+    arrowRight.setAttribute('aria-label', 'Scroll nav right');
+    arrowRight.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
+    container.appendChild(arrowRight);
+
+    function updateArrows() {
+      var atLeft = nav.scrollLeft <= 8;
+      var atRight = nav.scrollLeft >= nav.scrollWidth - nav.clientWidth - 8;
+      arrowLeft.classList.toggle('visible', !atLeft);
+      arrowRight.classList.toggle('visible', !atRight);
+      if (container.getBoundingClientRect().top <= 53) {
+        container.classList.add('has-shadow');
+      } else {
+        container.classList.remove('has-shadow');
+      }
+    }
+
+    arrowLeft.addEventListener('click', function() {
+      nav.scrollBy({ left: -160, behavior: 'smooth' });
+    });
+    arrowRight.addEventListener('click', function() {
+      nav.scrollBy({ left: 160, behavior: 'smooth' });
+    });
+    nav.addEventListener('scroll', updateArrows, { passive: true });
+    // Show right arrow immediately — 9 tabs almost always overflow
+    arrowRight.classList.add('visible');
+    setTimeout(updateArrows, 150);
+    setTimeout(updateArrows, 400); // second pass after full render
+    window.addEventListener('resize', updateArrows, { passive: true });
+
     var btns = nav.querySelectorAll('.results-nav-btn');
-    var navHeight = 110; // hub-nav + results-nav offset
+
+    function switchTab(targetId, activeBtn) {
+      // Hide all tab sections
+      document.querySelectorAll('.results-section').forEach(function(s) {
+        s.classList.remove('active');
+      });
+      // Show target section
+      var target = document.getElementById(targetId);
+      if (target) { target.classList.add('active'); }
+      // Update nav active states
+      btns.forEach(function(b) { b.classList.remove('active'); });
+      if (activeBtn) { activeBtn.classList.add('active'); }
+      // Scroll active nav button into view
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+      }
+      setTimeout(updateArrows, 200);
+      // Scroll to top of results area
+      var rc = document.getElementById('resultsContent');
+      if (rc) {
+        var y = rc.getBoundingClientRect().top + window.pageYOffset - 110;
+        window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+      }
+      gaEvent('nav_click', { section: targetId });
+    }
 
     btns.forEach(function(btn) {
       btn.addEventListener('click', function() {
-        var targetId = btn.getAttribute('data-target');
-        var target = document.getElementById(targetId);
-        if (target) {
-          var y = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-          btns.forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-          gaEvent('nav_click', { section: targetId });
-        }
+        switchTab(btn.getAttribute('data-target'), btn);
       });
     });
 
-    // Scroll spy: update active nav button based on scroll position
-    var sectionIds = [];
-    btns.forEach(function(b) { sectionIds.push(b.getAttribute('data-target')); });
-
+    // Shadow on sticky nav
     var ticking = false;
     window.addEventListener('scroll', function() {
       if (!ticking) {
         requestAnimationFrame(function() {
-          var scrollY = window.pageYOffset + navHeight + 40;
-          var activeId = sectionIds[0];
-          for (var i = sectionIds.length - 1; i >= 0; i--) {
-            var el = document.getElementById(sectionIds[i]);
-            if (el && el.offsetTop <= scrollY) {
-              activeId = sectionIds[i];
-              break;
-            }
-          }
-          btns.forEach(function(b) {
-            b.classList.toggle('active', b.getAttribute('data-target') === activeId);
-          });
-
-          // Shadow when scrolled past initial position
-          if (nav.getBoundingClientRect().top <= 53) {
-            nav.classList.add('has-shadow');
+          if (container.getBoundingClientRect().top <= 53) {
+            container.classList.add('has-shadow');
           } else {
-            nav.classList.remove('has-shadow');
+            container.classList.remove('has-shadow');
           }
           ticking = false;
         });
         ticking = true;
       }
-    });
+    }, { passive: true });
   }
 
-  // Re-init after results are rendered
-  var origShowResults = window.showResults;
-  if (typeof origShowResults === 'undefined') {
-    // Will be called manually after showResults
-  }
   var observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(m) {
       if (m.target.id === 'resultsContent' && m.addedNodes.length > 0) {
@@ -4480,33 +4863,7 @@ function startWizard() {
 }
 document.getElementById('startWizardBtn').addEventListener('click', startWizard);
 
-/* Share plan CTA button */
-(function() {
-  var btn = document.getElementById('sharePlanBtn');
-  if (!btn) return;
-  btn.addEventListener('click', function() {
-    var SHARE_URL = 'https://gamedevai.guide/jobs/';
-    var label = document.getElementById('sharePlanLabel');
-    if (navigator.share) {
-      navigator.share({ title: 'Game Dev Job Search Guide', url: SHARE_URL }).catch(function() {});
-      gaEvent('share_click', { platform: 'native', source: 'plan_cta' });
-    } else {
-      navigator.clipboard.writeText(SHARE_URL).then(function() {
-        if (label) { label.textContent = 'Link Copied!'; setTimeout(function() { label.textContent = 'Share'; }, 2000); }
-      }).catch(function() {
-        var ta = document.createElement('textarea');
-        ta.value = SHARE_URL;
-        ta.style.cssText = 'position:fixed;left:-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-        if (label) { label.textContent = 'Link Copied!'; setTimeout(function() { label.textContent = 'Share'; }, 2000); }
-      });
-      gaEvent('share_click', { platform: 'copy', source: 'plan_cta' });
-    }
-  });
-})();
+/* sharePlanBtn wired in showResults() */
 </script>
 </body>
 </html>
