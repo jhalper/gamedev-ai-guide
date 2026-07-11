@@ -2313,6 +2313,116 @@ h1, h2, h3, h4, h5, h6 {
 .networking-badge.type-event { background: rgba(123,107,175,0.12); color: rgba(123,107,175,0.9); }
 .networking-badge.type-online { background: rgba(76,214,255,0.08); color: rgba(76,214,255,0.7); }
 .networking-badge.type-discovery { background: var(--color-surface-2); color: var(--color-text-muted); }
+
+/* ============ PRINT / PDF EXPORT ============ */
+.pdf-print-header {
+  display: none;
+}
+.results-footer-actions {
+  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+.results-footer-btns {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-hover);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+.btn-pdf:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.btn-pdf svg { flex-shrink: 0; }
+
+@media print {
+  /* Hide all screens except results */
+  #landingScreen,
+  #formScreen,
+  #screen-feedback { display: none !important; }
+
+  /* Show results even if not active screen */
+  #screen-results { display: block !important; }
+
+  /* Show ALL tab sections, not just active */
+  .results-section { display: block !important; }
+
+  /* Hide UI chrome */
+  .hub-nav,
+  .results-nav-container,
+  .results-footer-actions,
+  .share-cta-wrap,
+  .copy-plan-btn,
+  .sentiment-poll,
+  .tip-actions,
+  .results-guidance-toggle,
+  .market-context-toggle,
+  .market-context-panel,
+  .results-actions { display: none !important; }
+
+  /* Show print header */
+  .pdf-print-header { display: block !important; }
+
+  /* Clean backgrounds */
+  body, #screen-results, #resultsContent {
+    background: white !important;
+    color: #111 !important;
+  }
+
+  .app-container { max-width: 100% !important; padding: 0 !important; }
+  #resultsContent { padding: 0 1rem !important; }
+
+  /* Section cards: print-friendly */
+  .rec-card,
+  .caution-card,
+  .tip-box,
+  .action-plan,
+  .freelance-tip-card,
+  .freelance-platform-card,
+  .mh-card,
+  .networking-card,
+  .adjacent-card,
+  .results-guidance { background: #f9f9f9 !important; border: 1px solid #ddd !important; box-shadow: none !important; }
+
+  /* Always expand rec cards and adjacent cards in print */
+  .rec-card-details { max-height: none !important; display: block !important; }
+  .adjacent-card-body { display: block !important; }
+  .results-guidance-body { display: block !important; }
+
+  /* Page breaks between major sections */
+  #sec-boards, #sec-tools, #sec-pitfalls,
+  #sec-communities, #sec-adjacent, #sec-freelance,
+  #sec-networking, #sec-mentalhealth {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  /* Typography */
+  .results-header h1 { font-size: 1.4rem !important; color: #111 !important; }
+  .section-header h2 { color: #333 !important; font-size: 1rem !important; }
+  .rec-card-title { color: #111 !important; }
+  a { color: #333 !important; }
+
+  /* Page settings */
+  @page { margin: 1.5cm; }
+}
 /* SCROLLBAR */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -4148,7 +4258,7 @@ function showResults() {
   // Collapsible market context
   html += '<button class="market-context-toggle" id="mktCtxToggle" onclick="(function(btn){var p=document.getElementById(\'mktCtxPanel\');p.classList.toggle(\'open\');btn.classList.toggle(\'open\');})(this)">';
   html += '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
-  html += 'Market Context</button>';
+  html += 'How Bad Is It?</button>';
   html += '<div class="market-context-panel" id="mktCtxPanel">';
   html += '<div class="market-snapshot">';
   html += '<div class="market-snapshot-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg> Market Snapshot (2025-2026)</div>';
@@ -4504,7 +4614,21 @@ function showResults() {
   html += '</div>';
 
   // Restart
-  html += '<div class="restart-section"><button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button><p class="restart-prompt">Searching for a different discipline or situation? Run it again \u2014 results change based on your profile.</p></div>';
+  // Print header (hidden on screen, shows in PDF)
+  html += '<div class="pdf-print-header">';
+  html += '<div style="font-size:1.1rem;font-weight:700;margin-bottom:4px;">Game Dev Job Search Guide by HALP</div>';
+  html += '<div style="font-size:0.85rem;color:#555;margin-bottom:2px;">gamedevai.guide/jobs</div>';
+  html += '<div style="font-size:0.8rem;color:#777;">Generated ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) + ' for a ' + exp.label + ' ' + discLabels.join(', ') + ' professional</div>';
+  html += '<hr style="margin:12px 0;border:none;border-top:1px solid #ddd;">';
+  html += '</div>';
+
+  html += '<div class="results-footer-actions">';
+  html += '<div class="results-footer-btns">';
+  html += '<button class="btn-pdf" onclick="window.print()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg> Save as PDF</button>';
+  html += '<button class="btn-secondary" onclick="restart()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</button>';
+  html += '</div>';
+  html += '<p class="restart-prompt">Save as PDF to keep a copy of your full plan, including all boards, tools, pitfalls, adjacent industries, and resources.</p>';
+  html += '</div>';
 
   document.getElementById('resultsContent').innerHTML = html;
   document.getElementById('formScreen').classList.remove('active');
