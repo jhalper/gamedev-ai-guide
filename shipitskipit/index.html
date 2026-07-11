@@ -8,18 +8,18 @@
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://gamedevai.guide/shipitskipit/">
-<meta property="og:title" content="Ship It or Skip It — AI Decision Framework for Game Developers">
+<meta property="og:url" content="https://happymanic.com/gamedev/shipitskipit/">
+<meta property="og:title" content="Ship It or Skip It: AI Decision Framework for Game Developers">
 <meta property="og:description" content="Five questions. One honest answer about whether AI is the right call for this specific task, right now, before you find out the hard way.">
-<meta property="og:image" content="https://gamedevai.guide/shipitskipit/og-image.png">
+<meta property="og:image" content="https://happymanic.com/gamedev/shipitskipit/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ship It or Skip It — AI Decision Framework for Game Developers">
+<meta name="twitter:title" content="Ship It or Skip It: AI Decision Framework for Game Developers">
 <meta name="twitter:description" content="Five questions. One honest answer about whether AI is the right call for this specific task, right now.">
-<meta name="twitter:image" content="https://gamedevai.guide/shipitskipit/og-image.png">
+<meta name="twitter:image" content="https://happymanic.com/gamedev/shipitskipit/og-image.png">
 
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=satoshi@400,500,600&display=swap" rel="stylesheet">
@@ -357,6 +357,145 @@ a:hover { opacity: 0.8; text-decoration: underline; }
 /* =====================================================
    QUESTION FLOW
    ===================================================== */
+/* =====================================================
+   TAB SWITCHER
+   ===================================================== */
+.tab-switcher {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 2rem;
+}
+.tab-btn {
+  flex: 1;
+  padding: 0.875rem 0.5rem;
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-4);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+  text-align: center;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+}
+.tab-btn:hover { color: var(--text-2); }
+.tab-btn.active {
+  color: var(--amber);
+  border-bottom-color: var(--amber);
+}
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: qIn 0.25s ease-out; }
+
+/* Why Developers Hesitate tab content */
+.why-section {
+  margin-bottom: 2rem;
+}
+.why-section-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+.why-section-body {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.75;
+}
+.why-section-body p { margin-bottom: 0.875rem; }
+.why-section-body p:last-child { margin-bottom: 0; }
+.why-callout {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 1.125rem 1.375rem;
+  margin: 1.25rem 0;
+}
+.why-callout-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.625rem;
+}
+.why-callout-body {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+}
+.why-callout-body p { margin-bottom: 0.625rem; }
+.why-callout-body p:last-child { margin-bottom: 0; }
+.why-dev-callout {
+  background: rgba(78,202,122,0.06);
+  border: 1px solid rgba(78,202,122,0.18);
+  border-left: 3px solid rgba(78,202,122,0.5);
+  border-radius: var(--radius);
+  padding: 1.125rem 1.375rem;
+  margin: 1.25rem 0;
+}
+.why-dev-callout .why-callout-label { color: var(--green); }
+.why-note {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.125rem 1.375rem;
+  margin-top: 1.25rem;
+}
+.why-note-label {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-4);
+  margin-bottom: 0.5rem;
+}
+.why-note-body {
+  font-size: 16px;
+  color: var(--text-3);
+  line-height: 1.7;
+}
+.why-divider {
+  height: 1px;
+  background: var(--border-2);
+  margin: 2rem 0;
+}
+.silent-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 1.25rem 0;
+}
+.silent-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+.silent-q-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--text-4);
+  margin-top: 1px;
+}
+.silent-q-icon svg { width: 20px; height: 20px; display: block; }
+
 .question-flow { display: flex; flex-direction: column; gap: 0; }
 
 /* Progress track */
@@ -1226,6 +1365,227 @@ a:hover { opacity: 0.8; text-decoration: underline; }
 .tool-footer a:hover { color: var(--amber); }
 .footer-links { display: flex; gap: 1.25rem; flex-wrap: wrap; margin-top: 0.25rem; }
 .footer-links a { font-size: 16px; }
+
+/* =====================================================
+   TAB 2: INTERNAL NAV + ACCORDIONS
+   ===================================================== */
+.why-mini-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-2);
+}
+.why-nav-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+  font-family: 'Satoshi', sans-serif;
+}
+.why-nav-pill:hover {
+  border-color: var(--amber);
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Accordion sections */
+.why-accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 0.625rem;
+  overflow: hidden;
+}
+.why-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+  gap: 0.75rem;
+}
+.why-accordion-header:hover { background: var(--surface-2); }
+.why-accordion-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  flex: 1;
+}
+.why-accordion-chevron {
+  width: 18px;
+  height: 18px;
+  color: var(--text-4);
+  flex-shrink: 0;
+  transition: transform 0.25s ease;
+}
+.why-accordion.open .why-accordion-chevron { transform: rotate(180deg); }
+.why-accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.22,1,0.36,1);
+}
+.why-accordion.open .why-accordion-body { max-height: 4000px; }
+.why-accordion-inner { padding: 0 1.25rem 1.25rem; }
+
+/* Vendor accordion: amber left border */
+.why-accordion.vendor-acc { border-left: 3px solid rgba(212,148,60,0.4); }
+.why-accordion.vendor-acc .why-accordion-header { border-left: none; }
+
+/* Developer accordion: green left border */
+.why-accordion.dev-acc { border-left: 3px solid rgba(78,202,122,0.4); }
+
+/* Keep why-callout and why-dev-callout styles inside accordion */
+.why-accordion-inner .why-callout { margin-bottom: 0.625rem; }
+.why-accordion-inner .why-callout:last-child { margin-bottom: 0; }
+
+/* =====================================================
+   PRINT / SAVE AS PDF
+   ===================================================== */
+@media print {
+  /* Hide everything except the result */
+  .bg-orbs,
+  .intro,
+  .tab-switcher,
+  .tab-panel,
+  .question-flow,
+  .tool-footer,
+  .result-actions,
+  .policy-card,
+  #tab-decision,
+  #tab-hesitate {
+    display: none !important;
+  }
+
+  /* Show only the result screen */
+  #result-screen,
+  #result-screen.active {
+    display: block !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 12pt;
+  }
+
+  .container { max-width: 100%; padding: 0; }
+  .tool-wrap { padding: 0; }
+
+  /* Verdict card print styles */
+  .result-verdict {
+    border: 2pt solid #cccccc !important;
+    background: #f9f9f9 !important;
+    box-shadow: none !important;
+    margin-bottom: 1rem;
+    page-break-inside: avoid;
+  }
+  .result-verdict.green .result-verdict-label,
+  .result-verdict.green .result-verdict-title { color: #2e7d4f !important; }
+  .result-verdict.red .result-verdict-label,
+  .result-verdict.red .result-verdict-title   { color: #b94040 !important; }
+
+  .result-verdict-body { color: #333333 !important; }
+
+  .score-pip { background: #dddddd !important; }
+  .score-pip.filled-green { background: #2e7d4f !important; }
+  .score-pip.filled-red   { background: #b94040 !important; }
+  .score-label, .score-value { color: #666666 !important; }
+
+  /* Answer pills */
+  .answer-pill {
+    border: 1pt solid #cccccc !important;
+    background: #f5f5f5 !important;
+    color: #333333 !important;
+  }
+  .answer-pill-label { color: #c47b00 !important; }
+
+  /* Environment note */
+  .environment-note {
+    border: 1pt solid #cccccc !important;
+    border-left: 3pt solid #4cd6ff !important;
+    background: #f9f9f9 !important;
+  }
+  .environment-note-label { color: #666666 !important; }
+  .environment-note-body  { color: #333333 !important; }
+
+  /* Result sections */
+  .result-section {
+    border: 1pt solid #cccccc !important;
+    background: #f9f9f9 !important;
+    page-break-inside: avoid;
+  }
+  .result-section-label { color: #c47b00 !important; }
+  .result-section-body  { color: #333333 !important; }
+  .result-section-body.is-quote { color: #b94040 !important; }
+  .result-section-icon  { display: none !important; }
+  .result-section-content { padding-left: 0 !important; }
+
+  /* Unsure flags */
+  .unsure-flag {
+    border: 1pt solid #cccccc !important;
+    border-left: 3pt solid #c47b00 !important;
+    background: #fffbf0 !important;
+  }
+  .unsure-flag-text { color: #333333 !important; }
+  .unsure-flag-icon { display: none !important; }
+
+  /* Case studies */
+  .case-studies-label { color: #b94040 !important; }
+  .case-card {
+    border: 1pt solid #cccccc !important;
+    border-left: 3pt solid #b94040 !important;
+    background: #f9f9f9 !important;
+    page-break-inside: avoid;
+  }
+  .case-card-title  { color: #111111 !important; }
+  .case-card-what   { color: #333333 !important; }
+  .case-card-cost   { background: #f5f5f5 !important; border: 1pt solid #dddddd !important; color: #333333 !important; }
+  .case-card-cost-label { color: #b94040 !important; }
+  .case-source, .case-source a { color: #666666 !important; }
+  .case-tag-task    { background: #fff8e8 !important; color: #c47b00 !important; }
+  .case-tag-outcome { background: #fff0f0 !important; color: #b94040 !important; }
+  .case-pattern-note { background: #f5f5f5 !important; border: 1pt solid #cccccc !important; color: #333333 !important; }
+  .case-pattern-note strong { color: #c47b00 !important; }
+
+  /* Print header */
+  .print-header {
+    display: block !important;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2pt solid #cccccc;
+  }
+  .print-header-title {
+    font-family: sans-serif;
+    font-size: 14pt;
+    font-weight: bold;
+    color: #111111;
+    margin-bottom: 2pt;
+  }
+  .print-header-url {
+    font-family: sans-serif;
+    font-size: 9pt;
+    color: #666666;
+  }
+}
+
+/* Hide print header on screen */
+.print-header { display: none; }
 </style>
 </head>
 <body>
@@ -1241,7 +1601,7 @@ a:hover { opacity: 0.8; text-decoration: underline; }
 <div class="container" style="position:relative;z-index:1;">
 <div class="tool-wrap">
 
-<!-- ===== INTRO (collapses once flow starts) ===== -->
+<!-- ===== PERSISTENT HEADER ===== -->
 <div class="intro" id="intro-section">
   <h1 class="intro-title">Ship It or Skip It</h1>
   <div class="decision-meter" aria-hidden="true">
@@ -1256,6 +1616,15 @@ a:hover { opacity: 0.8; text-decoration: underline; }
   <p class="intro-hook">Imagine getting that on a game you just released after countless days and nights of work. Not because the game is bad. Because you put AI in there hoping to cut a few hours on art and <strong>players came after it with pitchfork reviews.</strong> The AI debate in game dev is brutal right now. Think twice before that choice costs you.</p>
   <p class="intro-sub">Five questions. One honest answer about whether AI is the right call for this specific task, right now, before you find out the hard way.</p>
 </div>
+
+<!-- ===== TAB SWITCHER ===== -->
+<div class="tab-switcher" id="tab-switcher">
+  <button class="tab-btn active" id="tab-btn-decision" onclick="switchTab('decision')">The Decision</button>
+  <button class="tab-btn" id="tab-btn-hesitate" onclick="switchTab('hesitate')">For Vendors</button>
+</div>
+
+<!-- ===== TAB 1: THE DECISION ===== -->
+<div class="tab-panel active" id="tab-decision">
 
 <!-- ===== QUESTION FLOW ===== -->
 <div class="question-flow" id="question-flow">
@@ -1366,6 +1735,12 @@ a:hover { opacity: 0.8; text-decoration: underline; }
 <!-- ===== RESULT SCREEN ===== -->
 <div class="result-screen" id="result-screen">
 
+  <!-- Print header: only visible when printing -->
+  <div class="print-header">
+    <div class="print-header-title">Ship It or Skip It: AI Decision Framework for Game Developers</div>
+    <div class="print-header-url">gamedevai.guide/shipitskipit/</div>
+  </div>
+
   <div class="result-verdict" id="result-verdict">
     <div class="result-verdict-label" id="result-label"></div>
     <div class="result-verdict-title" id="result-title"></div>
@@ -1403,6 +1778,10 @@ a:hover { opacity: 0.8; text-decoration: underline; }
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
       <span id="share-label">Share result</span>
     </button>
+    <button class="btn-share-result" id="print-btn" onclick="window.print()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Save as PDF
+    </button>
   </div><!-- /result-actions -->
 
   <!-- POLICY TEMPLATE DOWNLOAD CARD -->
@@ -1426,6 +1805,149 @@ a:hover { opacity: 0.8; text-decoration: underline; }
 
   </div><!-- /result-below-verdict -->
 </div><!-- /result-screen -->
+
+</div><!-- /tab-decision -->
+
+<!-- ===== TAB 2: WHY DEVELOPERS HESITATE ===== -->
+<div class="tab-panel" id="tab-hesitate">
+
+  <!-- Mini internal nav -->
+  <div class="why-mini-nav" aria-label="Jump to section">
+    <a class="why-nav-pill" href="#why-room">The Room</a>
+    <a class="why-nav-pill" href="#why-thoughts">Their Thoughts</a>
+    <a class="why-nav-pill" href="#why-demo">The Demo</a>
+    <a class="why-nav-pill" href="#why-vendor">What Helps</a>
+    <a class="why-nav-pill" href="#why-dev">For You</a>
+  </div>
+
+  <!-- SECTION: The Room (always open) -->
+  <div class="why-section" id="why-room">
+    <div class="why-section-title">The room you are walking into</div>
+    <div class="why-section-body">
+      <p>Game development has seen historic layoffs. A lot of developers watched colleagues get walked out while executives talked about AI efficiency in the same breath. So when a vendor shows up with a demo and the word "game changer" in their pitch deck, the room is not exactly neutral. Just so you know.</p>
+    </div>
+  </div>
+
+  <div class="why-divider"></div>
+
+  <!-- SECTION: Their Thoughts (always open, question cards) -->
+  <div class="why-section" id="why-thoughts">
+    <div class="why-section-title">What is actually running through the developer's head during your demo</div>
+    <div class="why-section-body">
+      <p>While you are showing them the impressive output, they are running a completely different calculation.</p>
+    </div>
+    <div class="silent-questions">
+      <div class="silent-q">
+        <span class="silent-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        Who on my team absorbs the time to learn this? We are already behind on two milestones.
+      </div>
+      <div class="silent-q">
+        <span class="silent-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        What happens to my current pipeline when this gets dropped into it? We have tools that talk to each other in very specific ways and one new thing can break three others.
+      </div>
+      <div class="silent-q">
+        <span class="silent-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        What does this look like when it fails in production at 11pm before a cert submission? Because it will fail. Every tool fails. What does that cost us?
+      </div>
+      <div class="silent-q">
+        <span class="silent-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        If this tool improves our output, does that mean we need fewer people? Am I making the case for my own team to get smaller?
+      </div>
+      <div class="silent-q">
+        <span class="silent-q-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+        If I recommend this and it goes badly, that is on me. If I push back and it turns out to be useful, that is also on me. Either way I am carrying the risk.
+      </div>
+    </div>
+    <div class="why-section-body">
+      <p>None of these get answered in a demo. Most do not get asked out loud. All of them are in the room.</p>
+    </div>
+  </div>
+
+  <div class="why-divider"></div>
+
+  <!-- SECTION: The Demo (always open, single callout) -->
+  <div class="why-section" id="why-demo">
+    <div class="why-section-title">What a demo does not show</div>
+    <div class="why-callout">
+      <div class="why-callout-body"><p>A demo shows a developer typing a perfect prompt into a tool and getting something impressive back in four seconds. It does not show what happens when the input is a 200 asset project with three years of technical debt, a cert submission in 48 hours, and the one person who knew how this pipeline worked just got laid off last quarter.</p></div>
+    </div>
+  </div>
+
+  <div class="why-divider"></div>
+
+  <!-- SECTION: What helps (accordion, closed by default) -->
+  <div class="why-section" id="why-vendor">
+    <div class="why-section-body" style="margin-bottom:0.875rem;">
+      <p>The vendors who get the furthest in a room full of game developers are the ones who make it clear, from the first sentence, that the human developer is the most important asset on the team. Not the AI. Not the tool. The person sitting across from you who has been doing this for years and is now being asked to evaluate whether your product is going to make their job better or their team smaller.</p>
+      <p>Saw this firsthand at a Runway summit. When a vendor leads from that position the room responds completely differently. It is not subtle.</p>
+      <p>Everything else follows from that.</p>
+    </div>
+
+    <div class="why-accordion vendor-acc" id="acc-vendor">
+      <button class="why-accordion-header" onclick="toggleAccordion('acc-vendor')" aria-expanded="false">
+        <span class="why-accordion-title">Six things that actually close the gap</span>
+        <svg class="why-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="why-accordion-body">
+        <div class="why-accordion-inner">
+          <div class="why-callout">
+            <div class="why-callout-label">1. Lead with their problem, not your tool</div>
+            <div class="why-callout-body"><p>If you genuinely believe the developer matters most, you have done the work to understand what they are actually struggling with before you walked in. Open there. Not with a feature list.</p></div>
+          </div>
+          <div class="why-callout">
+            <div class="why-callout-label">2. Drop "game changer" from your vocabulary</div>
+            <div class="why-callout-body"><p>Developers have heard it so many times it now triggers the same response as a car alarm. Nobody looks up. If your tool is genuinely good, the work shows it. The word does not.</p></div>
+          </div>
+          <div class="why-callout">
+            <div class="why-callout-label">3. Show what happens when it breaks</div>
+            <div class="why-callout-body"><p>Your demo worked because you controlled everything. A developer watching it is already imagining what happens when the input is three years of technical debt and there is a cert submission in 48 hours. Show that version. The vendor who is honest about failure is the one who gets trusted.</p></div>
+          </div>
+          <div class="why-callout">
+            <div class="why-callout-label">4. Bring a real example or bring nothing</div>
+            <div class="why-callout-body"><p>A studio, a real deadline, what went wrong, how it got fixed. That is worth more than any benchmark slide. Real developers made it work in a real pipeline under real pressure. That is what the person across from you needs to see.</p></div>
+          </div>
+          <div class="why-callout">
+            <div class="why-callout-label">5. The layoffs are in the room whether you acknowledge them or not</div>
+            <div class="why-callout-body"><p>Developers have watched colleagues lose jobs while AI gets credited in the same breath. You do not have to address it directly. But a vendor who acts like the resistance is irrational, rather than completely understandable given the last two years, will lose the room before slide three.</p></div>
+          </div>
+          <div class="why-callout">
+            <div class="why-callout-label">6. If your tool costs something to adopt, say so upfront</div>
+            <div class="why-callout-body"><p>Pipeline disruption, learning curve, the weeks it takes to build a real process around something that looked effortless in a demo. If you respect the developer, you respect their time enough to be honest about that cost. Then talk about what you are offering to offset it. Because they are already doing that math in their head while you are still talking.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-divider"></div>
+
+  <!-- SECTION: For Developers (accordion, closed by default) -->
+  <div class="why-section" id="why-dev">
+    <div class="why-accordion dev-acc" id="acc-dev">
+      <button class="why-accordion-header" onclick="toggleAccordion('acc-dev')" aria-expanded="false">
+        <span class="why-accordion-title">For developers: your hesitation is not irrational</span>
+        <svg class="why-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="why-accordion-body">
+        <div class="why-accordion-inner">
+          <div class="why-dev-callout">
+            <div class="why-callout-body">
+              <p>You are not anti-AI because you asked hard questions. You are doing your job.</p>
+              <p>You are allowed to ask what the integration actually costs. You are allowed to say the demo does not reflect your pipeline. You are allowed to ask what happens when it breaks at 11pm the night before cert and whether the vendor has a support line that answers at 11pm.</p>
+              <p>You do not have to frame your hesitation as anything other than what it is. You have a game to ship. That is the priority. Use the Decision tab to put some structure around the conversation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="why-note" style="margin-top:1.5rem;">
+    <div class="why-note-label">The current moment</div>
+    <div class="why-note-body">Nobody fully knows where this lands yet. The vendors who admit that tend to get further than the ones still saying "game changer."</div>
+  </div>
+
+</div><!-- /tab-hesitate -->
 
 <!-- FOOTER -->
 <footer class="tool-footer">
@@ -2023,6 +2545,7 @@ function computeResult() {
   // Hide flow, show result
   document.getElementById('question-flow').style.display = 'none';
   document.getElementById('intro-section').style.display = 'none';
+  document.getElementById('tab-switcher').style.display = 'none';
   document.getElementById('result-screen').classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   writeHash();
@@ -2051,6 +2574,7 @@ document.getElementById('restart-btn').addEventListener('click', function() {
   document.getElementById('question-flow').style.display = '';
   document.getElementById('intro-section').style.display = '';
   document.getElementById('intro-section').classList.remove('collapsed');
+  document.getElementById('tab-switcher').style.display = '';
 
   try { history.replaceState(null, '', window.location.pathname); } catch(e) {}
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2076,6 +2600,43 @@ document.getElementById('share-result-btn').addEventListener('click', function()
     setTimeout(function() { btn.classList.remove('copied'); label.textContent = 'Share result'; }, 2500);
   }).catch(function() { prompt('Copy this link:', window.location.href); });
 });
+
+/* =====================================================
+   ACCORDION TOGGLE
+   ===================================================== */
+function toggleAccordion(id) {
+  var acc = document.getElementById(id);
+  var btn = acc.querySelector('.why-accordion-header');
+  var isOpen = acc.classList.contains('open');
+  acc.classList.toggle('open');
+  btn.setAttribute('aria-expanded', !isOpen);
+}
+
+/* =====================================================
+   TAB SWITCHER
+   ===================================================== */
+function switchTab(tab) {
+  // Do not switch tabs if result is showing
+  if (document.getElementById('result-screen').classList.contains('active')) return;
+
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.classList.remove('active');
+  });
+  document.querySelectorAll('.tab-panel').forEach(function(panel) {
+    panel.classList.remove('active');
+  });
+
+  document.getElementById('tab-btn-' + tab).classList.add('active');
+  document.getElementById('tab-' + tab).classList.add('active');
+
+  // Reset intro collapse when switching back to decision tab
+  if (tab === 'decision') {
+    document.getElementById('intro-section').classList.remove('collapsed');
+    introCollapsed = false;
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 /* =====================================================
    LOAD FROM URL
