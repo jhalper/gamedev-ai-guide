@@ -474,13 +474,15 @@ const NVIDIA_DATA = {
     {
       "name": "NVIDIA Cosmos World Foundation Models",
       "category": "AI & NPCs",
-      "oneLiner": "Open-source physics-aware world generation models for creating controllable synthetic environments and training data for AI systems.",
-      "description": "NVIDIA Cosmos is a suite of diffusion and autoregressive transformer models (Cosmos Predict, Cosmos Transfer, Cosmos Tokenizer) trained on 20 million hours of real-world video. Cosmos Predict generates physics-aware video worlds from text/image/video inputs; Cosmos Transfer converts simulation footage (from Omniverse or CARLA) to photorealistic synthetic data. Available on NGC and Hugging Face. While targeting robotics and AV, Cosmos is increasingly relevant for game developers generating synthetic training data for in-game AI models or creating photorealistic cinematic content.",
+      "oneLiner": "Open-source physics-aware world generation models — Cosmos 3 Edge now runs on GeForce RTX 3070+ for on-device environment generation, simulation, and AI training data creation.",
+      "description": "NVIDIA Cosmos is a suite of diffusion and autoregressive transformer models (Cosmos Predict, Cosmos Transfer, Cosmos Tokenizer) trained on 20 million hours of real-world video. Cosmos Predict generates physics-aware video worlds from text/image/video inputs; Cosmos Transfer converts simulation footage (from Omniverse or CARLA) to photorealistic synthetic data. Available on NGC and Hugging Face. While targeting robotics and AV, Cosmos is increasingly relevant for game developers generating synthetic training data for in-game AI models or creating photorealistic cinematic content.\n\nCosmos 3 Edge (released July 20, 2026 at SIGGRAPH — now openly available on Hugging Face, Apache 2.0): A 4-billion-parameter omnimodel optimized for memory-efficient on-device deployment. Runs on GeForce RTX GPUs (RTX 3070 or better as the entry point), NVIDIA RTX PRO, DGX systems, and Jetson. Understands and generates text, image, video, ambient sound, and action. This is the first Cosmos tier that game developers with standard RTX development hardware can run locally for prototyping without cloud infrastructure. NVIDIA positions it as the edge tier of the Cosmos 3 family — the full family includes Cosmos 3 Nano (16B) and Cosmos 3 Super (64B) released at Computex May 31. Edge is roughly one-sixteenth the size of Super.\n\nCosmos-Dreams (announced SIGGRAPH 2026): A collection of closed-loop simulators that generate full virtual environments from a single input frame. Demonstrated live running a full autonomous vehicle simulator from one image on a single NVIDIA RTX PRO 6000 GPU. For game developers, the most relevant application is procedural environment generation and scenario creation for AI training — generating diverse game situations that are difficult or expensive to build by hand.",
       "useCases": [
         "Generating photorealistic environment videos for game trailers and marketing",
-        "Creating synthetic training data for in-game vision AI systems",
-        "Rapid concept visualization of game environments from text prompts",
-        "Generating data for NPC behavioral AI training using simulated scenarios"
+        "Creating synthetic training data for in-game vision AI systems on-device via Cosmos 3 Edge (RTX 3070+)",
+        "Rapid concept visualization of game environments from text or image prompts",
+        "Generating diverse game scenarios for NPC behavioral AI training",
+        "Procedural environment generation from single reference frames via Cosmos-Dreams",
+        "Prototyping world generation pipelines locally before scaling to cloud"
       ],
       "phases": [
         "Prototype",
@@ -493,18 +495,19 @@ const NVIDIA_DATA = {
       ],
       "teamSizes": [
         "AAA (50+)",
-        "Mid-size (10-50)"
+        "Mid-size (10-50)",
+        "Small Team (2-10)"
       ],
       "pricing": "Free",
-      "maturity": "Beta",
+      "maturity": "Stable",
       "difficulty": "Complex",
-      "limitations": "Models require large GPU (14B+ parameter variants need multi-GPU or DGX hardware). Game-specific fine-tuning requires significant compute resources and labeled data. Generation quality and controllability for specific game art styles may require extensive prompt engineering or fine-tuning.",
+      "limitations": "Cosmos 3 Edge requires GeForce RTX 3070 or better for local prototyping — larger Cosmos 3 tiers (Nano 16B, Super 64B) require multi-GPU or DGX hardware. Game-specific fine-tuning requires significant compute resources and labeled data. Generation quality and controllability for specific game art styles may require extensive prompt engineering or fine-tuning. Cosmos-Dreams is announced but developer access details not yet fully published as of July 2026.",
       "url": "https://www.nvidia.com/en-us/ai/cosmos/",
       "officialPage": "https://www.nvidia.com/en-us/ai/cosmos/",
-      "hiddenGem": 0,
-      "lastUpdated": "2026-03-17",
+      "hiddenGem": 2,
+      "lastUpdated": "2026-07-21",
       "id": 4,
-      "whyGameDev": "Generate photorealistic environment videos for trailers and produce synthetic vision-AI training data without a camera rig."
+      "whyGameDev": "Generate photorealistic environment videos and synthetic AI training data locally on RTX hardware — Cosmos 3 Edge runs on a GeForce RTX 3070 or better."
     },
     {
       "name": "NVIDIA Edify (AI Foundry)",
@@ -4123,8 +4126,8 @@ const NVIDIA_DATA = {
     {
       "name": "NVIDIA DLSS 5 (Neural Rendering)",
       "category": "Rendering & Graphics",
-      "oneLiner": "Next-generation neural rendering model announced at GTC 2026 that fuses structured 3D data with generative AI to deliver photoreal lighting and materials in real time — launching Fall 2026.",
-      "description": "DLSS 5, unveiled at GTC 2026 by Jensen Huang, is NVIDIA's most significant graphics breakthrough since real-time ray tracing in 2018. Unlike DLSS 4.x (which upscales and generates frames from traditionally rendered input), DLSS 5 introduces a real-time neural rendering model that infuses rendered pixels with photoreal lighting and materials by blending hand-crafted rendering with generative AI. Jensen described it as 'the GPT moment for graphics.' The technology bridges the divide between real-time rendering and cinematic-quality visual effects previously only achievable in Hollywood. DLSS 5 preserves the control artists need for creative expression while dramatically elevating visual realism. The GTC 2026 demo ran on two GeForce RTX 5090 GPUs (one for game rendering, one for the DLSS 5 model) — the final version will be optimized for a single GPU. Integration follows a process similar to DLSS Frame Generation via the Streamline SDK or UE5 plugin. DLSS 5 is compatible with DLSS Super Resolution, Ray Reconstruction, Frame Generation, and Multi Frame Generation. Major publisher support confirmed: Bethesda (Starfield, Elder Scrolls IV: Oblivion Remastered), Capcom (Resident Evil Requiem), Hotta Studio, NetEase, NCSOFT, S-GAME, Tencent, Ubisoft (Assassin's Creed Shadows), and Warner Bros. Games. Additional confirmed titles: AION 2, Black State, CINDER CITY, Delta Force, Hogwarts Legacy, Justice, NARAKA: BLADEPOINT, NTE: Neverness to Everness, Phantom Blade Zero, Sea of Remnants, and Where Winds Meet.",
+      "oneLiner": "Next-generation neural rendering confirmed for Fall 2026 at SIGGRAPH — fuses structured 3D data with generative AI to deliver photoreal lighting and materials in real time.",
+      "description": "DLSS 5, unveiled at GTC 2026 by Jensen Huang, is NVIDIA's most significant graphics breakthrough since real-time ray tracing in 2018. Unlike DLSS 4.x (which upscales and generates frames from traditionally rendered input), DLSS 5 introduces a real-time neural rendering model that infuses rendered pixels with photoreal lighting and materials by blending hand-crafted rendering with generative AI. Jensen described it as 'the GPT moment for graphics.' The technology bridges the divide between real-time rendering and cinematic-quality visual effects previously only achievable in Hollywood.\n\nSIGGRAPH 2026 (July 20, 2026): NVIDIA confirmed Fall 2026 as the ship window for DLSS 5. The SIGGRAPH keynote added important context: DLSS 5 is explicitly designed to combine traditional rendering with generative AI while preserving the game maker's intent — artistic control is a stated design priority, not an afterthought. The technology was presented as part of NVIDIA's broader push into neural rendering and world models, with NVIDIA's Edward Liu presenting 3D-guided neural rendering advances aimed at production pain points including temporal stability across shots and 4K real-time performance. The GTC 2026 demo ran on two GeForce RTX 5090 GPUs (one for game rendering, one for the DLSS 5 model) — the final version will be optimized for a single GPU. Integration follows a process similar to DLSS Frame Generation via the Streamline SDK or UE5 plugin. DLSS 5 is compatible with DLSS Super Resolution, Ray Reconstruction, Frame Generation, and Multi Frame Generation. Major publisher support confirmed: Bethesda (Starfield, Elder Scrolls IV: Oblivion Remastered), Capcom (Resident Evil Requiem), Hotta Studio, NetEase, NCSOFT, S-GAME, Tencent, Ubisoft (Assassin's Creed Shadows), and Warner Bros. Games. Additional confirmed titles: AION 2, Black State, CINDER CITY, Delta Force, Hogwarts Legacy, Justice, NARAKA: BLADEPOINT, NTE: Neverness to Everness, Phantom Blade Zero, Sea of Remnants, and Where Winds Meet.",
       "useCases": [
         "Achieving cinematic-quality photoreal lighting in real-time gameplay",
         "Bridging the gap between game rendering and Hollywood VFX quality",
@@ -4149,7 +4152,7 @@ const NVIDIA_DATA = {
       "pricing": "Free",
       "maturity": "Preview",
       "difficulty": "Moderate",
-      "limitations": "Not yet released — launching Fall 2026. GTC demo required two RTX 5090 GPUs; single-GPU optimization is in progress. Minimum GPU requirements not yet finalized. The neural rendering model is still being optimized — memory usage and performance details will be shared closer to launch. Likely limited to Blackwell (RTX 50 Series) and future GPUs. No console support expected. Early preview stage — not production-ready as of March 2026.",
+      "limitations": "Not yet released — Fall 2026 ship window confirmed at SIGGRAPH July 20, 2026. GTC demo required two RTX 5090 GPUs; single-GPU optimization is in progress. Minimum GPU requirements not yet finalized but likely limited to Blackwell (RTX 50 Series) or later for full capability. The neural rendering model is still being optimized — memory usage and performance details will be shared closer to launch. No console support expected. SDK and integration documentation will be released alongside launch.",
       "url": "https://www.nvidia.com/en-us/geforce/news/death-stranding-2-crimson-desert-dlss-4-multi-frame-gen/",
       "officialPage": "https://www.nvidia.com/en-us/geforce/news/death-stranding-2-crimson-desert-dlss-4-multi-frame-gen/",
       "hiddenGem": 2,
@@ -4158,17 +4161,17 @@ const NVIDIA_DATA = {
           "type": "Planned (Streamline/Plugin)",
           "setup": "Integration follows a process similar to DLSS Frame Generation — developers will use the Streamline SDK or the NVIDIA DLSS Unreal Engine 5 plugin. Full integration details will be shared closer to the Fall 2026 launch.",
           "quality": 0,
-          "issues": "Not yet available. Early preview only shown at GTC 2026. Plugin and SDK will be released alongside the Fall 2026 launch.",
+          "issues": "Not yet available. Fall 2026 ship window confirmed at SIGGRAPH July 20, 2026. Plugin and SDK will be released at launch.",
           "version": "TBD (Fall 2026)"
         },
         "custom": {
           "apiType": "Streamline SDK",
           "setupComplexity": 3,
           "docsQuality": 0,
-          "notes": "DLSS 5 integration will be available via the Streamline SDK, following the same pattern as DLSS Frame Generation. Direct NGX integration may also be supported. Full SDK documentation and integration guide will be released closer to Fall 2026 launch. The NVIDIA Zorah tech demo shown at GTC 2026 provides an early reference implementation."
+          "notes": "DLSS 5 integration will be available via the Streamline SDK, following the same pattern as DLSS Frame Generation. Direct NGX integration may also be supported. Full SDK documentation and integration guide will be released at Fall 2026 launch. The NVIDIA Zorah tech demo shown at GTC 2026 provides an early reference implementation."
         }
       },
-      "lastUpdated": "2026-03-18",
+      "lastUpdated": "2026-07-21",
       "id": 82,
       "whyGameDev": "The next leap in real-time visuals — DLSS 5 fuses your rendered frames with AI-generated photoreal lighting, closing the gap between games and cinema."
     },

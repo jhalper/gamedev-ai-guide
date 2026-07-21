@@ -1,14 +1,14 @@
 # NVIDIA GameDev Guide — Changelog
 
-## v1.9.7 — 2026-06-22
-- Added NVIDIA ACE Game Agent SDK (Beta) as new tool entry — lightweight open-source C/C++ agentic framework, announced Unreal Fest 2026 (June 17); Agent API, Chat API, RAG API; Apache 2.0; github.com/NVIDIA/game-agent-sdk
-- SDK includes bundled SLM, two embedders, cross-encoder reranker (~3 GB); BuildRag.exe for building game knowledge databases
-- Already shipped: Total War: PHARAOH AI advisor (RAG across 1,200+ linked game data tables); PUBG Ally Duo Mode Beta (live on Steam through June 30)
-- Updated NVIDIA ACE entry — new UE5 plugin suite (June 17): ASR, SLM, TTS plugins with Blueprint + C++ integration, local RTX inference, ships with Qwen 3.5 4B and Chatterbox Turbo 350M
-- Updated NVIDIA ACE entry — UE5 integration notes updated, MetaHuman + ACE integration flagged as announced but not yet released
-- Tool count: 83 → 84
+## v1.9.8 — 2026-07-21
+- Updated DLSS 5 entry — Fall 2026 ship window confirmed at SIGGRAPH (July 20); keynote added design intent detail: explicitly preserves the game maker's intent while combining traditional rendering with generative AI
+- Updated DLSS 5 limitations — removed "early preview" language, reflects SIGGRAPH confirmation status
+- Updated Cosmos entry — Cosmos 3 Edge released July 20 (Hugging Face, Apache 2.0): 4B parameter omnimodel now runs on GeForce RTX 3070+; first Cosmos tier accessible to developers on standard RTX hardware without cloud
+- Updated Cosmos entry — added Cosmos-Dreams: closed-loop simulators generating full virtual environments from a single input frame; game dev angle covers procedural environment generation and AI training scenario creation
+- Cosmos maturity updated from Beta to Stable reflecting production Cosmos 3 Edge release
+- Cosmos hiddenGem score and whyGameDev updated to reflect RTX 3070+ accessibility
 
-## v1.9.6 — 2026-06-16
+## v1.9.7 — 2026-06-22
 - Updated Omniverse entry: modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC with C/Python APIs
 - Omniverse shift: developers can now embed RTX rendering or PhysX simulation standalone, without the full Omniverse container stack
 - Updated DLSS SR entry: Dynamic Multi Frame Generation confirmed live since March 31 via NVIDIA app beta

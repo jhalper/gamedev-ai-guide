@@ -858,6 +858,14 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.8', date: '2026-07-21', changes: [
+      'Updated DLSS 5 entry — Fall 2026 ship window confirmed at SIGGRAPH July 20; SIGGRAPH keynote added context: explicitly designed to preserve the game maker\'s intent while combining traditional rendering with generative AI',
+      'Updated DLSS 5 limitations — removed "early preview stage" language, updated to reflect SIGGRAPH confirmation',
+      'Updated Cosmos entry — Cosmos 3 Edge (July 20, 2026, Hugging Face, Apache 2.0): 4B parameter omnimodel now runs on GeForce RTX 3070+; first Cosmos tier accessible to developers on standard RTX dev hardware',
+      'Updated Cosmos entry — added Cosmos-Dreams: closed-loop simulators generating full virtual environments from a single input frame; game dev angle is procedural environment generation and AI scenario training',
+      'Updated Cosmos maturity from Beta to Stable reflecting Cosmos 3 Edge production release',
+      'Updated Cosmos hiddenGem score and whyGameDev to reflect RTX accessibility'
+    ]},
     { version: 'v1.9.7', date: '2026-06-22', changes: [
       'Added NVIDIA ACE Game Agent SDK (Beta) as new tool entry — lightweight open-source C/C++ agentic framework announced at Unreal Fest 2026 (June 17); Agent, Chat, and RAG APIs; Apache 2.0; GitHub: github.com/NVIDIA/game-agent-sdk',
       'ACE Game Agent SDK battle-tested in Total War: PHARAOH (RAG across 1,200+ game data tables) and PUBG Ally Duo Mode Beta (live on Steam through June 30)',
