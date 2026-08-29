@@ -1,14 +1,12 @@
 # NVIDIA GameDev Guide — Changelog
 
-## v1.9.8 — 2026-07-21
-- Updated DLSS 5 entry — Fall 2026 ship window confirmed at SIGGRAPH (July 20); keynote added design intent detail: explicitly preserves the game maker's intent while combining traditional rendering with generative AI
-- Updated DLSS 5 limitations — removed "early preview" language, reflects SIGGRAPH confirmation status
-- Updated Cosmos entry — Cosmos 3 Edge released July 20 (Hugging Face, Apache 2.0): 4B parameter omnimodel now runs on GeForce RTX 3070+; first Cosmos tier accessible to developers on standard RTX hardware without cloud
-- Updated Cosmos entry — added Cosmos-Dreams: closed-loop simulators generating full virtual environments from a single input frame; game dev angle covers procedural environment generation and AI training scenario creation
-- Cosmos maturity updated from Beta to Stable reflecting production Cosmos 3 Edge release
-- Cosmos hiddenGem score and whyGameDev updated to reflect RTX 3070+ accessibility
+## v1.9.9 — 2026-08-29
+- Updated DLSS SR entry — DLSS 4.5 Ray Reconstruction now live (August 25, Gamescom): NVIDIA App Early Access for all GeForce RTX GPUs, 30 games at launch, final version September 2026; DLSS Override enables existing integrations without waiting for a game-specific update; 007 First Light adds path tracing and DLSS 4.5 RR September 15
+- Updated RTX Mega Geometry entry — Gears of War: E-Day (October 6) confirmed with RTX Mega Geometry; flagged DXR 2.0 potential standardization which would bring Mega Geometry to all UE5 games via the standard DXR path rather than NvRTX branch
+- Updated RTX Remix entry — now supports DLSS 4.5; Painkiller RTX expanded to 15 levels, fully path-traced, DLSS 4.5, RTX Volumetrics, NRC, Remix Logic, RTX IO (file size ~57 GB to ~45 GB via GPU-accelerated decompression); Morrowind RTX approaching public demo
+- Updated GeForce NOW entry — Steam Machine, Steam Controller, Fire TV 4K, Firefox browser support added (Gamescom August 25-26); native GOG library sync live August 27; day-one release lineup expanding
 
-## v1.9.7 — 2026-06-22
+## v1.9.8 — 2026-07-21
 - Updated Omniverse entry: modular libraries (ovrtx, ovphysx, ovstorage) now in early access on GitHub/NGC with C/Python APIs
 - Omniverse shift: developers can now embed RTX rendering or PhysX simulation standalone, without the full Omniverse container stack
 - Updated DLSS SR entry: Dynamic Multi Frame Generation confirmed live since March 31 via NVIDIA app beta

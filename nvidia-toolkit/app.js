@@ -858,6 +858,12 @@
 
   // ---------- What's New Panel ----------
   const CHANGELOG = [
+    { version: 'v1.9.9', date: '2026-08-29', changes: [
+      'Updated DLSS SR entry — DLSS 4.5 Ray Reconstruction now live (August 25, Gamescom): available via NVIDIA App Early Access for all GeForce RTX GPUs, 30 games at launch, final version September 2026; DLSS Override enables existing integrations without game update',
+      'Updated RTX Mega Geometry entry — Gears of War: E-Day (October 6) confirmed with RTX Mega Geometry; flagged potential DXR 2.0 standardization that would bring Mega Geometry to all UE5 games via standard DXR path',
+      'Updated RTX Remix entry — now supports DLSS 4.5; Painkiller RTX major expansion (15 levels, path-traced, DLSS 4.5, RTX Volumetrics, NRC, Remix Logic, RTX IO — file size reduced from ~57 GB to ~45 GB); Morrowind RTX approaching public demo',
+      'Updated GeForce NOW entry — added platform support for Steam Machine, Steam Controller, Fire TV 4K, Firefox browser (Gamescom August 25-26); native GOG library sync live August 27; day-one release lineup expanding'
+    ]},
     { version: 'v1.9.8', date: '2026-07-21', changes: [
       'Updated DLSS 5 entry — Fall 2026 ship window confirmed at SIGGRAPH July 20; SIGGRAPH keynote added context: explicitly designed to preserve the game maker\'s intent while combining traditional rendering with generative AI',
       'Updated DLSS 5 limitations — removed "early preview stage" language, updated to reflect SIGGRAPH confirmation',
